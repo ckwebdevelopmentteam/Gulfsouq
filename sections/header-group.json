@@ -1,1 +1,18 @@
-{"type":"header","name":"t:static_sections.header.name","sections":{"announcement":{"type":"announcement-bar","settings":{"color_palette":"scheme-4"}},"header":{"type":"header","blocks":{"246bf498-f488-4eaf-9630-846e68dfe4c0":{"type":"button","disabled":true,"settings":{"show_mobile":true,"button_menu":"main-menu","button_style":"dynamic_buy_button plain"}},"f8ee5b63-cdad-4140-9183-2aea32d44591":{"type":"usp","disabled":true,"settings":{"usp":"<p>Give your customers more details about your online store<\/p>","icon":"default","image_width":55}},"655f761a-afea-4320-92ad-c4df9417265c":{"type":"usp","disabled":true,"settings":{"usp":"<p>Give your customers more details about your online store<\/p>","icon":"default","image_width":55}},"7db5eae6-23ed-4bae-85f9-3b91f023c974":{"type":"usp","disabled":true,"settings":{"usp":"<p>Give your customers morse details about your online store<\/p>","icon":"default","image_width":55}}},"block_order":["246bf498-f488-4eaf-9630-846e68dfe4c0","f8ee5b63-cdad-4140-9183-2aea32d44591","655f761a-afea-4320-92ad-c4df9417265c","7db5eae6-23ed-4bae-85f9-3b91f023c974"],"settings":{"layout":"layout_4","width":1400,"header_height":"55px|45px","show_header_border":"bottom","header_border_opacity":0,"header_border_width":"wide","header_shadow":false,"header_shadow_opacity":37,"enable_country_selector":true,"enable_language_selector":true,"top_bar_color":"scheme-6","header_color":"scheme-4","menubar_color":"scheme-1","show_top_bar":false,"top_bar_height":"35px|25px","top_bar_font":"primary","top_bar_font_size":"14px","navbar_menu_item_text":"+91 70255 45444","navbar_menu_item_icon":"24_7_call","navbar_menu_item_link":"https:\/\/wa.me\/+919207545444","enable_usp_slider_arrows":false,"enable_usp_slider_autoplay":false,"usp_slider_autoplay_seconds":3,"searchbar_font_size":"13px","searchbar_height":44,"searchbar_width":600,"show_searchbar_border":false,"enable_sticky_header":true,"sticky":"sticky-header","cart_icon":"cart|e903","cart_icon_color":"positive","show_cart_total":false,"menubar_menu":"main-menu","menubar_height":"55px","menu_layout":"dropdown","menu_scroll":true,"menu_compact":true,"show_dropdown_images":true,"show_dropdown_images_subs":true,"show_dropdown_images_autofill":true,"show_dropdown_images_rounded":true,"menubar_alignment":"center","main_menu_items_clickable":true,"menu_show_chevrons":true,"sale_highlight":false,"sale_highlight_item":"Sale","menu_font":"secondary","menu_font_weight":"400","menu_font_size":15,"menu_letter_spacing":1,"menubar_caps":true,"menu_subs_font":"secondary","menu_subs_font_weight":"400","enable_menu_subs_font_size":true,"menu_subs_font_size":16,"custom_menu_items_per_columns":false,"menu_items_limit":5,"submenu_items_limit":5,"main_menu_show_lines":true,"enable_socials":false,"extra_image_width":100,"extra_image_link":"","enable_button":true,"button_text":"All Products","button_url":"shopify:\/\/collections\/all","button_style":"primary plain","disable_online_store":false,"header_icons":false,"layout_mobile":"logo_center","mobile_menu_color":"","menu_icon":"menu-left|e97f","search_compact_mobile":true,"search_mobile_bd":"bd-b","searchbar_height_mobile":48,"menu_font_size_mobile":16,"spacing_desktop":50,"spacing_mobile":20}}},"order":["announcement","header"]}
+{
+  "type": "header",
+  "name": "Header Group",
+  "sections": {
+    "header": {
+      "type": "header",
+      "settings": {
+        "show_announcement_bar": true,
+        "announcement_text": "Shop our latest arrivals",
+        "menubar_menu": "main-menu",
+        "enable_sticky_header": true
+      }
+    }
+  },
+  "order": [
+    "header"
+  ]
+}

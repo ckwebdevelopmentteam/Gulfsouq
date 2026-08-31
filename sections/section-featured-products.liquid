@@ -150,11 +150,11 @@
   <div class="deals-header-right">
     {%- if section.settings.show_link and section.settings.link_text != blank and section.settings.link_text != 'Button' -%}
       <a href="{{ section.settings.link_url | default: '/collections/all' }}" class="deals-view-link">
-        {{ section.settings.link_text }} &rarr;
+        {{ section.settings.link_text | replace: ' &rarr;', '' | replace: '&rarr;', '' | replace: ' →', '' | replace: '→', '' }}
       </a>
     {%- elsif section.settings.show_link -%}
       <a href="{{ section.settings.link_url | default: '/collections/all' }}" class="deals-view-link">
-        View All Products &rarr;
+        View All Products
       </a>
     {%- endif -%}
     <span class="deals-btn-circle" onclick="scrollFeaturedProducts('{{ section.id }}', -340)" title="Previous">
@@ -167,7 +167,7 @@
 </div>
 
 <div class="deals-product-track-container section-width-{{ section.settings.width }}">
-  <ul id="FeaturedProductTrack-{{ section.id }}" class="l4cl deals-product-track {% if settings.enable_quick_buy and section.settings.hide_quick_buy == false %}with-quick-buy{% endif %} slider">
+  <ul id="FeaturedProductTrack-{{ section.id }}" class="deals-product-track {% if settings.enable_quick_buy and section.settings.hide_quick_buy == false %}with-quick-buy{% endif %}">
     {%- liquid
       assign product_list = section.settings.products
       assign has_real_products = false
@@ -213,6 +213,19 @@
     -%}
   </ul>
 </div>
+
+{%- if section.settings.show_link -%}
+  {%- assign deals_view_all_text = section.settings.link_text -%}
+  {%- if deals_view_all_text == blank or deals_view_all_text == 'Button' -%}
+    {%- assign deals_view_all_text = 'View All Products' -%}
+  {%- endif -%}
+  {%- assign deals_view_all_text = deals_view_all_text | replace: ' &rarr;', '' | replace: '&rarr;', '' | replace: ' →', '' | replace: '→', '' -%}
+  <div class="deals-footer-mobile">
+    <a href="{{ section.settings.link_url | default: '/collections/all' }}" class="deals-view-link-mobile">
+      {{ deals_view_all_text }}
+    </a>
+  </div>
+{%- endif -%}
 
 <style>
   #shopify-section-{{ section.id }} {
@@ -307,38 +320,151 @@
 
   #shopify-section-{{ section.id }} .deals-product-track {
     display: flex !important;
-    gap: 20px !important;
+    gap: 16px !important;
     overflow-x: auto !important;
     scroll-behavior: smooth !important;
     padding-bottom: 20px !important;
     padding-top: 6px !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin: 0 !important;
     scrollbar-width: none !important;
     -ms-overflow-style: none !important;
     align-items: stretch !important;
+    list-style: none !important;
   }
 
   #shopify-section-{{ section.id }} .deals-product-track::-webkit-scrollbar {
     display: none !important;
   }
 
+  #shopify-section-{{ section.id }} .deals-product-track > li,
+  #shopify-section-{{ section.id }} .deals-product-track > .product-card,
+  #shopify-section-{{ section.id }} .deals-product-track > .gs-card {
+    flex: 0 0 calc((100% - 64px) / 5) !important;
+    width: calc((100% - 64px) / 5) !important;
+    min-width: 210px !important;
+    max-width: 280px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    list-style: none !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    flex-shrink: 0 !important;
+  }
+
+  .deals-footer-mobile {
+    display: none;
+  }
+
+  @media only screen and (max-width: 1024px) and (min-width: 769px) {
+    #shopify-section-{{ section.id }} .deals-product-track > li,
+    #shopify-section-{{ section.id }} .deals-product-track > .product-card,
+    #shopify-section-{{ section.id }} .deals-product-track > .gs-card {
+      flex: 0 0 calc((100% - 32px) / 3) !important;
+      width: calc((100% - 32px) / 3) !important;
+      min-width: 200px !important;
+      max-width: 280px !important;
+      flex-shrink: 0 !important;
+    }
+  }
+
   @media only screen and (max-width: 768px) {
-    #shopify-section-{{ section.id }} .deals-product-track-container {
-      padding-left: 0 !important;
-      padding-right: 0 !important;
+    #shopify-section-{{ section.id }} {
+      padding: 24px 0 20px 0 !important;
     }
     #shopify-section-{{ section.id }} .deals-header-inner {
-      flex-direction: column !important;
-      align-items: flex-start !important;
-      gap: 16px !important;
-      padding-left: 12px !important;
-      padding-right: 12px !important;
+      flex-direction: row !important;
+      align-items: flex-end !important;
+      justify-content: space-between !important;
+      margin-bottom: 16px !important;
+      padding-left: 16px !important;
+      padding-right: 16px !important;
+    }
+    #shopify-section-{{ section.id }} .deals-header-right {
+      display: none !important;
+    }
+    #shopify-section-{{ section.id }} .deals-btn-circle {
+      display: none !important;
+    }
+    #shopify-section-{{ section.id }} .deals-view-link {
+      display: none !important;
     }
     #shopify-section-{{ section.id }} .deals-title,
-    #shopify-section-{{ section.id }} .deals-title h2 {
-      font-size: 20px !important;
+    #shopify-section-{{ section.id }} .deals-title h2,
+    #shopify-section-{{ section.id }} .deals-title h1,
+    #shopify-section-{{ section.id }} .deals-title h3 {
+      font-size: 18px !important;
+      line-height: 1.25 !important;
+      margin-bottom: 2px !important;
     }
     #shopify-section-{{ section.id }} .deals-subtitle {
+      font-size: 12px !important;
+      line-height: 1.25 !important;
+    }
+    #shopify-section-{{ section.id }} .deals-product-track-container {
+      padding-left: 16px !important;
+      padding-right: 16px !important;
+    }
+    #shopify-section-{{ section.id }} .deals-product-track {
+      gap: 16px !important;
+      padding: 4px 0 16px 0 !important;
+    }
+    .deals-footer-mobile {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      margin: 16px auto 0 auto !important;
+      max-width: 1420px !important;
+      padding: 0 16px !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    #shopify-section-{{ section.id }} .deals-view-link-mobile {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 100% !important;
+      padding: 12px 20px !important;
+      background: #0C3E61 !important;
+      color: #FFFFFF !important;
+      border-radius: 12px !important;
       font-size: 13px !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.5px !important;
+      text-transform: uppercase !important;
+      text-decoration: none !important;
+      box-shadow: 0 4px 12px rgba(12, 62, 97, 0.12) !important;
+      transition: all 0.2s ease !important;
+      text-align: center !important;
+      box-sizing: border-box !important;
+    }
+    #shopify-section-{{ section.id }} .deals-view-link-mobile:hover,
+    #shopify-section-{{ section.id }} .deals-view-link-mobile:active {
+      background: #082D47 !important;
+      color: #FFFFFF !important;
+      transform: translateY(-1px) !important;
+    }
+  }
+
+  @media only screen and (max-width: 480px) {
+    #shopify-section-{{ section.id }} .deals-title,
+    #shopify-section-{{ section.id }} .deals-title h2,
+    #shopify-section-{{ section.id }} .deals-title h1,
+    #shopify-section-{{ section.id }} .deals-title h3 {
+      font-size: 16px !important;
+      line-height: 1.2 !important;
+    }
+    #shopify-section-{{ section.id }} .deals-subtitle {
+      font-size: 11px !important;
+      line-height: 1.2 !important;
+    }
+    #shopify-section-{{ section.id }} .deals-product-track {
+      gap: 16px !important;
+    }
+    #shopify-section-{{ section.id }} .deals-view-link-mobile {
+      font-size: 12px !important;
+      padding: 11px 16px !important;
     }
   }
 </style>

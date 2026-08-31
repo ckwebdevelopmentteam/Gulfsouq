@@ -143,32 +143,8 @@
       },
       "header": {
         "type": "header",
-        "blocks": {
-          "header-block-button-1": {
-            "type": "button",
-            "settings": {
-              "show_mobile": false,
-              "button_menu": "main-menu"
-            }
-          },
-          "header-block-usp-1": {
-            "type": "usp",
-            "settings": {
-              "usp": "<p> Give your customers details about your online store</p>"
-            }
-          },
-          "8a42768e-1596-4cb5-9fa9-9b6e73299876": {
-            "type": "usp",
-            "settings": {
-              "usp": "<p>Give your customers more details about your online store</p>"
-            }
-          }
-        },
-        "block_order": [
-          "header-block-button-1",
-          "header-block-usp-1",
-          "8a42768e-1596-4cb5-9fa9-9b6e73299876"
-        ],
+        "blocks": {},
+        "block_order": [],
         "settings": {
           "layout": "layout_1",
           "enable_country_selector": true,

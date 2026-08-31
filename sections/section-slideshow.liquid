@@ -33,16 +33,9 @@
 %}
 {%- if section.blocks.size == 0 -%}
   <div class="perfume-offer-banner-box">
-    <a href="{{ section.settings.single_box_banner_link | default: section.settings.side_promo_link | default: '/collections/athar-and-perfume' }}" class="perfume-offer-banner-link">
+    <a href="{{ section.settings.single_box_banner_link | default: '/collections/athar-and-perfume' }}" class="perfume-offer-banner-link">
       {%- if section.settings.single_box_banner_image != blank -%}
         <img src="{{ section.settings.single_box_banner_image | image_url: width: 1420 }}"
-             alt="Special Perfume Offers"
-             width="1420"
-             height="420"
-             loading="eager"
-             class="perfume-offer-banner-img">
-      {%- elsif section.settings.side_promo_image != blank -%}
-        <img src="{{ section.settings.side_promo_image | image_url: width: 1420 }}"
              alt="Special Perfume Offers"
              width="1420"
              height="420"
@@ -59,7 +52,7 @@
     </a>
   </div>
 {%- else -%}
-<div class="hero-split-container">
+<div class="hero-banner-container">
 <div
   class="
     m6fr
@@ -253,55 +246,6 @@
     </article>
   {%- endfor -%}
 </div>
-  <div class="hero-side-promo swiper-container side-promo-swiper-{{ section.id }}">
-    <div class="swiper-wrapper">
-      <div class="swiper-slide">
-        <a href="{{ section.settings.side_promo_link | default: '/collections/all' }}" class="side-promo-img-link">
-          {%- if section.settings.side_promo_image != blank -%}
-            <img src="{{ section.settings.side_promo_image | image_url: width: 900 }}"
-                 alt="Box 2 Slide 1"
-                 width="450"
-                 height="350"
-                 loading="lazy"
-                 class="side-promo-img">
-          {%- else -%}
-            <img src="{{ 'side-promo-banner.png' | asset_url }}"
-                 alt="Indian Independence Day Special Offers - Up to 50% Off"
-                 width="450"
-                 height="350"
-                 loading="lazy"
-                 class="side-promo-img">
-          {%- endif -%}
-        </a>
-      </div>
-
-      {%- if section.settings.side_promo_image_2 != blank -%}
-        <div class="swiper-slide">
-          <a href="{{ section.settings.side_promo_link_2 | default: '/collections/all' }}" class="side-promo-img-link">
-            <img src="{{ section.settings.side_promo_image_2 | image_url: width: 900 }}"
-                 alt="Box 2 Slide 2"
-                 width="450"
-                 height="350"
-                 loading="lazy"
-                 class="side-promo-img">
-          </a>
-        </div>
-      {%- endif -%}
-
-      {%- if section.settings.side_promo_image_3 != blank -%}
-        <div class="swiper-slide">
-          <a href="{{ section.settings.side_promo_link_3 | default: '/collections/all' }}" class="side-promo-img-link">
-            <img src="{{ section.settings.side_promo_image_3 | image_url: width: 900 }}"
-                 alt="Box 2 Slide 3"
-                 width="450"
-                 height="350"
-                 loading="lazy"
-                 class="side-promo-img">
-          </a>
-        </div>
-      {%- endif -%}
-    </div>
-  </div>
 </div>
 {%- endif -%}
 
@@ -338,116 +282,23 @@
     border-radius: 22px;
   }
 
-  #shopify-section-{{ section.id }} .hero-split-container {
+  #shopify-section-{{ section.id }} .hero-banner-container {
     max-width: 1380px;
     margin: 0 auto;
     padding: 0 24px;
-    display: flex;
-    gap: 20px;
-    align-items: stretch;
+    box-sizing: border-box;
   }
 
   #shopify-section-{{ section.id }} .m6fr { 
-    flex: 1 1 67%;
-    max-width: 67% !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
     margin-bottom: 0 !important; 
     border-radius: 24px !important;
     border: 2px solid #BE982D !important;
     overflow: hidden !important;
     box-shadow: 0 10px 30px rgba(12, 62, 97, 0.12) !important;
-  }
-
-  #shopify-section-{{ section.id }} .hero-side-promo {
-    flex: 0 0 calc(33% - 20px);
-    width: calc(33% - 20px) !important;
-    border-radius: 24px !important;
-    background: #0C3E61 !important;
-    border: 2px solid #BE982D !important;
-    padding: 0 !important;
-    overflow: hidden !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: center !important;
-    align-items: stretch !important;
-    box-shadow: 0 10px 30px rgba(12, 62, 97, 0.12) !important;
-  }
-
-  #shopify-section-{{ section.id }} .side-promo-content {
-    padding: 32px 28px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-  }
-
-  #shopify-section-{{ section.id }} .side-promo-img-link {
-    display: flex !important;
-    width: 100% !important;
-    height: 100% !important;
-    border-radius: 22px !important;
-    overflow: hidden !important;
-  }
-
-  #shopify-section-{{ section.id }} .side-promo-img {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-    object-position: left center !important;
-    border-radius: 22px !important;
-    display: block !important;
-    transition: transform 0.3s ease !important;
-  }
-
-  #shopify-section-{{ section.id }} .side-promo-img-link:hover .side-promo-img {
-    transform: scale(1.03);
-  }
-
-  #shopify-section-{{ section.id }} .side-promo-badge {
-    font-size: 11px;
-    font-weight: 800;
-    color: #BE982D;
-    background: #0C3E61;
-    padding: 4px 12px;
-    border-radius: 12px;
-    letter-spacing: 0.5px;
-    margin-bottom: 14px;
-  }
-
-  #shopify-section-{{ section.id }} .side-promo-title {
-    font-size: 24px;
-    font-weight: 900;
-    color: #0C3E61;
-    line-height: 1.2;
-    margin: 0 0 10px 0;
-    letter-spacing: -0.5px;
-  }
-
-  #shopify-section-{{ section.id }} .side-promo-desc {
-    font-size: 13px;
-    color: #475569;
-    margin: 0 0 20px 0;
-    line-height: 1.4;
-  }
-
-  #shopify-section-{{ section.id }} .side-promo-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: #0C3E61;
-    color: #FFFFFF;
-    font-size: 13px;
-    font-weight: 800;
-    padding: 10px 22px;
-    border-radius: 20px;
-    text-decoration: none;
-    transition: all 0.2s ease;
-  }
-
-  #shopify-section-{{ section.id }} .side-promo-btn:hover {
-    background: #BE982D;
-    color: #0C3E61;
   }
 
   /* Desktop-only slideshow slide and image sizing */
@@ -511,11 +362,8 @@
   }
 
   @media only screen and (max-width: 47.5em) {
-    /* Stack hero and side promo vertically */
-    #shopify-section-{{ section.id }} .hero-split-container {
-      flex-direction: column;
+    #shopify-section-{{ section.id }} .hero-banner-container {
       padding: 0 12px;
-      gap: 12px;
     }
 
     /* Main slider container - full width on mobile */
@@ -601,39 +449,12 @@
     #shopify-section-{{ section.id }} .m6fr article > div.title-styling {
       display: none !important;
     }
-
-    /* Side promo box - full width on mobile */
-    #shopify-section-{{ section.id }} .hero-side-promo {
-      flex: 0 0 auto;
-      width: 100% !important;
-      border-radius: 16px !important;
-      padding: 0 !important;
-      max-height: 220px;
-      overflow: hidden !important;
-    }
-
-    #shopify-section-{{ section.id }} .side-promo-img-link {
-      border-radius: 14px !important;
-      height: 100% !important;
-    }
-
-    #shopify-section-{{ section.id }} .side-promo-img {
-      border-radius: 14px !important;
-      width: 100% !important;
-      height: 100% !important;
-      object-fit: cover !important;
-      object-position: center center !important;
-    }
   }
 
   /* Smaller mobile screens */
   @media only screen and (max-width: 480px) {
-    #shopify-section-{{ section.id }} .hero-split-container {
+    #shopify-section-{{ section.id }} .hero-banner-container {
       padding: 0 8px;
-      gap: 10px;
-    }
-    #shopify-section-{{ section.id }} .hero-side-promo {
-      max-height: 180px;
     }
   }
 </style>
@@ -645,46 +466,6 @@
     "groups": ["header", "footer"]
   },
   "settings": [
-    {
-      "type": "header",
-      "content": "Box 2 (Right Hero Box) Carousel Settings"
-    },
-    {
-      "type": "image_picker",
-      "id": "side_promo_image",
-      "label": "Box 2 - Slide 1 Photo",
-      "info": "Upload Photo 1 for Box 2 carousel"
-    },
-    {
-      "type": "url",
-      "id": "side_promo_link",
-      "label": "Box 2 - Slide 1 Link",
-      "default": "/collections/all"
-    },
-    {
-      "type": "image_picker",
-      "id": "side_promo_image_2",
-      "label": "Box 2 - Slide 2 Photo",
-      "info": "Upload Photo 2 for Box 2 carousel"
-    },
-    {
-      "type": "url",
-      "id": "side_promo_link_2",
-      "label": "Box 2 - Slide 2 Link",
-      "default": "/collections/all"
-    },
-    {
-      "type": "image_picker",
-      "id": "side_promo_image_3",
-      "label": "Box 2 - Slide 3 Photo",
-      "info": "Upload Photo 3 for Box 2 carousel"
-    },
-    {
-      "type": "url",
-      "id": "side_promo_link_3",
-      "label": "Box 2 - Slide 3 Link",
-      "default": "/collections/all"
-    },
     {
       "type": "select",
       "id": "height",

@@ -292,12 +292,14 @@
       }
     },
     "section_featured_collection_homecoming": {
-      "type": "section-featured-products",
+      "type": "section-featured-collection",
       "name": "Homecoming Combo Boxes",
       "settings": {
-        "products": [],
-        "layout": "slider",
-        "number_of_items": 5,
+        "collection": "homecoming-boxes",
+        "layout": "grid",
+        "mobile_layout": "grid",
+        "limit": 4,
+        "number_of_items": 4,
         "text_alignment": "left",
         "width": "boxed",
         "title": "<h2>🧳 Homecoming Combo Boxes</h2>",
@@ -305,15 +307,11 @@
         "text": "<p>Special homecoming gift packages for loved ones</p>",
         "show_link": true,
         "link_text": "View All Homecoming Boxes",
-        "link_url": "/collections/homecoming-boxes",
         "button_style": "secondary plain",
         "enable_quick_buy_desktop": true,
         "enable_quick_buy_mobile": true,
         "enable_quick_buy_drawer": false,
         "enable_quick_buy_qty_selector": true,
-        "enable_color_picker": false,
-        "enable_quick_buy_compact": false,
-        "mobile_layout": "slider",
         "spacing_desktop": 30,
         "spacing_mobile": 20,
         "fix_zindex": 0
@@ -754,18 +752,78 @@
     "section_explore_categories": {
       "type": "section-explore-categories",
       "blocks": {
-        "cat_1": { "type": "category", "settings": { "collection": "chocolates" } },
-        "cat_2": { "type": "category", "settings": { "collection": "dates" } },
-        "cat_3": { "type": "category", "settings": { "collection": "athar-and-perfume" } },
-        "cat_4": { "type": "category", "settings": { "collection": "nuts-dry-fruits" } },
-        "cat_5": { "type": "category", "settings": { "collection": "gift-hamper-boxes" } },
-        "cat_6": { "type": "category", "settings": { "collection": "electronics-gadgets" } },
-        "cat_7": { "type": "category", "settings": { "collection": "homecoming-boxes" } },
-        "cat_8": { "type": "category", "settings": { "collection": "trending-watches" } },
-        "cat_9": { "type": "category", "settings": { "collection": "beauty-personal-care" } },
-        "cat_10": { "type": "category", "settings": { "collection": "spices-herbs" } },
-        "cat_11": { "type": "category", "settings": { "collection": "toys" } },
-        "cat_12": { "type": "category", "settings": { "collection": "home-living" } }
+        "cat_1": {
+          "type": "category",
+          "settings": {
+            "collection": "chocolates"
+          }
+        },
+        "cat_2": {
+          "type": "category",
+          "settings": {
+            "collection": "dates"
+          }
+        },
+        "cat_3": {
+          "type": "category",
+          "settings": {
+            "collection": "athar-and-perfume"
+          }
+        },
+        "cat_4": {
+          "type": "category",
+          "settings": {
+            "collection": "nuts-dry-fruits"
+          }
+        },
+        "cat_5": {
+          "type": "category",
+          "settings": {
+            "collection": "gift-hamper-boxes"
+          }
+        },
+        "cat_6": {
+          "type": "category",
+          "settings": {
+            "collection": "electronics-gadgets"
+          }
+        },
+        "cat_7": {
+          "type": "category",
+          "settings": {
+            "collection": "homecoming-boxes"
+          }
+        },
+        "cat_8": {
+          "type": "category",
+          "settings": {
+            "collection": "trending-watches"
+          }
+        },
+        "cat_9": {
+          "type": "category",
+          "settings": {
+            "collection": "beauty-personal-care"
+          }
+        },
+        "cat_10": {
+          "type": "category",
+          "settings": {
+            "collection": "spices-herbs"
+          }
+        },
+        "cat_11": {
+          "type": "category",
+          "settings": {
+            "collection": "toys"
+          }
+        },
+        "cat_12": {
+          "type": "category",
+          "settings": {
+            "collection": "home-living"
+          }
+        }
       },
       "block_order": [
         "cat_1",
@@ -784,7 +842,7 @@
       "settings": {
         "title": "Explore Categories",
         "subtitle": "Curated collections for your daily needs",
-        "view_all_text": "VIEW ALL →",
+        "view_all_text": "VIEW ALL",
         "rows": "2"
       }
     },
