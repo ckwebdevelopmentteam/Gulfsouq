@@ -1,0 +1,242 @@
+
+{% if product.title contains 'hamper' or product.title contains 'Hamper' or product.title contains 'HAMPER' %}
+<div class="personalized-message-section">
+  <label for="personalized-message-main" class="message-label">
+    <strong>How you want the Hamper ?</strong>
+  </label>
+  
+  <textarea 
+    id="personalized-message-main" 
+    name="properties[_Personalized_Message]" 
+    class="personalized-message-field"
+    placeholder="Type your personalized message here..."
+    maxlength="300"
+    rows="1"></textarea>
+  
+  <div class="character-counter">
+    <span id="char-count-main">0</span>/300 characters
+  </div>
+
+  <div class="occasion-field">
+    <label for="occasion-main">Occasion</label>
+    <select id="occasion-main" name="properties[_Occasion]" class="field-select">
+      <option value="">Select occasion...</option>
+      <option value="Birthday">Birthday</option>
+      <option value="Anniversary">Anniversary</option>
+      <option value="Wedding">Wedding</option>
+      <option value="Thank You">Thank You</option>
+      <option value="Get Well Soon">Get Well Soon</option>
+      <option value="Congratulations">Congratulations</option>
+      <option value="Holiday">Holiday</option>
+      <option value="Just Because">Just Because</option>
+      <option value="Other">Other</option>
+    </select>
+  </div>
+</div>
+
+<style>
+  .personalized-message-section {
+    margin: 1.5rem 0;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+  }
+
+  .message-label {
+    display: block;
+    margin-bottom: 1rem;
+    color: #2c3e50;
+    font-size: 16px;
+  }
+
+  .personalized-message-field {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ced4da;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.4;
+    resize: none;
+    transition: border-color 0.2s ease, height 0.2s ease;
+    box-sizing: border-box;
+    background: #ffffff;
+    color: #333333;
+    min-height: 40px;
+    height: 40px;
+    overflow: hidden;
+  }
+
+  .personalized-message-field:focus {
+    outline: none;
+    border-color: #007bff;
+  }
+
+  .personalized-message-field::placeholder {
+    color: #999;
+  }
+
+  .character-counter {
+    text-align: right;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 11px;
+    color: #666;
+  }
+
+  .occasion-field {
+    margin-top: 1rem;
+  }
+
+  .occasion-field label {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+    font-size: 14px;
+    display: block;
+  }
+
+  .field-select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ced4da;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.2s ease;
+    box-sizing: border-box;
+    background: #ffffff;
+    color: #333333;
+    height: 40px;
+  }
+
+  .field-select:focus {
+    outline: none;
+    border-color: #007bff;
+  }
+
+  .char-warning { color: #ffc107 !important; }
+  .char-danger { color: #dc3545 !important; }
+</style>
+
+<script>
+(function() {
+  const messageField = document.getElementById('personalized-message-main');
+  const occasionField = document.getElementById('occasion-main');
+  const charCount = document.getElementById('char-count-main');
+  
+  if (messageField && charCount) {
+    function autoExpand(field) {
+      field.style.height = '40px';
+      if (field.value.trim() !== '') {
+        const newHeight = Math.max(40, field.scrollHeight);
+        field.style.height = newHeight + 'px';
+      }
+    }
+    
+    messageField.addEventListener('input', function() {
+      const textLength = this.value.length;
+      charCount.textContent = textLength;
+      
+      charCount.classList.remove('char-warning', 'char-danger');
+      if (textLength > 270) {
+        charCount.classList.add('char-danger');
+      } else if (textLength > 225) {
+        charCount.classList.add('char-warning');
+      }
+      
+      autoExpand(this);
+    });
+    
+    messageField.addEventListener('keyup', function() {
+      autoExpand(this);
+    });
+  }
+  
+  // Intercept all fetch requests to cart/add
+  const originalFetch = window.fetch;
+  window.fetch = function(...args) {
+    const [resource, config] = args;
+    
+    if (resource.includes('/cart/add') || (typeof resource === 'string' && resource.endsWith('/cart/add.js'))) {
+      if (config && config.body) {
+        const message = messageField?.value?.trim();
+        const occasion = occasionField?.value;
+        
+        if (message || occasion) {
+          let formData;
+          
+          if (config.body instanceof FormData) {
+            formData = config.body;
+          } else if (typeof config.body === 'string') {
+            const params = new URLSearchParams(config.body);
+            formData = new FormData();
+            for (const [key, value] of params) {
+              formData.append(key, value);
+            }
+          }
+          
+          if (formData) {
+            if (message) formData.append('properties[Personalized_Message]', message);
+            if (occasion) formData.append('properties[Occasion]', occasion);
+            config.body = formData;
+          }
+        }
+      }
+    }
+    
+    return originalFetch.apply(this, args);
+  };
+  
+  // Also intercept XMLHttpRequest for older implementations
+  const originalXHR = XMLHttpRequest.prototype.send;
+  XMLHttpRequest.prototype.send = function(body) {
+    if (this._url && this._url.includes('/cart/add')) {
+      const message = messageField?.value?.trim();
+      const occasion = occasionField?.value;
+      
+      if (message || occasion) {
+        if (body instanceof FormData) {
+          if (message) body.append('properties[Personalized_Message]', message);
+          if (occasion) body.append('properties[Occasion]', occasion);
+        }
+      }
+    }
+    
+    return originalXHR.call(this, body);
+  };
+  
+  const originalOpen = XMLHttpRequest.prototype.open;
+  XMLHttpRequest.prototype.open = function(method, url, ...args) {
+    this._url = url;
+    return originalOpen.call(this, method, url, ...args);
+  };
+  
+  // Fallback: Standard form submission
+  document.addEventListener('submit', function(e) {
+    const form = e.target;
+    if (form.action && form.action.includes('/cart/add')) {
+      const message = messageField?.value?.trim();
+      const occasion = occasionField?.value;
+      
+      if (message) {
+        const hiddenMessage = document.createElement('input');
+        hiddenMessage.type = 'hidden';
+        hiddenMessage.name = 'properties[Personalized_Message]';
+        hiddenMessage.value = message;
+        form.appendChild(hiddenMessage);
+      }
+      
+      if (occasion) {
+        const hiddenOccasion = document.createElement('input');
+        hiddenOccasion.type = 'hidden';
+        hiddenOccasion.name = 'properties[Occasion]';
+        hiddenOccasion.value = occasion;
+        form.appendChild(hiddenOccasion);
+      }
+    }
+  });
+  
+})();
+</script>
+{% endif %}

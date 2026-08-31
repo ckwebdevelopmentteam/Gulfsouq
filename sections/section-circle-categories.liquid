@@ -1,0 +1,370 @@
+{% comment %}
+  Section: Circle Category Bubbles Slider
+  Description: Premium circular category story bubbles slider with auto-fallback collection product images
+{% endcomment %}
+
+<div class="circle-categories-wrapper" data-section-id="{{ section.id }}">
+  <div class="circle-categories-inner">
+    {%- if section.settings.title != blank -%}
+      <div class="section-header text-{{ section.settings.title_alignment }}">
+        <h2 class="circle-categories-title">{{ section.settings.title | escape }}</h2>
+      </div>
+    {%- endif -%}
+
+    <div class="circle-categories-container">
+      <div class="circle-categories-track {% if section.settings.rows == '2' or section.settings.rows == blank %}rows-2{% else %}rows-1{% endif %}" id="CircleCategoriesTrack-{{ section.id }}">
+        {%- if section.blocks.size > 0 -%}
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign collection = block.settings.collection
+              assign title = block.settings.title | default: collection.title
+              assign image = block.settings.image | default: collection.featured_image | default: collection.image | default: collection.products.first.featured_image
+              assign link = block.settings.link | default: collection.url | default: "/collections/all"
+              assign badge = block.settings.badge
+              assign badge_upper = badge | upcase
+            -%}
+            <a href="{{ link }}" class="circle-category-item" {{ block.shopify_attributes }}>
+              <div class="circle-image-wrapper">
+                {%- if badge != blank -%}
+                  <span class="category-badge {% if badge_upper contains 'HOT' or badge_upper contains '75%' or badge_upper contains 'SALE' or badge_upper contains 'OFF' %}badge-danger{% elsif badge_upper contains 'NEW' %}badge-gold{% else %}badge-default{% endif %}">{{ badge }}</span>
+                {%- endif -%}
+                {%- if image != blank -%}
+                  <img src="{{ image | image_url: width: 240, height: 240, crop: 'center' }}"
+                       alt="{{ title | escape }}"
+                       width="90"
+                       height="90"
+                       loading="lazy"
+                       class="circle-image">
+                {%- else -%}
+                  <div class="circle-image-placeholder">
+                    {%- case forloop.index -%}
+                      {%- when 1 -%}
+                        {% comment %} Clearance Sale Tag {% endcomment %}
+                        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/><path d="M9.5 14.5l5-5"/></svg>
+                      {%- when 2 -%}
+                        {% comment %} All Offers Flame/Sparkle {% endcomment %}
+                        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 3.5z"/></svg>
+                      {%- when 3 -%}
+                        {% comment %} Dates & Sweets (Palm/Date) {% endcomment %}
+                        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V10"/><path d="M12 10C9 6 4 6 4 6s1 4 5 5"/><path d="M12 10C15 6 20 6 20 6s-1 4-5 5"/><path d="M12 14C8 12 5 14 5 14s2 3 6 2"/><path d="M12 14C16 12 19 14 19 14s-2 3-6 2"/></svg>
+                      {%- when 4 -%}
+                        {% comment %} Attar & Oud (Perfume Bottle) {% endcomment %}
+                        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v3H9z"/><path d="M10 6v3h4V6"/><path d="M6 12a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v7a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3v-7z"/><circle cx="12" cy="15" r="2"/></svg>
+                      {%- when 5 -%}
+                        {% comment %} Chocolates {% endcomment %}
+                        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><line x1="12" y1="4" x2="12" y2="20"/><line x1="4" y1="12" x2="20" y2="12"/></svg>
+                      {%- when 6 -%}
+                        {% comment %} Pravasi Hampers (Gift Box) {% endcomment %}
+                        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M12 8v12"/><path d="M19 8a3 3 0 1 0-3-3"/><path d="M5 8a3 3 0 1 1 3-3"/><path d="M7.5 5c1.5 0 4.5 3 4.5 3s3-3 4.5-3"/></svg>
+                      {%- when 7 -%}
+                        {% comment %} Perfumes Atomizer {% endcomment %}
+                        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4"/><path d="M8 6h8v4H8z"/><path d="M5 10h14v10a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V10z"/><circle cx="12" cy="16" r="2"/></svg>
+                      {%- else -%}
+                        {% comment %} Dry Fruits / Spices Bowl {% endcomment %}
+                        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a8 8 0 0 0 16 0H4z"/><path d="M6 19h12"/><circle cx="12" cy="7" r="3"/></svg>
+                    {%- endcase -%}
+                  </div>
+                {%- endif -%}
+              </div>
+              <span class="circle-category-label">{{ title }}</span>
+            </a>
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .circle-categories-wrapper {
+    padding: 22px 0 16px 0;
+    background: #FFFFFF;
+    position: relative;
+    z-index: 5;
+    border-bottom: 1px solid #E2E8F0;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.02);
+  }
+
+  .circle-categories-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .circle-categories-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0C3E61;
+    margin-bottom: 16px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .circle-categories-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .circle-categories-track {
+    display: flex;
+    gap: 26px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 14px 8px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    width: 100%;
+    justify-content: center;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .circle-categories-track.rows-2 {
+    display: grid;
+    grid-template-rows: repeat(2, auto);
+    grid-auto-flow: column;
+    gap: 16px 24px;
+    justify-content: center;
+  }
+
+  @media (min-width: 1024px) {
+    .circle-categories-track.rows-2 {
+      grid-template-rows: none;
+      grid-template-columns: repeat(6, auto);
+      grid-auto-flow: row;
+      overflow-x: visible;
+    }
+  }
+
+  @media (max-width: 1200px) {
+    .circle-categories-track {
+      justify-content: flex-start;
+    }
+  }
+
+  .circle-categories-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .circle-category-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    min-width: 92px;
+    max-width: 105px;
+    text-align: center;
+    flex-shrink: 0;
+    transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .circle-category-item:hover {
+    transform: translateY(-6px);
+  }
+
+  .circle-image-wrapper {
+    position: relative;
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    padding: 3.5px;
+    background: linear-gradient(135deg, #D4AF37 0%, #BE982D 50%, #0C3E61 100%);
+    box-shadow: 0 4px 14px rgba(12, 62, 97, 0.15);
+    transition: all 0.3s ease;
+  }
+
+  .circle-category-item:hover .circle-image-wrapper {
+    box-shadow: 0 10px 24px rgba(190, 152, 45, 0.4), 0 4px 12px rgba(12, 62, 97, 0.25);
+    transform: scale(1.06);
+  }
+
+  .circle-image {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: #FFFFFF;
+    border: 2px solid #FFFFFF;
+  }
+
+  .circle-image-placeholder {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #134F78 0%, #0C3E61 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #FFFFFF;
+    transition: background 0.3s ease;
+  }
+
+  .circle-category-item:hover .circle-image-placeholder {
+    background: radial-gradient(circle at 35% 35%, #0C3E61 0%, #082A43 100%);
+  }
+
+  .category-badge {
+    position: absolute;
+    top: -6px;
+    right: -4px;
+    font-size: 9px;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    z-index: 10;
+    letter-spacing: 0.4px;
+    border: 1.5px solid #FFFFFF;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+    line-height: 1;
+  }
+
+  .badge-danger {
+    background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+    color: #FFFFFF;
+  }
+
+  .badge-gold {
+    background: linear-gradient(135deg, #F59E0B 0%, #BE982D 100%);
+    color: #0C3E61;
+  }
+
+  .badge-default {
+    background: #0C3E61;
+    color: #FFFFFF;
+  }
+
+  .circle-category-label {
+    margin-top: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #0C3E61;
+    line-height: 1.25;
+    letter-spacing: 0.2px;
+    text-transform: uppercase;
+    transition: color 0.2s ease;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .circle-category-item:hover .circle-category-label {
+    color: #BE982D;
+  }
+
+  .circle-nav-btn {
+    display: none !important;
+  }
+
+  @media (max-width: 768px) {
+    .circle-categories-wrapper {
+      padding: 16px 0 12px 0;
+    }
+    .circle-categories-inner {
+      padding: 0 12px;
+    }
+    .circle-categories-track {
+      gap: 16px;
+      padding: 8px 4px;
+      justify-content: flex-start;
+    }
+    .circle-category-item {
+      min-width: 76px;
+      max-width: 86px;
+    }
+    .circle-image-wrapper {
+      width: 72px;
+      height: 72px;
+    }
+    .circle-category-label {
+      font-size: 11px;
+      margin-top: 8px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Circle Category Bubbles",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Categories"
+    },
+    {
+      "type": "select",
+      "id": "title_alignment",
+      "label": "Heading alignment",
+      "options": [
+        { "value": "start", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "start"
+    },
+    {
+      "type": "select",
+      "id": "rows",
+      "label": "Number of rows",
+      "options": [
+        { "value": "1", "label": "1 Row (Horizontal Scroll)" },
+        { "value": "2", "label": "2 Rows (Grid)" }
+      ],
+      "default": "2"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category Bubble",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Custom Image",
+          "info": "Upload circular thumbnail image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "info": "Defaults to collection title"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Badge (optional)",
+          "info": "e.g. HOT, NEW, 50% OFF"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Circle Category Bubbles",
+      "blocks": [
+        { "type": "category", "settings": { "title": "Clearance Sale", "badge": "UP TO 75%" } },
+        { "type": "category", "settings": { "title": "All Offers", "badge": "HOT" } },
+        { "type": "category", "settings": { "title": "Dates & Sweets" } },
+        { "type": "category", "settings": { "title": "Attar & Oud" } },
+        { "type": "category", "settings": { "title": "Chocolates" } },
+        { "type": "category", "settings": { "title": "Pravasi Hampers", "badge": "NEW" } },
+        { "type": "category", "settings": { "title": "Perfumes" } },
+        { "type": "category", "settings": { "title": "Dry Fruits" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

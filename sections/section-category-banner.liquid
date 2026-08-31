@@ -1,0 +1,270 @@
+{% comment %}
+  Section: Category Promo Banner
+  Description: Responsive promotional banner matching reference design (Desktop wide format & Mobile stacked card format)
+{% endcomment %}
+
+<div class="gs-cat-banner-section" id="gs-cat-banner-{{ section.id }}">
+  <div class="gs-cat-banner-container">
+    <a href="{{ section.settings.link | default: '/collections/all' }}" class="gs-cat-banner-card" aria-label="{{ section.settings.title | default: 'Shop Category' | escape }}">
+      <div class="gs-cat-banner-img-wrap">
+        {%- if section.settings.image != blank -%}
+          <img src="{{ section.settings.image | image_url: width: 1420 }}" 
+               alt="{{ section.settings.title | escape }}" 
+               loading="lazy" 
+               class="gs-cat-banner-img"
+               width="1420"
+               height="450">
+        {%- elsif section.settings.preset_image == 'combos' -%}
+          <img src="{{ 'banner_combos.jpg' | asset_url }}" alt="Combo Hampers Banner" loading="lazy" class="gs-cat-banner-img" width="1420" height="450">
+        {%- elsif section.settings.preset_image == 'perfumes' -%}
+          <img src="{{ 'banner_perfumes.jpg' | asset_url }}" alt="Perfumes & Attar Banner" loading="lazy" class="gs-cat-banner-img" width="1420" height="450">
+        {%- elsif section.settings.preset_image == 'chocolates' -%}
+          <img src="{{ 'banner_chocolates.jpg' | asset_url }}" alt="Chocolates Banner" loading="lazy" class="gs-cat-banner-img" width="1420" height="450">
+        {%- else -%}
+          <img src="{{ 'banner_dates.jpg' | asset_url }}" alt="Handpicked Dates Banner" loading="lazy" class="gs-cat-banner-img" width="1420" height="450">
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.show_text_overlay -%}
+        <div class="gs-cat-banner-overlay-content {% if section.settings.text_position == 'left' %}pos-left{% else %}pos-right{% endif %}">
+          {%- if section.settings.subtitle != blank -%}
+            <span class="gs-cat-banner-subtitle">{{ section.settings.subtitle | escape }}</span>
+          {%- endif -%}
+          {%- if section.settings.title != blank -%}
+            <h2 class="gs-cat-banner-title">{{ section.settings.title | escape }}</h2>
+          {%- endif -%}
+          {%- if section.settings.button_text != blank -%}
+            <span class="gs-cat-banner-btn">{{ section.settings.button_text | escape }}</span>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </a>
+  </div>
+</div>
+
+<style>
+  .gs-cat-banner-section {
+    width: 100%;
+    padding: 24px 0;
+    box-sizing: border-box;
+    background: transparent;
+  }
+
+  .gs-cat-banner-container {
+    max-width: 1420px;
+    margin: 0 auto;
+    padding: 0 24px;
+    box-sizing: border-box;
+  }
+
+  .gs-cat-banner-card {
+    display: block;
+    width: 100%;
+    position: relative;
+    text-decoration: none;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(12, 62, 97, 0.08);
+    transition: transform 0.28s ease, box-shadow 0.28s ease;
+    border: 1.5px solid #E2E8F0;
+    background: #FFFFFF;
+    line-height: 0;
+  }
+
+  .gs-cat-banner-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 36px rgba(12, 62, 97, 0.14), 0 0 0 1px rgba(190, 152, 45, 0.4);
+  }
+
+  .gs-cat-banner-img-wrap {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+  }
+
+  .gs-cat-banner-img {
+    width: 100%;
+    height: auto;
+    min-height: 180px;
+    max-height: 380px;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 20px;
+  }
+
+  .gs-cat-banner-overlay-content {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    padding: 24px 40px;
+    max-width: 480px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .gs-cat-banner-overlay-content.pos-left {
+    left: 20px;
+  }
+
+  .gs-cat-banner-overlay-content.pos-right {
+    right: 20px;
+  }
+
+  .gs-cat-banner-subtitle {
+    font-size: 14px;
+    font-weight: 700;
+    color: #FACC15;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .gs-cat-banner-title {
+    font-size: 26px;
+    font-weight: 800;
+    color: #FFFFFF;
+    margin: 0;
+    line-height: 1.25;
+    letter-spacing: -0.3px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .gs-cat-banner-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 24px;
+    background: #FFFFFF;
+    color: #0C3E61;
+    font-size: 14px;
+    font-weight: 800;
+    border-radius: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease;
+    margin-top: 4px;
+  }
+
+  .gs-cat-banner-card:hover .gs-cat-banner-btn {
+    background: #BE982D;
+    color: #FFFFFF;
+  }
+
+  @media (max-width: 768px) {
+    .gs-cat-banner-section {
+      padding: 16px 0;
+    }
+    .gs-cat-banner-container {
+      padding: 0 12px;
+    }
+    .gs-cat-banner-card,
+    .gs-cat-banner-img-wrap,
+    .gs-cat-banner-img {
+      border-radius: 16px;
+    }
+    .gs-cat-banner-img {
+      min-height: 160px;
+      max-height: 240px;
+    }
+    .gs-cat-banner-overlay-content {
+      padding: 16px 20px;
+      max-width: 80%;
+      gap: 8px;
+    }
+    .gs-cat-banner-overlay-content.pos-left {
+      left: 8px;
+    }
+    .gs-cat-banner-overlay-content.pos-right {
+      right: 8px;
+    }
+    .gs-cat-banner-subtitle {
+      font-size: 12px;
+    }
+    .gs-cat-banner-title {
+      font-size: 18px;
+    }
+    .gs-cat-banner-btn {
+      padding: 8px 18px;
+      font-size: 12px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Category Promo Banner",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "preset_image",
+      "label": "Preset Banner Image",
+      "options": [
+        { "value": "dates", "label": "Dates Banner" },
+        { "value": "combos", "label": "Gift Combo Hampers Banner" },
+        { "value": "perfumes", "label": "Perfumes & Attar Banner" },
+        { "value": "chocolates", "label": "Luxury Chocolates Banner" }
+      ],
+      "default": "dates"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Custom Banner Image (Overrides Preset)"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Banner Link"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_text_overlay",
+      "label": "Show Custom Text Overlay",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Fresh & Authentic"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Handpicked Dates – A Taste of Tradition"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "select",
+      "id": "text_position",
+      "label": "Text Position",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Category Promo Banner",
+      "settings": {
+        "preset_image": "dates"
+      }
+    }
+  ]
+}
+{% endschema %}

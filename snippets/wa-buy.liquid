@@ -1,0 +1,120 @@
+<div class="custom-wa-container">
+    <style>
+        .custom-wa-container .custom-wa-link {
+            background: #25D366 !important;
+            color: #ffffff !important;
+            padding: 12px 24px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none !important;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            border: none !important;
+            cursor: pointer;
+            margin: 20px 0;
+            width: 100%;
+            box-sizing: border-box;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            z-index: 1;
+        }
+        
+        .custom-wa-container .custom-wa-link:hover {
+            background: #20b358 !important;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .custom-wa-container .custom-wa-link:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+        
+        .custom-wa-container .custom-wa-icon {
+            color: #ffffff !important;
+            font-size: 1.3rem;
+            margin-right: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .custom-wa-container .custom-wa-link {
+                font-size: 1rem;
+                padding: 10px 20px;
+            }
+            
+            .custom-wa-container .custom-wa-icon {
+                font-size: 1.1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .custom-wa-container .custom-wa-link {
+                font-size: 0.9rem;
+                padding: 8px 16px;
+            }
+        }
+    </style>
+    
+    <a href="#" id="custom-wa-order" class="custom-wa-link" role="button" aria-label="Order via WhatsApp">
+        <svg class="custom-wa-icon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="margin-right:8px;vertical-align:middle;"><path d="M12.012 2c-5.506 0-9.989 4.478-9.99 9.984 0 1.762.459 3.48 1.332 5.001l-1.416 5.169 5.291-1.387c1.464.798 3.117 1.218 4.781 1.219h.004c5.506 0 9.989-4.478 9.99-9.985 0-2.669-1.038-5.176-2.925-7.062a9.923 9.923 0 0 0-7.067-2.939zm0 1.684c4.577 0 8.305 3.727 8.306 8.3 0 2.22-.865 4.306-2.435 5.875a8.256 8.256 0 0 1-5.872 2.438h-.003c-1.479 0-2.93-.396-4.2-1.144l-.302-.179-3.123.818.833-3.042-.196-.312a8.243 8.243 0 0 1-1.265-4.453c0-4.574 3.728-8.301 8.305-8.301zm4.562 10.97c-.25-.125-1.482-.731-1.712-.814-.23-.084-.397-.125-.563.125-.166.25-.647.814-.792.981-.146.166-.292.187-.542.062a6.852 6.852 0 0 1-2.011-1.239c-.773-.689-1.296-1.541-1.448-1.801-.151-.26-.016-.401.109-.525.112-.112.25-.292.375-.438.125-.146.166-.25.25-.417.083-.166.042-.312-.021-.437-.063-.125-.563-1.356-.771-1.856-.203-.487-.41-.421-.563-.429l-.479-.008c-.166 0-.437.063-.666.312-.229.25-.875.855-.875 2.085 0 1.23.896 2.418 1.021 2.585.125.166 1.764 2.693 4.274 3.777.597.257 1.064.411 1.428.526.6.19 1.146.163 1.577.099.48-.071 1.482-.605 1.69-1.189.208-.584.208-1.084.146-1.189-.063-.105-.229-.188-.479-.313z"/></svg>
+        Order via WhatsApp
+    </a>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const waLink = document.getElementById('custom-wa-order');
+        if (waLink) {
+            waLink.addEventListener('click', function(event) {
+                event.preventDefault();
+                
+                // Shopify product data
+                const productTitle = '{{ product.title | escape }}';
+                const quantityInput = document.querySelector('input[name="quantity"], select[name="quantity"]');
+                const quantity = quantityInput ? quantityInput.value : 1;
+                
+                // Variant handling
+                let variantTitle = '';
+                let variantId = '{{ current_variant.id | escape }}';
+                const variantSelect = document.querySelector('select[name="id"], input[name="id"]:checked');
+                if (variantSelect) {
+                    if (variantSelect.tagName === 'SELECT') {
+                        variantTitle = variantSelect.options[variantSelect.selectedIndex].text.trim();
+                        variantId = variantSelect.value;
+                    } else if (variantSelect.tagName === 'INPUT') {
+                        const label = document.querySelector(`label[for="${variantSelect.id}"]`);
+                        variantTitle = label ? label.textContent.trim() : '';
+                        variantId = variantSelect.value;
+                    }
+                } else {
+                    variantTitle = '{{ current_variant.title | escape }}';
+                }
+                
+                const unitPrice = {{ product.selected_or_first_available_variant.price }};
+const totalPrice = unitPrice * parseInt(quantity);
+const price = Shopify.formatMoney(totalPrice);
+                const productUrl = window.location.href;
+                
+                // WhatsApp message for regular order
+                let message = `Hello! I'd like to order the following:\n\n`;
+                message += `Product: ${productTitle}\n`;
+                if (variantTitle && variantTitle !== 'Default Title') {
+                    message += `Variant: ${variantTitle} (ID: ${variantId})\n`;
+                }
+                message += `Quantity: ${quantity}\n`;
+                message += `Price: ${price}\n`;
+                message += `Product Link: ${productUrl}\n\n`;
+                message += `Please confirm availability, shipping details, and payment options. Thank you!`;
+                
+                // Encode and open WhatsApp
+                const encodedMessage = encodeURIComponent(message);
+                const url = `https://wa.me/917025545444?text=${encodedMessage}`;
+                window.open(url, '_blank');
+            });
+        }
+    });
+</script>

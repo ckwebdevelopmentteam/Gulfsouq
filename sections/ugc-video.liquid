@@ -1,0 +1,831 @@
+{% comment %}
+  UGC Reels-style vertical video slider — Swiper-based, mobile-first.
+{% endcomment %}
+
+{%- liquid
+  assign section_id = 'ugc-reels-' | append: section.id
+-%}
+
+<section class="ugc-reels-section" id="{{ section_id }}" data-section-id="{{ section.id }}">
+  {%- if section.settings.heading != blank or section.settings.subheading != blank -%}
+    <div class="ugc-reels-header">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="ugc-reels-title">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      {%- if section.settings.subheading != blank -%}
+        <p class="ugc-reels-subtitle">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  <div class="ugc-reels-wrapper">
+    <div class="swiper ugc-swiper" id="ugc-swiper-{{ section.id }}">
+      <div class="swiper-wrapper">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'video_slide' -%}
+            {%- liquid
+              assign has_video = false
+              if block.settings.video != blank
+                assign has_video = true
+              endif
+              assign views_label = block.settings.views_count | default: '0'
+              assign badge_label = block.settings.badge_text | default: 'NEW'
+              assign product = block.settings.product
+            -%}
+            <div class="swiper-slide ugc-slide" {{ block.shopify_attributes }}>
+              <div class="ugc-card">
+
+                <!-- Video layer -->
+                <div class="ugc-video-wrap">
+
+                  <!-- Poster image — always visible as thumbnail on every slide -->
+                  {%- if block.settings.poster != blank -%}
+                    <img
+                      class="ugc-poster"
+                      src="{{ block.settings.poster | image_url: width: 540 }}"
+                      alt="{{ block.settings.poster.alt | escape }}"
+                      width="540"
+                      height="960"
+                      loading="lazy"
+                    >
+                  {%- elsif has_video and block.settings.video.preview_image != blank -%}
+                    <img
+                      class="ugc-poster"
+                      src="{{ block.settings.video.preview_image | image_url: width: 540 }}"
+                      alt=""
+                      width="540"
+                      height="960"
+                      loading="lazy"
+                    >
+                  {%- else -%}
+                    <div class="ugc-poster ugc-placeholder">{{ 'image' | placeholder_svg_tag }}</div>
+                  {%- endif -%}
+
+                  <!-- Video — hidden until slide is active, fades in on play -->
+                  {%- if has_video -%}
+                    {%- liquid
+                      assign source = block.settings.video.sources | where: "format", "mp4" | first
+                      if source == nil
+                        assign source = block.settings.video.sources.first
+                      endif
+                    -%}
+                    <video
+                      class="ugc-video"
+                      src="{{ source.url }}"
+                      playsinline
+                      muted
+                      loop
+                      preload="none"
+                      data-autoplay="{{ block.settings.autoplay_video | default: true }}"
+                    ></video>
+                  {%- endif -%}
+
+                  <!-- Dark overlay -->
+                  <div class="ugc-overlay" aria-hidden="true"></div>
+
+                </div>
+
+                <!-- Top badges -->
+                <div class="ugc-badges">
+                  {%- if badge_label != blank -%}
+                    <span class="ugc-badge ugc-badge--new">{{ badge_label }}</span>
+                  {%- endif -%}
+                  {%- if block.settings.show_views -%}
+                    <span class="ugc-badge ugc-badge--views">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="12" height="12" aria-hidden="true"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 12.5c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                      {{ views_label }}
+                    </span>
+                  {%- endif -%}
+                </div>
+
+                <!-- Product card (bottom floating overlay matching initial model) -->
+                {%- if product != blank or block.settings.custom_product_title != blank -%}
+                  <div class="ugc-product-card">
+                    {%- if product != blank -%}
+                      <a href="{{ product.url }}" class="ugc-product-inner" aria-label="{{ product.title | escape }}">
+                        <span class="ugc-product-title-top">{{ product.title }}</span>
+                        <div class="ugc-product-bottom-row">
+                          <div class="ugc-product-thumb-box">
+                            {%- if product.featured_image -%}
+                              <img
+                                class="ugc-product-img"
+                                src="{{ product.featured_image | image_url: width: 100, height: 100, crop: 'center' }}"
+                                alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                                width="40"
+                                height="40"
+                                loading="lazy"
+                              >
+                            {%- endif -%}
+                          </div>
+                          <div class="ugc-product-price-box">
+                            <span class="ugc-product-price-large">{{ product.price | money }}</span>
+                          </div>
+                          <div class="ugc-product-chevron">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                          </div>
+                        </div>
+                      </a>
+                    {%- elsif block.settings.custom_product_title != blank -%}
+                      {%- assign cta_url = block.settings.custom_product_url | default: '#' -%}
+                      <a href="{{ cta_url }}" class="ugc-product-inner">
+                        <span class="ugc-product-title-top">{{ block.settings.custom_product_title }}</span>
+                        <div class="ugc-product-bottom-row">
+                          <div class="ugc-product-thumb-box">
+                            {%- if block.settings.custom_product_image != blank -%}
+                              <img
+                                class="ugc-product-img"
+                                src="{{ block.settings.custom_product_image | image_url: width: 100, height: 100, crop: 'center' }}"
+                                alt="{{ block.settings.custom_product_title | escape }}"
+                                width="40"
+                                height="40"
+                                loading="lazy"
+                              >
+                            {%- endif -%}
+                          </div>
+                          <div class="ugc-product-price-box">
+                            <span class="ugc-product-price-large">{{ block.settings.custom_product_desc | default: 'Rs.780' }}</span>
+                          </div>
+                          <div class="ugc-product-chevron">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                          </div>
+                        </div>
+                      </a>
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
+
+              </div><!-- /.ugc-card -->
+            </div><!-- /.swiper-slide -->
+          {%- endif -%}
+        {%- endfor -%}
+      </div><!-- /.swiper-wrapper -->
+
+    </div><!-- /.swiper -->
+
+    <!-- Dots only -->
+    <div class="ugc-nav-row">
+      <div class="swiper-pagination ugc-pagination" id="ugc-pagination-{{ section.id }}"></div>
+    </div>
+  </div><!-- /.ugc-reels-wrapper -->
+</section>
+
+<style>
+  /* ── CSS variables ── */
+  #{{ section_id }} {
+    --ugc-gap: 16px;
+    --ugc-radius: 20px;
+    --ugc-radius-card: 14px;
+    --ugc-radius-badge: 999px;
+    --ugc-radius-img: 10px;
+    --ugc-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    --ugc-overlay: linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.18) 45%, transparent 65%);
+    --ugc-badge-bg: #111;
+    --ugc-badge-color: #fff;
+    --ugc-product-bg: rgba(255,255,255,0.92);
+    --ugc-dot-color: rgba(255,255,255,0.4);
+    --ugc-dot-active: rgba(0,0,0,0.75);
+    --ugc-transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    --ugc-section-py: {{ section.settings.spacing_mobile | default: 40 }}px;
+  }
+
+  @media (min-width: 768px) {
+    #{{ section_id }} {
+      --ugc-section-py: {{ section.settings.spacing_desktop | default: 60 }}px;
+    }
+  }
+
+  /* ── Section shell ── */
+  .ugc-reels-section {
+    padding: var(--ugc-section-py) 0;
+    overflow: hidden;
+    background: {{ section.settings.bg_color | default: '#f9f9f9' }};
+  }
+
+  /* ── Header ── */
+  .ugc-reels-header {
+    text-align: center;
+    padding: 0 16px 28px;
+  }
+
+  .ugc-reels-title {
+    font-size: clamp(22px, 5vw, 34px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 8px;
+    line-height: 1.2;
+  }
+
+  .ugc-reels-subtitle {
+    font-size: clamp(14px, 3.5vw, 16px);
+    color: #666;
+    margin: 0;
+  }
+
+  /* ── Swiper wrapper ── */
+  .ugc-reels-wrapper {
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Mobile: let right slide peek outside wrapper */
+  @media (max-width: 767px) {
+    .ugc-reels-wrapper { overflow: visible; }
+    .ugc-reels-section { overflow: hidden; }
+  }
+
+  .ugc-swiper {
+    padding: 8px 16px 0;
+  }
+
+  @media (min-width: 768px) {
+    .ugc-swiper {
+      padding: 8px 24px 0;
+    }
+  }
+
+  /* ── Slide — 2 per row on mobile, 4 on desktop ── */
+  .ugc-slide {
+    width: calc(50% - 5px); /* mobile: exactly 2 cards side by side */
+    max-width: none;
+  }
+
+  @media (min-width: 768px) {
+    .ugc-slide {
+      width: calc((100% - 48px) / 4); /* desktop: exactly 4 per row */
+      max-width: none;
+    }
+  }
+
+  /* ── Nav row ── */
+  .ugc-nav-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 20px 0 4px;
+  }
+
+  /* ── Card ── */
+  .ugc-card {
+    position: relative;
+    aspect-ratio: 9 / 14;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #000000;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+    cursor: pointer;
+    transition: transform var(--ugc-transition), box-shadow var(--ugc-transition);
+  }
+
+  @media (hover: hover) {
+    .ugc-card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 18px 45px rgba(0,0,0,0.3);
+    }
+  }
+
+  /* ── Video / poster ── */
+  .ugc-video-wrap {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  /* Poster: always fills card, shows thumbnail on every slide */
+  .ugc-poster {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    z-index: 0;
+  }
+
+  /* Video: sits above poster, invisible until playing */
+  .ugc-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .ugc-video.is-playing {
+    opacity: 1;
+  }
+
+  .ugc-placeholder {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #1a1a1a;
+    z-index: 0;
+  }
+
+  .ugc-placeholder svg {
+    width: 60px;
+    height: 60px;
+    opacity: 0.3;
+  }
+
+  /* ── Gradient overlay ── */
+  .ugc-overlay {
+    position: absolute;
+    inset: 0;
+    background: var(--ugc-overlay);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* ── Badges ── */
+  .ugc-badges {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  .ugc-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #000000 !important;
+    color: #FFFFFF !important;
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    line-height: 1;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .ugc-badge--views svg {
+    flex-shrink: 0;
+  }
+
+  /* ── Floating Product Card (Matching Initial Model) ── */
+  .ugc-product-card {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    right: 8px;
+    z-index: 3;
+  }
+
+  .ugc-product-inner {
+    display: flex;
+    flex-direction: column;
+    background: #F1F5F9 !important; /* Off-white light gray card background */
+    border-radius: 14px !important;
+    padding: 8px 10px !important;
+    text-decoration: none;
+    color: #1E293B !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25) !important;
+    transition: transform var(--ugc-transition);
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .ugc-product-inner:hover {
+    background: #F1F5F9 !important;
+    transform: translateY(-2px);
+  }
+
+  .ugc-product-title-top {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #1E293B;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.25;
+    margin-bottom: 4px;
+    width: 100%;
+    display: block;
+  }
+
+  .ugc-product-bottom-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .ugc-product-thumb-box {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    background: #FFFFFF;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+  }
+
+  .ugc-product-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  .ugc-product-price-box {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 2px;
+  }
+
+  .ugc-product-price-large {
+    font-size: 20px;
+    font-weight: 900;
+    color: #1E293B;
+    letter-spacing: -0.5px;
+    line-height: 1;
+  }
+
+  .ugc-product-chevron {
+    color: #64748B;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .ugc-product-cta {
+    flex-shrink: 0;
+    color: #555;
+    display: flex;
+    align-items: center;
+  }
+
+  /* ── Pagination dots — inline inside nav row ── */
+  .ugc-pagination {
+    position: static !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: auto !important;
+    bottom: auto !important;
+  }
+
+  .ugc-pagination .swiper-pagination-bullet {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ccc;
+    opacity: 1;
+    transition: background var(--ugc-transition), transform var(--ugc-transition);
+    margin: 0 !important;
+    flex-shrink: 0;
+  }
+
+  .ugc-pagination .swiper-pagination-bullet-active {
+    background: #333;
+    transform: scale(1.3);
+  }
+
+  /* ── Mobile compact tweaks for smaller cards ── */
+  @media (max-width: 767px) {
+    #{{ section_id }} {
+      --ugc-radius: 14px;
+      --ugc-radius-card: 10px;
+    }
+    .ugc-swiper { padding: 6px 12px 0; }
+    .ugc-badges { top: 8px; padding: 0 8px; }
+    .ugc-badge { padding: 4px 8px; font-size: 10px; gap: 3px; }
+    .ugc-badge--views svg { width: 10px; height: 10px; }
+    .ugc-product-card { bottom: 8px; left: 8px; right: 8px; }
+    .ugc-product-inner { gap: 8px; padding: 7px 8px; }
+    .ugc-product-img { width: 34px; height: 34px; border-radius: 8px; }
+    .ugc-product-title { font-size: 11px; line-height: 1.25; }
+    .ugc-product-price { font-size: 11px; }
+    .ugc-product-desc { font-size: 10px; }
+    .ugc-product-cta svg { width: 14px; height: 14px; }
+  }
+</style>
+
+{% comment %}theme-check-disable RemoteAsset{% endcomment %}
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+  media="print"
+  onload="this.media='all'"
+>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+{% comment %}theme-check-enable RemoteAsset{% endcomment %}
+
+<script>
+(function () {
+  var SECTION_ID = '{{ section.id }}';
+
+  function initUGCSwiper() {
+    var el = document.querySelector('#ugc-swiper-' + SECTION_ID);
+    if (!el || el._ugcInit) return;
+    el._ugcInit = true;
+
+    var autoplayEnabled = {{ section.settings.autoplay | json }};
+    var autoplayDelay   = {{ section.settings.autoplay_speed | times: 1000 | json }};
+
+    var swiperConfig = {
+      slidesPerView: 2,
+      spaceBetween: 10,
+      grabCursor: true,
+      loop: true,
+      loopAdditionalSlides: 4,
+      breakpoints: {
+        768: {
+          slidesPerView: 4,
+          spaceBetween: 16,
+        }
+      },
+
+      pagination: {
+        el: '#ugc-pagination-' + SECTION_ID,
+        clickable: true,
+        dynamicBullets: true,
+      },
+    };
+
+    if (autoplayEnabled) {
+      swiperConfig.autoplay = {
+        delay: autoplayDelay,
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true,
+      };
+    }
+
+    new Swiper(el, swiperConfig);
+
+    /* Play every visible video; pause when scrolled out */
+    setupVideoObserver(el);
+  }
+
+  function playVideo(video) {
+    if (video.getAttribute('data-autoplay') === 'false') return;
+    video.play().then(function () {
+      video.classList.add('is-playing');
+    }).catch(function () { /* browser blocked */ });
+  }
+
+  function setupVideoObserver(swiperEl) {
+    var videos = swiperEl.querySelectorAll('video.ugc-video');
+    if (!videos.length) return;
+
+    if (!('IntersectionObserver' in window)) {
+      /* Fallback: play all immediately */
+      videos.forEach(playVideo);
+      return;
+    }
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var video = entry.target;
+        if (entry.isIntersecting) {
+          playVideo(video);
+        } else {
+          video.pause();
+          video.classList.remove('is-playing');
+        }
+      });
+    }, { threshold: 0.3 });
+
+    videos.forEach(function (v) { observer.observe(v); });
+  }
+
+  function tryInit() {
+    if (typeof Swiper === 'undefined') { setTimeout(tryInit, 80); return; }
+    initUGCSwiper();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', tryInit);
+  } else {
+    tryInit();
+  }
+
+  document.addEventListener('shopify:section:load', function (e) {
+    if (e.detail && e.detail.sectionId === SECTION_ID) {
+      var el = document.querySelector('#ugc-swiper-' + SECTION_ID);
+      if (el) el._ugcInit = false;
+      tryInit();
+    }
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "UGC Reels Slider",
+  "tag": "section",
+  "class": "ugc-reels-section-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Real People. Real Results."
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "See why thousands love our products"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section background",
+      "default": "#f7f7f7"
+    },
+    {
+      "type": "header",
+      "content": "Autoplay"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Enable auto-slide",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Auto-slide delay (seconds)",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "spacing_desktop",
+      "label": "Top/bottom padding (desktop)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "spacing_mobile",
+      "label": "Top/bottom padding (mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "video_slide",
+      "name": "Video Slide",
+      "settings": [
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video (Shopify-hosted)"
+        },
+        {
+          "type": "image_picker",
+          "id": "poster",
+          "label": "Poster / thumbnail image",
+          "info": "Always shown on all slides. If blank, uses the video's own thumbnail."
+        },
+        {
+          "type": "checkbox",
+          "id": "autoplay_video",
+          "label": "Autoplay this video when active",
+          "default": true
+        },
+        {
+          "type": "header",
+          "content": "Badges"
+        },
+        {
+          "type": "text",
+          "id": "badge_text",
+          "label": "Badge label",
+          "default": "NEW",
+          "info": "Leave blank to hide"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_views",
+          "label": "Show views badge",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "views_count",
+          "label": "Views count",
+          "default": "12.4k"
+        },
+        {
+          "type": "header",
+          "content": "Product Card"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Shopify product",
+          "info": "If set, overrides custom fields below"
+        },
+        {
+          "type": "text",
+          "id": "custom_product_title",
+          "label": "Custom product title"
+        },
+        {
+          "type": "text",
+          "id": "custom_product_desc",
+          "label": "Custom product description"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_product_image",
+          "label": "Custom product image"
+        },
+        {
+          "type": "url",
+          "id": "custom_product_url",
+          "label": "Custom product URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "UGC Reels Slider",
+      "blocks": [
+        {
+          "type": "video_slide",
+          "settings": {
+            "badge_text": "NEW",
+            "show_views": true,
+            "views_count": "8.2k",
+            "custom_product_title": "Product Name",
+            "custom_product_desc": "Shop Now"
+          }
+        },
+        {
+          "type": "video_slide",
+          "settings": {
+            "badge_text": "VIRAL",
+            "show_views": true,
+            "views_count": "24.1k",
+            "custom_product_title": "Product Name",
+            "custom_product_desc": "Shop Now"
+          }
+        },
+        {
+          "type": "video_slide",
+          "settings": {
+            "badge_text": "TRENDING",
+            "show_views": true,
+            "views_count": "5.6k",
+            "custom_product_title": "Product Name",
+            "custom_product_desc": "Shop Now"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

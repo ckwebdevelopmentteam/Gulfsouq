@@ -1,0 +1,282 @@
+<style>
+ 
+  .delivery-container {
+     margin-bottom: 16px;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .delivery-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: revert;
+    justify-content: space-between;
+    gap: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  }
+  
+  .pincode-section {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 140px;
+     border: none;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  .location-icon {
+    color: #9ca3af;
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+  }
+  
+  .pincode-input {
+    width: 80px;
+    padding: 4px 8px;
+    font-size: 10px;
+    font-weight: 500;
+    color: #e5e7eb;
+     border: none;
+    outline: none;
+    background: transparent;
+  }
+  
+  .pincode-input:focus {
+    border-bottom-color: #0066cc;
+  }
+  
+  .check-btn {
+    padding: 4px 12px;
+    background: transparent;
+    color: #666;
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  
+  .check-btn:hover {
+    color: #0066cc;
+  }
+  
+  .delivery-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .delivery-icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    color: #9ca3af;
+  }
+  
+  .delivery-text {
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  
+  .delivery-message {
+    margin-top: 12px;
+    font-size: 14px;
+    color: #333;
+    display: none;
+  }
+  
+  .delivery-message.show {
+    display: block;
+  }
+  
+  .delivery-message.success {
+    color: #333;
+  }
+  
+  .delivery-message.error {
+    color: #dc2626;
+  }
+  
+  /* Mobile First Responsive */
+  @media screen and (max-width: 768px) {
+    .delivery-row {
+      gap: 12px;
+    }
+    
+    .pincode-section {
+      min-width: 120px;
+    }
+    
+    .pincode-input {
+      {% comment %} width: 70px; {% endcomment %}
+      font-size: 8px;
+    }
+    
+    .delivery-text {
+      font-size: 13px;
+    }
+    
+    .check-btn {
+      font-size: 13px;
+      padding: 3px 8px;
+    }
+  }
+  
+  @media screen and (max-width: 480px) {
+    .delivery-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    
+    .pincode-section {
+      width: 100%;
+      justify-content: flex-start;
+    }
+    
+    .delivery-item {
+      width: 100%;
+    }
+    
+    .delivery-text {
+      white-space: normal;
+    }
+  }
+  
+  @media screen and (max-width: 320px) {
+    .pincode-input {
+      width: 60px;
+       font-size: 8px;
+    }
+    
+    .delivery-text {
+      font-size: 12px;
+    }
+    
+    .check-btn {
+      font-size: 12px;
+    }
+  }
+</style>
+
+<div class="delivery-container">
+  <div class="delivery-row">
+    <div class="pincode-section">
+      <svg width="16" height="22" viewBox="0 0 16 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_4485_28)">
+<path d="M8 0C3.63806 0 0 3.48496 0 7.93458C0 9.62738 0.512873 11.1369 1.49716 12.5513L7.38778 21.6679C7.67355 22.1111 8.32703 22.1103 8.61222 21.6679L14.5284 12.5203C15.4915 11.17 16 9.58435 16 7.93458C16 3.55945 12.4112 0 8 0ZM8 11.5412C5.99501 11.5412 4.36364 9.92318 4.36364 7.93458C4.36364 5.94598 5.99501 4.32795 8 4.32795C10.005 4.32795 11.6364 5.94598 11.6364 7.93458C11.6364 9.92318 10.005 11.5412 8 11.5412Z" fill="#C6A865"/>
+</g>
+<defs>
+<clipPath id="clip0_4485_28">
+<rect width="16" height="22" fill="white"/>
+</clipPath>
+</defs>
+</svg>
+
+      <input 
+        type="text" 
+        id="pincodeInput" 
+        class="pincode-input" 
+        placeholder="Enter your PIN" 
+        maxlength="6"
+        oninput="validatePincode(this)"
+      >
+      <div   class="check-btn" onclick="checkDelivery()">Check</div>
+    </div>
+{% comment %}     
+    <div class="delivery-item">
+      <svg width="33" height="31" viewBox="0 0 33 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_4485_33)">
+<path d="M9.94498 6.73209H8.66797V5.45508C8.66797 4.92115 8.23517 4.48828 7.70117 4.48828C7.16731 4.48828 6.73438 4.92115 6.73438 5.45508V7.69882C6.73444 8.23281 7.16731 8.66568 7.70124 8.66568H9.94498C10.479 8.66568 10.9118 8.23281 10.9118 7.69888C10.9118 7.16495 10.479 6.73209 9.94498 6.73209Z" fill="#C6A865"/>
+<path d="M7.69789 0C3.45327 0 0 3.45327 0 7.6979C0 11.9424 3.45327 15.3956 7.69789 15.3956C11.9425 15.3956 15.3958 11.9424 15.3958 7.69783C15.3958 3.45327 11.9425 0 7.69789 0ZM7.69789 13.4621C4.51939 13.462 1.93359 10.8763 1.93359 7.6979C1.93359 4.51945 4.51939 1.93359 7.69789 1.93359C10.8763 1.93359 13.4622 4.51945 13.4622 7.6979C13.4622 10.8763 10.8764 13.4621 7.69789 13.4621Z" fill="#C6A865"/>
+<path d="M32.9008 16.5924C32.8995 16.5899 32.8992 16.5873 32.8979 16.5848L29.7913 10.3715C29.6276 10.0439 29.2928 9.83705 28.9266 9.83705H21.6091V7.69727C21.6091 7.16334 21.1763 6.73047 20.6423 6.73047H17.281C17.3129 7.04854 17.3294 7.37094 17.3294 7.69727C17.3294 13.0079 13.0088 17.3286 7.69789 17.3286C4.55497 17.3286 1.75912 15.8153 0 13.4792V26.337C0 26.871 0.432867 27.3038 0.966797 27.3038H5.29457C5.72988 29.0846 7.33818 30.4104 9.25115 30.4104C11.1642 30.4104 12.7725 29.0846 13.2077 27.3038H19.7924C20.2276 29.0846 21.8359 30.4104 23.7488 30.4104C25.6618 30.4104 27.2701 29.0846 27.7054 27.3038H32.0332C32.5672 27.3038 33 26.871 33 26.337V17.0171C33 16.8645 32.9638 16.7208 32.9008 16.5924ZM9.25115 28.4768C8.07121 28.4768 7.11137 27.5169 7.11137 26.337C7.11137 25.1571 8.07127 24.1972 9.25115 24.1972C10.431 24.1972 11.3911 25.1571 11.3911 26.337C11.3911 27.5169 10.4311 28.4768 9.25115 28.4768ZM23.7488 28.4768C22.5689 28.4768 21.6091 27.5169 21.6091 26.337C21.6091 25.1571 22.569 24.1972 23.7488 24.1972C24.9287 24.1972 25.8886 25.1571 25.8886 26.337C25.8886 27.5169 24.9287 28.4768 23.7488 28.4768ZM21.6091 16.0503V11.7706H28.3292L30.469 16.0503H21.6091Z" fill="#C6A865"/>
+</g>
+<defs>
+<clipPath id="clip0_4485_33">
+<rect width="33" height="31" fill="white"/>
+</clipPath>
+</defs>
+</svg>
+
+      <span class="delivery-text">Standard Delivery 2-5 Days</span>
+    </div>
+     {% endcomment %}
+    <div class="delivery-item">
+      <svg width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_4485_37)">
+<path d="M28.1673 4.8327C25.0508 1.71626 20.9073 0 16.5 0C14.1471 0 11.8708 0.490811 9.73442 1.45877C8.06541 2.21493 6.55185 3.22859 5.2207 4.47994V3.1582C5.2207 2.87345 4.9899 2.64258 4.70508 2.64258C4.42026 2.64258 4.18945 2.87345 4.18945 3.1582V5.73633C4.18945 5.74 4.1899 5.74348 4.18997 5.74709C4.19016 5.75631 4.19068 5.76546 4.19139 5.77468C4.19197 5.7828 4.19268 5.79092 4.19364 5.79898C4.19467 5.80723 4.19603 5.81548 4.19738 5.82366C4.19886 5.8323 4.20035 5.84087 4.20228 5.84938C4.20402 5.85698 4.20608 5.86453 4.20808 5.87207C4.21046 5.8807 4.21279 5.88934 4.21556 5.89778C4.21801 5.90532 4.22091 5.91274 4.22374 5.92015C4.22684 5.92821 4.22987 5.93626 4.23335 5.94413C4.23676 5.95186 4.24056 5.95934 4.2443 5.96694C4.24798 5.97422 4.25152 5.98144 4.25552 5.98853C4.25977 5.99614 4.26448 6.00362 4.26918 6.01103C4.27344 6.01773 4.27769 6.0245 4.2822 6.03101C4.2871 6.0381 4.29238 6.04493 4.29773 6.05176C4.30289 6.0584 4.30805 6.06497 4.31353 6.07136C4.31881 6.07748 4.32429 6.08347 4.3299 6.0894C4.33621 6.09611 4.34266 6.10268 4.3493 6.10906C4.35194 6.11157 4.3542 6.11428 4.3569 6.1168C4.36 6.11963 4.36335 6.12195 4.36644 6.12472C4.37353 6.13091 4.38069 6.13684 4.3881 6.14264C4.39435 6.14754 4.4006 6.15224 4.40698 6.15676C4.4142 6.16191 4.42161 6.16681 4.42909 6.17158C4.43599 6.17596 4.44295 6.18028 4.45004 6.18428C4.45745 6.18847 4.46499 6.1924 4.4726 6.19627C4.48001 6.2 4.48748 6.20368 4.49503 6.20709C4.50276 6.21057 4.51062 6.21373 4.51862 6.21676C4.52629 6.21973 4.53396 6.22263 4.54175 6.2252C4.54988 6.22791 4.55813 6.2303 4.56637 6.23262C4.57437 6.23481 4.58229 6.23694 4.59035 6.2388C4.59854 6.24067 4.60679 6.24222 4.6151 6.2437C4.62361 6.24519 4.63218 6.24654 4.64075 6.24763C4.64868 6.2486 4.65674 6.24937 4.66479 6.25002C4.67401 6.25073 4.68316 6.25118 4.69238 6.25144C4.6967 6.25144 4.70082 6.25195 4.70508 6.25195H7.2832C7.56796 6.25195 7.79883 6.02115 7.79883 5.73633C7.79883 5.45151 7.56796 5.2207 7.2832 5.2207H5.94026C8.80301 2.54506 12.5879 1.03125 16.5 1.03125C25.0295 1.03125 31.9688 7.97053 31.9688 16.5C31.9688 25.0295 25.0295 31.9688 16.5 31.9688C7.97053 31.9688 1.03125 25.0295 1.03125 16.5C1.03125 16.2152 0.800379 15.9844 0.515625 15.9844C0.230871 15.9844 0 16.2152 0 16.5C0 20.9073 1.71626 25.0508 4.8327 28.1673C7.94913 31.2837 12.0927 33 16.5 33C20.9073 33 25.0508 31.2837 28.1673 28.1673C31.2837 25.0508 33 20.9073 33 16.5C33 12.0927 31.2837 7.94913 28.1673 4.8327Z" fill="#C6A865"/>
+<path d="M16.8719 11.5113L18.1094 12.4395V8.83008H15.0156V12.4395L16.2531 11.5113C16.4364 11.3739 16.6885 11.3738 16.8719 11.5113Z" fill="#C6A865"/>
+<path d="M7.28125 8.83008C6.99643 8.83008 6.76562 9.06088 6.76562 9.3457V19.1426H26.3594V9.3457C26.3594 9.06088 26.1285 8.83008 25.8438 8.83008H19.1406V13.4707C19.1406 13.666 19.0303 13.8445 18.8556 13.9319C18.7826 13.9683 18.7037 13.9863 18.6251 13.9863C18.5155 13.9863 18.4066 13.9515 18.3156 13.8832L16.5625 12.5684L14.8094 13.8832C14.6531 14.0004 14.4441 14.0193 14.2695 13.9319C14.0947 13.8445 13.9844 13.666 13.9844 13.4707V8.83008H7.28125Z" fill="#C6A865"/>
+<path d="M6.76562 23.7832C6.76562 24.068 6.99643 24.2988 7.28125 24.2988H25.8438C26.1285 24.2988 26.3594 24.068 26.3594 23.7832V20.1738H6.76562V23.7832Z" fill="#C6A865"/>
+</g>
+<defs>
+<clipPath id="clip0_4485_37">
+<rect width="33" height="33" fill="white"/>
+</clipPath>
+</defs>
+</svg>
+
+      <span class="delivery-text">Secured Packaging</span>
+    </div>
+  </div>
+  
+  <div id="deliveryMessage" class="delivery-message">
+    Estimated delivery: 11 days
+  </div>
+</div>
+
+<script>
+        function validatePincode(input) {
+            // Remove any non-digit characters
+            input.value = input.value.replace(/\D/g, '');
+            
+            // Limit to 6 digits
+            if (input.value.length > 6) {
+                input.value = input.value.slice(0, 6);
+            }
+        }
+        
+        function checkDelivery() {
+            const pincode = document.getElementById('pincodeInput').value;
+            const messageDiv = document.getElementById('deliveryMessage');
+            
+            if (pincode.length !== 6) {
+                messageDiv.innerHTML = '<span style="color: #dc3545;">Please enter a valid 6-digit pincode</span>';
+                messageDiv.classList.add('show');
+                return;
+            }
+            
+            // Simulate delivery check based on pincode ranges
+            let deliveryTime;
+            const pincodeNum = parseInt(pincode);
+            
+            if (pincodeNum >= 670000 && pincodeNum <= 695999) {
+                // Kerala
+                deliveryTime = '2-3 days';
+            } else if (pincodeNum >= 600000 && pincodeNum <= 699999) {
+                // South India
+                deliveryTime = '3-5 days';
+            } else if (pincodeNum >= 110000 && pincodeNum <= 199999) {
+                // North India
+                deliveryTime = '5-7 days';
+            } else if (pincodeNum >= 780000 && pincodeNum <= 799999) {
+                // North East
+                deliveryTime = '7-10 days';
+            } else {
+                deliveryTime = '4-8 days';
+            }
+            
+            messageDiv.innerHTML = `<span style="color: #28a745;">✓ Delivery available in ${deliveryTime}</span>`;
+            messageDiv.classList.add('show');
+        }
+        
+        // Allow Enter key to trigger check
+        document.getElementById('pincodeInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkDelivery();
+            }
+        });
+    </script>

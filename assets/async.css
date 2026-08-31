@@ -1,0 +1,219 @@
+
+/*! Async - Mixins --------- */
+/* show */	.changed .swiper-custom-fraction .swiper-pagination-current, .changed ~ .swiper-custom-pagination .swiper-custom-fraction .swiper-pagination-current { visibility: visible; opacity: 1; }
+
+.slider-fraction.changed .swiper-custom-pagination .swiper-pagination-current, .slider-fraction.changed .swiper-custom-pagination .swiper-button-prev, .slider-fraction .changed .swiper-custom-pagination .swiper-pagination-current, .slider-fraction .changed .swiper-custom-pagination .swiper-button-prev, .slider-fraction.changed .swiper-custom-pagination .swiper-button-prev, .slider-fraction .changed ~ .swiper-custom-pagination .swiper-button-prev, .no-thumbs-mobile.changed .swiper-pagination-current, .no-thumbs-mobile.changed ~ .swiper-custom-pagination .swiper-pagination-current { visibility: visible; opacity: 1; }
+
+
+/*! Async - Forms --------- */
+#root button.disabled, .shopify-section-header li.disabled, button[disabled], input[type="button"][disabled], input[type="reset"][disabled], input[type="submit"][disabled], .no-click { cursor: default; pointer-events: none; }
+
+
+/*! Async - Helpers --------- */
+button:before, button:after, .link-btn a:after, .link-btn a:before, #nav-user > ul > li > a i span:before, #totop, .l4ft figure img, .m6fr .swiper-slide { transition-property: transform, visibility, opacity, box-shadow, border-color, background-color, color; transition-duration: 0.4s; transition-timing-function: cubic-bezier(.4,0,.2,1); transition-delay: 0s; }
+#root { transition-property: padding; transition-duration: 0.4s; transition-timing-function: cubic-bezier(.4,0,.2,1); transition-delay: 0s; }
+
+.l4al a.close, .shopify-section-announcement-bar a.close, .f8fl > .f8fl-toggle, .l4ne li { transition-property: transform; transition-duration: 0.4s; transition-timing-function: cubic-bezier(.4,0,.2,1); transition-delay: 0s; }
+.f8ps, .has-panels .m6pn, .overlay-close, #root .overlay-close, #root .overlay-close-clipping { transition-property: transform, visibility, opacity, backdrop-filter; transition-duration: 0.4s; transition-timing-function: cubic-bezier(.4,0,.2,1); transition-delay: 0s; }
+#nav-user > ul > li > form, .has-filters .m6cl > aside, #cookie-bar, .icon-chevron-left, .icon-chevron-right, .l4cl li, .l4cl figure .link-btn, .l4cl figure form, .l4ft li, .l4us.s4wi .swiper-slide, .l4cl .link-btn, .has-filters #root > .f8fl-toggle, .l4cl.inline li { transition-property: transform, visibility, opacity; transition-duration: 0.4s; transition-timing-function: cubic-bezier(.4,0,.2,1); transition-delay: 0s; }
+#nav-user > ul > li > form ~ .toggle, .fancybox__slide, img, video, iframe, picture, #root > .m6pn-close { transition-property: visibility, opacity; transition-duration: 0.4s; transition-timing-function: cubic-bezier(.4,0,.2,1); transition-delay: 0s; }
+.check.switch label:before { transition-property: left, right; transition-duration: 0.4s; transition-timing-function: cubic-bezier(.4,0,.2,1); transition-delay: 0s; }
+.transition .swiper-button-nav { transition-property: height; transition-duration: 0.4s; transition-timing-function: cubic-bezier(.4,0,.2,1); transition-delay: 0s; }
+.custom-progressbar > * { transition-property: width; transition-duration: 0.4s; transition-timing-function: cubic-bezier(.4,0,.2,1); transition-delay: 0s; }
+.swiper-pagination-bullet:before { transition-property: transform, background-color; transition-duration: 0.4s; transition-timing-function: cubic-bezier(.4,0,.2,1); transition-delay: 0s; }
+#search button:before, .fancybox__container .carousel__button:before { transition: none; }
+
+
+
+/*! Async - Miscellaneous --------- */
+::selection { background: var(--accent, #103f60); color: #ffffff; text-shadow: none; opacity: 1; }
+::-moz-selection { background: var(--accent, #103f60); color: #ffffff; text-shadow: none; opacity: 1; }
+
+
+/*! Async -Outlines --------- */
+[role="button"], a { outline: none; }
+[data-whatintent="keyboard"] a:focus, [data-whatintent="keyboard"] button:focus, [data-whatintent="keyboard"] button[role="button"]:focus, [data-whatintent="keyboard"] summary:focus, [data-whatintent="keyboard"] input:focus, [data-whatintent="keyboard"] select:focus, [data-whatintent="keyboard"] textarea:focus, [data-whatintent="keyboard"] .shopify-section-header > input:focus + label, [data-whatintent="keyboard"] #header > input:focus + label, [data-whatintent="keyboard"] #header-inner > input:focus + label, [data-whatintent="keyboard"] #nav > ul > li > input:focus ~ label, [data-whatintent="keyboard"] .check input:focus ~ label:before, [data-whatintent="keyboard"] [role="button"]:focus { outline-offset: 2px; outline-width: 2px; outline-style: solid; outline-color: var(--secondary_bg); }
+[data-whatintent="keyboard"] button:focus, [data-whatintent="keyboard"] .link-btn a:focus { outline-offset: 2px; }
+[data-whatintent="keyboard"] .l4ft figure a:focus:after { content: ""; display: block; position: absolute; left: 0; right: 0; top: 0; bottom: 0; z-index: 9; border: 2px solid var(--secondary_bg); }
+[data-whatintent="mouse"] input:focus, [data-whatintent="mouse"] select:focus, [data-whatintent="mouse"] textarea:focus, [data-whatintent="keyboard"] .l4pr li a:focus { outline: none; }
+[data-whatintent="touch"] button, [data-whatintent="touch"] a, [data-whatintent="touch"] input, [data-whatintent="touch"] select, [data-whatintent="touch"] textarea, [data-whatintent="touch"] [role="button"] { outline: none !important; }
+
+
+/* Animations --------- */
+@keyframes spin { 0% { transform: none; } 100% { transform: rotate(360deg); } }
+
+/* Global Font Weight Normal Reset */
+*,
+*:before,
+*:after,
+html,
+body,
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6,
+b, strong, th, dt,
+button, input, select, textarea, optgroup,
+a, p, span, li, label, div, header, footer, nav, section, article, aside,
+.price, .price-item, .old-price, [class*="price"],
+.ff-heading, [class*="font-"], [class*="fw-"], .strong, .bold,
+.btn, .link-btn, [class*="button"] {
+  font-weight: 400 !important;
+}
+
+/* Universal Equal-Height Category-Style Boxed Product Cards */
+.l4cl {
+  display: flex !important;
+  align-items: stretch !important;
+}
+
+.l4cl > li,
+.product-card {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  height: 100% !important;
+  background: #FFFFFF !important;
+  border: 1.5px solid #E2E8F0 !important;
+  border-radius: 24px !important;
+  padding: 16px !important;
+  box-shadow: 0 4px 14px rgba(12, 62, 97, 0.04) !important;
+  transition: all 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  box-sizing: border-box !important;
+}
+
+.l4cl > li:hover,
+.product-card:hover {
+  transform: translateY(-6px) !important;
+  border-color: #BE982D !important;
+  box-shadow: 0 12px 28px rgba(190, 152, 45, 0.22), 0 4px 12px rgba(12, 62, 97, 0.08) !important;
+}
+
+/* Image Container Box */
+.l4cl > li figure,
+.product-card figure {
+  width: 100% !important;
+  height: 190px !important;
+  min-height: 190px !important;
+  max-height: 190px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 0 14px 0 !important;
+  position: relative !important;
+  background-color: #F8FAFC !important;
+  border: none !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+  padding: 10px !important;
+  box-sizing: border-box !important;
+  transition: background-color 0.28s ease !important;
+}
+
+.l4cl > li:hover figure,
+.product-card:hover figure {
+  border: none !important;
+  background-color: #FFFFFF !important;
+}
+
+.l4cl > li figure img,
+.product-card figure img {
+  max-width: 100% !important;
+  max-height: 100% !important;
+  width: auto !important;
+  height: auto !important;
+  object-fit: contain !important;
+  border-radius: 10px !important;
+}
+
+/* Content wrapper flex */
+.l4cl > li > div:not(.static),
+.product-card > div:not(.static) {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 1 auto !important;
+}
+
+/* Product Title Clamping - Exactly 2 lines max & uniform height */
+.l4cl > li h3,
+.product-card h3 {
+  font-size: 14.5px !important;
+  font-weight: 400 !important;
+  line-height: 1.35 !important;
+  color: #1E293B !important;
+  margin: 0 0 8px 0 !important;
+  height: 2.7em !important;
+  min-height: 2.7em !important;
+  max-height: 2.7em !important;
+  overflow: hidden !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+}
+
+.l4cl > li h3 a,
+.product-card h3 a {
+  color: #0C3E61 !important;
+  text-decoration: none !important;
+}
+
+.l4cl > li h3 a:hover,
+.product-card h3 a:hover {
+  color: #BE982D !important;
+}
+
+/* Reviews / Rating container uniform height reservation */
+.l4cl > li .r6rt,
+.product-card .r6rt {
+  min-height: 20px !important;
+  margin: 0 0 6px 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  font-size: 12px !important;
+}
+
+/* Stock delivery status badge uniform height reservation */
+.l4cl > li .product-deliverytime,
+.product-card .product-deliverytime {
+  min-height: 22px !important;
+  margin: 0 0 10px 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  font-size: 12.5px !important;
+  font-weight: 400 !important;
+}
+
+/* Static bottom wrapper pinned to card bottom */
+.l4cl > li .static,
+.product-card .static {
+  margin-top: auto !important;
+  padding-top: 10px !important;
+  border-top: 1px solid #F1F5F9 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+}
+
+/* Price alignment */
+.l4cl > li .price,
+.product-card .price {
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  color: #0C3E61 !important;
+  margin: 0 !important;
+  line-height: 1.2 !important;
+  display: flex !important;
+  align-items: baseline !important;
+  gap: 6px !important;
+  flex-wrap: wrap !important;
+}
+
+.l4cl > li .price .old-price,
+.product-card .price .old-price {
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  color: #94A3B8 !important;
+  text-decoration: line-through !important;
+}
+
+
+
+

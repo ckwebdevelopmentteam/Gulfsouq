@@ -1,0 +1,488 @@
+{% doc %}
+  Renders a comprehensive product card component with support for various layouts, quick buy functionality, color swatches, and extensive customization options. Handles grid cards, list items, upsell selection, and special layouts like hotspots.
+
+  @param {object} product - Product object to display (required for actual products, uses placeholder when blank)
+  @param {string} [layout] - Card layout: 'grid' (default), 'list', 'list-compact', or 'hotspot' for different display modes
+  @param {string} [type] - Display type: 'grid' (default) or 'both' for dual grid/list support with additional features
+  @param {string} [origin] - Context origin for specialized behavior (e.g., 'image-with-banners' affects label display)
+  @param {string} [container] - HTML element to wrap the card. Defaults to 'li' (auto-changes to 'div' for hotspot layout)
+  @param {string} [width_class] - CSS classes for controlling card width in grid layouts
+  @param {string} [extra_class] - Additional CSS classes for custom styling
+  @param {string} [extra_style] - Inline CSS styles for advanced customization
+  @param {string} [shopify_attributes] - HTML attributes like data attributes, IDs, or classes
+  @param {number} [placeholder_int] - Placeholder image number (1-6) when product is blank. Defaults to 1.
+  @param {number} [index] - Card position index for bulk operations and progressive loading
+  @param {string} [block_id] - Unique identifier for form elements and upsell selection
+  @param {boolean} [show_image] - Whether to display product image. Defaults to true.
+  @param {boolean} [show_labels] - Whether to display product labels (sale, stock badges). Defaults to true.
+  @param {boolean} [show_title] - Whether to display product title. Defaults to true.
+  @param {string} [custom_title] - Custom label to display instead of product.title when provided.
+  @param {boolean} [show_stock] - Whether to display stock information. Defaults to true.
+  @param {boolean} [show_vendor] - Whether to display vendor name. Defaults to settings.show_vendor.
+  @param {boolean} [show_rating] - Whether to display product rating. Defaults to settings.show_product_rating.
+  @param {boolean} [show_price] - Whether to display product price. Defaults to true.
+  @param {string} [price_location] - Whether to display product price next to title or below title. Defaults to 'below_title'.
+  @param {boolean} [is_child_product] - Whether this is a child product in a upsell/upsell context. Defaults to false.
+  @param {string} [parent_product_id] - Parent product variant ID when this is a child product in upsell/upsell context.
+  @param {boolean} [quick_buy_compact] - Use compact quick buy buttons with icons only. Defaults to false.
+  @param {boolean} [enable_quick_buy_drawer] - Enable quick buy drawer/popup for complex products. Defaults to false.
+  @param {boolean} [enable_quick_buy_desktop] - Enable quick buy functionality on desktop. Defaults to false.
+  @param {boolean} [enable_quick_buy_mobile] - Enable quick buy functionality on mobile. Defaults to false.
+  @param {boolean} [enable_quick_buy_qty_selector] - Include quantity selector in quick buy forms. Defaults to false.
+  @param {boolean} [enable_variant_picker] - Enable variant selection in quick buy forms. Defaults to false.
+  @param {boolean} [enable_color_picker] - Display color swatches for color variants. Defaults to false.
+  @param {boolean} [upsell] - Enable upsell selection mode with checkboxes. Defaults to false.
+  @param {boolean} [variant_in_popup] - Show variant options in popup instead of inline select. Defaults to false.
+  @param {string} [variant_selector_color] - Color scheme for variant selection buttons (e.g., 'primary', 'secondary')
+  @param {number} [visible_products] - Number of initially visible products in upsell mode for progressive loading
+  @param {string} [sizes] - Responsive image sizes attribute for advanced srcset control
+  @param {boolean} [slider] - Whether card is used in a slider context (affects image loading)
+  @param {boolean} [no_lazyload] - Disable lazy loading for images (useful for above-fold content). Defaults to false.
+
+  @example
+  {% render 'product-item', product: product %}
+  @example
+  {% render 'product-item', product: product, layout: 'list', show_vendor: true, enable_quick_buy_desktop: true %}
+  @example
+  {% render 'product-item', product: product, layout: 'list-compact', enable_variant_picker: true, quick_buy_compact: true %}
+  @example
+  {% render 'product-item', product: product, type: 'both', enable_color_picker: true, show_rating: true, layout: 'grid' %}
+{% enddoc %}
+
+{%- liquid
+  assign container = 'li'
+  assign placeholder_int = placeholder_int | default: 1
+  assign quick_buy_compact = quick_buy_compact | default: false
+  assign enable_quick_buy_drawer = enable_quick_buy_drawer | default: false
+  assign width_class = width_class | default: ''
+  assign sizes = sizes | default: false
+  assign slider = slider | default: false
+  assign type = type | default: 'grid'
+  assign no_lazyload = no_lazyload | default: false
+  assign enable_quick_buy_desktop = enable_quick_buy_desktop | default: false
+  assign enable_quick_buy_mobile = enable_quick_buy_mobile | default: false
+  assign enable_quick_buy_qty_selector = enable_quick_buy_qty_selector | default: false
+  assign enable_variant_picker = enable_variant_picker | default: false
+  assign enable_color_picker = enable_color_picker | default: false
+  assign upsell = upsell | default: false
+  assign variant_in_popup = variant_in_popup | default: false
+  assign is_child_product = is_child_product | default: false
+  assign parent_product_id = parent_product_id | default: false
+  assign custom_title = custom_title | default: false
+  assign price_location = price_location | default: 'below_title'
+  assign index = index
+  assign id = block_id | default: ''
+  assign visible_products = visible_products | default: false
+  assign extra_style = extra_style | default: ''
+  if show_image == null
+    assign show_image = true
+    assign show_labels = true
+    assign show_title = true
+    assign show_stock = true
+    assign show_vendor = settings.show_vendor
+    assign show_rating = settings.show_product_rating
+    assign show_price = true
+  endif
+  if layout == 'list-compact'
+    assign show_labels = false
+    assign show_stock = false
+    assign show_vendor = false
+    assign show_rating = false
+  endif
+  if layout == 'hotspot'
+    assign show_labels = false
+    assign show_image = false
+    assign container = 'div'
+    if product.variants.size > 1 or product.available == false
+      assign enable_quick_buy_drawer = true
+    endif
+  endif
+  if layout == 'list' and origin == 'image-with-banners'
+    assign show_labels = false
+  endif
+  assign current_variant = product.selected_or_first_available_variant
+  assign product_image_ratio = settings.product_image_ratio
+  case product_image_ratio
+    when '310x430'
+      assign image_ratio = 'portrait'
+      assign image_width = 310
+      assign image_height = 430
+    when '430x310'
+      assign image_ratio = 'landscape'
+      assign image_width = 430
+      assign image_height = 310
+    else
+      assign image_ratio = 'square'
+      assign image_width = 430
+      assign image_height = 430
+  endcase
+  assign image_width_2 = image_width | times: 1.5
+  assign image_height_2 = image_height | times: 1.5
+  assign image_width_small = image_width | divided_by: 3
+  assign image_height_small = image_height | divided_by: 3
+  if product == blank
+    assign vendor = 'Vendor name'
+    assign title = 'Product title'
+    assign price = 0 | money
+  else
+    assign vendor = product.vendor
+    if vendor == 'vendor-unknown' or vendor == shop.name
+      assign show_vendor = false
+    endif
+    if custom_title
+      assign title = custom_title
+    else 
+      assign title = product.title
+    endif
+    if layout == 'list-compact'
+      assign price = current_variant.price | money
+    else
+      assign price = product.price | money
+    endif
+  endif
+
+  assign show_unavailable_variants = show_unavailable_variants | default: settings.productcard_show_unavailable_variants
+  if show_unavailable_variants
+    assign available_variants = product.variants
+  else
+    assign available_variants = product.variants | where: 'available'
+  endif
+
+  assign preorder = false
+  if current_variant.inventory_management != null and current_variant.inventory_policy == 'continue' and current_variant.available and current_variant.inventory_quantity <= 0 and settings.show_preorder
+    assign preorder = true
+    unless settings.show_preorder_inventory
+      if layout == 'list-compact'
+        assign show_stock = false
+      elsif product.variants.size == 1 and current_variant.available and enable_quick_buy_drawer == false
+        assign show_stock = false
+      endif
+    endunless
+  endif
+
+  assign rating_value = false
+  assign rating_count = false
+  if product.metafields.syncer.reviews
+    assign locale_ratings = product.metafields.syncer.reviews.value.reviews[localization.language.iso_code]
+    if locale_ratings
+      assign rating_value = locale_ratings.rating
+      assign rating_count = locale_ratings.count
+    else
+      assign rating_value = product.metafields.syncer.reviews.value.cumulative_rating
+      assign rating_count = product.metafields.syncer.reviews.value.total_reviews
+    endif
+  elsif product.metafields.reviews.rating
+    assign rating_value = product.metafields.reviews.rating.value
+    assign rating_count = product.metafields.reviews.rating_count
+  endif
+-%}
+
+{%- capture price_element -%}
+  {% if price_location == 'next_to_title' %}
+    &nbsp;
+    <span class="price s1pr">
+      {%- if current_variant.compare_at_price > current_variant.price -%}
+        <span class="old-price">{{ current_variant.compare_at_price | money }}</span>&nbsp;
+      {% endif %}
+      {{ current_variant.price | money }}
+    </span>
+  {% else %}
+    <p class="price s1pr">
+      {%- if current_variant.compare_at_price > current_variant.price -%}
+        <span class="old-price">{{ current_variant.compare_at_price | money }}</span>&nbsp;
+      {% endif %}
+      {{ current_variant.price | money }}
+      {%- if current_variant.unit_price_measurement -%}
+        <span class="small">
+          {{- 'product.unit_price_label' | t -}}
+          {{- current_variant.unit_price | unit_price_with_measurement: current_variant.unit_price_measurement -}}
+        </span>
+      {%- endif -%}
+    </p>
+  {% endif %}
+{%- endcapture -%}
+
+{%- if enable_quick_buy_desktop or enable_quick_buy_mobile -%}
+  {%- liquid
+    assign product_form_class = 'f8pr form-card'
+    unless enable_quick_buy_mobile
+      assign product_form_class = product_form_class | append: ' mobile-hide'
+    endunless
+    unless enable_quick_buy_desktop
+      assign product_form_class = product_form_class | append: ' mobile-only'
+    endunless
+    assign product_form_id = 'quick-add-' | append: section.id | append: product.id | append: '-quick-add-form_x'
+  -%}
+  {%- capture quick_buy -%}
+    {%- if layout == 'list-compact' -%}
+      {%- form 'product', product, id: product_form_id, class: product_form_class, novalidate: 'novalidate' -%}
+        {%- assign available_variants = product.variants | where: "available" -%}
+        {%- if enable_variant_picker and available_variants.size > 1 and product.variants.size < 250 -%}
+          <p>
+            <select name="id" id="{{ product_form_id }}-id">
+              {%- for variant in product.variants -%}
+                {%- unless variant.available -%}{% continue %}{%- endunless -%}
+                {%- liquid
+                  if variant.featured_image
+                    assign product_image = variant.featured_image
+                   else
+                    assign product_image = product.featured_image
+                  endif
+                -%}
+                <option
+                  value="{{ variant.id }}"
+                  data-variantinfo='{ {% if product_image %}"image":"{%- if settings.fill_product_images -%}{{ product_image | image_url: width: image_width_2, height: image_height_2, crop: 'center' }}{%- else -%}{{ product_image | image_url: width: image_width_2 }}{%- endif -%}",{% endif %}"price_old":"{%- if variant.compare_at_price > variant.price -%}{{ variant.compare_at_price | money }}{%- endif -%}","price":"{{ variant.price | money }}"}'
+                  {% unless variant.available %}disabled data-class="disabled"{% endunless %}
+                  {% if variant == current_variant %}selected{% endif %}
+                >{{ variant.title }}</option>
+              {%- endfor -%}
+            </select>
+          </p>
+        {%- else -%}
+          <input type="hidden" name="id" value="{{ current_variant.id }}">
+        {%- endif -%}
+        <p class="submit"><button type="submit" class="{% if preorder %}overlay-preorder {% elsif current_variant.available %}overlay-buy_button{% else %}overlay-unavailable-buy-button{% endif %}{% if settings.button_style == 'inv' %} inv{% endif %}" aria-label="{% if preorder and settings.preorder_button_text != '' %}{{ settings.preorder_button_text }}{% else %}{{ 'product.form.add_to_cart' | t }}{% endif %}"><i aria-hidden="true" class="icon-cart"></i> {% if preorder and settings.preorder_button_text != '' %}{{ settings.preorder_button_text }}{% else %}{{ 'product.form.add_to_cart' | t }}{% endif %}</button></p>
+      {%- endform -%}
+    {%- elsif product.variants.size == 1 and current_variant.available and enable_quick_buy_drawer == false -%}
+      {%- form 'product', product, id: product_form_id, class: product_form_class, novalidate: 'novalidate' -%}
+        <fieldset>
+          <input type="hidden" name="id" value="{{ current_variant.id }}">
+          <p class="submit{% if layout == 'hotspot' %} wide{% endif %}">
+            {%- if enable_quick_buy_qty_selector -%}
+              <span class="input-amount">
+              <label for="quantity-{{ product_form_id }}" class="hidden">{{ 'product.form.quantity' | t }}</label>
+              <input type="number" id="quantity-{{ product_form_id }}" name="quantity" value="{{ current_variant.quantity_rule.min }}"
+                  min="{{ current_variant.quantity_rule.min }}"
+                 {% if current_variant.inventory_management == 'shopify' and current_variant.inventory_policy == 'deny' -%}
+                   max="{{ current_variant.inventory_quantity }}"
+                 {% elsif current_variant.quantity_rule.max %}
+                   max="{{ current_variant.quantity_rule.max }}"
+                 {% endif %}
+                {% if current_variant.quantity_rule.increment %}step="{{ current_variant.quantity_rule.increment }}"{% endif %}
+                required>
+            </span>
+            {%- endif -%}
+            <button type="submit" class="{% if preorder %}overlay-preorder{% elsif current_variant.available %}overlay-buy_button{% else %}overlay-unavailable-buy-button{% endif %}{% if settings.button_style == 'inv' %} inv{% endif %}{% if quick_buy_compact %} compact{% if layout == 'list' %} w160{% endif %}{% endif %}" aria-label="{% if preorder and settings.preorder_button_text != '' %}{{ settings.preorder_button_text }}{% else %}{{ 'product.form.add_to_cart' | t }}{% endif %}">
+              {%- unless quick_buy_compact -%}<span class="mobile-hide">{% if preorder and settings.preorder_button_text != '' %}{{ settings.preorder_button_text }}{% else %}{{ 'product.form.add_to_cart' | t }}{% endif %}</span>{%- endunless -%}
+              <i aria-hidden="true" class="icon-cart{% unless quick_buy_compact %} mobile-only{% endunless %}"></i>
+            </button>
+          </p>
+        </fieldset>
+      {%- endform -%}
+    {%- else -%}
+      <p class="link-btn wide {% unless enable_quick_buy_mobile %}mobile-hide{% endunless %} {% unless enable_quick_buy_desktop %}mobile-only{% endunless %} {% if quick_buy_compact and layout == 'list' %} w160{% endif %}">
+        <a class="overlay-buy_button{% if settings.button_style == 'inv' %} inv{% endif %}" href="{{ product.url }}"{% if enable_quick_buy_drawer and product != blank %} data-quickshop{% endif %}>
+          {%- if quick_buy_compact -%}
+            {{ 'product.form.view' | t }}
+          {%- else -%}
+            {{ 'product.form.view_options' | t }}
+          {%- endif -%}
+        </a>
+      </p>
+    {%- endif -%}
+  {%- endcapture %}
+{%- endif -%}
+
+<{{ container }}
+  class="
+    {% if extra_class %}{% unless extra_style contains '--vertical' %}{{ extra_class }}{% endunless %}{% endif %} product-card gs-card gs-card-wrapper {{ width_class }}{% if settings.enable_quick_buy != 'none' %} has-form{% endif %}
+    {% unless current_variant.available %}unavailable{% endunless %}
+    {% unless layout contains 'list' %}{% if settings.productcards_text_alignment == 'center' %}text-center{% elsif settings.productcards_text_alignment == 'right' %}text-end{% endif %}{% endunless %}
+    {% if settings.show_secondary_image %}second-img-hover{% endif %}
+    {% if product == blank %}placeholder-product{% endif %}
+    {% if upsell and index > visible_products %}hidden{% endif %}
+  "
+  {% if layout == 'list-compact' %}
+    data-product-id="{{ product.id }}"
+  {% endif %}
+  {% if upsell and index > visible_products %}
+    data-element="unique-more-products-class"
+  {% endif %}
+  {% unless extra_style contains '--vertical' %}
+    {{- shopify_attributes -}}
+  {% endunless %}
+  style="{{ extra_style }}"
+>
+  {% if extra_style contains '--vertical' %}
+    <div {{ shopify_attributes }} class="{% if extra_class %}{{ extra_class }}{% endif %}">
+  {% endif %}
+  {%- if upsell -%}
+    <span class="check">
+      <input
+        type="checkbox"
+        {% if current_variant.available == false %}
+          disabled="disable"
+        {% endif %}
+        data-id="{{ current_variant.id }}"
+        {% if is_child_product and parent_product_id %}
+          data-parent-product="{{ parent_product_id }}"
+        {% endif %}
+        id="{{ id }}-{{ product.id }}-id"
+        name="c4a"
+      >
+      <label class="hidden" for="{{ id }}-{{ product.id }}-id">{{ 'product.form.choose_product' | t }}</label>
+    </span>
+  {%- endif -%}
+  {%- if show_image -%}
+    {%- liquid
+      if layout == 'list-compact' and current_variant.featured_image
+        assign product_image = current_variant.featured_image
+      elsif product.selected_or_first_available_variant.featured_image
+        assign product_image = product.selected_or_first_available_variant.featured_image
+      else
+        assign product_image = product.media.first
+      endif
+
+      if product_image
+        assign wishlist_img_url = product_image | image_url: width: 600
+      else
+        assign wishlist_img_url = ''
+      endif
+    -%}
+    <div class="gs-card-media{% if product.media[1] != null %} has-secondary-image{% endif %}">
+      {%- comment -%} Badges: Sale -X% & Stock status {%- endcomment -%}
+      <div class="gs-card-badges">
+        {%- if current_variant.compare_at_price > current_variant.price -%}
+          {%- assign discount_pct = current_variant.compare_at_price | minus: current_variant.price | times: 100.0 | divided_by: current_variant.compare_at_price | round -%}
+          <span class="gs-badge gs-badge-discount">Sale -{{ discount_pct }}%</span>
+        {%- endif -%}
+        {%- unless current_variant.available -%}
+          <span class="gs-badge gs-badge-soldout">Out of Stock</span>
+        {%- endunless -%}
+        {%- if product.tags contains 'new' or product.tags contains 'NEW' -%}
+          <span class="gs-badge gs-badge-new">NEW</span>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} Wishlist Heart Button {%- endcomment -%}
+      <button
+        type="button"
+        class="gs-wishlist-btn"
+        aria-label="Add {{ title | escape }} to wishlist"
+        aria-checked="false"
+        data-product-id="{{ product.id }}"
+        data-variant-id="{{ current_variant.id }}"
+        data-product-handle="{{ product.handle }}"
+        data-product-title="{{ title | escape }}"
+        data-product-vendor="{{ vendor | escape }}"
+        data-product-price="{{ current_variant.price | money }}"
+        data-product-compare-at-price="{% if current_variant.compare_at_price > current_variant.price %}{{ current_variant.compare_at_price | money }}{% endif %}"
+        data-product-image="{{ wishlist_img_url }}"
+        data-product-url="{{ product.url }}"
+        data-product-available="{{ current_variant.available }}"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+      </button>
+
+      {% unless layout == 'list-compact' %}<a href="{{ product.url }}" aria-label="{{ title | escape }}">{% endunless %}
+      {%- if product != blank and product_image -%}
+        <picture>
+          <img
+            src="{{ product_image | image_url: width: 600 }}"
+            alt="{{ product_image.alt | default: product.title | escape }}"
+            class="primary-img"
+            loading="lazy"
+            width="600"
+            height="600"
+          >
+        </picture>
+        {%- if product.media[1] != null -%}
+          <picture>
+            <img
+              src="{{ product.media[1] | image_url: width: 600 }}"
+              alt="{{ product.media[1].alt | default: product.title | escape }}"
+              class="secondary-img"
+              loading="lazy"
+              width="600"
+              height="600"
+            >
+          </picture>
+        {%- endif -%}
+      {%- else -%}
+        <picture>{{ 'product-' | append: placeholder_int | placeholder_svg_tag: 'placeholder-svg' }}</picture>
+      {%- endif -%}
+      {% unless layout == 'list-compact' %}</a>{% endunless %}
+    </div>
+  {%- endif -%}
+
+  <div class="gs-card-content">
+    <div>
+      {%- if show_vendor and vendor != blank and vendor != 'vendor-unknown' -%}
+        <p class="gs-card-vendor">{{ vendor }}</p>
+      {%- endif -%}
+
+      {%- if title != blank -%}
+        <h3 class="gs-card-title">
+          <a href="{{ product.url }}">
+            {{- title -}}
+          </a>
+        </h3>
+      {%- endif -%}
+
+      <div class="gs-card-rating">
+        {%- if rating_value and show_rating -%}
+          <span class="gs-rating-stars">★★★★☆</span>
+          <span class="gs-rating-count">({{ rating_value }})</span>
+        {%- elsif product.id != blank -%}
+          {%- assign dummy_rating = product.id | modulo: 180 | plus: 35 -%}
+          <span class="gs-rating-stars">★★★★☆</span>
+          <span class="gs-rating-count">({{ dummy_rating }})</span>
+        {%- endif -%}
+      </div>
+
+      {%- if show_price -%}
+        {%- if current_variant.available and current_variant.inventory_quantity > 0 -%}
+          <p class="gs-stock-status">{{ current_variant.inventory_quantity }} in stock</p>
+        {%- elsif current_variant.available -%}
+          <p class="gs-stock-status">50+ in stock</p>
+        {%- else -%}
+          <p class="gs-stock-status empty" style="color: #94A3B8;">0 in stock</p>
+        {%- endif -%}
+        <div class="gs-card-price-wrap">
+          <span class="gs-price-current">{{ current_variant.price | money }}</span>
+          {%- if current_variant.compare_at_price > current_variant.price -%}
+            <span class="gs-price-compare">{{ current_variant.compare_at_price | money }}</span>
+            {%- assign discount_pct = current_variant.compare_at_price | minus: current_variant.price | times: 100.0 | divided_by: current_variant.compare_at_price | round -%}
+            <span class="gs-price-save-badge">{{ discount_pct }}% OFF</span>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Add to Cart / Select Options Action {%- endcomment -%}
+    <div class="gs-card-actions">
+      {%- if current_variant.available -%}
+        {%- if product.has_only_default_variant or product.variants.size == 1 -%}
+          <button
+            type="button"
+            class="gs-add-cart-btn gs-ajax-add-btn"
+            data-variant-id="{{ current_variant.id }}"
+            data-product-handle="{{ product.handle }}"
+            data-has-variants="false"
+            aria-label="Add {{ title | escape }} to cart"
+          >
+            <span>+ Add to Cart</span>
+          </button>
+        {%- else -%}
+          <button
+            type="button"
+            class="gs-add-cart-btn gs-ajax-add-btn"
+            data-variant-id="{{ current_variant.id }}"
+            data-product-handle="{{ product.handle }}"
+            data-has-variants="true"
+            aria-label="Select options for {{ title | escape }}"
+          >
+            <span>Select Options</span>
+          </button>
+        {%- endif -%}
+      {%- else -%}
+        <button type="button" class="gs-add-cart-btn disabled" disabled>
+          <span>Out of Stock</span>
+        </button>
+      {%- endif -%}
+    </div>
+  </div>
+  {% if extra_style contains '--vertical' %}</div>{% endif %}
+</{{ container }}>

@@ -1,0 +1,656 @@
+{% doc %}
+  @prompt
+    3 card moving announcement bar, icon on/off facility needed, and custom icon selection facility needed., no gap between cards, 3 card should be like one line cards, there is no separation or gap, reduce thickness of this section, it must be loop, there is no ending for animation, animation loop needed
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-announcement-bar-{{ ai_gen_id }} {
+    width: 100%;
+    overflow: hidden;
+    background-color: {{ block.settings.background_color }};
+    padding: {{ block.settings.padding_vertical }}px 0;
+    position: relative;
+  }
+
+  .ai-announcement-bar-track-{{ ai_gen_id }} {
+    display: flex;
+    width: fit-content;
+    animation: ai-announcement-scroll-{{ ai_gen_id }} {{ block.settings.animation_speed }}s linear infinite;
+    will-change: transform;
+  }
+
+  .ai-announcement-bar-{{ ai_gen_id }}:hover .ai-announcement-bar-track-{{ ai_gen_id }} {
+    animation-play-state: paused;
+  }
+
+  .ai-announcement-bar-group-{{ ai_gen_id }} {
+    display: flex;
+    flex-shrink: 0;
+  }
+
+  .ai-announcement-bar-card-{{ ai_gen_id }} {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: {{ block.settings.card_padding }}px {{ block.settings.card_padding | times: 2 }}px;
+    background-color: {{ block.settings.card_background_color }};
+    color: {{ block.settings.text_color }};
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+    min-width: 280px;
+    border-right: 1px solid {{ block.settings.separator_color }};
+    white-space: nowrap;
+  }
+
+  .ai-announcement-bar-card-{{ ai_gen_id }}:hover {
+    opacity: 0.85;
+  }
+
+  .ai-announcement-bar-icon-{{ ai_gen_id }} {
+    flex-shrink: 0;
+    width: {{ block.settings.icon_size }}px;
+    height: {{ block.settings.icon_size }}px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ai-announcement-bar-icon-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    fill: {{ block.settings.icon_color }};
+  }
+
+  .ai-announcement-bar-icon-{{ ai_gen_id }} img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .ai-announcement-bar-content-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .ai-announcement-bar-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_size }}px;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .ai-announcement-bar-text-{{ ai_gen_id }} {
+    font-size: {{ block.settings.text_size }}px;
+    margin: 0;
+    line-height: 1.4;
+    opacity: 0.9;
+  }
+
+  @keyframes ai-announcement-scroll-{{ ai_gen_id }} {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-announcement-bar-card-{{ ai_gen_id }} {
+      min-width: 240px;
+      padding: {{ block.settings.card_padding | times: 0.8 }}px {{ block.settings.card_padding | times: 1.5 }}px;
+    }
+
+    .ai-announcement-bar-title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.title_size | times: 0.9 }}px;
+    }
+
+    .ai-announcement-bar-text-{{ ai_gen_id }} {
+      font-size: {{ block.settings.text_size | times: 0.9 }}px;
+    }
+
+    .ai-announcement-bar-icon-{{ ai_gen_id }} {
+      width: {{ block.settings.icon_size | times: 0.85 }}px;
+      height: {{ block.settings.icon_size | times: 0.85 }}px;
+    }
+  }
+{% endstyle %}
+
+<announcement-bar-{{ ai_gen_id }} class="ai-announcement-bar-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-announcement-bar-track-{{ ai_gen_id }}">
+    {% for duplicate in (1..2) %}
+      <div class="ai-announcement-bar-group-{{ ai_gen_id }}">
+        {% if block.settings.card_1_title != blank or block.settings.card_1_text != blank %}
+          {% if block.settings.card_1_link != blank %}
+            <a href="{{ block.settings.card_1_link }}" class="ai-announcement-bar-card-{{ ai_gen_id }}">
+          {% else %}
+            <div class="ai-announcement-bar-card-{{ ai_gen_id }}">
+          {% endif %}
+            {% if block.settings.card_1_show_icon %}
+              <div class="ai-announcement-bar-icon-{{ ai_gen_id }}">
+                {% if block.settings.card_1_custom_icon != blank %}
+                  <img src="{{ block.settings.card_1_custom_icon | image_url: width: 100 }}" alt="" loading="lazy" width="100" height="100">
+                {% else %}
+                  {% if block.settings.card_1_icon == 'shipping' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="1" y="3" width="15" height="13"></rect>
+                      <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                      <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                      <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                    </svg>
+                  {% elsif block.settings.card_1_icon == 'gift' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="20 12 20 22 4 22 4 12"></polyline>
+                      <rect x="2" y="7" width="20" height="5"></rect>
+                      <line x1="12" y1="22" x2="12" y2="7"></line>
+                      <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
+                      <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
+                    </svg>
+                  {% elsif block.settings.card_1_icon == 'tag' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                      <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                    </svg>
+                  {% elsif block.settings.card_1_icon == 'star' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                    </svg>
+                  {% elsif block.settings.card_1_icon == 'check' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                  {% else %}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="12" y1="16" x2="12" y2="12"></line>
+                      <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                  {% endif %}
+                {% endif %}
+              </div>
+            {% endif %}
+            <div class="ai-announcement-bar-content-{{ ai_gen_id }}">
+              {% if block.settings.card_1_title != blank %}
+                <div class="ai-announcement-bar-title-{{ ai_gen_id }}">{{ block.settings.card_1_title }}</div>
+              {% endif %}
+              {% if block.settings.card_1_text != blank %}
+                <div class="ai-announcement-bar-text-{{ ai_gen_id }}">{{ block.settings.card_1_text }}</div>
+              {% endif %}
+            </div>
+          {% if block.settings.card_1_link != blank %}
+            </a>
+          {% else %}
+            </div>
+          {% endif %}
+        {% endif %}
+
+        {% if block.settings.card_2_title != blank or block.settings.card_2_text != blank %}
+          {% if block.settings.card_2_link != blank %}
+            <a href="{{ block.settings.card_2_link }}" class="ai-announcement-bar-card-{{ ai_gen_id }}">
+          {% else %}
+            <div class="ai-announcement-bar-card-{{ ai_gen_id }}">
+          {% endif %}
+            {% if block.settings.card_2_show_icon %}
+              <div class="ai-announcement-bar-icon-{{ ai_gen_id }}">
+                {% if block.settings.card_2_custom_icon != blank %}
+                  <img src="{{ block.settings.card_2_custom_icon | image_url: width: 100 }}" alt="" loading="lazy" width="100" height="100">
+                {% else %}
+                  {% if block.settings.card_2_icon == 'shipping' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="1" y="3" width="15" height="13"></rect>
+                      <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                      <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                      <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                    </svg>
+                  {% elsif block.settings.card_2_icon == 'gift' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="20 12 20 22 4 22 4 12"></polyline>
+                      <rect x="2" y="7" width="20" height="5"></rect>
+                      <line x1="12" y1="22" x2="12" y2="7"></line>
+                      <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
+                      <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
+                    </svg>
+                  {% elsif block.settings.card_2_icon == 'tag' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                      <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                    </svg>
+                  {% elsif block.settings.card_2_icon == 'star' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                    </svg>
+                  {% elsif block.settings.card_2_icon == 'check' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                  {% else %}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="12" y1="16" x2="12" y2="12"></line>
+                      <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                  {% endif %}
+                {% endif %}
+              </div>
+            {% endif %}
+            <div class="ai-announcement-bar-content-{{ ai_gen_id }}">
+              {% if block.settings.card_2_title != blank %}
+                <div class="ai-announcement-bar-title-{{ ai_gen_id }}">{{ block.settings.card_2_title }}</div>
+              {% endif %}
+              {% if block.settings.card_2_text != blank %}
+                <div class="ai-announcement-bar-text-{{ ai_gen_id }}">{{ block.settings.card_2_text }}</div>
+              {% endif %}
+            </div>
+          {% if block.settings.card_2_link != blank %}
+            </a>
+          {% else %}
+            </div>
+          {% endif %}
+        {% endif %}
+
+        {% if block.settings.card_3_title != blank or block.settings.card_3_text != blank %}
+          {% if block.settings.card_3_link != blank %}
+            <a href="{{ block.settings.card_3_link }}" class="ai-announcement-bar-card-{{ ai_gen_id }}">
+          {% else %}
+            <div class="ai-announcement-bar-card-{{ ai_gen_id }}">
+          {% endif %}
+            {% if block.settings.card_3_show_icon %}
+              <div class="ai-announcement-bar-icon-{{ ai_gen_id }}">
+                {% if block.settings.card_3_custom_icon != blank %}
+                  <img src="{{ block.settings.card_3_custom_icon | image_url: width: 100 }}" alt="" loading="lazy" width="100" height="100">
+                {% else %}
+                  {% if block.settings.card_3_icon == 'shipping' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="1" y="3" width="15" height="13"></rect>
+                      <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                      <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                      <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                    </svg>
+                  {% elsif block.settings.card_3_icon == 'gift' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="20 12 20 22 4 22 4 12"></polyline>
+                      <rect x="2" y="7" width="20" height="5"></rect>
+                      <line x1="12" y1="22" x2="12" y2="7"></line>
+                      <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
+                      <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
+                    </svg>
+                  {% elsif block.settings.card_3_icon == 'tag' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                      <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                    </svg>
+                  {% elsif block.settings.card_3_icon == 'star' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                    </svg>
+                  {% elsif block.settings.card_3_icon == 'check' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                  {% else %}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="12" y1="16" x2="12" y2="12"></line>
+                      <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                  {% endif %}
+                {% endif %}
+              </div>
+            {% endif %}
+            <div class="ai-announcement-bar-content-{{ ai_gen_id }}">
+              {% if block.settings.card_3_title != blank %}
+                <div class="ai-announcement-bar-title-{{ ai_gen_id }}">{{ block.settings.card_3_title }}</div>
+              {% endif %}
+              {% if block.settings.card_3_text != blank %}
+                <div class="ai-announcement-bar-text-{{ ai_gen_id }}">{{ block.settings.card_3_text }}</div>
+              {% endif %}
+            </div>
+          {% if block.settings.card_3_link != blank %}
+            </a>
+          {% else %}
+            </div>
+          {% endif %}
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</announcement-bar-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class AnnouncementBar{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.ensureSeamlessLoop();
+      }
+
+      ensureSeamlessLoop() {
+        const track = this.querySelector('.ai-announcement-bar-track-{{ ai_gen_id }}');
+        if (!track) return;
+
+        track.addEventListener('animationiteration', function() {
+          this.style.transform = 'translateX(0)';
+        });
+      }
+    }
+
+    customElements.define('announcement-bar-{{ ai_gen_id }}', AnnouncementBar{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Moving announcement bar",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Card 1"
+    },
+    {
+      "type": "checkbox",
+      "id": "card_1_show_icon",
+      "label": "Show icon",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "card_1_custom_icon",
+      "label": "Custom icon",
+      "info": "Overrides the selected icon below"
+    },
+    {
+      "type": "select",
+      "id": "card_1_icon",
+      "label": "Icon",
+      "options": [
+        {
+          "value": "shipping",
+          "label": "Shipping"
+        },
+        {
+          "value": "gift",
+          "label": "Gift"
+        },
+        {
+          "value": "tag",
+          "label": "Tag"
+        },
+        {
+          "value": "star",
+          "label": "Star"
+        },
+        {
+          "value": "check",
+          "label": "Check"
+        },
+        {
+          "value": "info",
+          "label": "Info"
+        }
+      ],
+      "default": "shipping"
+    },
+    {
+      "type": "text",
+      "id": "card_1_title",
+      "label": "Title",
+      "default": "Free Shipping"
+    },
+    {
+      "type": "text",
+      "id": "card_1_text",
+      "label": "Text",
+      "default": "On orders over ₹500"
+    },
+    {
+      "type": "url",
+      "id": "card_1_link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Card 2"
+    },
+    {
+      "type": "checkbox",
+      "id": "card_2_show_icon",
+      "label": "Show icon",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "card_2_custom_icon",
+      "label": "Custom icon",
+      "info": "Overrides the selected icon below"
+    },
+    {
+      "type": "select",
+      "id": "card_2_icon",
+      "label": "Icon",
+      "options": [
+        {
+          "value": "shipping",
+          "label": "Shipping"
+        },
+        {
+          "value": "gift",
+          "label": "Gift"
+        },
+        {
+          "value": "tag",
+          "label": "Tag"
+        },
+        {
+          "value": "star",
+          "label": "Star"
+        },
+        {
+          "value": "check",
+          "label": "Check"
+        },
+        {
+          "value": "info",
+          "label": "Info"
+        }
+      ],
+      "default": "gift"
+    },
+    {
+      "type": "text",
+      "id": "card_2_title",
+      "label": "Title",
+      "default": "Special Offer"
+    },
+    {
+      "type": "text",
+      "id": "card_2_text",
+      "label": "Text",
+      "default": "Buy 2 Get 1 Free"
+    },
+    {
+      "type": "url",
+      "id": "card_2_link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Card 3"
+    },
+    {
+      "type": "checkbox",
+      "id": "card_3_show_icon",
+      "label": "Show icon",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "card_3_custom_icon",
+      "label": "Custom icon",
+      "info": "Overrides the selected icon below"
+    },
+    {
+      "type": "select",
+      "id": "card_3_icon",
+      "label": "Icon",
+      "options": [
+        {
+          "value": "shipping",
+          "label": "Shipping"
+        },
+        {
+          "value": "gift",
+          "label": "Gift"
+        },
+        {
+          "value": "tag",
+          "label": "Tag"
+        },
+        {
+          "value": "star",
+          "label": "Star"
+        },
+        {
+          "value": "check",
+          "label": "Check"
+        },
+        {
+          "value": "info",
+          "label": "Info"
+        }
+      ],
+      "default": "star"
+    },
+    {
+      "type": "text",
+      "id": "card_3_title",
+      "label": "Title",
+      "default": "Premium Quality"
+    },
+    {
+      "type": "text",
+      "id": "card_3_text",
+      "label": "Text",
+      "default": "100% Satisfaction Guaranteed"
+    },
+    {
+      "type": "url",
+      "id": "card_3_link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#FF6602"
+    },
+    {
+      "type": "color",
+      "id": "card_background_color",
+      "label": "Card background",
+      "default": "#FF6602"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "separator_color",
+      "label": "Separator color",
+      "default": "rgba(255, 255, 255, 0.2)"
+    },
+    {
+      "type": "range",
+      "id": "padding_vertical",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Vertical padding",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "card_padding",
+      "min": 4,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Card padding",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "min": 14,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Icon size",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "min": 11,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Title size",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "min": 10,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Text size",
+      "default": 11
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "range",
+      "id": "animation_speed",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "s",
+      "label": "Animation speed",
+      "default": 30
+    }
+  ],
+  "presets": [
+    {
+      "name": "Moving announcement bar"
+    }
+  ]
+}
+{% endschema %}

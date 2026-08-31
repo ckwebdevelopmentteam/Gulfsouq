@@ -1,0 +1,123 @@
+<script>
+  (() => {
+    const loadedAt = performance.now();
+
+    const sendMetric = (extra = {}) => {
+      const userId = localStorage.getItem('flexy_user_id');
+
+      fetch('https://grade.flexype.net/api/v1/metric', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          kind: 'checkout_init_ftn_0',
+          data: {
+            ...(userId && { user_id: userId }),
+            ...(window?.flexypeRegion && {
+              country: window.flexypeRegion.country,
+            }),
+            location: window?.top?.location ?? window?.location,
+          },
+          category: 'checkout:fe:engg',
+          platform: 'checkout:js',
+          merchant_id: window?.flexypeMid,
+          timestamp: Date.now(),
+          team: 'checkout_frontend',
+          time_to_click: +((performance.now() - loadedAt) / 1000).toFixed(3),
+          ...extra,
+        }),
+      }).then(() => (window.location.href = '/checkout'));
+    };
+
+    // main executor
+    const runFlexy = (btn) => {
+      const dialogs = document.querySelectorAll('dialog[ref="dialog"]');
+
+      dialogs.forEach((dialog) => {
+        if (dialog.open) {
+          dialog.close();
+        }
+      });
+      const type = btn.getAttribute('data-flexy-type') || 'checkout';
+      try {
+        if (type === 'checkout') {
+          if (typeof window.openFlexyCheckout === 'function') window.openFlexyCheckout();
+          else sendMetric({ error: 'openFlexyCheckout not defined', type });
+        } else if (type === 'buynow') {
+          if (typeof window.handleFlexyBuyNow === 'function') window.handleFlexyBuyNow(btn);
+          else sendMetric({ error: 'handleFlexyBuyNow not defined', type });
+        } else {
+          sendMetric({ error: 'unknown type', type });
+        }
+      } catch (err) {
+        sendMetric({ error: String((err && err.message) || err), type });
+      }
+    };
+
+    // capture-phase global handler: runs before most others and blocks them
+    const clickCapture = (e) => {
+      const btn = e.target && e.target.closest && e.target.closest('.flexy-btn');
+      if (!btn) return;
+      if (!e.isTrusted) return;
+      if (btn.disabled) return;
+
+      // block everyone else as much as possible
+      e.stopImmediatePropagation();
+      e.stopPropagation();
+      e.preventDefault();
+
+      runFlexy(btn);
+    };
+
+    document.addEventListener('click', clickCapture, true);
+
+    // optional hardening: make element.onclick setter a no-op for ALL .flexy-btn
+    const patchOnclick = (el) => {
+      try {
+        Object.defineProperty(el, 'onclick', {
+          configurable: false,
+          enumerable: false,
+          set() {},
+          get() {
+            return null;
+          },
+        });
+      } catch (_) {}
+    };
+
+    // patch existing buttons now
+    document.querySelectorAll('.flexy-btn').forEach(patchOnclick);
+
+    // patch future buttons as they appear
+    const mo = new MutationObserver((mutList) => {
+      for (const m of mutList) {
+        for (const node of m.addedNodes) {
+          if (node.nodeType !== 1) continue;
+          if (node.matches?.('.flexy-btn')) patchOnclick(node);
+          node.querySelectorAll?.('.flexy-btn').forEach(patchOnclick);
+        }
+      }
+    });
+    mo.observe(document.documentElement, { childList: true, subtree: true });
+  })();
+
+  (() => {
+    const handleBuyNowState = () => {
+      const addToCart = document.querySelector("button[name='add']");
+      if (!addToCart) return;
+
+      const flexyBuyNow = addToCart.parentElement?.querySelector(".flexy-btn[data-flexy-type='buynow']");
+      if (!flexyBuyNow) return;
+
+      if (addToCart.disabled) flexyBuyNow.setAttribute('disabled', true);
+      else flexyBuyNow.removeAttribute('disabled');
+    };
+
+    handleBuyNowState();
+
+    document.addEventListener('DOMContentLoaded', handleBuyNowState);
+
+    const observer = new MutationObserver(handleBuyNowState);
+    observer.observe(document.body, { childList: true, subtree: true });
+  })();
+</script>
+

@@ -1,0 +1,401 @@
+{% doc %}
+  @prompt
+    Create a Shopify Online Store 2.0 full-width hero slider section in Liquid.
+    
+    Requirements:
+    
+    Multiple slides (blocks)
+    
+    Desktop image picker (16:9)
+    
+    Mobile image picker (4:5)
+    
+    Link field per slide (URL redirect to product/collection/custom page)
+    
+    Auto-play on/off toggle
+    
+    Auto-play speed control
+    
+    Show/hide arrows and dots
+    
+    Full-width layout (100% page width)
+    
+    Centered text overlay with optional heading, text & button
+    
+    Overlay opacity control for readability
+    
+    Desktop uses desktop image, mobile uses mobile image
+    
+    Output valid Shopify section Liquid with schema, remove text ,headings, dots, arrows and rectangles, banners should be full width to page in both device, both sides of banners should be fit into pages, Update this hero slider section so it is full page width on both desktop and mobile.
+    Remove any container or max-width so the slider stretches from edge to edge of the screen.
+    The slide image should fill 100% width (no side gaps), keep desktop aspect ratio 16:9 and mobile 4:5.
+    Center the content on top of the image and keep only small inner padding, not outer margins., Set the hero slider layout to Full width / Fluid and disable any boxed or container width so the banner touches both left and right screen edges on all devices., Remove any top margin and top padding from the hero slider section.
+    Set margin-top: 0 and padding-top: 0 so the banner starts immediately below the header with no gap.
+{% enddoc %}
+
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-hero-slider-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .ai-hero-slider__slides-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%;
+    margin: 0;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-hero-slider__slides-{{ ai_gen_id }} {
+      padding-bottom: 125%;
+    }
+  }
+
+  .ai-hero-slider__slide-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.6s ease-in-out, visibility 0.6s ease-in-out;
+  }
+
+  .ai-hero-slider__slide-{{ ai_gen_id }}.active {
+    opacity: 1;
+    visibility: visible;
+    z-index: 1;
+  }
+
+  .ai-hero-slider__slide-link-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    text-decoration: none;
+  }
+
+  .ai-hero-slider__image-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .ai-hero-slider__image-mobile-{{ ai_gen_id }} {
+    display: none;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-hero-slider__image-desktop-{{ ai_gen_id }} {
+      display: none;
+    }
+
+    .ai-hero-slider__image-mobile-{{ ai_gen_id }} {
+      display: block;
+    }
+  }
+
+  .ai-hero-slider__placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ai-hero-slider__placeholder-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    max-width: 500px;
+    max-height: 500px;
+  }
+{% endstyle %}
+
+<hero-slider-{{ ai_gen_id }}
+  class="ai-hero-slider-{{ ai_gen_id }}"
+  data-autoplay="{{ block.settings.autoplay }}"
+  data-autoplay-speed="{{ block.settings.autoplay_speed }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-hero-slider__slides-{{ ai_gen_id }}">
+    {% for i in (1..5) %}
+      {% liquid
+        assign desktop_image_key = 'slide_' | append: i | append: '_desktop_image'
+        assign mobile_image_key = 'slide_' | append: i | append: '_mobile_image'
+        assign slide_link_key = 'slide_' | append: i | append: '_link'
+
+        assign desktop_image = block.settings[desktop_image_key]
+        assign mobile_image = block.settings[mobile_image_key]
+        assign slide_link = block.settings[slide_link_key]
+
+        assign has_content = false
+        if desktop_image != blank or mobile_image != blank
+          assign has_content = true
+        endif
+      %}
+
+      {% if has_content %}
+        <div
+          class="ai-hero-slider__slide-{{ ai_gen_id }} {% if forloop.first %}active{% endif %}"
+          data-slide-index="{{ i }}"
+        >
+          {% if slide_link != blank %}
+            <a href="{{ slide_link }}" class="ai-hero-slider__slide-link-{{ ai_gen_id }}">
+          {% else %}
+            <div class="ai-hero-slider__slide-link-{{ ai_gen_id }}">
+          {% endif %}
+
+            {% if desktop_image %}
+              <img
+                src="{{ desktop_image | image_url: width: 2000 }}"
+                alt="{{ desktop_image.alt | escape }}"
+                loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                width="{{ desktop_image.width }}"
+                height="{{ desktop_image.height }}"
+                class="ai-hero-slider__image-{{ ai_gen_id }} ai-hero-slider__image-desktop-{{ ai_gen_id }}"
+              >
+            {% else %}
+              <div class="ai-hero-slider__image-{{ ai_gen_id }} ai-hero-slider__image-desktop-{{ ai_gen_id }} ai-hero-slider__placeholder-{{ ai_gen_id }}">
+                {{ 'hero-apparel-1' | placeholder_svg_tag }}
+              </div>
+            {% endif %}
+
+            {% if mobile_image %}
+              <img
+                src="{{ mobile_image | image_url: width: 1000 }}"
+                alt="{{ mobile_image.alt | escape }}"
+                loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                width="{{ mobile_image.width }}"
+                height="{{ mobile_image.height }}"
+                class="ai-hero-slider__image-{{ ai_gen_id }} ai-hero-slider__image-mobile-{{ ai_gen_id }}"
+              >
+            {% elsif desktop_image %}
+              <img
+                src="{{ desktop_image | image_url: width: 1000 }}"
+                alt="{{ desktop_image.alt | escape }}"
+                loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                width="{{ desktop_image.width }}"
+                height="{{ desktop_image.height }}"
+                class="ai-hero-slider__image-{{ ai_gen_id }} ai-hero-slider__image-mobile-{{ ai_gen_id }}"
+              >
+            {% else %}
+              <div class="ai-hero-slider__image-{{ ai_gen_id }} ai-hero-slider__image-mobile-{{ ai_gen_id }} ai-hero-slider__placeholder-{{ ai_gen_id }}">
+                {{ 'hero-apparel-1' | placeholder_svg_tag }}
+              </div>
+            {% endif %}
+
+          {% if slide_link != blank %}
+            </a>
+          {% else %}
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</hero-slider-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class HeroSlider{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.currentSlide = 1;
+        this.autoplayInterval = null;
+      }
+
+      connectedCallback() {
+        this.slides = this.querySelectorAll('.ai-hero-slider__slide-{{ ai_gen_id }}');
+        this.autoplay = this.dataset.autoplay === 'true';
+        this.autoplaySpeed = parseInt(this.dataset.autoplaySpeed) * 1000;
+
+        if (this.slides.length <= 1) {
+          return;
+        }
+
+        if (this.autoplay) {
+          this.startAutoplay();
+        }
+      }
+
+      goToSlide(slideIndex) {
+        this.slides.forEach((slide) => {
+          slide.classList.remove('active');
+        });
+
+        const targetSlide = this.querySelector(`.ai-hero-slider__slide-{{ ai_gen_id }}[data-slide-index="${slideIndex}"]`);
+        if (targetSlide) {
+          targetSlide.classList.add('active');
+        }
+
+        this.currentSlide = slideIndex;
+      }
+
+      goToNextSlide() {
+        const slideIndices = Array.from(this.slides).map(slide => parseInt(slide.dataset.slideIndex));
+        const currentIndex = slideIndices.indexOf(this.currentSlide);
+        const nextIndex = currentIndex + 1 >= slideIndices.length ? 0 : currentIndex + 1;
+        this.goToSlide(slideIndices[nextIndex]);
+      }
+
+      startAutoplay() {
+        this.autoplayInterval = setInterval(() => {
+          this.goToNextSlide();
+        }, this.autoplaySpeed);
+      }
+
+      stopAutoplay() {
+        if (this.autoplayInterval) {
+          clearInterval(this.autoplayInterval);
+          this.autoplayInterval = null;
+        }
+      }
+
+      disconnectedCallback() {
+        this.stopAutoplay();
+      }
+    }
+
+    customElements.define('hero-slider-{{ ai_gen_id }}', HeroSlider{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Hero slider",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Slider settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Auto-play slides",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "unit": "sec",
+      "label": "Auto-play speed",
+      "default": 5
+    },
+    {
+      "type": "header",
+      "content": "Slide 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "slide_1_desktop_image",
+      "label": "Desktop image"
+    },
+    {
+      "type": "image_picker",
+      "id": "slide_1_mobile_image",
+      "label": "Mobile image"
+    },
+    {
+      "type": "url",
+      "id": "slide_1_link",
+      "label": "Slide link"
+    },
+    {
+      "type": "header",
+      "content": "Slide 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "slide_2_desktop_image",
+      "label": "Desktop image"
+    },
+    {
+      "type": "image_picker",
+      "id": "slide_2_mobile_image",
+      "label": "Mobile image"
+    },
+    {
+      "type": "url",
+      "id": "slide_2_link",
+      "label": "Slide link"
+    },
+    {
+      "type": "header",
+      "content": "Slide 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "slide_3_desktop_image",
+      "label": "Desktop image"
+    },
+    {
+      "type": "image_picker",
+      "id": "slide_3_mobile_image",
+      "label": "Mobile image"
+    },
+    {
+      "type": "url",
+      "id": "slide_3_link",
+      "label": "Slide link"
+    },
+    {
+      "type": "header",
+      "content": "Slide 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "slide_4_desktop_image",
+      "label": "Desktop image"
+    },
+    {
+      "type": "image_picker",
+      "id": "slide_4_mobile_image",
+      "label": "Mobile image"
+    },
+    {
+      "type": "url",
+      "id": "slide_4_link",
+      "label": "Slide link"
+    },
+    {
+      "type": "header",
+      "content": "Slide 5"
+    },
+    {
+      "type": "image_picker",
+      "id": "slide_5_desktop_image",
+      "label": "Desktop image"
+    },
+    {
+      "type": "image_picker",
+      "id": "slide_5_mobile_image",
+      "label": "Mobile image"
+    },
+    {
+      "type": "url",
+      "id": "slide_5_link",
+      "label": "Slide link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero slider"
+    }
+  ]
+}
+{% endschema %}

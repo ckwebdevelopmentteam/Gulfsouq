@@ -1,0 +1,276 @@
+{% doc %}
+  @prompt
+    Create a full-width statistics strip section with a dark navy background #0C3E61.
+    It must show 4 centered metrics in one row on desktop and 2 per row on mobile.
+    Use gold #BE982D for the numbers and white text for the labels.
+    
+    Exact content:
+    
+    50,000+ – Happy Customers
+    
+    4.9/5 – Average Rating
+    
+    100% – Genuine Products
+    
+    500+ – Cities Delivered
+    
+    The section must stretch edge-to-edge, no boxed container, no slider, no JavaScript – just lightweight HTML and CSS., Make this statistics strip 100% FULL WIDTH (edge-to-edge) across the entire screen:
+    
+    The dark navy background must touch both the left and right edges
+    
+    Remove any container, max-width, boxed layout, or page padding
+    
+    The numbers and labels can stay centered, but the background must stretch full screen
+    
+    Do NOT add sliders, animations, or JavaScript
+    
+    Must work perfectly on:
+    
+    Desktop
+    
+    Tablet
+    
+    Mobile
+    
+    Must remain lightweight, fast, and SEO-safe
+    
+    ✅ Keep all text, colors, layout, and spacing exactly the same
+    ✅ Only change it to TRUE full width
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-stats-strip-{{ ai_gen_id }} {
+    background-color: {{ block.settings.background_color }};
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    padding: {{ block.settings.padding_vertical }}px 20px;
+  }
+
+  .ai-stats-strip-container-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .ai-stats-item-{{ ai_gen_id }} {
+    text-align: center;
+  }
+
+  .ai-stats-number-{{ ai_gen_id }} {
+    color: {{ block.settings.number_color }};
+    font-size: {{ block.settings.number_size }}px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0 0 8px 0;
+  }
+
+  .ai-stats-label-{{ ai_gen_id }} {
+    color: {{ block.settings.label_color }};
+    font-size: {{ block.settings.label_size }}px;
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-stats-strip-container-{{ ai_gen_id }} {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px 20px;
+    }
+
+    .ai-stats-number-{{ ai_gen_id }} {
+      font-size: {{ block.settings.number_size_mobile }}px;
+    }
+
+    .ai-stats-label-{{ ai_gen_id }} {
+      font-size: {{ block.settings.label_size_mobile }}px;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-stats-strip-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-stats-strip-container-{{ ai_gen_id }}">
+    <div class="ai-stats-item-{{ ai_gen_id }}">
+      <div class="ai-stats-number-{{ ai_gen_id }}">{{ block.settings.stat_1_number }}</div>
+      <div class="ai-stats-label-{{ ai_gen_id }}">{{ block.settings.stat_1_label }}</div>
+    </div>
+
+    <div class="ai-stats-item-{{ ai_gen_id }}">
+      <div class="ai-stats-number-{{ ai_gen_id }}">{{ block.settings.stat_2_number }}</div>
+      <div class="ai-stats-label-{{ ai_gen_id }}">{{ block.settings.stat_2_label }}</div>
+    </div>
+
+    <div class="ai-stats-item-{{ ai_gen_id }}">
+      <div class="ai-stats-number-{{ ai_gen_id }}">{{ block.settings.stat_3_number }}</div>
+      <div class="ai-stats-label-{{ ai_gen_id }}">{{ block.settings.stat_3_label }}</div>
+    </div>
+
+    <div class="ai-stats-item-{{ ai_gen_id }}">
+      <div class="ai-stats-number-{{ ai_gen_id }}">{{ block.settings.stat_4_number }}</div>
+      <div class="ai-stats-label-{{ ai_gen_id }}">{{ block.settings.stat_4_label }}</div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Statistics strip",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Statistic 1"
+    },
+    {
+      "type": "text",
+      "id": "stat_1_number",
+      "label": "Number",
+      "default": "50,000+"
+    },
+    {
+      "type": "text",
+      "id": "stat_1_label",
+      "label": "Label",
+      "default": "Happy Customers"
+    },
+    {
+      "type": "header",
+      "content": "Statistic 2"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_number",
+      "label": "Number",
+      "default": "4.9/5"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_label",
+      "label": "Label",
+      "default": "Average Rating"
+    },
+    {
+      "type": "header",
+      "content": "Statistic 3"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_number",
+      "label": "Number",
+      "default": "100%"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_label",
+      "label": "Label",
+      "default": "Genuine Products"
+    },
+    {
+      "type": "header",
+      "content": "Statistic 4"
+    },
+    {
+      "type": "text",
+      "id": "stat_4_number",
+      "label": "Number",
+      "default": "500+"
+    },
+    {
+      "type": "text",
+      "id": "stat_4_label",
+      "label": "Label",
+      "default": "Cities Delivered"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#0C3E61"
+    },
+    {
+      "type": "color",
+      "id": "number_color",
+      "label": "Number",
+      "default": "#BE982D"
+    },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Label",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "number_size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Number size",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "label_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Label size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "number_size_mobile",
+      "min": 16,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Number size (mobile)",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "label_size_mobile",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Label size (mobile)",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_vertical",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Vertical padding",
+      "default": 40
+    }
+  ],
+  "presets": [
+    {
+      "name": "Statistics strip"
+    }
+  ]
+}
+{% endschema %}

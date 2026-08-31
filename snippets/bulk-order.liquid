@@ -1,0 +1,109 @@
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .bulk-order-marquee {
+            background: #25D366;
+            padding: 1px 0;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+        
+        .marquee-inner {
+            display: flex;
+            width: max-content;
+            animation: marquee-scroll 20s linear infinite;
+        }
+        
+        .marquee-item {
+            display: flex;
+            align-items: center;
+            padding: 0 30px;
+            white-space: nowrap;
+        }
+        
+        .whatsapp-icon {
+            background: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            color: #25D366;
+            font-size: 1.3rem;
+        }
+        
+        .marquee-text {
+            color: white;
+            font-weight: 600;
+            font-size: 1.5rem;
+            letter-spacing: 0.3px;
+        }
+        
+        .marquee-text a {
+            color: white;
+            text-decoration: none;
+            border-bottom: 2px dotted rgba(255,255,255,0.5);
+            transition: all 0.3s ease;
+        }
+        
+        .marquee-text a:hover {
+            color: #075e54;
+            border-bottom-color: #075e54;
+        }
+        
+        @keyframes marquee-scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        @media (max-width: 768px) {
+            .marquee-text {
+                font-size: 1rem;
+            }
+            
+            .marquee-item {
+                padding: 0 20px;
+            }
+        }
+
+       
+        .demo-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+    </style>
+     
+        
+        
+        <div class="bulk-order-marquee">
+            <div class="marquee-inner">
+                <div class="marquee-item">
+                    <div class="whatsapp-icon"><i class="fab fa-whatsapp"></i></div>
+                    <div class="marquee-text">
+                        <strong>For Bulk Orders:</strong> 
+                        <a href="https://wa.me/+917025545444" target="_blank">Click to WhatsApp us on 7025545444</a>
+                    </div>
+                </div>
+                <div class="marquee-item">
+                    <div class="whatsapp-icon"><i class="fab fa-whatsapp"></i></div>
+                    <div class="marquee-text">
+                        <strong>For Bulk Orders:</strong> 
+                        <a href="https://wa.me/+917025545444" target="_blank">Click to WhatsApp us on 7025545444</a>
+                    </div>
+                </div>
+                <div class="marquee-item">
+                    <div class="whatsapp-icon"><i class="fab fa-whatsapp"></i></div>
+                    <div class="marquee-text">
+                        <strong>For Bulk Orders:</strong> 
+                        <a href="https://wa.me/+917025545444" target="_blank">Click to WhatsApp us on 7025545444</a>
+                    </div>
+                </div>
+            </div>
+         
+         
+    </div>

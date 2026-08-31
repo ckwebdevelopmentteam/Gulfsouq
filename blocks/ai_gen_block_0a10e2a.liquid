@@ -1,0 +1,706 @@
+{% doc %}
+  @prompt
+    <section class="gs-story-section">
+      <div class="gs-story-inner">
+        <p class="gs-story-label">OUR STORY</p>
+    
+        <h2 class="gs-story-heading">Bridging the Gulf &amp; India</h2>
+    
+        <div class="gs-story-underline"></div>
+    
+        <div class="gs-story-body">
+          <p>
+            "<span>Gulf Souq was born from a simple yet profound realization: millions of Indian families have deep connections to the Arabian Gulf, yet access to authentic Gulf products in India remains limited.</span>
+          </p>
+    
+          <p>
+            We set out to change that. Today, Gulf Souq stands as India's premier destination for authentic imported Gulf products – from the sacred Ajwa dates of Madinah to the luxurious attars of Arabia, from premium chocolates to elegant modest wear.
+          </p>
+    
+          <p>
+            Every product is handpicked, every shipment is carefully curated, and every customer is treated like family. Because at Gulf Souq, we're not just selling products – we're delivering a piece of the Gulf to every Indian home."
+          </p>
+        </div>
+    
+        <div class="gs-story-founder">
+          <span class="gs-story-line"></span>
+          <span class="gs-story-founder-text">Gulf Souq Founder</span>
+          <span class="gs-story-line"></span>
+        </div>
+      </div>
+    </section>
+    
+    <style>
+      .gs-story-section {
+        background: #0C3E61;
+        color: #FFFFFF;
+        width: 100%;
+        padding: 60px 16px 70px;
+      }
+    
+      .gs-story-inner {
+        max-width: 900px;
+        margin: 0 auto;
+        text-align: center;
+      }
+    
+      .gs-story-label {
+        margin: 0 0 8px;
+        font-size: 12px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: #BE982D;
+      }
+    
+      .gs-story-heading {
+        margin: 0;
+        font-size: 32px;
+        line-height: 1.25;
+        font-weight: 700;
+      }
+    
+      .gs-story-underline {
+        width: 80px;
+        height: 2px;
+        background: #BE982D;
+        margin: 14px auto 28px;
+      }
+    
+      .gs-story-body p {
+        margin: 0 0 16px;
+        font-size: 15px;
+        line-height: 1.7;
+        color: rgba(255,255,255,0.9);
+      }
+    
+      .gs-story-body p:first-child span::f, Make this “Our Story – Bridging the Gulf & India” section 100% FULL WIDTH (edge-to-edge) across the entire screen:
+    
+    The dark navy background must touch both left and right edges
+    
+    Remove any container, page padding, boxed width, or max-width restriction
+    
+    The content can stay centered, but the background must be full screen
+    
+    Do NOT crop the gradient or background color at any breakpoint
+    
+    Must work perfectly on:
+    
+    Desktop
+    
+    Tablet
+    
+    Mobile
+    
+    Do NOT use sliders, carousels, or JavaScript
+    
+    Keep performance lightweight and SEO-safe
+    
+    ✅ Keep all text, fonts, spacing, and layout exactly the same
+    ✅ Only change the section to be TRUE full width
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-story-section-{{ ai_gen_id }} {
+    background: {{ block.settings.background_color }};
+    color: {{ block.settings.text_color }};
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    padding: {{ block.settings.padding_top }}px 0 {{ block.settings.padding_bottom }}px;
+  }
+
+  .ai-story-inner-{{ ai_gen_id }} {
+    max-width: {{ block.settings.max_width }}px;
+    margin: 0 auto;
+    padding: 0 {{ block.settings.padding_horizontal }}px;
+    text-align: {{ block.settings.text_alignment }};
+  }
+
+  .ai-story-label-{{ ai_gen_id }} {
+    margin: 0 0 8px;
+    font-size: {{ block.settings.label_font_size }}px;
+    letter-spacing: {{ block.settings.label_letter_spacing }}em;
+    text-transform: uppercase;
+    color: {{ block.settings.label_color }};
+  }
+
+  .ai-story-heading-{{ ai_gen_id }} {
+    margin: 0;
+    font-size: {{ block.settings.heading_font_size }}px;
+    line-height: {{ block.settings.heading_line_height }};
+    font-weight: {{ block.settings.heading_font_weight }};
+    color: {{ block.settings.heading_color }};
+  }
+
+  .ai-story-underline-{{ ai_gen_id }} {
+    width: {{ block.settings.underline_width }}px;
+    height: {{ block.settings.underline_height }}px;
+    background: {{ block.settings.underline_color }};
+    margin: {{ block.settings.underline_margin_top }}px auto {{ block.settings.underline_margin_bottom }}px;
+    {% if block.settings.text_alignment == 'left' %}
+      margin-left: 0;
+    {% elsif block.settings.text_alignment == 'right' %}
+      margin-right: 0;
+    {% endif %}
+  }
+
+  .ai-story-body-{{ ai_gen_id }} {
+    margin-top: {{ block.settings.body_margin_top }}px;
+  }
+
+  .ai-story-body-{{ ai_gen_id }} p {
+    margin: 0 0 {{ block.settings.paragraph_spacing }}px;
+    font-size: {{ block.settings.body_font_size }}px;
+    line-height: {{ block.settings.body_line_height }};
+    color: {{ block.settings.body_text_color }};
+  }
+
+  .ai-story-body-{{ ai_gen_id }} p:last-child {
+    margin-bottom: 0;
+  }
+
+  .ai-story-founder-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    gap: {{ block.settings.founder_gap }}px;
+    margin-top: {{ block.settings.founder_margin_top }}px;
+    {% if block.settings.text_alignment == 'left' %}
+      justify-content: flex-start;
+    {% elsif block.settings.text_alignment == 'right' %}
+      justify-content: flex-end;
+    {% else %}
+      justify-content: center;
+    {% endif %}
+  }
+
+  .ai-story-line-{{ ai_gen_id }} {
+    flex: 1;
+    height: {{ block.settings.founder_line_height }}px;
+    background: {{ block.settings.founder_line_color }};
+    max-width: {{ block.settings.founder_line_max_width }}px;
+  }
+
+  .ai-story-founder-text-{{ ai_gen_id }} {
+    font-size: {{ block.settings.founder_font_size }}px;
+    color: {{ block.settings.founder_text_color }};
+    white-space: nowrap;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-story-section-{{ ai_gen_id }} {
+      padding: {{ block.settings.padding_top_mobile }}px 0 {{ block.settings.padding_bottom_mobile }}px;
+    }
+
+    .ai-story-inner-{{ ai_gen_id }} {
+      padding: 0 {{ block.settings.padding_horizontal_mobile }}px;
+    }
+
+    .ai-story-heading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_font_size_mobile }}px;
+    }
+
+    .ai-story-body-{{ ai_gen_id }} p {
+      font-size: {{ block.settings.body_font_size_mobile }}px;
+    }
+
+    .ai-story-line-{{ ai_gen_id }} {
+      max-width: {{ block.settings.founder_line_max_width_mobile }}px;
+    }
+  }
+{% endstyle %}
+
+<section class="ai-story-section-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-story-inner-{{ ai_gen_id }}">
+    {% if block.settings.label != blank %}
+      <p class="ai-story-label-{{ ai_gen_id }}">{{ block.settings.label }}</p>
+    {% endif %}
+
+    {% if block.settings.heading != blank %}
+      <h2 class="ai-story-heading-{{ ai_gen_id }}">{{ block.settings.heading }}</h2>
+    {% endif %}
+
+    {% if block.settings.show_underline %}
+      <div class="ai-story-underline-{{ ai_gen_id }}"></div>
+    {% endif %}
+
+    {% if block.settings.body_text != blank %}
+      <div class="ai-story-body-{{ ai_gen_id }}">
+        {{ block.settings.body_text }}
+      </div>
+    {% endif %}
+
+    {% if block.settings.show_founder_signature %}
+      <div class="ai-story-founder-{{ ai_gen_id }}">
+        {% if block.settings.show_founder_lines %}
+          <span class="ai-story-line-{{ ai_gen_id }}"></span>
+        {% endif %}
+        <span class="ai-story-founder-text-{{ ai_gen_id }}">{{ block.settings.founder_text }}</span>
+        {% if block.settings.show_founder_lines %}
+          <span class="ai-story-line-{{ ai_gen_id }}"></span>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Our story",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Label",
+      "default": "OUR STORY"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Bridging the Gulf & India"
+    },
+    {
+      "type": "richtext",
+      "id": "body_text",
+      "label": "Body text",
+      "default": "<p>Gulf Souq was born from a simple yet profound realization: millions of Indian families have deep connections to the Arabian Gulf, yet access to authentic Gulf products in India remains limited.</p><p>We set out to change that. Today, Gulf Souq stands as India's premier destination for authentic imported Gulf products – from the sacred Ajwa dates of Madinah to the luxurious attars of Arabia, from premium chocolates to elegant modest wear.</p><p>Every product is handpicked, every shipment is carefully curated, and every customer is treated like family. Because at Gulf Souq, we're not just selling products – we're delivering a piece of the Gulf to every Indian home.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Founder signature"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_founder_signature",
+      "label": "Show founder signature",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "founder_text",
+      "label": "Founder text",
+      "default": "Gulf Souq Founder"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_founder_lines",
+      "label": "Show decorative lines",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 600,
+      "max": 1400,
+      "step": 50,
+      "unit": "px",
+      "label": "Maximum width",
+      "default": 900
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#0C3E61"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Label",
+      "default": "#BE982D"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "body_text_color",
+      "label": "Body text",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "underline_color",
+      "label": "Underline",
+      "default": "#BE982D"
+    },
+    {
+      "type": "color",
+      "id": "founder_text_color",
+      "label": "Founder text",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "founder_line_color",
+      "label": "Founder line",
+      "default": "#BE982D"
+    },
+    {
+      "type": "header",
+      "content": "Label style"
+    },
+    {
+      "type": "range",
+      "id": "label_font_size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "label_letter_spacing",
+      "min": 0,
+      "max": 0.5,
+      "step": 0.1,
+      "label": "Letter spacing",
+      "default": 0.2
+    },
+    {
+      "type": "header",
+      "content": "Heading style"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Font size",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_mobile",
+      "min": 18,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Font size (mobile)",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "heading_line_height",
+      "min": 1,
+      "max": 2,
+      "step": 0.1,
+      "label": "Line height",
+      "default": 1.2
+    },
+    {
+      "type": "select",
+      "id": "heading_font_weight",
+      "label": "Font weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        },
+        {
+          "value": "800",
+          "label": "Extra bold"
+        }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "header",
+      "content": "Underline style"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_underline",
+      "label": "Show underline",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "underline_width",
+      "min": 40,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Width",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "underline_height",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "unit": "px",
+      "label": "Height",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "underline_margin_top",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Top spacing",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "underline_margin_bottom",
+      "min": 8,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Bottom spacing",
+      "default": 28
+    },
+    {
+      "type": "header",
+      "content": "Body text style"
+    },
+    {
+      "type": "range",
+      "id": "body_font_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "body_font_size_mobile",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size (mobile)",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "body_line_height",
+      "min": 1,
+      "max": 2.5,
+      "step": 0.1,
+      "label": "Line height",
+      "default": 1.7
+    },
+    {
+      "type": "range",
+      "id": "paragraph_spacing",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Paragraph spacing",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "body_margin_top",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Top spacing",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Founder signature style"
+    },
+    {
+      "type": "range",
+      "id": "founder_font_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "founder_margin_top",
+      "min": 20,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Top spacing",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "founder_gap",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Gap between elements",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "founder_line_height",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "unit": "px",
+      "label": "Line height",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "founder_line_max_width",
+      "min": 50,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "Line max width",
+      "default": 150
+    },
+    {
+      "type": "range",
+      "id": "founder_line_max_width_mobile",
+      "min": 30,
+      "max": 150,
+      "step": 10,
+      "unit": "px",
+      "label": "Line max width (mobile)",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 20,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 20,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 68
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal",
+      "min": 16,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Horizontal padding",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 20,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding (mobile)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 20,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding (mobile)",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal_mobile",
+      "min": 16,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "label": "Horizontal padding (mobile)",
+      "default": 16
+    }
+  ],
+  "presets": [
+    {
+      "name": "Our story"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,30 @@
+{% comment %}
+  Gulf Souq — Dedicated Wishlist Section
+{% endcomment %}
+
+<div class="gs-wishlist-page">
+  <div class="gs-wishlist-header">
+    <h1 class="gs-wishlist-title">MY WISHLIST</h1>
+    <p class="gs-wishlist-subtitle">Save your favorite products and find them anytime.</p>
+  </div>
+
+  <div id="gs-wishlist-container">
+    <div class="gs-wishlist-empty">
+      <h3>Your wishlist is empty</h3>
+      <p>Save products you love by tapping the heart icon while browsing.</p>
+      <a href="{{ routes.all_products_collection_url }}" class="gs-btn-continue">Continue Shopping</a>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Wishlist Page",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Wishlist Page"
+    }
+  ]
+}
+{% endschema %}

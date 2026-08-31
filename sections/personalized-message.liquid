@@ -1,0 +1,449 @@
+
+
+{% if product.title contains 'hamper' or product.title contains 'Hamper' or product.title contains 'HAMPER' %}
+<div class="personalized-message-section">
+  <div class="personalized-message-container">
+    <label for="personalized-message-main" class="message-label">
+      <strong>🎁 {{ section.settings.title | default: "Add a Personal Touch" }}</strong>
+      {% if section.settings.description != blank %}
+        <span class="message-description">{{ section.settings.description }}</span>
+      {% endif %}
+    </label>
+    
+    <textarea 
+      id="personalized-message-main" 
+      name="properties[{{ section.settings.property_name | default: "Personalized Message" }}]" 
+      class="personalized-message-field"
+      placeholder="{{ section.settings.placeholder | default: "Enter your personalized message here..." }}"
+      maxlength="{{ section.settings.max_length | default: 200 }}"
+      rows="{{ section.settings.text_rows | default: 3 }}"
+      {% if section.settings.required %}required{% endif %}></textarea>
+    
+    <div class="character-counter">
+      <span id="char-count-main">0</span>/{{ section.settings.max_length | default: 200 }} characters
+    </div>
+
+    {% if section.settings.show_additional_fields %}
+      <div class="additional-fields">
+        <div class="field-row">
+          {% if section.settings.show_recipient_field %}
+            <div class="field-group">
+              <label for="recipient-name-main">{{ section.settings.recipient_label | default: "For whom?" }}</label>
+              <input 
+                type="text" 
+                id="recipient-name-main" 
+                name="properties[{{ section.settings.recipient_property_name | default: "Recipient Name" }}]" 
+                class="field-input"
+                placeholder="{{ section.settings.recipient_placeholder | default: "e.g., Sarah, Mom, etc." }}"
+                maxlength="50">
+            </div>
+          {% endif %}
+          
+          {% if section.settings.show_occasion_field %}
+            <div class="field-group">
+              <label for="occasion-main">{{ section.settings.occasion_label | default: "Occasion" }}</label>
+              <select id="occasion-main" name="properties[{{ section.settings.occasion_property_name | default: "Occasion" }}]" class="field-select">
+                <option value="">{{ section.settings.occasion_placeholder | default: "Select occasion..." }}</option>
+                <option value="Birthday">Birthday</option>
+                <option value="Anniversary">Anniversary</option>
+                <option value="Wedding">Wedding</option>
+                <option value="Thank You">Thank You</option>
+                <option value="Get Well Soon">Get Well Soon</option>
+                <option value="Congratulations">Congratulations</option>
+                <option value="Holiday">Holiday</option>
+                <option value="Just Because">Just Because</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endif %}
+
+<style>
+  .personalized-message-section {
+    margin: 1.5rem 0;
+    padding: 1.5rem;
+    background: {{ section.settings.background_color | default: "#f8f9fa" }};
+    border-radius: {{ section.settings.border_radius | default: 8 }}px;
+    border: 1px solid {{ section.settings.border_color | default: "#e9ecef" }};
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+
+  .message-label {
+    display: block;
+    margin-bottom: 1rem;
+    color: {{ section.settings.title_color | default: "#2c3e50" }};
+  }
+
+  .message-label strong {
+    font-size: {{ section.settings.title_size | default: 18 }}px;
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  .message-description {
+    font-weight: normal;
+    color: {{ section.settings.description_color | default: "#6c757d" }};
+    font-size: {{ section.settings.description_size | default: 14 }}px;
+  }
+
+  .personalized-message-field {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid {{ section.settings.input_border_color | default: "#ced4da" }};
+    border-radius: {{ section.settings.input_border_radius | default: 6 }}px;
+    font-family: inherit;
+    font-size: {{ section.settings.input_text_size | default: 16 }}px;
+    line-height: 1.5;
+    resize: vertical;
+    transition: border-color 0.2s ease;
+    box-sizing: border-box;
+    background: {{ section.settings.input_background | default: "#ffffff" }};
+    color: {{ section.settings.input_text_color | default: "#333333" }};
+  }
+
+  .personalized-message-field:focus {
+    outline: none;
+    border-color: {{ section.settings.input_focus_color | default: "#007bff" }};
+    box-shadow: 0 0 0 3px {{ section.settings.input_focus_color | default: "#007bff" | color_modify: 'alpha', 0.1 }};
+  }
+
+  .personalized-message-field::placeholder {
+    color: {{ section.settings.placeholder_color | default: "#adb5bd" }};
+    font-style: italic;
+  }
+
+  .character-counter {
+    text-align: right;
+    margin-top: 0.5rem;
+    font-size: 12px;
+    color: {{ section.settings.counter_color | default: "#6c757d" }};
+  }
+
+  .additional-fields {
+    border-top: 1px solid {{ section.settings.border_color | default: "#e9ecef" }};
+    padding-top: 1rem;
+    margin-top: 1rem;
+  }
+
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .field-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .field-group label {
+    font-weight: 600;
+    color: {{ section.settings.title_color | default: "#2c3e50" }};
+    margin-bottom: 0.5rem;
+    font-size: 14px;
+  }
+
+  .field-input,
+  .field-select {
+    padding: 0.75rem;
+    border: 2px solid {{ section.settings.input_border_color | default: "#ced4da" }};
+    border-radius: {{ section.settings.input_border_radius | default: 6 }}px;
+    font-size: 14px;
+    transition: border-color 0.2s ease;
+    box-sizing: border-box;
+    background: {{ section.settings.input_background | default: "#ffffff" }};
+    color: {{ section.settings.input_text_color | default: "#333333" }};
+  }
+
+  .field-input:focus,
+  .field-select:focus {
+    outline: none;
+    border-color: {{ section.settings.input_focus_color | default: "#007bff" }};
+  }
+
+  .field-input::placeholder {
+    color: {{ section.settings.placeholder_color | default: "#adb5bd" }};
+    font-style: italic;
+  }
+
+  @media (max-width: 768px) {
+    .personalized-message-section {
+      margin: 1rem 0;
+      padding: 1rem;
+    }
+
+    .field-row {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+
+    .message-label strong {
+      font-size: 16px;
+    }
+  }
+
+  .char-warning { color: #ffc107 !important; }
+  .char-danger { color: #dc3545 !important; }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const messageField = document.getElementById('personalized-message-main');
+    const charCount = document.getElementById('char-count-main');
+    
+    if (messageField && charCount) {
+      messageField.addEventListener('input', function() {
+        const textLength = this.value.length;
+        const maxLength = {{ section.settings.max_length | default: 200 }};
+        charCount.textContent = textLength;
+        
+        charCount.classList.remove('char-warning', 'char-danger');
+        
+        if (textLength > maxLength * 0.9) {
+          charCount.classList.add('char-danger');
+        } else if (textLength > maxLength * 0.75) {
+          charCount.classList.add('char-warning');
+        }
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Personalized Message",
+  "tag": "section",
+  "class": "personalized-message-customizer",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Main Settings"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Add a Personal Touch"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Write a special message, name, or wish for this item (optional)"
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Placeholder Text",
+      "default": "Enter your personalized message here..."
+    },
+    {
+      "type": "text",
+      "id": "property_name",
+      "label": "Property Name (appears in orders)",
+      "default": "Personalized Message"
+    },
+    {
+      "type": "range",
+      "id": "max_length",
+      "label": "Maximum Characters",
+      "min": 50,
+      "max": 300,
+      "step": 25,
+      "default": 200
+    },
+    {
+      "type": "range",
+      "id": "text_rows",
+      "label": "Text Area Height",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "checkbox",
+      "id": "required",
+      "label": "Make field required",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Additional Fields"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_additional_fields",
+      "label": "Show additional fields",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_recipient_field",
+      "label": "Show recipient name field",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "recipient_label",
+      "label": "Recipient field label",
+      "default": "For whom?"
+    },
+    {
+      "type": "text",
+      "id": "recipient_placeholder",
+      "label": "Recipient placeholder",
+      "default": "e.g., Sarah, Mom, etc."
+    },
+    {
+      "type": "text",
+      "id": "recipient_property_name",
+      "label": "Recipient property name",
+      "default": "Recipient Name"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_occasion_field",
+      "label": "Show occasion field",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "occasion_label",
+      "label": "Occasion field label",
+      "default": "Occasion"
+    },
+    {
+      "type": "text",
+      "id": "occasion_placeholder",
+      "label": "Occasion placeholder",
+      "default": "Select occasion..."
+    },
+    {
+      "type": "text",
+      "id": "occasion_property_name",
+      "label": "Occasion property name",
+      "default": "Occasion"
+    },
+    {
+      "type": "header",
+      "content": "Colors & Styling"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#f8f9fa"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#e9ecef"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#2c3e50"
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description Color",
+      "default": "#6c757d"
+    },
+    {
+      "type": "color",
+      "id": "input_background",
+      "label": "Input Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "input_border_color",
+      "label": "Input Border Color",
+      "default": "#ced4da"
+    },
+    {
+      "type": "color",
+      "id": "input_focus_color",
+      "label": "Input Focus Color",
+      "default": "#007bff"
+    },
+    {
+      "type": "color",
+      "id": "input_text_color",
+      "label": "Input Text Color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "placeholder_color",
+      "label": "Placeholder Color",
+      "default": "#adb5bd"
+    },
+    {
+      "type": "color",
+      "id": "counter_color",
+      "label": "Character Counter Color",
+      "default": "#6c757d"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border Radius",
+      "min": 0,
+      "max": 15,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "input_border_radius",
+      "label": "Input Border Radius",
+      "min": 0,
+      "max": 12,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title Font Size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "description_size",
+      "label": "Description Font Size",
+      "min": 12,
+      "max": 16,
+      "step": 1,
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "input_text_size",
+      "label": "Input Text Size",
+      "min": 14,
+      "max": 18,
+      "step": 1,
+      "default": 16
+    }
+  ],
+  "presets": [
+    {
+      "name": "Personalized Message"
+    }
+  ]
+}
+{% endschema %}

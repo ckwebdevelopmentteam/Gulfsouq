@@ -1,0 +1,646 @@
+<style>
+/* ── GulfSouq Recently Viewed ─────────────────────────────── */
+.gs-rec-section {
+  padding: 28px 0;
+  border-top: 1px solid #e8e3d5;
+  font-family: inherit;
+}
+.gs-rec-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.gs-rec-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0;
+  font-family: inherit;
+}
+.gs-rec-view-all {
+  font-size: 12px;
+  color: #c9a840;
+  text-decoration: none;
+  flex-shrink: 0;
+  margin-left: 12px;
+}
+
+/* Grid — 5 columns desktop */
+.gs-rec-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+
+/* Card */
+.gs-rec-card {
+  background: #ffffff;
+  border: 1px solid #e8e3d5;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+.gs-rec-card:hover {
+  border-color: #c9a840;
+  transform: translateY(-2px);
+}
+
+/* Image block */
+.gs-rec-img {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  background: #faf9f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.gs-rec-img img {
+  width: 85%;
+  height: 85%;
+  object-fit: contain;
+  transition: transform 0.3s;
+  display: block;
+}
+.gs-rec-card:hover .gs-rec-img img {
+  transform: scale(1.05);
+}
+
+/* Badges */
+.gs-badge-sale {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: #e05252;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 20px;
+  line-height: 1.2;
+  pointer-events: none;
+}
+.gs-badge-stock {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #fff8ec;
+  color: #9a7a1a;
+  border: 1px solid #f5dea0;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 20px;
+  line-height: 1.2;
+  pointer-events: none;
+}
+
+/* Wishlist button */
+.gs-wish {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(255, 255, 255, 0.85);
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #ccc;
+  transition: color 0.15s;
+  padding: 0;
+}
+.gs-wish:hover { color: #e05252; }
+
+/* Info block */
+.gs-rec-info {
+  padding: 10px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+}
+.gs-rec-name {
+  font-size: 12px;
+  color: #444;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin: 0 0 4px;
+}
+.gs-rec-price {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.gs-rec-price-sale {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+.gs-rec-price-compare {
+  font-size: 11px;
+  color: #aaa;
+  text-decoration: line-through;
+}
+
+/* Quick Add button */
+.gs-quick-add {
+  margin-top: auto;
+  width: 100%;
+  padding: 7px 0;
+  background: transparent;
+  border: 1px solid #1a1a2e;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #1a1a2e;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  line-height: 1;
+}
+.gs-quick-add:hover {
+  background: #1a1a2e;
+  color: #fff;
+}
+.gs-quick-add.gs-added {
+  background: #3dbe6e;
+  border-color: #3dbe6e;
+  color: #fff;
+  cursor: default;
+}
+
+/* Skeleton loading cards */
+@keyframes gs-shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
+}
+.gs-rec-skel {
+  border-radius: 12px;
+  border: 1px solid #e8e3d5;
+  overflow: hidden;
+  background: #faf9f5;
+}
+.gs-rec-skel-img {
+  aspect-ratio: 1 / 1;
+  background: linear-gradient(90deg, #f0ede6 25%, #e8e3d5 50%, #f0ede6 75%);
+  background-size: 800px 100%;
+  animation: gs-shimmer 1.4s infinite linear;
+}
+.gs-rec-skel-body {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.gs-rec-skel-line {
+  height: 10px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #f0ede6 25%, #e8e3d5 50%, #f0ede6 75%);
+  background-size: 800px 100%;
+  animation: gs-shimmer 1.4s infinite linear;
+}
+.gs-rec-skel-line.gs-short { width: 55%; }
+.gs-rec-skel-btn {
+  height: 30px;
+  margin-top: 4px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #f0ede6 25%, #e8e3d5 50%, #f0ede6 75%);
+  background-size: 800px 100%;
+  animation: gs-shimmer 1.4s infinite linear;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .gs-rec-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 640px) {
+  .gs-rec-grid { grid-template-columns: repeat(2, 1fr); }
+  .gs-rec-title { font-size: 17px; }
+}
+
+/* ── Section-scoped overrides: beat the theme's global button{} rules ── */
+#shopify-section-{{ section.id }} .gs-quick-add {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  width: 100% !important;
+  margin-top: auto !important;
+  padding: 7px 0 !important;
+  background: transparent !important;
+  border: 1px solid #1a1a2e !important;
+  border-radius: 8px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  line-height: 1 !important;
+  color: #1a1a2e !important;
+  font-family: inherit !important;
+  cursor: pointer !important;
+  transition: background 0.15s, color 0.15s, border-color 0.15s !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  box-shadow: none !important;
+}
+#shopify-section-{{ section.id }} .gs-quick-add:hover {
+  background: #1a1a2e !important;
+  color: #fff !important;
+  border-color: #1a1a2e !important;
+}
+#shopify-section-{{ section.id }} .gs-quick-add.gs-added {
+  background: #3dbe6e !important;
+  border-color: #3dbe6e !important;
+  color: #fff !important;
+  cursor: default !important;
+}
+#shopify-section-{{ section.id }} .gs-wish {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  position: absolute !important;
+  top: 8px !important;
+  right: 8px !important;
+  width: 28px !important;
+  height: 28px !important;
+  min-width: unset !important;
+  max-width: unset !important;
+  min-height: unset !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: rgba(255,255,255,0.85) !important;
+  border: none !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #ccc !important;
+  cursor: pointer !important;
+  box-shadow: none !important;
+  text-transform: none !important;
+}
+#shopify-section-{{ section.id }} .gs-wish:hover {
+  color: #e05252 !important;
+  background: rgba(255,255,255,0.95) !important;
+}
+/* Kill the theme's pseudo-element background layer on all custom buttons */
+#shopify-section-{{ section.id }} .gs-quick-add:before,
+#shopify-section-{{ section.id }} .gs-quick-add:after,
+#shopify-section-{{ section.id }} .gs-wish:before,
+#shopify-section-{{ section.id }} .gs-wish:after {
+  display: none !important;
+  content: none !important;
+  background: none !important;
+}
+</style>
+
+<div class="m6tb static section-width-{{ section.settings.width }}">
+  <div
+    id="gs-rv-{{ section.id }}"
+    data-limit="{{ section.settings.number_of_items }}"
+    data-show-quick-add="{{ section.settings.show_quick_add }}"
+  >
+    <article class="gs-rec-section">
+
+      <div class="gs-rec-header">
+        {%- if section.settings.title != blank -%}
+          <h2 class="gs-rec-title">{{ section.settings.title | strip_html }}</h2>
+        {%- endif -%}
+        {%- if section.settings.show_view_all -%}
+          {%- assign view_all_href = section.settings.view_all_url | default: routes.collections_url -%}
+          <a href="{{ view_all_href }}" class="gs-rec-view-all">View all →</a>
+        {%- endif -%}
+      </div>
+
+      <div class="gs-rec-grid" id="gs-rv-grid-{{ section.id }}">
+        {%- for i in (1..5) -%}
+          <div class="gs-rec-skel">
+            <div class="gs-rec-skel-img"></div>
+            <div class="gs-rec-skel-body">
+              <div class="gs-rec-skel-line"></div>
+              <div class="gs-rec-skel-line gs-short"></div>
+              <div class="gs-rec-skel-btn"></div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+
+    </article>
+  </div>
+</div>
+
+<style>
+  #shopify-section-{{ section.id }} { position: relative; z-index: {{ section.settings.fix_zindex }}!important; }
+  @media only screen and (min-width: 47.5em) {
+    #shopify-section-{{ section.id }} { margin-bottom: {{ section.settings.spacing_desktop | minus: 22 }}px; }
+  }
+  @media only screen and (max-width: 47.5em) {
+    #shopify-section-{{ section.id }} { margin-bottom: {{ section.settings.spacing_mobile | minus: -26 }}px; }
+  }
+</style>
+
+<script>
+(function () {
+  var sectionEl = document.getElementById('shopify-section-{{ section.id }}');
+  var wrap = document.getElementById('gs-rv-{{ section.id }}');
+  var grid = document.getElementById('gs-rv-grid-{{ section.id }}');
+  if (!wrap || !grid) return;
+
+  var limit = parseInt(wrap.dataset.limit, 10) || 5;
+  var showQuickAdd = wrap.dataset.showQuickAdd === 'true';
+
+  function gs_money(cents) {
+    if (!cents) return '₹0';
+    return '₹' + Math.round(cents / 100).toLocaleString('en-IN');
+  }
+
+  function escAttr(str) {
+    return String(str || '').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+  }
+
+  function buildCard(p) {
+    var variants = p.variants || [];
+    var fv = variants[0];
+    var price = fv ? fv.price : (p.price || 0);
+    var compareAt = fv ? fv.compare_at_price : p.compare_at_price;
+    var qty = fv ? (fv.inventory_quantity || 0) : 0;
+    var available = p.available;
+    var onSale = compareAt && compareAt > price;
+    var savingsPct = onSale ? Math.round((compareAt - price) * 100 / compareAt) : 0;
+    var showStockBadge = qty <= 5 && qty > 0 && available;
+    var isSingleVariant = variants.length === 1;
+    var img = p.featured_image;
+    var imgUrl = img ? ('https:' + img).split('?')[0] + '?width=400' : '';
+    var productUrl = p.url || ('/products/' + p.handle);
+
+    var badgeHtml = onSale
+      ? '<span class="gs-badge-sale">&#x2212;' + savingsPct + '%</span>'
+      : '';
+
+    var overlayHtml = showStockBadge
+      ? '<span class="gs-badge-stock">Only ' + qty + ' left</span>'
+      : '<button class="gs-wish" aria-label="Add to wishlist" data-product-id="' + p.id + '">'
+          + '<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">'
+          + '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>'
+          + '</svg></button>';
+
+    var priceHtml = '<div class="gs-rec-price">'
+      + '<span class="gs-rec-price-sale">' + gs_money(price) + '</span>'
+      + (onSale ? '<span class="gs-rec-price-compare">' + gs_money(compareAt) + '</span>' : '')
+      + '</div>';
+
+    var quickAddHtml = '';
+    if (showQuickAdd) {
+      if (isSingleVariant && fv && available) {
+        quickAddHtml = '<button class="gs-quick-add"'
+          + ' data-variant-id="' + fv.id + '"'
+          + ' data-product-url="' + escAttr(productUrl) + '"'
+          + ' aria-label="Add to cart">'
+          + '<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">'
+          + '<path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>'
+          + '<line x1="3" y1="6" x2="21" y2="6"/>'
+          + '<path d="M16 10a4 4 0 0 1-8 0"/>'
+          + '</svg> Add to cart</button>';
+      } else {
+        quickAddHtml = '<button class="gs-quick-add"'
+          + ' data-product-url="' + escAttr(productUrl) + '">'
+          + 'Choose options</button>';
+      }
+    }
+
+    return '<div class="gs-rec-card" data-url="' + escAttr(productUrl) + '">'
+      + '<div class="gs-rec-img">'
+      + (imgUrl ? '<img src="' + imgUrl + '" alt="' + escAttr(p.title) + '" width="400" height="400" loading="lazy">' : '')
+      + badgeHtml + overlayHtml
+      + '</div>'
+      + '<div class="gs-rec-info">'
+      + '<p class="gs-rec-name">' + escAttr(p.title) + '</p>'
+      + priceHtml
+      + quickAddHtml
+      + '</div>'
+      + '</div>';
+  }
+
+  function initEvents() {
+    wrap.addEventListener('click', function (e) {
+      var btn = e.target.closest('.gs-quick-add');
+      if (btn) {
+        e.stopPropagation();
+        if (btn.disabled) return;
+        var variantId = btn.dataset.variantId;
+        var productUrl = btn.dataset.productUrl;
+        if (!variantId) { window.location.href = productUrl; return; }
+        var originalHTML = btn.innerHTML;
+        btn.disabled = true;
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: parseInt(variantId, 10), quantity: 1 })
+        })
+        .then(function (r) { if (!r.ok) throw new Error('add failed'); return r.json(); })
+        .then(function () {
+          btn.classList.add('gs-added');
+          btn.innerHTML = '&#x2713; Added';
+          document.dispatchEvent(new CustomEvent('cart:refresh'));
+          setTimeout(function () {
+            btn.classList.remove('gs-added');
+            btn.innerHTML = originalHTML;
+            btn.disabled = false;
+          }, 1800);
+        })
+        .catch(function () { btn.disabled = false; });
+        return;
+      }
+      if (e.target.closest('button')) return;
+      var card = e.target.closest('.gs-rec-card');
+      if (card && card.dataset.url) window.location.href = card.dataset.url;
+    });
+  }
+
+  function render() {
+    var stored;
+    try { stored = JSON.parse(localStorage.getItem('recentlyViewedProduct')); } catch (e) { stored = null; }
+    if (!stored || !stored.length) {
+      if (sectionEl) sectionEl.style.display = 'none';
+      return;
+    }
+
+    // Most recent first, capped to limit
+    var list = stored.slice().reverse().slice(0, limit);
+
+    var results = {};
+    var done = 0;
+
+    function checkDone() {
+      done++;
+      if (done < list.length) return;
+      var html = '';
+      list.forEach(function (item) {
+        var p = results[item.productId];
+        if (p) html += buildCard(p);
+      });
+      if (!html) {
+        if (sectionEl) sectionEl.style.display = 'none';
+        return;
+      }
+      grid.innerHTML = html;
+      initEvents();
+    }
+
+    list.forEach(function (item) {
+      fetch(item.productUrl + '.js')
+        .then(function (r) { return r.json(); })
+        .then(function (p) {
+          results[item.productId] = p;
+          checkDone();
+        })
+        .catch(function () {
+          results[item.productId] = null;
+          checkDone();
+        });
+    });
+  }
+
+  render();
+}());
+</script>
+
+{% schema %}
+{
+  "name": "t:sections.recently_viewed_products.name",
+  "tag": "article",
+  "class": "recently-viewed-products recently-viewed-products-initialized",
+  "disabled_on": {
+    "templates": ["gift_card", "password"],
+    "groups": ["header"]
+  },
+  "settings": [
+    {
+      "type": "range",
+      "id": "number_of_items",
+      "label": "t:sections.recently_viewed_products.settings.number_of_items.label",
+      "info": "t:sections.recently_viewed_products.settings.number_of_items.info",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "t:sections.recently_viewed_products.settings.text_alignment.label",
+      "options": [
+        {
+          "value": "start",
+          "label": "t:sections.recently_viewed_products.settings.text_alignment.options__1.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.recently_viewed_products.settings.text_alignment.options__2.label"
+        }
+      ],
+      "default": "start"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "t:global.layout.width.label",
+      "options": [
+        {
+          "value": "boxed",
+          "label": "t:global.layout.width.options__1.label"
+        },
+        {
+          "value": "wide",
+          "label": "t:global.layout.width.options__2.label"
+        }
+      ],
+      "default": "boxed",
+      "visible_if": "{{ settings.width < 2000 }}"
+    },
+    {
+      "type": "header",
+      "content": "t:global.typography.title.label"
+    },
+    {
+      "type": "richtext",
+      "id": "title",
+      "label": "t:global.typography.title.label",
+      "info": "t:global.typography.title.info",
+      "default": "<h2>Recently viewed</h2>"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show 'View all' link",
+      "default": false
+    },
+    {
+      "type": "url",
+      "id": "view_all_url",
+      "label": "'View all' link URL"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_add",
+      "label": "Show Quick Add button",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:global.spacing.header"
+    },
+    {
+      "id": "spacing_desktop",
+      "type": "range",
+      "label": "t:global.spacing.spacing_desktop.label",
+      "min": -250,
+      "max": 250,
+      "step": 5,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "id": "spacing_mobile",
+      "type": "range",
+      "label": "t:global.spacing.spacing_mobile.label",
+      "min": -250,
+      "max": 250,
+      "step": 5,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "id": "fix_zindex",
+      "type": "range",
+      "label": "t:global.fix_zindex.label",
+      "info": "t:global.fix_zindex.info",
+      "min": 0,
+      "max": 25,
+      "step": 1,
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.recently_viewed_products.presets.name",
+      "category": "t:categories.products"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,26 @@
+{% comment %} 
+  snippets/banner-title.liquid
+  Renders a customizable banner title with badge
+{% endcomment %}
+
+<div class="banner-title__container">
+  <div class="banner-title__header">
+    <h2 class="banner-title__headline">{{ headline }}</h2>
+    {% if badge_text != blank %}
+      <div class="banner-title__badge">{{ badge_text }}</div>
+    {% endif %}
+  </div>
+  
+  {% if subtext != blank %}
+    <p class="banner-title__subtext">{{ subtext }}</p>
+  {% endif %}
+  
+  {% if cta_text != blank %}
+    <a href="{{ cta_link }}" class="banner-title__cta">
+      {{ cta_text }}
+      <svg class="cta-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  {% endif %}
+</div>

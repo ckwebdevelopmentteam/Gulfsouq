@@ -1,0 +1,844 @@
+{
+  "sections": {
+    "section_slideshow_KjVeaW": {
+      "type": "section-slideshow",
+      "blocks": {
+        "slide_FLUXWz": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_Jul_3_2026_06_11_49_PM_1.png",
+            "layout": "background",
+            "overlay_opacity": 0,
+            "color_palette": "scheme-2",
+            "text_position": "align-center text-center",
+            "title": "",
+            "title_underline_style": "none",
+            "text": "",
+            "show_first_link": false,
+            "first_link_text": "Button",
+            "first_link_url": "/",
+            "first_button_style": "primary plain",
+            "show_second_link": false,
+            "second_link_text": "Button",
+            "second_link_url": "",
+            "second_button_style": "secondary plain",
+            "show_overlay_link": true,
+            "overlay_url": "",
+            "image_mobile": "shopify://shop_images/offer_banner_3_b571b92a-7dc4-46de-b214-78f622c6e2a4.png"
+          }
+        },
+        "slide_pW8JRx": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_Jul_3_2026_06_15_56_PM.png",
+            "layout": "background",
+            "overlay_opacity": 0,
+            "color_palette": "scheme-7",
+            "text_position": "align-center text-center",
+            "title": "",
+            "title_underline_style": "none",
+            "text": "",
+            "show_first_link": false,
+            "first_link_text": "Button",
+            "first_link_url": "/",
+            "first_button_style": "primary plain",
+            "show_second_link": false,
+            "second_link_text": "Button",
+            "second_link_url": "",
+            "second_button_style": "secondary plain",
+            "show_overlay_link": true,
+            "overlay_url": "",
+            "image_mobile": "shopify://shop_images/banner_for_web_2.png"
+          }
+        }
+      },
+      "block_order": [
+        "slide_FLUXWz",
+        "slide_pW8JRx"
+      ],
+      "name": "Hero Banner",
+      "settings": {
+        "height": "21/9",
+        "width_banner": "boxed",
+        "width": "boxed",
+        "autoplay": true,
+        "autoplay_seconds": 5,
+        "enable_controls": false,
+        "height_mobile": "adapt",
+        "spacing_desktop": -125,
+        "spacing_mobile": 10,
+        "fix_zindex": 0
+      }
+    },
+    "section_custom_liquid_wUa8M4": {
+      "type": "section-custom-liquid",
+      "name": "Trust Strip",
+      "settings": {
+        "custom_liquid": "<style>\n  .custom-trust-strip {\n    background-color: #ffffff;\n    padding: 0px 0px;\n    width: 100%;\n  }\n  .trust-strip-inner {\n    max-width: 1200px;\n    margin: 0 auto;\n  }\n  .trust-grid {\n    display: grid;\n    grid-template-columns: repeat(4, 1fr); \n    gap: 10px;\n    justify-content: center;\n  }\n  @media (min-width: 768px) {\n    .trust-grid {\n      gap: 30px;\n    }\n  }\n  .trust-item {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    text-align: center;\n  }\n  .trust-icon-box {\n    width: 36px;\n    height: 36px;\n    background-color: #0C3E61; \n    border-radius: 8px;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    margin-bottom: 8px;\n  }\n  .trust-icon-box svg {\n    width: 18px;\n    height: 18px;\n    color: #D4AF37; \n    fill: currentColor;\n  }\n  .trust-heading {\n    font-size: 8px;\n    font-weight: 700;\n    color: #0C3E61;\n    margin: 0 0 2px 0;\n    line-height: 1.2;\n    font-family: inherit;\n  }\n  .trust-subtext {\n    font-size: 9px;\n    color: #0C3E61;\n    opacity: 0.75;\n    margin: 0;\n    line-height: 1.1;\n    display: none;\n  }\n  @media (min-width: 768px) {\n    .custom-trust-strip {\n      padding: 30px 20px;\n    }\n    .trust-icon-box {\n      width: 50px;\n      height: 50px;\n      border-radius: 12px;\n      margin-bottom: 12px;\n      box-shadow: 0 4px 10px rgba(0,0,0,0.1);\n    }\n    .trust-icon-box svg {\n      width: 24px;\n      height: 24px;\n    }\n    .trust-heading {\n      font-size: 15px;\n      margin-bottom: 4px;\n    }\n    .trust-subtext {\n      font-size: 12px;\n      line-height: 1.4;\n      display: block;\n    }\n  }\n  @media (min-width: 380px) and (max-width: 767px) {\n     .trust-subtext { display: block; }\n  }\n</style>\n\n<div class=\"custom-trust-strip\">\n  <div class=\"trust-strip-inner\">\n    <div class=\"trust-grid\">\n      <div class=\"trust-item\">\n        <div class=\"trust-icon-box\">\n          <svg viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z\"/></svg>\n        </div>\n        <h3 class=\"trust-heading\">100% Genuine</h3>\n        <p class=\"trust-subtext\">Authentic Products</p>\n      </div>\n      <div class=\"trust-item\">\n        <div class=\"trust-icon-box\">\n           <svg viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z\"/></svg>\n        </div>\n        <h3 class=\"trust-heading\">Secure Payments</h3>\n        <p class=\"trust-subtext\">Safe Transactions</p>\n      </div>\n      <div class=\"trust-item\">\n        <div class=\"trust-icon-box\">\n           <svg viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z\"/></svg>\n        </div>\n        <h3 class=\"trust-heading\">Express Delivery</h3>\n        <p class=\"trust-subtext\">Fast Shipping</p>\n      </div>\n      <div class=\"trust-item\">\n        <div class=\"trust-icon-box\">\n           <svg viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M12 1a9 9 0 0 0-9 9v7c0 1.66 1.34 3 3 3h3v-8H5v-2c0-3.87 3.13-7 7-7s7 3.13 7 7v2h-4v8h3c1.66 0 3-1.34 3-3v-7a9 9 0 0 0-9-9z\"/></svg>\n        </div>\n        <h3 class=\"trust-heading\">24/7 Support</h3>\n        <p class=\"trust-subtext\">Premium Care</p>\n      </div>\n    </div>\n  </div>\n</div>",
+        "spacing_desktop": 0,
+        "spacing_mobile": 15,
+        "fix_zindex": 0
+      }
+    },
+    "section_featured_products_bDLXTh": {
+      "type": "section-featured-products",
+      "name": "Trending Products",
+      "settings": {
+        "products": [
+          "oud-al-asra-perfume-60ml-long-lasting-luxury-arabic-fragrance",
+          "dry-fruits-mx",
+          "b-c-c-pistachio-kunafa-chocolate-premium-dubai-style-pistachio-filled-chocolate",
+          "sabr-watch-unisex-with-steel-case",
+          "vegitable-dry-mix"
+        ],
+        "layout": "slider",
+        "number_of_items": 5,
+        "text_alignment": "left",
+        "width": "boxed",
+        "title": "<h2>🔥 Trending Products</h2>",
+        "title_underline_style": "none",
+        "text": "<p>Popular picks customers are loving</p>",
+        "show_link": true,
+        "link_text": "View All Products",
+        "link_url": "/collections/all",
+        "button_style": "secondary plain",
+        "enable_quick_buy_desktop": true,
+        "enable_quick_buy_mobile": true,
+        "enable_quick_buy_drawer": false,
+        "enable_quick_buy_qty_selector": true,
+        "enable_color_picker": false,
+        "enable_quick_buy_compact": false,
+        "mobile_layout": "slider",
+        "spacing_desktop": 30,
+        "spacing_mobile": 20,
+        "fix_zindex": 0
+      }
+    },
+    "section_middle_promo_banner": {
+      "type": "section-middle-promo-banner",
+      "settings": {
+        "heading": "BIG SAVINGS ON YOUR FAVORITES!",
+        "subtext": "Exclusive offers on top products this week.",
+        "button_text": "Shop Deals",
+        "button_url": "/collections/all"
+      }
+    },
+    "section_featured_products_TKk83n": {
+      "type": "section-featured-products",
+      "name": "Offers & Special Discounts",
+      "settings": {
+        "products": [
+          "elegant-burgundy-abaya-with-shall-copy",
+          "elegant-plain-beige-gulf-abaya-with-shawl-copy",
+          "teal-and-beige-two-piece-embroidery-abaya-set-with-shawl-copy",
+          "portable-ultrasonic-mesh-nebulizer-machine-for-adults-kids-rechargeable-silent-inhaler-with-mask-mouthpiece",
+          "ahmar-dates"
+        ],
+        "layout": "slider",
+        "number_of_items": 5,
+        "text_alignment": "left",
+        "width": "boxed",
+        "title": "<h2>🏷️ Offers & Special Discounts</h2>",
+        "title_underline_style": "none",
+        "text": "<p>Exclusive deals and discounted products</p>",
+        "show_link": true,
+        "link_text": "Explore All Offers",
+        "link_url": "/collections/all",
+        "button_style": "secondary plain",
+        "enable_quick_buy_desktop": true,
+        "enable_quick_buy_mobile": true,
+        "enable_quick_buy_drawer": false,
+        "enable_quick_buy_qty_selector": true,
+        "enable_color_picker": false,
+        "enable_quick_buy_compact": false,
+        "mobile_layout": "slider",
+        "spacing_desktop": 30,
+        "spacing_mobile": 20,
+        "fix_zindex": 0
+      }
+    },
+    "section_featured_products_hEGAKr": {
+      "type": "section-featured-products",
+      "name": "Today's Top Deals",
+      "settings": {
+        "products": [
+          "b-c-c-pistachio-kunafa-chocolate-premium-dubai-style-pistachio-filled-chocolate",
+          "dry-fruits-mx",
+          "vegitable-dry-mix",
+          "sabr-watch-unisex-with-steel-case",
+          "oud-al-asra-perfume-60ml-long-lasting-luxury-arabic-fragrance"
+        ],
+        "layout": "slider",
+        "number_of_items": 5,
+        "text_alignment": "left",
+        "width": "boxed",
+        "title": "<h2>✨ Today's Top Deals & Best Sellers</h2>",
+        "title_underline_style": "none",
+        "text": "<p>Handpicked top rated items & exclusive offers for you</p>",
+        "show_link": true,
+        "link_text": "View All Deals",
+        "link_url": "/collections/all",
+        "button_style": "secondary plain",
+        "enable_quick_buy_desktop": true,
+        "enable_quick_buy_mobile": true,
+        "enable_quick_buy_drawer": false,
+        "enable_quick_buy_qty_selector": true,
+        "enable_color_picker": false,
+        "enable_quick_buy_compact": false,
+        "mobile_layout": "slider",
+        "spacing_desktop": 30,
+        "spacing_mobile": 20,
+        "fix_zindex": 0
+      }
+    },
+    "section_featured_collection_perfumes": {
+      "type": "section-featured-collection",
+      "name": "Arabic Perfumes & Attars",
+      "settings": {
+        "collection": "athar-and-perfume",
+        "layout": "slider",
+        "limit": 5,
+        "number_of_items": 5,
+        "text_alignment": "left",
+        "width": "boxed",
+        "title": "<h2>Arabic Perfumes & Attars</h2>",
+        "title_underline_style": "none",
+        "text": "<p>Authentic long-lasting luxury Arabian fragrances</p>",
+        "show_link": true,
+        "link_text": "View All Perfumes",
+        "button_style": "secondary plain",
+        "enable_quick_buy_desktop": true,
+        "enable_quick_buy_mobile": true,
+        "enable_quick_buy_drawer": false,
+        "enable_quick_buy_qty_selector": true,
+        "spacing_desktop": 30,
+        "spacing_mobile": 20,
+        "fix_zindex": 0
+      }
+    },
+    "section_featured_collection_chocolates": {
+      "type": "section-featured-collection",
+      "name": "Imported Chocolates",
+      "settings": {
+        "collection": "chocolates",
+        "layout": "slider",
+        "limit": 5,
+        "number_of_items": 5,
+        "text_alignment": "left",
+        "width": "boxed",
+        "title": "<h2>Imported Chocolates & Sweets</h2>",
+        "title_underline_style": "none",
+        "text": "<p>Premium Dubai pistachio & Gulf chocolates</p>",
+        "show_link": true,
+        "link_text": "View All Chocolates",
+        "button_style": "secondary plain",
+        "enable_quick_buy_desktop": true,
+        "enable_quick_buy_mobile": true,
+        "enable_quick_buy_drawer": false,
+        "enable_quick_buy_qty_selector": true,
+        "spacing_desktop": 30,
+        "spacing_mobile": 20,
+        "fix_zindex": 0
+      }
+    },
+    "section_featured_collection_dates": {
+      "type": "section-featured-collection",
+      "name": "Dates & Dry Fruits",
+      "settings": {
+        "collection": "dates",
+        "layout": "slider",
+        "limit": 5,
+        "number_of_items": 5,
+        "text_alignment": "left",
+        "width": "boxed",
+        "title": "<h2>Premium Dates & Dry Fruits</h2>",
+        "title_underline_style": "none",
+        "text": "<p>Authentic Madinah Ajwa & organic dates</p>",
+        "show_link": true,
+        "link_text": "View All Dates",
+        "button_style": "secondary plain",
+        "enable_quick_buy_desktop": true,
+        "enable_quick_buy_mobile": true,
+        "enable_quick_buy_drawer": false,
+        "enable_quick_buy_qty_selector": true,
+        "spacing_desktop": 30,
+        "spacing_mobile": 20,
+        "fix_zindex": 0
+      }
+    },
+    "section_featured_collection_pravasi": {
+      "type": "section-featured-collection",
+      "name": "Pravasi Gift Hampers",
+      "settings": {
+        "collection": "gift-hamper-boxes",
+        "layout": "slider",
+        "limit": 5,
+        "number_of_items": 5,
+        "text_alignment": "left",
+        "width": "boxed",
+        "title": "<h2>🎁 Pravasi Gift Hampers & Combo Boxes</h2>",
+        "title_underline_style": "none",
+        "text": "<p>Curated gift sets & combo boxes for family</p>",
+        "show_link": true,
+        "link_text": "View All Gift Hampers",
+        "button_style": "secondary plain",
+        "enable_quick_buy_desktop": true,
+        "enable_quick_buy_mobile": true,
+        "enable_quick_buy_drawer": false,
+        "enable_quick_buy_qty_selector": true,
+        "spacing_desktop": 30,
+        "spacing_mobile": 20,
+        "fix_zindex": 0
+      }
+    },
+    "section_featured_collection_homecoming": {
+      "type": "section-featured-products",
+      "name": "Homecoming Combo Boxes",
+      "settings": {
+        "products": [],
+        "layout": "slider",
+        "number_of_items": 5,
+        "text_alignment": "left",
+        "width": "boxed",
+        "title": "<h2>🧳 Homecoming Combo Boxes</h2>",
+        "title_underline_style": "none",
+        "text": "<p>Special homecoming gift packages for loved ones</p>",
+        "show_link": true,
+        "link_text": "View All Homecoming Boxes",
+        "link_url": "/collections/homecoming-boxes",
+        "button_style": "secondary plain",
+        "enable_quick_buy_desktop": true,
+        "enable_quick_buy_mobile": true,
+        "enable_quick_buy_drawer": false,
+        "enable_quick_buy_qty_selector": true,
+        "enable_color_picker": false,
+        "enable_quick_buy_compact": false,
+        "mobile_layout": "slider",
+        "spacing_desktop": 30,
+        "spacing_mobile": 20,
+        "fix_zindex": 0
+      }
+    },
+    "section_slideshow_Y9Da7g": {
+      "type": "section-slideshow",
+      "name": "Slideshow",
+      "settings": {
+        "height": "adapt",
+        "width_banner": "boxed",
+        "width": "wide",
+        "autoplay": false,
+        "autoplay_seconds": 3,
+        "enable_controls": false,
+        "height_mobile": "adapt",
+        "spacing_desktop": 50,
+        "spacing_mobile": 30,
+        "fix_zindex": 0
+      }
+    },
+    "ugc_video_H9tHBQ": {
+      "type": "ugc-video",
+      "blocks": {
+        "video_slide_H6kqgq": {
+          "type": "video_slide",
+          "settings": {
+            "video": "shopify://files/videos/IMG_3947_358c9491-0a00-4e62-acd0-338eaf616c00.MOV",
+            "autoplay_video": true,
+            "badge_text": "NEW",
+            "show_views": true,
+            "views_count": "12.4k",
+            "product": "sabr-watch-for-men",
+            "custom_product_title": "",
+            "custom_product_desc": "",
+            "custom_product_url": ""
+          }
+        },
+        "video_slide_i8qgU3": {
+          "type": "video_slide",
+          "settings": {
+            "video": "shopify://files/videos/IMG_3946.MOV",
+            "autoplay_video": true,
+            "badge_text": "NEW",
+            "show_views": true,
+            "views_count": "12.4k",
+            "product": "magnetic-wooden-doorbell",
+            "custom_product_title": "",
+            "custom_product_desc": "",
+            "custom_product_url": ""
+          }
+        },
+        "video_slide_Rydk44": {
+          "type": "video_slide",
+          "settings": {
+            "video": "shopify://files/videos/0418.mp4",
+            "autoplay_video": true,
+            "badge_text": "NEW",
+            "show_views": true,
+            "views_count": "12.4k",
+            "product": "magic-induction-2-4g-r-c-rali-track-car",
+            "custom_product_title": "",
+            "custom_product_desc": "",
+            "custom_product_url": ""
+          }
+        },
+        "video_slide_QhHD6D": {
+          "type": "video_slide",
+          "settings": {
+            "video": "shopify://files/videos/0418(2).mp4",
+            "autoplay_video": false,
+            "badge_text": "NEW",
+            "show_views": true,
+            "views_count": "12.4k",
+            "product": "video-childrens-video-walkie-talkies-with-2-inch-hd-screen",
+            "custom_product_title": "",
+            "custom_product_desc": "",
+            "custom_product_url": ""
+          }
+        },
+        "video_slide_cck34U": {
+          "type": "video_slide",
+          "settings": {
+            "video": "shopify://files/videos/0418(3).mp4",
+            "autoplay_video": true,
+            "badge_text": "VIRAL",
+            "show_views": true,
+            "views_count": "24.1k",
+            "product": "geemey-3-in-1-trimmer-for-men",
+            "custom_product_title": "Product Name",
+            "custom_product_desc": "Shop Now",
+            "custom_product_url": ""
+          }
+        },
+        "video_slide_LimpQk": {
+          "type": "video_slide",
+          "settings": {
+            "video": "shopify://files/videos/0418(1).mp4",
+            "autoplay_video": true,
+            "badge_text": "TRENDING",
+            "show_views": true,
+            "views_count": "5.6k",
+            "product": "neck-massager",
+            "custom_product_title": "Product Name",
+            "custom_product_desc": "Shop Now",
+            "custom_product_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "video_slide_H6kqgq",
+        "video_slide_i8qgU3",
+        "video_slide_Rydk44",
+        "video_slide_QhHD6D",
+        "video_slide_cck34U",
+        "video_slide_LimpQk"
+      ],
+      "name": "UGC Reels Slider",
+      "settings": {
+        "heading": "Real People. Real Results.",
+        "subheading": "See why thousands love our products",
+        "bg_color": "#ffffff",
+        "autoplay": true,
+        "autoplay_speed": 3,
+        "spacing_desktop": 60,
+        "spacing_mobile": 40
+      }
+    },
+    "176536168485f6182a": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_0a10e2a_zqXYig": {
+          "type": "ai_gen_block_0a10e2a",
+          "name": "Our story",
+          "settings": {
+            "label": "OUR STORY",
+            "heading": "Bridging the Gulf & India",
+            "body_text": "<p>Gulf Souq was born from a simple yet profound realization: millions of Indian families have deep connections to the Arabian Gulf, yet access to authentic Gulf products in India remains limited.</p><p>We set out to change that. Today, Gulf Souq stands as India's premier destination for authentic imported Gulf products – from the sacred Ajwa dates of Madinah to the luxurious attars of Arabia, from premium chocolates to elegant modest wear.</p><p>Every product is handpicked, every shipment is carefully curated, and every customer is treated like family. Because at Gulf Souq, we're not just selling products – we're delivering a piece of the Gulf to every Indian home.</p>",
+            "show_founder_signature": true,
+            "founder_text": "Gulf Souq Founder",
+            "show_founder_lines": true,
+            "text_alignment": "center",
+            "max_width": 900,
+            "background_color": "#0c3e61",
+            "text_color": "#ffffff",
+            "label_color": "#be982d",
+            "heading_color": "#ffffff",
+            "body_text_color": "#ffffff",
+            "underline_color": "#be982d",
+            "founder_text_color": "#ffffff",
+            "founder_line_color": "#be982d",
+            "label_font_size": 12,
+            "label_letter_spacing": 0.2,
+            "heading_font_size": 30,
+            "heading_font_size_mobile": 24,
+            "heading_line_height": 1.2,
+            "heading_font_weight": "700",
+            "show_underline": true,
+            "underline_width": 80,
+            "underline_height": 2,
+            "underline_margin_top": 14,
+            "underline_margin_bottom": 28,
+            "body_font_size": 15,
+            "body_font_size_mobile": 14,
+            "body_line_height": 1.7,
+            "paragraph_spacing": 16,
+            "body_margin_top": 0,
+            "founder_font_size": 14,
+            "founder_margin_top": 40,
+            "founder_gap": 16,
+            "founder_line_height": 1,
+            "founder_line_max_width": 150,
+            "founder_line_max_width_mobile": 60,
+            "padding_top": 60,
+            "padding_bottom": 68,
+            "padding_horizontal": 16,
+            "padding_top_mobile": 40,
+            "padding_bottom_mobile": 48,
+            "padding_horizontal_mobile": 16
+          },
+          "blocks": {}
+        },
+        "ai_gen_block_9828cb3_HqF8Dj": {
+          "type": "ai_gen_block_9828cb3",
+          "settings": {
+            "stat_1_number": "10000+",
+            "stat_1_label": "Happy Customers",
+            "stat_2_number": "4.9/5",
+            "stat_2_label": "Average Rating",
+            "stat_3_number": "100%",
+            "stat_3_label": "Genuine Products",
+            "stat_4_number": "200+",
+            "stat_4_label": "Cities Delivered",
+            "background_color": "#0c3e61",
+            "number_color": "#be982d",
+            "label_color": "#ffffff",
+            "number_size": 36,
+            "label_size": 16,
+            "number_size_mobile": 28,
+            "label_size_mobile": 14,
+            "padding_vertical": 40
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_0a10e2a_zqXYig",
+        "ai_gen_block_9828cb3_HqF8Dj"
+      ],
+      "settings": {
+        "color_palette": "",
+        "overlay_opacity": 100,
+        "width": "wide",
+        "padding_top": 20,
+        "padding_bottom": 20,
+        "padding_left": 0,
+        "padding_right": 0,
+        "padding_top_mobile": 20,
+        "padding_bottom_mobile": 20,
+        "padding_left_mobile": 0,
+        "padding_right_mobile": 0,
+        "spacing_desktop": 50,
+        "spacing_mobile": 30,
+        "fix_zindex": 0
+      }
+    },
+    "17653676714a6f2fd7": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_173e160_g3XqfB": {
+          "type": "ai_gen_block_173e160",
+          "settings": {
+            "label": "TESTIMONIALS",
+            "label_font_size": 12,
+            "label_color": "#666666",
+            "heading": "Loved by Gulf Returnees",
+            "heading_font_size": 36,
+            "heading_color": "#000000",
+            "show_underline": true,
+            "underline_width": 60,
+            "underline_height": 3,
+            "underline_color": "#ff6602",
+            "subtext": "Join thousands of satisfied customers who trust Gulf Souq for authentic imported products",
+            "subtext_font_size": 16,
+            "subtext_color": "#0c3e61",
+            "background_color": "#ffffff",
+            "section_padding_top": 60,
+            "section_padding_bottom": 60,
+            "section_padding_horizontal": 20,
+            "max_width": 1200,
+            "columns_desktop": 3,
+            "columns_tablet": 2,
+            "columns_mobile": "1",
+            "grid_gap": 25,
+            "card_background": "#0c3e61",
+            "card_border_radius": 12,
+            "card_padding": 30,
+            "card_shadow": "0 4px 12px rgba(0, 0, 0, 0.1)",
+            "quote_icon_size": 32,
+            "quote_icon_color": "#be982d",
+            "star_size": 16,
+            "star_color": "#ffd700",
+            "testimonial_text_size": 15,
+            "testimonial_text_color": "#ffffff",
+            "avatar_size": 50,
+            "avatar_background": "#be982d",
+            "avatar_text_color": "#ffffff",
+            "avatar_text_size": 16,
+            "name_font_size": 16,
+            "name_color": "#ffffff",
+            "location_font_size": 13,
+            "location_color": "#ffffff",
+            "testimonial_1_enabled": true,
+            "testimonial_1_text": "The Pravasi Box was the perfect gift for my family. They loved every item – especially the Ajwa dates. The packaging was absolutely premium!",
+            "testimonial_1_name": "Rashid Ahmed",
+            "testimonial_1_location": "",
+            "testimonial_1_avatar": "RA",
+            "testimonial_1_rating": 5,
+            "testimonial_2_enabled": true,
+            "testimonial_2_text": "Finally found authentic Arabic perfumes in India! The quality matches what I used to buy in UAE. Gulf Souq is now my go-to store.",
+            "testimonial_2_name": "Fatima Khan",
+            "testimonial_2_location": "",
+            "testimonial_2_avatar": "FK",
+            "testimonial_2_rating": 5,
+            "testimonial_3_enabled": true,
+            "testimonial_3_text": "The chocolates and dates I ordered arrived in perfect condition. Premium quality products with fast delivery. Highly recommended!",
+            "testimonial_3_name": "Mohammed Ali",
+            "testimonial_3_location": "",
+            "testimonial_3_avatar": "MA",
+            "testimonial_3_rating": 5
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_173e160_g3XqfB"
+      ],
+      "settings": {
+        "color_palette": "",
+        "overlay_opacity": 100,
+        "width": "wide",
+        "padding_top": 20,
+        "padding_bottom": 20,
+        "padding_left": 0,
+        "padding_right": 0,
+        "padding_top_mobile": 20,
+        "padding_bottom_mobile": 20,
+        "padding_left_mobile": 0,
+        "padding_right_mobile": 0,
+        "spacing_desktop": 50,
+        "spacing_mobile": 30,
+        "fix_zindex": 0
+      }
+    },
+    "166029123538307d80": {
+      "type": "section-blog-posts",
+      "settings": {
+        "blog": "news",
+        "number_of_items": 4,
+        "big_first_item": false,
+        "text_alignment": "center",
+        "width": "boxed",
+        "title": "<h1>Read about Gulf Products</h1>",
+        "title_underline_style": "none",
+        "show_link": true,
+        "link_text": "View all gulf product ideas",
+        "link_url": "shopify://blogs/news",
+        "button_style": "primary link",
+        "blog_title_size": "h4",
+        "show_image": true,
+        "show_date": true,
+        "show_author": true,
+        "show_excerpt": false,
+        "button_style_post": "primary link",
+        "spacing_desktop": 50,
+        "spacing_mobile": 30,
+        "fix_zindex": 0
+      }
+    },
+    "section_faq_66Ejpj": {
+      "type": "section-faq",
+      "blocks": {
+        "text_n38GAP": {
+          "type": "text",
+          "settings": {
+            "faq_question": "How fast is delivery?",
+            "icon": "none",
+            "header_image_svg": "",
+            "header_image_width": 25,
+            "faq_answer": "<p><strong>Standard:</strong> 3-5 business days<br/><strong>Express: </strong>48 hours (Kerala)<br/><br/><em>Free shipping on orders above ₹6,999</em></p>",
+            "page": "",
+            "image_width": 465,
+            "liquid": "",
+            "html": "",
+            "show_contact_form": false
+          }
+        },
+        "text_tyUGHV": {
+          "type": "text",
+          "settings": {
+            "faq_question": "Are your products authentic imports?",
+            "icon": "none",
+            "header_image_svg": "",
+            "header_image_width": 25,
+            "faq_answer": "<p><em>Yes! </em>We source directly from authorized distributors in the Middle East, US, and Southeast Asia. All products come with original manufacturer warranties.</p>",
+            "page": "",
+            "image_width": 465,
+            "liquid": "",
+            "html": "",
+            "show_contact_form": false
+          }
+        },
+        "text_qdcm34": {
+          "type": "text",
+          "settings": {
+            "faq_question": "What are combo boxes?",
+            "icon": "none",
+            "header_image_svg": "",
+            "header_image_width": 25,
+            "faq_answer": "<p>Curated collections of best-selling items:</p><ul><li>Perfect for <strong>pravasi</strong> who want to send box to home</li><li>Save 15-30% vs. buying separately</li><li>Customisable upon request.</li></ul>",
+            "page": "",
+            "image_width": 465,
+            "liquid": "",
+            "html": "",
+            "show_contact_form": false
+          }
+        },
+        "text_Kgd3kL": {
+          "type": "text",
+          "settings": {
+            "faq_question": "How does gifting work?",
+            "icon": "none",
+            "header_image_svg": "",
+            "header_image_width": 25,
+            "faq_answer": "<p>Select the \"Gift Wrap\" option at checkout. We'll:</p><ul><li>Professionally package your items</li><li>Include a personalised message</li><li>Exclude pricing information</li><li>Deliver directly to recipients nationwide</li></ul>",
+            "page": "",
+            "image_width": 465,
+            "liquid": "",
+            "html": "",
+            "show_contact_form": false
+          }
+        },
+        "text_gA8j7q": {
+          "type": "text",
+          "settings": {
+            "faq_question": "Can I return gifts?",
+            "icon": "none",
+            "header_image_svg": "",
+            "header_image_width": 25,
+            "faq_answer": "<p>Yes! Our 14-day hassle-free return policy:</p><ul><li>No questions asked for unopened items</li><li>Easy return portal in your account</li><li>Gift recipients can initiate returns</li></ul>",
+            "page": "",
+            "image_width": 465,
+            "liquid": "",
+            "html": "",
+            "show_contact_form": false
+          }
+        }
+      },
+      "block_order": [
+        "text_n38GAP",
+        "text_tyUGHV",
+        "text_qdcm34",
+        "text_Kgd3kL",
+        "text_gA8j7q"
+      ],
+      "name": "t:sections.faq.presets.name",
+      "settings": {
+        "alignment": "left",
+        "compact": false,
+        "width": "boxed",
+        "title": "<h2>Frequently Asked Questions</h2>",
+        "title_underline_style": "none",
+        "spacing_desktop": 50,
+        "spacing_mobile": 30,
+        "fix_zindex": 0
+      }
+    },
+    "section_explore_categories": {
+      "type": "section-explore-categories",
+      "blocks": {
+        "cat_1": { "type": "category", "settings": { "collection": "chocolates" } },
+        "cat_2": { "type": "category", "settings": { "collection": "dates" } },
+        "cat_3": { "type": "category", "settings": { "collection": "athar-and-perfume" } },
+        "cat_4": { "type": "category", "settings": { "collection": "nuts-dry-fruits" } },
+        "cat_5": { "type": "category", "settings": { "collection": "gift-hamper-boxes" } },
+        "cat_6": { "type": "category", "settings": { "collection": "electronics-gadgets" } },
+        "cat_7": { "type": "category", "settings": { "collection": "homecoming-boxes" } },
+        "cat_8": { "type": "category", "settings": { "collection": "trending-watches" } },
+        "cat_9": { "type": "category", "settings": { "collection": "beauty-personal-care" } },
+        "cat_10": { "type": "category", "settings": { "collection": "spices-herbs" } },
+        "cat_11": { "type": "category", "settings": { "collection": "toys" } },
+        "cat_12": { "type": "category", "settings": { "collection": "home-living" } }
+      },
+      "block_order": [
+        "cat_1",
+        "cat_2",
+        "cat_3",
+        "cat_4",
+        "cat_5",
+        "cat_6",
+        "cat_7",
+        "cat_8",
+        "cat_9",
+        "cat_10",
+        "cat_11",
+        "cat_12"
+      ],
+      "settings": {
+        "title": "Explore Categories",
+        "subtitle": "Curated collections for your daily needs",
+        "view_all_text": "VIEW ALL →",
+        "rows": "2"
+      }
+    },
+    "section_banner_dates": {
+      "type": "section-category-banner",
+      "settings": {
+        "preset_image": "dates",
+        "link": "/collections/dates"
+      }
+    },
+    "section_banner_combos": {
+      "type": "section-category-banner",
+      "settings": {
+        "preset_image": "combos",
+        "link": "/collections/gift-hamper-boxes"
+      }
+    },
+    "section_banner_perfumes": {
+      "type": "section-category-banner",
+      "settings": {
+        "preset_image": "perfumes",
+        "link": "/collections/athar-and-perfume"
+      }
+    },
+    "section_banner_chocolates": {
+      "type": "section-category-banner",
+      "settings": {
+        "preset_image": "chocolates",
+        "link": "/collections/chocolates"
+      }
+    }
+  },
+  "order": [
+    "section_slideshow_KjVeaW",
+    "section_explore_categories",
+    "section_banner_combos",
+    "section_featured_products_bDLXTh",
+    "section_banner_dates",
+    "section_featured_collection_dates",
+    "section_banner_chocolates",
+    "section_featured_collection_chocolates",
+    "section_banner_perfumes",
+    "section_featured_collection_perfumes",
+    "section_featured_collection_pravasi",
+    "section_featured_collection_homecoming",
+    "section_middle_promo_banner",
+    "section_custom_liquid_wUa8M4",
+    "section_featured_products_TKk83n",
+    "section_featured_products_hEGAKr",
+    "section_slideshow_Y9Da7g",
+    "ugc_video_H9tHBQ",
+    "176536168485f6182a",
+    "17653676714a6f2fd7",
+    "166029123538307d80",
+    "section_faq_66Ejpj"
+  ]
+}

@@ -1,0 +1,551 @@
+{% comment %}
+  File: sections/main-bundle-banner.liquid
+  Description: Premium bundle showcase banner with product display
+{% endcomment %}
+
+{{ 'component-bundle-banner.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign headline = section.settings.headline | default: "The Perfect Homecoming Gift"
+  assign subtext = section.settings.subtext | default: "Signature Pravasi Box - Curated Gulf Favorites"
+  assign cta_text = section.settings.cta_text | default: "Build Your Box →"
+  assign cta_link = section.settings.cta_link | default: "#"
+  assign badge_text = section.settings.badge_text | default: "Bestseller"
+  assign show_badge = section.settings.show_badge
+  assign bg_image = section.settings.bg_image
+  assign overlay_opacity = section.settings.overlay_opacity | default: 30
+  assign collection = section.settings.collection
+  assign products_count = section.settings.products_count | default: 3
+  assign position = section.settings.content_position | default: "middle-left"
+  assign text_align = section.settings.text_alignment | default: "left"
+-%}
+
+<div class="bundle-banner" data-section-id="{{ section.id }}">
+  <div class="banner-background">
+    {%- if bg_image -%}
+      <div class="banner-image" style="
+        background-image: url('{{ bg_image | img_url: '2000x' }}');
+        background-position: center;
+        background-size: cover;
+      "></div>
+    {%- else -%}
+      <div class="placeholder-background">
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      </div>
+    {%- endif -%}
+    <div class="banner-overlay" style="opacity: {{ overlay_opacity | divided_by: 100.0 }};"></div>
+  </div>
+  
+  <div class="page-width">
+    <div class="banner-content content-position-{{ position }} text-align-{{ text_align }}">
+      <div class="text-content">
+        {%- if show_badge and badge_text != blank -%}
+          <div class="banner-badge">{{ badge_text }}</div>
+        {%- endif -%}
+        
+        <h2 class="banner-headline">{{ headline }}</h2>
+        
+        {%- if subtext != blank -%}
+          <p class="banner-subtext">{{ subtext }}</p>
+        {%- endif -%}
+        
+        {%- if cta_text != blank -%}
+          <a href="{{ cta_link }}" class="banner-cta">
+            {{ cta_text }}
+            <svg class="cta-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        {%- endif -%}
+      </div>
+      
+      <div class="bundle-products">
+        {%- if collection != blank -%}
+          <div class="products-grid">
+            {%- for product in collection.products limit: products_count -%}
+              <div class="product-item">
+                <div class="product-image">
+                  <img src="{{ product.featured_image | image_url: width: 300, height: 300, crop: 'center' }}" 
+                       alt="{{ product.title | escape }}" 
+                       width="300"
+                       height="300"
+                       loading="lazy">
+                </div>
+                <h3 class="product-title">{{ product.title }}</h3>
+                <p class="product-price">{{ product.price | money }}</p>
+              </div>
+            {%- endfor -%}
+          </div>
+          <p class="bundle-text">This bundle includes {{ collection.products_count }} premium products</p>
+        {%- else -%}
+          <div class="placeholder-products">
+            <div class="product-item">
+              <div class="placeholder-image">
+                {{ 'product-1' | placeholder_svg_tag }}
+              </div>
+              <h3 class="product-title">Premium Dates</h3>
+              <p class="product-price">{{ 1999 | money }}</p>
+            </div>
+            <div class="product-item">
+              <div class="placeholder-image">
+                {{ 'product-2' | placeholder_svg_tag }}
+              </div>
+              <h3 class="product-title">Gulf Chocolates</h3>
+              <p class="product-price">{{ 1499 | money }}</p>
+            </div>
+            <div class="product-item">
+              <div class="placeholder-image">
+                {{ 'product-3' | placeholder_svg_tag }}
+              </div>
+              <h3 class="product-title">Assorted Nuts</h3>
+              <p class="product-price">{{ 1299 | money }}</p>
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Bundle Banner Styles */
+  .bundle-banner {
+    position: relative;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    color: #fff;
+    padding: 40px 0;
+  }
+  
+  .banner-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+  
+  .banner-image {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .placeholder-background {
+    background: #f5f5f5;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, rgba(0,0,0,0.7) 0%, rgba(106,57,9,0.6) 100%);
+    z-index: 2;
+  }
+  
+  .banner-content {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px;
+  }
+  
+  .text-content {
+    flex: 1;
+    padding: 30px;
+    max-width: 600px;
+  }
+  
+  .banner-badge {
+    background: #D4AF37;
+    color: #fff;
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: inline-block;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  }
+  
+  .banner-headline {
+    font-size: 2.8rem;
+    font-weight: 800;
+    line-height: 1.15;
+    margin: 0 0 20px 0;
+    letter-spacing: -0.5px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+  
+  .banner-subtext {
+    font-size: 1.4rem;
+    margin: 0 0 30px 0;
+    line-height: 1.6;
+    max-width: 80%;
+    opacity: 0.9;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  }
+  
+  .banner-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #fff;
+    color: #2a2a2a;
+    padding: 16px 40px;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 2px solid #fff;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  }
+  
+  .banner-cta:hover {
+    background: transparent;
+    color: #fff;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  }
+  
+  .cta-arrow {
+    transition: transform 0.3s ease;
+  }
+  
+  .banner-cta:hover .cta-arrow {
+    transform: translateX(5px);
+  }
+  
+  .bundle-products {
+    flex: 1;
+    max-width: 500px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  }
+  
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-bottom: 25px;
+  }
+  
+  .placeholder-products {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-bottom: 25px;
+  }
+  
+  .product-item {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease;
+  }
+  
+  .product-item:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.2);
+  }
+  
+  .product-image {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 15px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  }
+  
+  .product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .placeholder-image {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .product-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+  }
+  
+  .product-price {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #D4AF37;
+    margin: 0;
+  }
+  
+  .bundle-text {
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 500;
+    opacity: 0.9;
+    margin: 0;
+    padding: 15px 0 5px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  /* Content positioning */
+  .content-position-middle-left .banner-content {
+    align-items: center;
+  }
+  
+  .content-position-top-left .banner-content {
+    align-items: flex-start;
+    padding-top: 80px;
+  }
+  
+  .content-position-bottom-left .banner-content {
+    align-items: flex-end;
+    padding-bottom: 80px;
+  }
+  
+  .content-position-middle-right .banner-content {
+    flex-direction: row-reverse;
+    align-items: center;
+  }
+  
+  .content-position-top-right .banner-content {
+    flex-direction: row-reverse;
+    align-items: flex-start;
+    padding-top: 80px;
+  }
+  
+  .content-position-bottom-right .banner-content {
+    flex-direction: row-reverse;
+    align-items: flex-end;
+    padding-bottom: 80px;
+  }
+  
+  /* Text alignment */
+  .text-align-left {
+    text-align: left;
+  }
+  
+  .text-align-center {
+    text-align: center;
+  }
+  
+  .text-align-center .banner-headline,
+  .text-align-center .banner-subtext {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .text-align-center .banner-cta {
+    margin: 0 auto;
+  }
+  
+  .text-align-right {
+    text-align: right;
+  }
+  
+  .text-align-right .banner-headline,
+  .text-align-right .banner-subtext {
+    margin-left: auto;
+  }
+  
+  .text-align-right .banner-cta {
+    margin-left: auto;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 1024px) {
+    .banner-content {
+      flex-direction: column;
+      gap: 40px;
+    }
+    
+    .text-content,
+    .bundle-products {
+      max-width: 100%;
+    }
+    
+    .banner-headline {
+      font-size: 2.5rem;
+    }
+    
+    .content-position-top-left .banner-content,
+    .content-position-top-right .banner-content,
+    .content-position-bottom-left .banner-content,
+    .content-position-bottom-right .banner-content {
+      padding-top: 60px;
+      padding-bottom: 60px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .bundle-banner {
+      min-height: 500px;
+    }
+    
+    .banner-headline {
+      font-size: 2rem;
+    }
+    
+    .banner-subtext {
+      font-size: 1.2rem;
+      max-width: 100%;
+    }
+    
+    .products-grid,
+    .placeholder-products {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .banner-headline {
+      font-size: 1.8rem;
+    }
+    
+    .banner-cta {
+      width: 100%;
+      justify-content: center;
+    }
+    
+    .banner-content {
+      padding: 20px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Bundle Banner",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background Image",
+      "info": "Recommended size: 2000x1200px"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay Opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 30
+    },
+    {
+      "type": "text",
+      "id": "headline",
+      "label": "Headline",
+      "default": "The Perfect Homecoming Gift"
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "Signature Pravasi Box - Curated Gulf Favorites"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Button Text",
+      "default": "Build Your Box →"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge Text",
+      "default": "Bestseller"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badge",
+      "label": "Show Badge",
+      "default": true
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Bundle Collection",
+      "info": "Select collection containing bundle products"
+    },
+    {
+      "type": "range",
+      "id": "products_count",
+      "label": "Products to Show",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "select",
+      "id": "content_position",
+      "label": "Content Position",
+      "options": [
+        {"value": "middle-left", "label": "Middle Left"},
+        {"value": "top-left", "label": "Top Left"},
+        {"value": "bottom-left", "label": "Bottom Left"},
+        {"value": "middle-right", "label": "Middle Right"},
+        {"value": "top-right", "label": "Top Right"},
+        {"value": "bottom-right", "label": "Bottom Right"}
+      ],
+      "default": "middle-left"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text Alignment",
+      "options": [
+        {"value": "left", "label": "Left"},
+        {"value": "center", "label": "Center"},
+        {"value": "right", "label": "Right"}
+      ],
+      "default": "left"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bundle Banner",
+      "category": "Banner"
+    }
+  ]
+}
+{% endschema %}

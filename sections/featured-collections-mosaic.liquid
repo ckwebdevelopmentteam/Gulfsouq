@@ -1,0 +1,491 @@
+{% liquid
+  assign section_id = 'mosaic-' | append: section.id
+%}
+
+<section id="{{ section_id }}" class="mosaic-wrap">
+  <div class="mosaic-grid {% if section.settings.reverse_layout %}mosaic-grid--reversed{% endif %}">
+    {% for block in section.blocks %}
+      {% assign pos = block.settings.position %}
+      {% assign img = block.settings.bg_image %}
+      {% assign link_target = block.settings.link_url %}
+
+      {% if block.settings.collection != blank %}
+        {% assign link_target = block.settings.collection.url %}
+      {% endif %}
+
+      <div
+        class="mosaic-item mosaic-{{ pos }}"
+        style="
+          {% if img != blank %}
+            --bg: url('{{ img | image_url: width: 1600 }}');
+          {% endif %}
+          --radius: {{ section.settings.card_radius }}px;
+          --title-color: {{ block.settings.title_color }};
+          --subtitle-color: {{ block.settings.subtitle_color }};
+          --btn-bg: {{ block.settings.btn_bg }};
+          --btn-color: {{ block.settings.btn_color }};
+          --badge-bg: {{ block.settings.badge_bg }};
+          --badge-color: {{ block.settings.badge_color }};
+        "
+        {{ block.shopify_attributes }}
+      >
+        <!-- Background -->
+        <div class="mosaic-bg" aria-hidden="true">
+          {% if img != blank %}
+            <img
+              src="{{ img | image_url: width: 900 }}"
+              srcset="
+                {{ img | image_url: width: 600 }} 600w,
+                {{ img | image_url: width: 900 }} 900w,
+                {{ img | image_url: width: 1200 }} 1200w,
+                {{ img | image_url: width: 1600 }} 1600w
+              "
+              sizes="(min-width: 1200px) 33vw, (min-width: 768px) 50vw, 100vw"
+              alt="{{ img.alt | escape }}"
+              loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+            >
+          {% else %}
+            <div class="mosaic-placeholder"></div>
+          {% endif %}
+          {% if block.settings.overlay_opacity > 0 %}
+            <div class="mosaic-overlay" style="--overlay-opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};"></div>
+          {% endif %}
+        </div>
+
+        <!-- Content -->
+        <div class="mosaic-content">
+          {% if block.settings.badge_text != blank %}
+            <span class="mosaic-badge">{{ block.settings.badge_text }}</span>
+          {% endif %}
+
+          {% if block.settings.subtitle != blank %}
+            <p class="mosaic-subtitle">{{ block.settings.subtitle }}</p>
+          {% endif %}
+
+          {% if block.settings.title != blank %}
+            <h3 class="mosaic-title">{{ block.settings.title }}</h3>
+          {% endif %}
+
+          {% if block.settings.show_btn and block.settings.btn_text != blank %}
+            {% if link_target != blank %}
+              <a href="{{ link_target }}" class="mosaic-btn mosaic-btn--{{ block.settings.btn_style }}">
+                {{ block.settings.btn_text }}
+              </a>
+            {% else %}
+              <span class="mosaic-btn mosaic-btn--{{ block.settings.btn_style }}" role="button" aria-disabled="true">
+                {{ block.settings.btn_text }}
+              </span>
+            {% endif %}
+          {% endif %}
+        </div>
+
+        {% if link_target != blank and block.settings.full_card_clickable %}
+          <a href="{{ link_target }}" class="mosaic-card-link" aria-label="View {{ block.settings.title | strip_html | default: 'collection' }}">
+            <span class="sr-only">{{ block.settings.title | strip_html | default: 'View collection' }}</span>
+          </a>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+
+</section>
+
+<style>
+  :root {
+    --mosaic-gap: 16px;
+  }
+  
+  .sr-only {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+  }
+
+  /* Section spacing */
+  #{{ section_id }} {
+    margin: {{ section.settings.spacing_mobile }}px 0;
+  }
+  
+  @media (min-width: 768px) {
+    #{{ section_id }} { 
+      margin: {{ section.settings.spacing_desktop }}px 0; 
+    }
+  }
+
+  /* Mobile horizontal scroll layout */
+  #{{ section_id }} .mosaic-grid {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    gap: var(--mosaic-gap);
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 12px;
+    scrollbar-width: none;
+  }
+
+  #{{ section_id }} .mosaic-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Tablet layout - 2x2 grid */
+  @media (min-width: 768px) and (max-width: 991px) {
+    #{{ section_id }} .mosaic-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      grid-template-areas:
+        "small-top medium"
+        "small-bottom large";
+      overflow-x: visible;
+      padding-bottom: 0;
+    }
+  }
+  
+  /* Desktop layout */
+  @media (min-width: 992px) {
+    #{{ section_id }} .mosaic-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr 1.8fr;
+      grid-template-rows: 1fr 1fr;
+      grid-template-areas:
+        "small-top medium large"
+        "small-bottom medium large";
+      min-height: 420px;
+      overflow-x: visible;
+      padding-bottom: 0;
+    }
+    
+    /* Reversed layout */
+    #{{ section_id }} .mosaic-grid--reversed {
+      grid-template-areas:
+        "large medium small-top"
+        "large medium small-bottom";
+    }
+  }
+
+  /* Base card styles */
+  #{{ section_id }} .mosaic-item {
+    position: relative;
+    display: block;
+    border-radius: var(--radius, 8px);
+    overflow: hidden;
+    isolation: isolate;
+    min-height: 280px;
+    background: #f5f5f5;
+    text-decoration: none;
+    min-width: 280px;
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+  }
+
+  /* Mobile card sizing */
+  @media (max-width: 767px) {
+    #{{ section_id }} .mosaic-item {
+      min-width: 75vw;
+      max-width: 320px;
+    }
+  }
+
+  /* Grid area assignments for tablet and desktop */
+  @media (min-width: 768px) {
+    #{{ section_id }} .mosaic-item.mosaic-small-top { 
+      grid-area: small-top; 
+      min-width: auto;
+    }
+    #{{ section_id }} .mosaic-item.mosaic-small-bottom { 
+      grid-area: small-bottom; 
+      min-width: auto;
+    }
+    #{{ section_id }} .mosaic-item.mosaic-medium { 
+      grid-area: medium; 
+      min-height: 320px; 
+      min-width: auto;
+    }
+    #{{ section_id }} .mosaic-item.mosaic-large { 
+      grid-area: large; 
+      min-height: 360px; 
+      min-width: auto;
+    }
+  }
+
+  /* Background image layer */
+  #{{ section_id }} .mosaic-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+  }
+  
+  #{{ section_id }} .mosaic-bg img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    display: block;
+    min-width: 100%;
+    min-height: 100%;
+  }
+  
+  #{{ section_id }} .mosaic-placeholder {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #f0f0f0, #e5e5e5);
+  }
+
+  /* Custom overlay for each card */
+  #{{ section_id }} .mosaic-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, var(--overlay-opacity, 0));
+    z-index: 1;
+  }
+
+  /* Full card clickable area */
+  #{{ section_id }} .mosaic-card-link {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    text-decoration: none;
+  }
+
+  /* Content layer */
+  #{{ section_id }} .mosaic-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    height: 100%;
+    width: 100%;
+    padding: 18px;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 10px;
+    pointer-events: none;
+  }
+
+  /* Badge (top-left) */
+  #{{ section_id }} .mosaic-badge {
+    position: absolute;
+    top: 12px; 
+    left: 12px;
+    background: var(--badge-bg, #3B82F6);
+    color: var(--badge-color, #fff);
+    font-size: 12px;
+    line-height: 1.2;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  /* Typography */
+  #{{ section_id }} .mosaic-subtitle {
+    margin: 0;
+    color: var(--subtitle-color, #ffffff);
+    font-size: 14px;
+    font-weight: 600;
+    {% comment %} text-shadow: 0 1px 3px rgba(0,0,0,0.3); {% endcomment %}
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+  
+  #{{ section_id }} .mosaic-title {
+    margin: 0;
+    color: var(--title-color, #ffffff);
+    font-size: clamp(20px, 4vw, 32px);
+    line-height: 1.1;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    {% comment %} text-shadow: 0 2px 4px rgba(0,0,0,0.3); {% endcomment %}
+  }
+  
+  /* Adjust titles for different screen sizes */
+  @media (min-width: 768px) {
+    #{{ section_id }} .mosaic-title {
+      font-size: clamp(20px, 3vw, 36px);
+    }
+  }
+  
+  @media (min-width: 992px) {
+    #{{ section_id }} .mosaic-small-top .mosaic-title,
+    #{{ section_id }} .mosaic-small-bottom .mosaic-title {
+      font-size: clamp(16px, 2vw, 24px);
+    }
+  }
+
+  /* CTA Buttons */
+  #{{ section_id }} .mosaic-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: max-content;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 10px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    pointer-events: auto;
+    position: relative;
+    z-index: 20;
+    border: 2px solid transparent;
+  }
+
+  /* Button Styles */
+  #{{ section_id }} .mosaic-btn--primary {
+    background: #000000;
+    color: #ffffff;
+  }
+  
+  #{{ section_id }} .mosaic-btn--primary:hover {
+    background: #333333;
+  }
+
+  #{{ section_id }} .mosaic-btn--secondary {
+    background: #ffffff;
+    color: #000000;
+  }
+  
+  #{{ section_id }} .mosaic-btn--secondary:hover {
+    background: #f5f5f5;
+  }
+
+  #{{ section_id }} .mosaic-btn--outline {
+    background: transparent;
+    color: #ffffff;
+    border-color: #ffffff;
+  }
+  
+  #{{ section_id }} .mosaic-btn--outline:hover {
+    background: #ffffff;
+    color: #000000;
+  }
+
+  #{{ section_id }} .mosaic-btn--custom {
+    background: var(--btn-bg, #000000);
+    color: var(--btn-color, #ffffff);
+  }
+  
+  #{{ section_id }} .mosaic-btn--custom:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+
+</style>
+
+{% schema %}
+{
+  "name": "Mosaic Collection Grid",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "range", "id": "spacing_desktop", "label": "Spacing desktop", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "spacing_mobile",  "label": "Spacing mobile",  "min": 0, "max": 120, "step": 4, "unit": "px", "default": 24 },
+    { "type": "range", "id": "card_radius", "label": "Card corner radius", "min": 0, "max": 24, "step": 1, "unit": "px", "default": 8 },
+    { "type": "checkbox", "id": "reverse_layout", "label": "Reverse grid layout", "info": "Move large tile to left side", "default": false },
+
+    { "type": "header", "content": "Floating Cart" },
+    { "type": "checkbox", "id": "show_cart_button", "label": "Show floating cart button", "default": true },
+    { "type": "color", "id": "cart_bg", "label": "Cart button background", "default": "#10B981" },
+    { "type": "color", "id": "cart_icon", "label": "Cart icon color", "default": "#ffffff" }
+  ],
+  "blocks": [
+    {
+      "type": "tile",
+      "name": "Tile",
+      "limit": 4,
+      "settings": [
+        { "type": "select", "id": "position", "label": "Tile position", "info": "Assign each tile a unique position", "options": [
+          { "value": "small-top",    "label": "Small (top)" },
+          { "value": "small-bottom", "label": "Small (bottom)" },
+          { "value": "medium",       "label": "Medium (center)" },
+          { "value": "large",        "label": "Large (side)" }
+        ], "default": "small-top" },
+
+        { "type": "header", "content": "Background" },
+        { "type": "image_picker", "id": "bg_image", "label": "Background image", "info": "Recommended sizes: Small tiles: 800×600px, Medium: 1000×750px, Large: 1200×900px. Any size will be automatically fitted to fill the background." },
+        { "type": "range", "id": "overlay_opacity", "label": "Overlay opacity", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 0, "info": "Add dark overlay for better text readability" },
+
+        { "type": "header", "content": "Badge" },
+        { "type": "text", "id": "badge_text", "label": "Badge text", "placeholder": "NEW", "info": "Leave empty to hide badge" },
+        { "type": "color", "id": "badge_bg", "label": "Badge background", "default": "#3B82F6" },
+        { "type": "color", "id": "badge_color", "label": "Badge text color", "default": "#FFFFFF" },
+
+        { "type": "header", "content": "Content" },
+        { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "New in" },
+        { "type": "richtext", "id": "title", "label": "Title", "default": "<p>Collection</p>" },
+        { "type": "color", "id": "title_color", "label": "Title color", "default": "#FFFFFF" },
+        { "type": "color", "id": "subtitle_color", "label": "Subtitle color", "default": "#FFFFFF" },
+
+        { "type": "header", "content": "Call to Action" },
+        { "type": "checkbox", "id": "show_btn", "label": "Show CTA button", "default": true },
+        { "type": "text", "id": "btn_text", "label": "Button text", "default": "Shop now" },
+        { "type": "select", "id": "btn_style", "label": "Button style", "options": [
+          { "value": "primary", "label": "Primary (Black)" },
+          { "value": "secondary", "label": "Secondary (White)" },
+          { "value": "outline", "label": "Outline" },
+          { "value": "custom", "label": "Custom Colors" }
+        ], "default": "primary" },
+        { "type": "color", "id": "btn_bg", "label": "Custom button background", "default": "#000000", "info": "Only applies when 'Custom Colors' is selected" },
+        { "type": "color", "id": "btn_color", "label": "Custom button text color", "default": "#FFFFFF", "info": "Only applies when 'Custom Colors' is selected" },
+
+        { "type": "header", "content": "Linking" },
+        { "type": "checkbox", "id": "full_card_clickable", "label": "Make entire card clickable", "default": false, "info": "When enabled, clicking anywhere on the card will navigate to the link" },
+        { "type": "collection", "id": "collection", "label": "Link to collection" },
+        { "type": "url", "id": "link_url", "label": "Or custom link", "info": "Overrides collection link if set" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Mosaic Collection Grid", "blocks": [
+      { "type": "tile", "settings": { 
+        "position": "small-top", 
+        "subtitle": "Beauty", 
+        "title": "<p>Skincare</p>",
+        "btn_text": "Shop now", 
+        "btn_style": "primary",
+        "badge_text": "NEW"
+      } },
+      { "type": "tile", "settings": { 
+        "position": "small-bottom", 
+        "subtitle": "Unique gifts", 
+        "title": "<p>Accessories</p>",
+        "btn_text": "Explore", 
+        "btn_style": "secondary"
+      } },
+      { "type": "tile", "settings": { 
+        "position": "medium", 
+        "subtitle": "New arrival", 
+        "title": "<p>Earbuds</p>", 
+        "btn_text": "Shop now", 
+        "btn_style": "outline",
+        "overlay_opacity": 20
+      } },
+      { "type": "tile", "settings": { 
+        "position": "large", 
+        "badge_text": "TRENDING", 
+        "subtitle": "Latest collection", 
+        "title": "<p>Fashion</p>", 
+        "btn_text": "Discover", 
+        "btn_style": "custom",
+        "overlay_opacity": 30,
+        "full_card_clickable": true
+      } }
+    ]}
+  ]
+}
+{% endschema %}

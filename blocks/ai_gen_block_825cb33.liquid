@@ -1,0 +1,594 @@
+{% doc %}
+  @prompt
+    <section class="gs-perfume-hero">
+      <div class="gs-perfume-inner">
+        <div class="gs-perfume-copy">
+          <p class="gs-perfume-label">ORIENTAL FRAGRANCES</p>
+    
+          <h2 class="gs-perfume-heading">
+            Discover the Allure of<br>
+            <span>Arabian Perfumery</span>
+          </h2>
+    
+          <p class="gs-perfume-text">
+            From traditional attars to modern oriental blends, explore our exclusive collection
+            of authentic Arabic perfumes imported directly from the Gulf.
+          </p>
+    
+          <div class="gs-perfume-buttons">
+            <a href="/collections/perfumes" class="gs-btn gs-btn-primary">Shop Perfumes</a>
+            <a href="/collections/attars" class="gs-btn gs-btn-outline">Explore Attars</a>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <style>
+      /* SECTION BACKGROUND
+         Replace 'perfume-hero.jpg' with your own uploaded asset if needed */
+      .gs-perfume-hero {
+        width: 100%;
+        color: #FFFFFF;
+        background:
+          linear-gradient(
+            to right,
+            rgba(12,62,97,0.98) 0%,
+            rgba(12,62,97,0.96) 38%,
+            rgba(12,62,97,0.5) 65%,
+            rgba(12,62,97,0.15) 100%
+          ),
+          url('{{ "perfume-hero.jpg" | asset_url }}') center/cover no-repeat;
+        padding: 70px 16px 80px;
+      }
+    
+      .gs-perfume-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+      }
+    
+      .gs-perfume-copy {
+        max-width: 520px;
+      }
+    
+      .gs-perfume-label {
+        margin: 0 0 10px;
+        font-size: 12px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: #BE982D;
+      }
+    
+      .gs-perfume-heading {
+        margin: 0 0 16px;
+        font-size: 34px;
+        line-height: 1.25;
+        font-weight: 700;
+      }
+    
+      .gs-perfume-heading span {
+        color: #BE982D;
+      }
+    
+      .gs-perfume-text {
+        margin: 0 0 26px;
+        font-size: 15px;
+        line-height: 1.7;
+        color: rgba(255,255,255,0.92);
+      }
+    
+      .gs-perfume-buttons {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+    
+      .gs-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: cent, 100% FULL WIDTH (edge-to-edge) across the entire screen, edge to edge in page width, heading and Description color selection facility needed
+    
+    
+    
+    
+    
+    
+    
+    
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .gs-perfume-hero-{{ ai_gen_id }} {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    background:
+      linear-gradient(
+        to right,
+        {{ block.settings.overlay_color_start }},
+        {{ block.settings.overlay_color_end }}
+      ),
+      url('{{ block.settings.background_image | image_url: width: 2000 }}') center/cover no-repeat;
+    padding: {{ block.settings.padding_top }}px 16px {{ block.settings.padding_bottom }}px;
+  }
+
+  .gs-perfume-hero-{{ ai_gen_id }}--no-image {
+    background: linear-gradient(
+      to right,
+      {{ block.settings.overlay_color_start }},
+      {{ block.settings.overlay_color_end }}
+    );
+  }
+
+  .gs-perfume-inner-{{ ai_gen_id }} {
+    max-width: {{ block.settings.content_width }}px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+  }
+
+  .gs-perfume-copy-{{ ai_gen_id }} {
+    max-width: {{ block.settings.text_max_width }}px;
+  }
+
+  .gs-perfume-label-{{ ai_gen_id }} {
+    margin: 0 0 10px;
+    font-size: {{ block.settings.label_size }}px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: {{ block.settings.label_color }};
+  }
+
+  .gs-perfume-heading-{{ ai_gen_id }} {
+    margin: 0 0 16px;
+    font-size: {{ block.settings.heading_size }}px;
+    line-height: 1.25;
+    font-weight: 700;
+    color: {{ block.settings.heading_color }};
+  }
+
+  .gs-perfume-heading-{{ ai_gen_id }} span {
+    color: {{ block.settings.accent_color }};
+  }
+
+  .gs-perfume-text-{{ ai_gen_id }} {
+    margin: 0 0 26px;
+    font-size: {{ block.settings.text_size }}px;
+    line-height: 1.7;
+    color: {{ block.settings.description_color }};
+  }
+
+  .gs-perfume-buttons-{{ ai_gen_id }} {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .gs-btn-{{ ai_gen_id }} {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 30px;
+    font-size: {{ block.settings.button_text_size }}px;
+    text-decoration: none;
+    border-radius: {{ block.settings.button_border_radius }}px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 2px solid transparent;
+  }
+
+  .gs-btn-primary-{{ ai_gen_id }} {
+    background-color: {{ block.settings.primary_btn_bg }};
+    color: {{ block.settings.primary_btn_text }};
+    border-color: {{ block.settings.primary_btn_bg }};
+  }
+
+  .gs-btn-primary-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.primary_btn_hover_bg }};
+    border-color: {{ block.settings.primary_btn_hover_bg }};
+    color: {{ block.settings.primary_btn_hover_text }};
+  }
+
+  .gs-btn-outline-{{ ai_gen_id }} {
+    background-color: transparent;
+    color: {{ block.settings.outline_btn_text }};
+    border-color: {{ block.settings.outline_btn_border }};
+  }
+
+  .gs-btn-outline-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.outline_btn_hover_bg }};
+    color: {{ block.settings.outline_btn_hover_text }};
+    border-color: {{ block.settings.outline_btn_hover_bg }};
+  }
+
+  @media screen and (max-width: 749px) {
+    .gs-perfume-hero-{{ ai_gen_id }} {
+      padding: {{ block.settings.padding_top_mobile }}px 16px {{ block.settings.padding_bottom_mobile }}px;
+    }
+
+    .gs-perfume-heading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_size_mobile }}px;
+    }
+
+    .gs-perfume-label-{{ ai_gen_id }} {
+      font-size: {{ block.settings.label_size_mobile }}px;
+    }
+
+    .gs-perfume-text-{{ ai_gen_id }} {
+      font-size: {{ block.settings.text_size_mobile }}px;
+    }
+
+    .gs-perfume-buttons-{{ ai_gen_id }} {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .gs-btn-{{ ai_gen_id }} {
+      width: 100%;
+    }
+  }
+{% endstyle %}
+
+<section 
+  class="gs-perfume-hero-{{ ai_gen_id }}{% unless block.settings.background_image %} gs-perfume-hero-{{ ai_gen_id }}--no-image{% endunless %}"
+  {{ block.shopify_attributes }}
+>
+  <div class="gs-perfume-inner-{{ ai_gen_id }}">
+    <div class="gs-perfume-copy-{{ ai_gen_id }}">
+      {% if block.settings.label != blank %}
+        <p class="gs-perfume-label-{{ ai_gen_id }}">{{ block.settings.label }}</p>
+      {% endif %}
+
+      {% if block.settings.heading != blank %}
+        <h2 class="gs-perfume-heading-{{ ai_gen_id }}">
+          {{ block.settings.heading }}
+        </h2>
+      {% endif %}
+
+      {% if block.settings.text != blank %}
+        <div class="gs-perfume-text-{{ ai_gen_id }}">
+          {{ block.settings.text }}
+        </div>
+      {% endif %}
+
+      <div class="gs-perfume-buttons-{{ ai_gen_id }}">
+        {% if block.settings.primary_btn_label != blank %}
+          <a 
+            href="{{ block.settings.primary_btn_link }}" 
+            class="gs-btn-{{ ai_gen_id }} gs-btn-primary-{{ ai_gen_id }}"
+          >
+            {{ block.settings.primary_btn_label }}
+          </a>
+        {% endif %}
+
+        {% if block.settings.outline_btn_label != blank %}
+          <a 
+            href="{{ block.settings.outline_btn_link }}" 
+            class="gs-btn-{{ ai_gen_id }} gs-btn-outline-{{ ai_gen_id }}"
+          >
+            {{ block.settings.outline_btn_label }}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Perfume hero",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color_start",
+      "label": "Overlay start color",
+      "default": "rgba(12,62,97,0.98)"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color_end",
+      "label": "Overlay end color",
+      "default": "rgba(12,62,97,0.15)"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "content_width",
+      "min": 800,
+      "max": 1400,
+      "step": 50,
+      "unit": "px",
+      "label": "Content width",
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "text_max_width",
+      "min": 300,
+      "max": 800,
+      "step": 20,
+      "unit": "px",
+      "label": "Text max width",
+      "default": 520
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 20,
+      "max": 150,
+      "step": 10,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 20,
+      "max": 150,
+      "step": 10,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Top padding (mobile)",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom padding (mobile)",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Label",
+      "default": "ORIENTAL FRAGRANCES"
+    },
+    {
+      "type": "richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "<p>Discover the Allure of<br><span>Arabian Perfumery</span></p>"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Description",
+      "default": "<p>From traditional attars to modern oriental blends, explore our exclusive collection of authentic Arabic perfumes imported directly from the Gulf.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Label color",
+      "default": "#BE982D"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Heading accent color",
+      "default": "#BE982D"
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "label_size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Label size",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "label_size_mobile",
+      "min": 10,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Label size (mobile)",
+      "default": 11
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 34
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "min": 20,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading size (mobile)",
+      "default": 26
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Text size",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "text_size_mobile",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Text size (mobile)",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Primary button"
+    },
+    {
+      "type": "text",
+      "id": "primary_btn_label",
+      "label": "Label",
+      "default": "Shop Perfumes"
+    },
+    {
+      "type": "url",
+      "id": "primary_btn_link",
+      "label": "Link"
+    },
+    {
+      "type": "color",
+      "id": "primary_btn_bg",
+      "label": "Background",
+      "default": "#BE982D"
+    },
+    {
+      "type": "color",
+      "id": "primary_btn_text",
+      "label": "Text",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "primary_btn_hover_bg",
+      "label": "Hover background",
+      "default": "#A67F1F"
+    },
+    {
+      "type": "color",
+      "id": "primary_btn_hover_text",
+      "label": "Hover text",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Outline button"
+    },
+    {
+      "type": "text",
+      "id": "outline_btn_label",
+      "label": "Label",
+      "default": "Explore Attars"
+    },
+    {
+      "type": "url",
+      "id": "outline_btn_link",
+      "label": "Link"
+    },
+    {
+      "type": "color",
+      "id": "outline_btn_text",
+      "label": "Text",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "outline_btn_border",
+      "label": "Border",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "outline_btn_hover_bg",
+      "label": "Hover background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "outline_btn_hover_text",
+      "label": "Hover text",
+      "default": "#0C3E61"
+    },
+    {
+      "type": "header",
+      "content": "Button style"
+    },
+    {
+      "type": "range",
+      "id": "button_text_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Text size",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 4
+    }
+  ],
+  "presets": [
+    {
+      "name": "Perfume hero"
+    }
+  ]
+}
+{% endschema %}

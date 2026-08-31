@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "main-wishlist": {
+      "type": "main-wishlist",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main-wishlist"
+  ]
+}

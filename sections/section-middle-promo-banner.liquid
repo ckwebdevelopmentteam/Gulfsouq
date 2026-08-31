@@ -1,0 +1,120 @@
+{% comment %}
+  Section: Middle Promotional Banner
+  Description: Full-width promotional banner displaying the user's custom Big Savings banner image with admin customization options
+{% endcomment %}
+
+<div class="gs-promo-banner-section" id="gs-promo-banner-{{ section.id }}">
+  <div class="gs-promo-banner-container">
+    <a href="{{ section.settings.button_url | default: '/collections/all' }}" class="gs-promo-banner-link-wrapper" aria-label="{{ section.settings.heading | default: 'Big Savings On Your Favorites' | escape }}">
+      <div class="gs-promo-banner-image-box">
+        {%- if section.settings.image != blank -%}
+          <img src="{{ section.settings.image | image_url: width: 1420 }}"
+               alt="{{ section.settings.image.alt | default: section.settings.heading | escape }}"
+               class="gs-promo-full-banner-img"
+               loading="lazy"
+               width="1420"
+               height="450">
+        {%- else -%}
+          <img src="{{ 'middle-promo-banner.png' | asset_url }}"
+               alt="Big Savings On Your Favorites Banner"
+               class="gs-promo-full-banner-img"
+               loading="lazy"
+               width="1420"
+               height="450">
+        {%- endif -%}
+      </div>
+    </a>
+  </div>
+</div>
+
+<style>
+  .gs-promo-banner-section {
+    width: 100%;
+    padding: 24px 0;
+    box-sizing: border-box;
+  }
+
+  .gs-promo-banner-container {
+    max-width: 1420px;
+    margin: 0 auto;
+    padding: 0 24px;
+    box-sizing: border-box;
+  }
+
+  .gs-promo-banner-link-wrapper {
+    display: block;
+    width: 100%;
+    text-decoration: none;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(12, 62, 97, 0.06);
+    transition: transform 0.28s ease, box-shadow 0.28s ease;
+    border: 1px solid #E2E8F0;
+    background: #FFFFFF;
+  }
+
+  .gs-promo-banner-link-wrapper:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 36px rgba(12, 62, 97, 0.12), 0 0 0 1px rgba(190, 152, 45, 0.3);
+  }
+
+  .gs-promo-banner-image-box {
+    width: 100%;
+    position: relative;
+    line-height: 0;
+    overflow: hidden;
+    border-radius: 20px;
+  }
+
+  .gs-promo-full-banner-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    border-radius: 20px;
+  }
+
+  @media (max-width: 768px) {
+    .gs-promo-banner-container {
+      padding: 0 10px;
+    }
+    .gs-promo-banner-link-wrapper {
+      border-radius: 12px;
+    }
+    .gs-promo-banner-image-box,
+    .gs-promo-full-banner-img {
+      border-radius: 12px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Middle Promo Banner",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Banner Image (Leave blank to use default banner)"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Accessibility Label",
+      "default": "Big Savings On Your Favorites"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Banner Click Link",
+      "default": "/collections/all"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Middle Promo Banner"
+    }
+  ]
+}
+{% endschema %}

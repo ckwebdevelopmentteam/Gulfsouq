@@ -1,0 +1,648 @@
+{% doc %}
+  @prompt
+    Create a full-width luxury hero section for a featured collection called “The Pravasi Homecoming Box” with a dark navy background (#0C3E61) and gold accents (#BE982D).
+    
+    Layout:
+    
+    Two columns on desktop:
+    
+    Left: Text, features, and buttons
+    
+    Right: Product image card with badges
+    
+    Mobile: Stack vertically, image on top.
+    
+    Left Content:
+    
+    Gold pill: LIMITED EDITION
+    
+    Heading:
+    
+    The Pravasi
+    
+    Homecoming Box (gold)
+    
+    Description text about luxury curated gift box for Gulf returnees.
+    
+    Two features:
+    
+    Premium Curation – Handpicked Gulf treasures
+    
+    Gifting Ready – Luxury packaging included
+    
+    Two buttons:
+    
+    Primary: Order Your Pravasi Box
+    
+    Secondary: Customize Box
+    
+    Small text: Starting at ₹2,999 • Free Premium Packaging
+    
+    Right Content:
+    
+    Image card with:
+    
+    Gold pill: BESTSELLER
+    
+    Rating badge: 4.9★ and 500+ Reviews
+    
+    Rules:
+    
+    Must be 100% full width
+    
+    No slider, no JS
+    
+    Clean, fast, SEO-safe
+    
+    Fully responsive, Make this section 100% full width (edge-to-edge).
+    The background must touch both left and right screen edges on all devices.
+    Remove any container, boxed width, max-width, or side padding from the section wrapper.
+    Keep the content centered, but the background must be full width.
+    No slider, no JavaScript, keep it fast and SEO-safe., 100% FULL WIDTH (edge-to-edge) across the entire screen, review section must be in left bottom, review section must be in images  left bottom, Reduce the size of the review badge on the product image.
+    Make the rating value (4.9★) larger, and place the review count (500+ Reviews) directly below the rating, centered.
+    Keep the badge clean, compact, and premium.
+    Do not change any other layout, colors, or content., Rating badge color selection facility needed
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-pravasi-hero-{{ ai_gen_id }} {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    background-color: {{ block.settings.background_color }};
+    padding: 60px 0;
+  }
+
+  .ai-pravasi-hero-container-{{ ai_gen_id }} {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .ai-pravasi-hero-grid-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+
+  .ai-pravasi-hero-content-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .ai-pravasi-hero-pill-{{ ai_gen_id }} {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 16px;
+    background-color: {{ block.settings.gold_color }};
+    color: {{ block.settings.background_color }};
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    width: fit-content;
+  }
+
+  .ai-pravasi-hero-heading-{{ ai_gen_id }} {
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .ai-pravasi-hero-heading-{{ ai_gen_id }} .ai-pravasi-hero-title-line-{{ ai_gen_id }} {
+    display: block;
+    font-size: {{ block.settings.heading_size }}px;
+    color: {{ block.settings.text_color }};
+  }
+
+  .ai-pravasi-hero-heading-{{ ai_gen_id }} .ai-pravasi-hero-title-gold-{{ ai_gen_id }} {
+    color: {{ block.settings.gold_color }};
+  }
+
+  .ai-pravasi-hero-description-{{ ai_gen_id }} {
+    color: {{ block.settings.text_color }};
+    font-size: {{ block.settings.description_size }}px;
+    line-height: 1.6;
+    opacity: 0.9;
+  }
+
+  .ai-pravasi-hero-features-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .ai-pravasi-hero-feature-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .ai-pravasi-hero-feature-icon-{{ ai_gen_id }} {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    color: {{ block.settings.gold_color }};
+  }
+
+  .ai-pravasi-hero-feature-text-{{ ai_gen_id }} {
+    color: {{ block.settings.text_color }};
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .ai-pravasi-hero-buttons-{{ ai_gen_id }} {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .ai-pravasi-hero-button-primary-{{ ai_gen_id }} {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 32px;
+    background-color: {{ block.settings.gold_color }};
+    color: {{ block.settings.background_color }};
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .ai-pravasi-hero-button-primary-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.gold_hover_color }};
+    transform: translateY(-2px);
+  }
+
+  .ai-pravasi-hero-button-secondary-{{ ai_gen_id }} {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 32px;
+    background-color: transparent;
+    color: {{ block.settings.text_color }};
+    border: 2px solid {{ block.settings.text_color }};
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .ai-pravasi-hero-button-secondary-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.text_color }};
+    color: {{ block.settings.background_color }};
+  }
+
+  .ai-pravasi-hero-price-text-{{ ai_gen_id }} {
+    color: {{ block.settings.text_color }};
+    font-size: 14px;
+    opacity: 0.8;
+  }
+
+  .ai-pravasi-hero-image-wrapper-{{ ai_gen_id }} {
+    position: relative;
+  }
+
+  .ai-pravasi-hero-image-card-{{ ai_gen_id }} {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  }
+
+  .ai-pravasi-hero-image-{{ ai_gen_id }} {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .ai-pravasi-hero-image-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    background-color: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ai-pravasi-hero-image-placeholder-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    opacity: 0.3;
+  }
+
+  .ai-pravasi-hero-image-badge-{{ ai_gen_id }} {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 16px;
+    background-color: {{ block.settings.gold_color }};
+    color: {{ block.settings.background_color }};
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .ai-pravasi-hero-rating-badge-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    background-color: {{ block.settings.rating_badge_bg }};
+    padding: 10px 16px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .ai-pravasi-hero-rating-stars-{{ ai_gen_id }} {
+    color: {{ block.settings.rating_star_color }};
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .ai-pravasi-hero-rating-count-{{ ai_gen_id }} {
+    color: {{ block.settings.rating_text_color }};
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  @media screen and (max-width: 989px) {
+    .ai-pravasi-hero-{{ ai_gen_id }} {
+      padding: 40px 0;
+    }
+
+    .ai-pravasi-hero-grid-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+
+    .ai-pravasi-hero-image-wrapper-{{ ai_gen_id }} {
+      order: -1;
+    }
+
+    .ai-pravasi-hero-heading-{{ ai_gen_id }} .ai-pravasi-hero-title-line-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.heading_size }}px * 0.7);
+    }
+
+    .ai-pravasi-hero-description-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.description_size }}px * 0.9);
+    }
+
+    .ai-pravasi-hero-buttons-{{ ai_gen_id }} {
+      flex-direction: column;
+    }
+
+    .ai-pravasi-hero-button-primary-{{ ai_gen_id }},
+    .ai-pravasi-hero-button-secondary-{{ ai_gen_id }} {
+      width: 100%;
+    }
+
+    .ai-pravasi-hero-rating-badge-{{ ai_gen_id }} {
+      bottom: 16px;
+      left: 16px;
+      padding: 8px 12px;
+    }
+
+    .ai-pravasi-hero-rating-stars-{{ ai_gen_id }} {
+      font-size: 18px;
+    }
+
+    .ai-pravasi-hero-rating-count-{{ ai_gen_id }} {
+      font-size: 10px;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-pravasi-hero-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-pravasi-hero-container-{{ ai_gen_id }}">
+    <div class="ai-pravasi-hero-grid-{{ ai_gen_id }}">
+      <div class="ai-pravasi-hero-content-{{ ai_gen_id }}">
+        {% if block.settings.show_limited_badge %}
+          <span class="ai-pravasi-hero-pill-{{ ai_gen_id }}">{{ block.settings.limited_badge_text }}</span>
+        {% endif %}
+
+        <h1 class="ai-pravasi-hero-heading-{{ ai_gen_id }}">
+          <span class="ai-pravasi-hero-title-line-{{ ai_gen_id }}">{{ block.settings.heading_line_1 }}</span>
+          <span class="ai-pravasi-hero-title-line-{{ ai_gen_id }} ai-pravasi-hero-title-gold-{{ ai_gen_id }}">{{ block.settings.heading_line_2 }}</span>
+        </h1>
+
+        {% if block.settings.description != blank %}
+          <div class="ai-pravasi-hero-description-{{ ai_gen_id }}">
+            {{ block.settings.description }}
+          </div>
+        {% endif %}
+
+        <div class="ai-pravasi-hero-features-{{ ai_gen_id }}">
+          {% if block.settings.feature_1_text != blank %}
+            <div class="ai-pravasi-hero-feature-{{ ai_gen_id }}">
+              <svg class="ai-pravasi-hero-feature-icon-{{ ai_gen_id }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span class="ai-pravasi-hero-feature-text-{{ ai_gen_id }}">{{ block.settings.feature_1_text }}</span>
+            </div>
+          {% endif %}
+
+          {% if block.settings.feature_2_text != blank %}
+            <div class="ai-pravasi-hero-feature-{{ ai_gen_id }}">
+              <svg class="ai-pravasi-hero-feature-icon-{{ ai_gen_id }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span class="ai-pravasi-hero-feature-text-{{ ai_gen_id }}">{{ block.settings.feature_2_text }}</span>
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="ai-pravasi-hero-buttons-{{ ai_gen_id }}">
+          {% if block.settings.primary_button_text != blank %}
+            <a href="{{ block.settings.primary_button_link }}" class="ai-pravasi-hero-button-primary-{{ ai_gen_id }}">
+              {{ block.settings.primary_button_text }}
+            </a>
+          {% endif %}
+
+          {% if block.settings.secondary_button_text != blank %}
+            <a href="{{ block.settings.secondary_button_link }}" class="ai-pravasi-hero-button-secondary-{{ ai_gen_id }}">
+              {{ block.settings.secondary_button_text }}
+            </a>
+          {% endif %}
+        </div>
+
+        {% if block.settings.price_text != blank %}
+          <p class="ai-pravasi-hero-price-text-{{ ai_gen_id }}">{{ block.settings.price_text }}</p>
+        {% endif %}
+      </div>
+
+      <div class="ai-pravasi-hero-image-wrapper-{{ ai_gen_id }}">
+        <div class="ai-pravasi-hero-image-card-{{ ai_gen_id }}">
+          {% if block.settings.product_image %}
+            <img
+              src="{{ block.settings.product_image | image_url: width: 1200 }}"
+              alt="{{ block.settings.product_image.alt | escape }}"
+              loading="lazy"
+              width="{{ block.settings.product_image.width }}"
+              height="{{ block.settings.product_image.height }}"
+              class="ai-pravasi-hero-image-{{ ai_gen_id }}"
+            >
+          {% else %}
+            <div class="ai-pravasi-hero-image-placeholder-{{ ai_gen_id }}">
+              {{ 'product-1' | placeholder_svg_tag }}
+            </div>
+          {% endif %}
+
+          {% if block.settings.show_bestseller_badge %}
+            <span class="ai-pravasi-hero-image-badge-{{ ai_gen_id }}">{{ block.settings.bestseller_badge_text }}</span>
+          {% endif %}
+
+          {% if block.settings.show_rating %}
+            <div class="ai-pravasi-hero-rating-badge-{{ ai_gen_id }}">
+              <div class="ai-pravasi-hero-rating-stars-{{ ai_gen_id }}">
+                {{ block.settings.rating_value }}★
+              </div>
+              <div class="ai-pravasi-hero-rating-count-{{ ai_gen_id }}">
+                {{ block.settings.rating_count }}
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Pravasi homecoming hero",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#0C3E61"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "gold_color",
+      "label": "Gold accent",
+      "default": "#BE982D"
+    },
+    {
+      "type": "color",
+      "id": "gold_hover_color",
+      "label": "Gold hover",
+      "default": "#D4AB3A"
+    },
+    {
+      "type": "header",
+      "content": "Limited edition badge"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_limited_badge",
+      "label": "Show badge",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "limited_badge_text",
+      "label": "Badge text",
+      "default": "LIMITED EDITION"
+    },
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "heading_line_1",
+      "label": "Line 1",
+      "default": "The Pravasi"
+    },
+    {
+      "type": "text",
+      "id": "heading_line_2",
+      "label": "Line 2 (gold)",
+      "default": "Homecoming Box"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 32,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 56
+    },
+    {
+      "type": "header",
+      "content": "Description"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>A luxury curated gift box celebrating Gulf returnees with handpicked treasures and premium packaging.</p>"
+    },
+    {
+      "type": "range",
+      "id": "description_size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Description size",
+      "default": 18
+    },
+    {
+      "type": "header",
+      "content": "Features"
+    },
+    {
+      "type": "text",
+      "id": "feature_1_text",
+      "label": "Feature 1",
+      "default": "Premium Curation – Handpicked Gulf treasures"
+    },
+    {
+      "type": "text",
+      "id": "feature_2_text",
+      "label": "Feature 2",
+      "default": "Gifting Ready – Luxury packaging included"
+    },
+    {
+      "type": "header",
+      "content": "Buttons"
+    },
+    {
+      "type": "text",
+      "id": "primary_button_text",
+      "label": "Primary button text",
+      "default": "Order Your Pravasi Box"
+    },
+    {
+      "type": "url",
+      "id": "primary_button_link",
+      "label": "Primary button link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_button_text",
+      "label": "Secondary button text",
+      "default": "Customize Box"
+    },
+    {
+      "type": "url",
+      "id": "secondary_button_link",
+      "label": "Secondary button link"
+    },
+    {
+      "type": "header",
+      "content": "Price"
+    },
+    {
+      "type": "text",
+      "id": "price_text",
+      "label": "Price text",
+      "default": "Starting at ₹2,999 • Free Premium Packaging"
+    },
+    {
+      "type": "header",
+      "content": "Rating badge"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "label": "Show rating",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "rating_value",
+      "label": "Rating value",
+      "default": "4.9"
+    },
+    {
+      "type": "text",
+      "id": "rating_count",
+      "label": "Rating count",
+      "default": "500+ Reviews"
+    },
+    {
+      "type": "color",
+      "id": "rating_badge_bg",
+      "label": "Badge background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "rating_star_color",
+      "label": "Star color",
+      "default": "#BE982D"
+    },
+    {
+      "type": "color",
+      "id": "rating_text_color",
+      "label": "Text color",
+      "default": "#0C3E61"
+    },
+    {
+      "type": "header",
+      "content": "Product image"
+    },
+    {
+      "type": "image_picker",
+      "id": "product_image",
+      "label": "Image"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_bestseller_badge",
+      "label": "Show bestseller badge",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "bestseller_badge_text",
+      "label": "Bestseller text",
+      "default": "BESTSELLER"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Pravasi homecoming hero"
+    }
+  ]
+}
+{% endschema %}

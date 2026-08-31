@@ -1,0 +1,386 @@
+<style>
+.gs-about {
+  padding: 32px 20px;
+  border-top: 1px solid #e8e3d5;
+  border-bottom: 1px solid #e8e3d5;
+  font-family: inherit;
+}
+.gs-about__title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0 0 14px;
+  line-height: 1.3;
+}
+.gs-about__desc {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.75;
+  margin: 0 0 20px;
+}
+.gs-about__desc p { margin: 0; }
+.gs-about__desc strong { color: #1a1a2e; }
+
+/* Highlight strip */
+.gs-hl {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #fef9ec;
+  border: 1px solid #f5dea0;
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-bottom: 14px;
+  font-size: 14px;
+  color: #555;
+  line-height: 1.6;
+}
+.gs-hl > svg { flex-shrink: 0; }
+.gs-hl p { margin: 0; }
+.gs-hl strong { color: #9a7a1a; }
+
+/* Features grid */
+.gs-features {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.gs-feat {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #faf9f5;
+  border: 1px solid #e8e3d5;
+  border-radius: 10px;
+  padding: 13px 14px;
+  font-size: 13px;
+  color: #444;
+  line-height: 1.3;
+}
+.gs-feat > svg { flex-shrink: 0; }
+
+/* Tags row */
+.gs-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 14px;
+}
+.gs-tag {
+  font-size: 11px;
+  color: #888;
+  border: 1px solid #e8e3d5;
+  border-radius: 20px;
+  padding: 4px 12px;
+  background: #fff;
+}
+
+/* FAQ accordion */
+.gs-faq { margin-top: 18px; }
+.gs-faq-item { border-bottom: 1px solid #e8e3d5; }
+.gs-faq-item:first-child { border-top: 1px solid #e8e3d5; }
+.gs-faq-q {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 13px 0;
+  cursor: pointer;
+  font-size: 14px;
+  color: #1a1a2e;
+  font-weight: 500;
+  user-select: none;
+}
+.gs-faq-chevron {
+  flex-shrink: 0;
+  color: #c9a840;
+  transition: transform 0.25s ease;
+}
+.gs-faq-item.gs-open .gs-faq-chevron {
+  transform: rotate(180deg);
+}
+.gs-faq-a {
+  display: none;
+  font-size: 13px;
+  color: #777;
+  line-height: 1.65;
+  padding-bottom: 13px;
+}
+.gs-faq-item.gs-open .gs-faq-a { display: block; }
+.gs-faq-a p { margin: 0; }
+
+@media (max-width: 600px) {
+  .gs-features { grid-template-columns: 1fr; }
+}
+</style>
+
+<div class="gs-about">
+
+  {%- if section.settings.section_title != blank -%}
+    <h2 class="gs-about__title">{{ section.settings.section_title | escape }}</h2>
+  {%- endif -%}
+
+  {%- if section.settings.description != blank -%}
+    <div class="gs-about__desc">{{ section.settings.description }}</div>
+  {%- endif -%}
+
+  {%- if section.settings.show_highlight and section.settings.highlight_text != blank -%}
+    <div class="gs-hl">
+      <svg width="20" height="20" fill="none" stroke="#c9a840" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M20 12v10H4V12"/>
+        <path d="M22 7H2v5h20V7z"/>
+        <line x1="12" y1="22" x2="12" y2="7"/>
+        <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/>
+        <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
+      </svg>
+      <div>{{ section.settings.highlight_text }}</div>
+    </div>
+  {%- endif -%}
+
+  {%- assign feature_blocks = section.blocks | where: 'type', 'feature' -%}
+  {%- if feature_blocks.size > 0 -%}
+    <div class="gs-features">
+      {%- for block in feature_blocks -%}
+        <div class="gs-feat" {{ block.shopify_attributes }}>
+          {%- if block.settings.icon_svg != blank -%}
+            <svg width="18" height="18" fill="none" stroke="#c9a840" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">{{ block.settings.icon_svg }}</svg>
+          {%- endif -%}
+          <span>{{ block.settings.label | escape }}</span>
+        </div>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+  {%- assign tag_blocks = section.blocks | where: 'type', 'tag' -%}
+  {%- if section.settings.show_tags and tag_blocks.size > 0 -%}
+    <div class="gs-tags">
+      {%- for block in tag_blocks -%}
+        <span class="gs-tag" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</span>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+  {%- assign faq_blocks = section.blocks | where: 'type', 'faq' -%}
+  {%- if faq_blocks.size > 0 -%}
+    <div class="gs-faq" id="gs-faq-{{ section.id }}">
+      {%- for block in faq_blocks -%}
+        <div class="gs-faq-item" {{ block.shopify_attributes }}>
+          <div class="gs-faq-q" role="button" tabindex="0" aria-expanded="false">
+            <span>{{ block.settings.question | escape }}</span>
+            <svg class="gs-faq-chevron" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </div>
+          <div class="gs-faq-a" role="region">{{ block.settings.answer }}</div>
+        </div>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+</div>
+
+<script>
+(function () {
+  var wrap = document.getElementById('gs-faq-{{ section.id }}');
+  if (!wrap) return;
+  var items = Array.prototype.slice.call(wrap.querySelectorAll('.gs-faq-item'));
+
+  function openItem(item) {
+    item.classList.add('gs-open');
+    item.querySelector('.gs-faq-q').setAttribute('aria-expanded', 'true');
+  }
+  function closeItem(item) {
+    item.classList.remove('gs-open');
+    item.querySelector('.gs-faq-q').setAttribute('aria-expanded', 'false');
+  }
+
+  items.forEach(function (item) {
+    var btn = item.querySelector('.gs-faq-q');
+    btn.addEventListener('click', function () {
+      var isOpen = item.classList.contains('gs-open');
+      items.forEach(closeItem);
+      if (!isOpen) openItem(item);
+    });
+    btn.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        btn.click();
+      }
+    });
+  });
+}());
+</script>
+
+{% schema %}
+{
+  "name": "Product — About",
+  "tag": "section",
+  "class": "product-about-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section title",
+      "default": "About this Watch"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Upgrade your style with this elegant <strong>SABR Square Dial Watch</strong> — designed for a modern, minimal look. The sleek Arabic numeral dial adds cultural character to both casual and formal outfits. The soft silicone strap ensures all-day comfort, while the built-in date window keeps you on track.</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_highlight",
+      "label": "Show gifting callout",
+      "default": true
+    },
+    {
+      "type": "richtext",
+      "id": "highlight_text",
+      "label": "Highlight text",
+      "default": "<p><strong>Perfect for gifting.</strong> Elegant design, attractive price — an ideal choice for Eid, birthdays, and homecomings.</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tags",
+      "label": "Show tags",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature item",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "icon_svg",
+          "label": "SVG path(s)"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label"
+        }
+      ]
+    },
+    {
+      "type": "tag",
+      "name": "Tag",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Tag label"
+        }
+      ]
+    },
+    {
+      "type": "faq",
+      "name": "FAQ item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product — About",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "icon_svg": "<rect x=\"3\" y=\"3\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"14\" y=\"3\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"3\" y=\"14\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"14\" y=\"14\" width=\"7\" height=\"7\" rx=\"1\"/>",
+            "label": "Premium minimalist design"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon_svg": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><polyline points=\"12 7 12 12 15 15\"/>",
+            "label": "Unique Arabic numeral dial"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon_svg": "<rect x=\"3\" y=\"4\" width=\"18\" height=\"17\" rx=\"2\"/><line x1=\"16\" y1=\"2\" x2=\"16\" y2=\"6\"/><line x1=\"8\" y1=\"2\" x2=\"8\" y2=\"6\"/><line x1=\"3\" y1=\"10\" x2=\"21\" y2=\"10\"/>",
+            "label": "Date display function"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon_svg": "<path d=\"M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z\"/>",
+            "label": "Lightweight & durable build"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon_svg": "<path d=\"M20 7l-8-4-8 4v6c0 4.4 3.41 8.52 8 9.93C16.59 21.52 20 17.4 20 13V7z\"/>",
+            "label": "Casual & formal suitable"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon_svg": "<path d=\"M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z\"/>",
+            "label": "Comfortable silicone strap"
+          }
+        },
+        {
+          "type": "tag",
+          "settings": { "label": "Watches" }
+        },
+        {
+          "type": "tag",
+          "settings": { "label": "Arabic Numeral" }
+        },
+        {
+          "type": "tag",
+          "settings": { "label": "Gift" }
+        },
+        {
+          "type": "tag",
+          "settings": { "label": "Men's Fashion" }
+        },
+        {
+          "type": "tag",
+          "settings": { "label": "Gulf Style" }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Is this watch water-resistant?",
+            "answer": "<p>Splash-resistant for everyday use. Not recommended for swimming or submerging in water.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "What is the warranty?",
+            "answer": "<p>6-month manufacturer warranty against defects. Contact support via WhatsApp for claims.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Can I exchange the strap?",
+            "answer": "<p>Yes — standard 20mm lug width, compatible with most universal watch straps.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
