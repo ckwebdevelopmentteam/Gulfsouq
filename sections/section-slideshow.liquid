@@ -4,32 +4,8 @@
   if ref_img == blank and section.blocks.first.settings.video
     assign ref_img = section.blocks.first.settings.video
   endif
-  if section.settings.height == 'xl'
-    assign padding_bottom = 0
-  else
-    if section.settings.height == 'adapt'
-      assign padding_bottom = 1 | divided_by: ref_img.aspect_ratio | times: 100 | round: 2
-    else
-      assign aspect_ratio = section.settings.height | split: '/'
-      assign temp = aspect_ratio[0] | append: '.0'
-      assign ratio = aspect_ratio[1] | divided_by: temp | round: 2
-      assign padding_bottom = ratio | times: 100 | round: 2
-    endif
-    if section.blocks.first.settings.layout != 'background' and section.settings.height == 'adapt'
-      assign padding_bottom = padding_bottom | divided_by: 2
-    endif
-  endif
-  if section.settings.height_mobile == 'adapt'
-    if section.blocks.first.settings.image_mobile
-      assign ref_img = section.blocks.first.settings.image_mobile
-    endif
-    assign padding_bottom_mobile = 1 | divided_by: ref_img.aspect_ratio | times: 100 | round: 2
-  else
-    assign aspect_ratio = section.settings.height_mobile | split: '/'
-    assign temp = aspect_ratio[0] | append: '.0'
-    assign ratio = aspect_ratio[1] | divided_by: temp | round: 2
-    assign padding_bottom_mobile = ratio | times: 100 | round: 2
-  endif
+  assign padding_bottom = 26
+  assign padding_bottom_mobile = 85
 %}
 {%- if section.blocks.size == 0 -%}
   <div class="perfume-offer-banner-box">
@@ -52,7 +28,6 @@
     </a>
   </div>
 {%- else -%}
-<div class="hero-banner-container">
 <div
   class="
     m6fr
@@ -154,7 +129,7 @@
           </picture>
         {% else %}
           <picture>
-            {{ 'lifestyle-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+            <img src="{{ 'banner-02.jpg' | asset_url }}" alt="Milka Oreo Chocolates" loading="eager" fetchpriority="high" width="1920" height="600" class="hero-banner-img">
           </picture>
         {% endif %}
       </figure>
@@ -214,22 +189,18 @@
           >
             {% if first_link %}
               <a
-                href="{{ block.settings.first_link_url }}"
-                class="overlay-{{ first_button_color }} {% if first_show_link %} strong inline{% elsif first_button_style == 'inv' %} inv{% endif %}"
+                href="{{ block.settings.first_link_url | default: '/collections/all' }}"
+                class="hero-shop-now-btn"
               >
-                {%- if first_show_link %}<span>{% endif -%}
-                {{- block.settings.first_link_text -}}
-                {%- if first_show_link %}</span>&nbsp;<i aria-hidden="true" class="icon-chevron-right"></i>{% endif -%}
+                <span>{{- block.settings.first_link_text -}}</span>
               </a>
             {% endif %}
             {%- if second_link -%}
               <a
-                href="{{ block.settings.second_link_url }}"
-                class="overlay-{{ second_button_color }} {% if second_show_link %} strong inline{% elsif second_button_style == 'inv' %} inv{% endif %}"
+                href="{{ block.settings.second_link_url | default: '/collections/all' }}"
+                class="hero-shop-now-btn"
               >
-                {%- if second_show_link %}<span>{% endif -%}
-                {{- block.settings.second_link_text -}}
-                {%- if second_show_link %}</span>&nbsp;<i aria-hidden="true" class="icon-chevron-right"></i>{% endif -%}
+                <span>{{- block.settings.second_link_text -}}</span>
               </a>
             {%- endif -%}
           </p>
@@ -246,81 +217,127 @@
     </article>
   {%- endfor -%}
 </div>
-</div>
 {%- endif -%}
 
 <style>
+  body.template-index #content,
+  body.template-index main#content {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+  }
+
+  .shopify-section-header,
+  .shopify-section-group-header-group,
+  .gs-header-wrapper,
+  .gs-header-section {
+    margin-bottom: 0 !important;
+  }
+
+  #shopify-section-{{ section.id }} {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: relative;
+    top: 0;
+  }
+
   #shopify-section-{{ section.id }} .perfume-offer-banner-box {
-    max-width: 1420px;
-    margin: 0 auto 10px auto;
-    padding: 0 24px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
     box-sizing: border-box;
   }
 
   #shopify-section-{{ section.id }} .perfume-offer-banner-link {
     display: block;
     width: 100%;
-    border-radius: 24px;
-    border: 1.5px solid #E2E8F0;
+    border-radius: 0;
+    border: none;
     overflow: hidden;
-    box-shadow: 0 6px 24px rgba(12, 62, 97, 0.08);
-    transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
-  }
-
-  #shopify-section-{{ section.id }} .perfume-offer-banner-link:hover {
-    transform: translateY(-4px);
-    border-color: #BE982D;
-    box-shadow: 0 12px 32px rgba(190, 152, 45, 0.22), 0 6px 16px rgba(12, 62, 97, 0.1);
   }
 
   #shopify-section-{{ section.id }} .perfume-offer-banner-img {
     width: 100%;
     height: auto;
-    max-height: 440px;
+    max-height: 520px;
     object-fit: cover;
     display: block;
-    border-radius: 22px;
+    border-radius: 0;
   }
 
-  #shopify-section-{{ section.id }} .hero-banner-container {
-    max-width: 1380px;
-    margin: 0 auto;
-    padding: 0 24px;
-    box-sizing: border-box;
-  }
-
-  #shopify-section-{{ section.id }} .m6fr { 
+    #shopify-section-{{ section.id }},
+  #shopify-section-{{ section.id }} .m6fr,
+  #shopify-section-{{ section.id }} .m6fr article,
+  #shopify-section-{{ section.id }} [class*="palette-"],
+  #shopify-section-{{ section.id }} .swiper-wrapper,
+  #shopify-section-{{ section.id }} .swiper-slide { 
     width: 100% !important;
     max-width: 100% !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    margin-bottom: 0 !important; 
-    border-radius: 24px !important;
-    border: 2px solid #BE982D !important;
-    overflow: hidden !important;
-    box-shadow: 0 10px 30px rgba(12, 62, 97, 0.12) !important;
+    margin: 0 !important; 
+    border-radius: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    background-color: transparent !important;
   }
 
-  /* Desktop-only slideshow slide and image sizing */
+  #shopify-section-{{ section.id }} .m6fr article {
+    display: flex !important;
+    align-items: center !important;
+    position: relative !important;
+    overflow: hidden !important;
+  }
+
+  /* Desktop-only slideshow slide and image sizing - increased height (500px) */
   @media only screen and (min-width: 47.501em) {
+    #shopify-section-{{ section.id }},
+    #shopify-section-{{ section.id }} .m6fr,
     #shopify-section-{{ section.id }} .m6fr article,
-    #shopify-section-{{ section.id }} .m6fr figure,
-    #shopify-section-{{ section.id }} .m6fr picture,
-    #shopify-section-{{ section.id }} .m6fr article.has-border {
-      border-radius: 22px !important;
+    #shopify-section-{{ section.id }} .swiper-wrapper,
+    #shopify-section-{{ section.id }} .swiper-slide {
+      height: 500px !important;
+      min-height: 460px !important;
+      max-height: 540px !important;
+    }
+
+    #shopify-section-{{ section.id }} .m6fr article {
+      border-radius: 0 !important;
       overflow: hidden !important;
       border: none !important;
       width: 100% !important;
-      height: 100% !important;
+      height: 500px !important;
+      min-height: 460px !important;
+      max-height: 540px !important;
       margin: 0 !important;
       padding: 0 !important;
+      box-sizing: border-box !important;
+      position: relative !important;
     }
 
+    #shopify-section-{{ section.id }} .m6fr figure {
+      position: absolute !important;
+      left: 0 !important;
+      right: 0 !important;
+      top: 0 !important;
+      bottom: 0 !important;
+      width: 100% !important;
+      height: 500px !important;
+      min-height: 460px !important;
+      max-height: 540px !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      background: transparent !important;
+      z-index: 1 !important;
+      overflow: hidden !important;
+    }
+
+    #shopify-section-{{ section.id }} .m6fr figure picture,
     #shopify-section-{{ section.id }} .m6fr figure img,
     #shopify-section-{{ section.id }} .m6fr picture img,
     #shopify-section-{{ section.id }} .m6fr img {
-      border-radius: 22px !important;
+      border-radius: 0 !important;
       object-fit: cover !important;
+      object-position: center center !important;
       width: 100% !important;
       height: 100% !important;
       min-width: 100% !important;
@@ -328,6 +345,154 @@
       max-width: 100% !important;
       max-height: 100% !important;
       display: block !important;
+      background: transparent !important;
+    }
+
+    #shopify-section-{{ section.id }} .m6fr .title-styling {
+      position: relative !important;
+      z-index: 10 !important;
+      max-width: 480px !important;
+      padding: 0 50px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      text-align: left !important;
+    }
+
+    #shopify-section-{{ section.id }} .swiper-pagination-bullets,
+    #shopify-section-{{ section.id }} .swiper-custom-pagination {
+      bottom: 18px !important;
+      z-index: 12 !important;
+      display: flex !important;
+      justify-content: center !important;
+      gap: 8px !important;
+      width: 100% !important;
+      left: 0 !important;
+      right: 0 !important;
+      margin: 0 auto !important;
+    }
+
+    #shopify-section-{{ section.id }} .swiper-pagination-bullet {
+      width: 10px !important;
+      height: 10px !important;
+      background: rgba(255, 255, 255, 0.6) !important;
+      opacity: 0.85 !important;
+      border-radius: 50% !important;
+      transition: all 0.3s ease !important;
+      cursor: pointer !important;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.2) !important;
+    }
+
+    #shopify-section-{{ section.id }} .swiper-pagination-bullet-active {
+      background: #FFFFFF !important;
+      width: 26px !important;
+      border-radius: 10px !important;
+      opacity: 1 !important;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3) !important;
+    }
+
+    #shopify-section-{{ section.id }} .m6fr .title-styling h2,
+    #shopify-section-{{ section.id }} .m6fr .title-styling h1 {
+      font-size: 36px !important;
+      font-weight: 800 !important;
+      color: #FFFFFF !important;
+      line-height: 1.15 !important;
+      margin: 0 0 10px 0 !important;
+      letter-spacing: -0.5px !important;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.25) !important;
+    }
+
+    #shopify-section-{{ section.id }} .m6fr .title-styling p {
+      font-size: 14.5px !important;
+      line-height: 1.45 !important;
+      color: rgba(255, 255, 255, 0.95) !important;
+      margin: 0 0 20px 0 !important;
+      max-width: 400px !important;
+      text-shadow: 0 1px 6px rgba(0,0,0,0.3) !important;
+    }
+
+    #shopify-section-{{ section.id }} .m6fr .link-btn,
+    #root #shopify-section-{{ section.id }} .m6fr .link-btn {
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    #shopify-section-{{ section.id }} .hero-shop-now-btn:before,
+    #root #shopify-section-{{ section.id }} .hero-shop-now-btn:before,
+    #shopify-section-{{ section.id }} .m6fr .link-btn a:before,
+    #root #shopify-section-{{ section.id }} .m6fr .link-btn a:before {
+      display: none !important;
+      content: none !important;
+    }
+
+    #shopify-section-{{ section.id }} .hero-shop-now-btn,
+    #shopify-section-{{ section.id }} .m6fr .link-btn a,
+    #shopify-section-{{ section.id }} .m6fr a.hero-shop-now-btn,
+    #shopify-section-{{ section.id }} .m6fr a.overlay-primary,
+    #shopify-section-{{ section.id }} .m6fr a.overlay-secondary,
+    #shopify-section-{{ section.id }} .m6fr .link-btn a.overlay-primary,
+    #shopify-section-{{ section.id }} .m6fr .link-btn a.overlay-secondary,
+    #root #shopify-section-{{ section.id }} .hero-shop-now-btn,
+    #root #shopify-section-{{ section.id }} .m6fr .link-btn a,
+    #root #shopify-section-{{ section.id }} .m6fr .link-btn a.overlay-primary {
+      position: relative !important;
+      z-index: 10 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      background: transparent !important;
+      background-color: transparent !important;
+      border: 1.5px solid #FFFFFF !important;
+      color: #FFFFFF !important;
+      font-size: 13.5px !important;
+      font-weight: 700 !important;
+      padding: 8px 28px !important;
+      border-radius: 30px !important;
+      text-decoration: none !important;
+      box-shadow: none !important;
+      line-height: 1.2 !important;
+      transition: all 0.25s ease !important;
+      cursor: pointer !important;
+    }
+
+    #shopify-section-{{ section.id }} .hero-shop-now-btn *,
+    #shopify-section-{{ section.id }} .hero-shop-now-btn span,
+    #shopify-section-{{ section.id }} .m6fr .link-btn a *,
+    #shopify-section-{{ section.id }} .m6fr .link-btn a span,
+    #root #shopify-section-{{ section.id }} .hero-shop-now-btn span,
+    #root #shopify-section-{{ section.id }} .hero-shop-now-btn *,
+    #root #shopify-section-{{ section.id }} .m6fr .link-btn a span,
+    #root #shopify-section-{{ section.id }} .m6fr .link-btn a * {
+      position: relative !important;
+      z-index: 12 !important;
+      color: #FFFFFF !important;
+      fill: #FFFFFF !important;
+      font-size: 13.5px !important;
+      font-weight: 700 !important;
+      display: inline-block !important;
+      visibility: visible !important;
+    }
+
+    #shopify-section-{{ section.id }} .hero-shop-now-btn:hover,
+    #shopify-section-{{ section.id }} .m6fr .link-btn a:hover,
+    #shopify-section-{{ section.id }} .m6fr .link-btn a.overlay-primary:hover,
+    #root #shopify-section-{{ section.id }} .hero-shop-now-btn:hover,
+    #root #shopify-section-{{ section.id }} .m6fr .link-btn a:hover {
+      background: #FFFFFF !important;
+      background-color: #FFFFFF !important;
+      border-color: #FFFFFF !important;
+      color: #103f60 !important;
+      transform: translateY(-2px);
+    }
+
+    #shopify-section-{{ section.id }} .hero-shop-now-btn:hover *,
+    #shopify-section-{{ section.id }} .hero-shop-now-btn:hover span,
+    #shopify-section-{{ section.id }} .m6fr .link-btn a:hover *,
+    #shopify-section-{{ section.id }} .m6fr .link-btn a:hover span,
+    #root #shopify-section-{{ section.id }} .hero-shop-now-btn:hover span,
+    #root #shopify-section-{{ section.id }} .m6fr .link-btn a:hover span {
+      color: #103f60 !important;
+      fill: #103f60 !important;
     }
   }
 
@@ -362,8 +527,8 @@
   }
 
   @media only screen and (max-width: 47.5em) {
-    #shopify-section-{{ section.id }} .hero-banner-container {
-      padding: 0 12px;
+    #shopify-section-{{ section.id }} {
+      padding: 0 !important;
     }
 
     /* Main slider container - full width on mobile */
@@ -372,42 +537,78 @@
       flex: 1 1 100% !important;
       width: 100% !important;
       margin: 0 !important;
-      border-radius: 16px !important;
-      border-width: 1.5px !important;
+      border-radius: 0 !important;
+      border-width: 0 !important;
+      border: none !important;
+      box-shadow: none !important;
       container-type: normal !important;
       height: auto !important;
       min-height: 0 !important;
+      background: #7F69B1 !important;
     }
 
-    /* CRITICAL FIX: Override --mih and border-top so article fills container without top whitespace */
-    #root #shopify-section-{{ section.id }} .m6fr article,
-    .has-first-m6fr-wide #content > [id*="shopify-section"]:first-child > .m6fr article {
-      min-height: 0 !important;
-      height: auto !important;
-      --mih: 0px !important;
-      border-top: 0 solid transparent !important;
-      border-radius: 14px !important;
-      overflow: hidden !important;
-      margin: 0 !important;
-      padding: 0 !important;
+    #root #shopify-section-{{ section.id }} .m6fr article {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      padding: 30px 16px !important;
+      background: #7F69B1 !important;
+      border-radius: 0 !important;
+    }
+
+    #root #shopify-section-{{ section.id }} .m6fr .title-styling {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      text-align: center !important;
+      width: 100% !important;
+      padding: 0 0 20px 0 !important;
+      order: 1 !important;
+    }
+
+    #root #shopify-section-{{ section.id }} .m6fr .title-styling h2,
+    #root #shopify-section-{{ section.id }} .m6fr .title-styling h1 {
+      font-size: 26px !important;
+      color: #FFFFFF !important;
+      margin: 0 0 8px 0 !important;
+    }
+
+    #root #shopify-section-{{ section.id }} .m6fr .title-styling p {
+      font-size: 13px !important;
+      color: rgba(255, 255, 255, 0.9) !important;
+      margin: 0 0 16px 0 !important;
+    }
+
+    #root #shopify-section-{{ section.id }} .m6fr .link-btn a {
+      background: transparent !important;
+      border: 1.5px solid #FFFFFF !important;
+      color: #FFFFFF !important;
+      padding: 8px 26px !important;
+      border-radius: 20px !important;
+      font-size: 13px !important;
+    }
+
+    #root #shopify-section-{{ section.id }} .m6fr .link-btn a span {
+      color: #FFFFFF !important;
     }
 
     /* Make figure position:relative so the image creates natural height */
-    #root #shopify-section-{{ section.id }} .m6fr article > figure,
-    .has-first-m6fr-wide #content > [id*="shopify-section"]:first-child > .m6fr article > figure {
+    #root #shopify-section-{{ section.id }} .m6fr article > figure {
       position: relative !important;
       left: auto !important;
       top: 0 !important;
       right: auto !important;
       bottom: auto !important;
       width: 100% !important;
-      height: auto !important;
+      height: 220px !important;
       min-height: 0 !important;
-      border-radius: 14px !important;
+      border-radius: 0 !important;
       overflow: hidden !important;
       display: block !important;
       margin: 0 !important;
       padding: 0 !important;
+      background: #7F69B1 !important;
+      order: 2 !important;
     }
 
     /* Force picture to be display: block and relative positioning */
@@ -416,9 +617,10 @@
       display: block !important;
       position: relative !important;
       width: 100% !important;
-      height: auto !important;
-      border-radius: 14px !important;
+      height: 100% !important;
+      border-radius: 0 !important;
       overflow: hidden !important;
+      background: #7F69B1 !important;
     }
 
     /* Images should be responsive and drive the height */
@@ -426,12 +628,12 @@
     #root #shopify-section-{{ section.id }} .m6fr picture img {
       position: relative !important;
       width: 100% !important;
-      height: auto !important;
-      min-height: 0 !important;
-      max-height: none !important;
-      object-fit: cover !important;
-      border-radius: 14px !important;
+      height: 100% !important;
+      object-fit: contain !important;
+      object-position: center center !important;
+      border-radius: 0 !important;
       display: block !important;
+      background: #7F69B1 !important;
     }
 
     /* The ::before pseudo-element on figure is also absolutely positioned - reset it */
@@ -444,18 +646,22 @@
     #shopify-section-{{ section.id }} .m6fr .img-overlay {
       display: none !important;
     }
-
-    /* Text overlay div on slides - hide on mobile since slides have no text */
-    #shopify-section-{{ section.id }} .m6fr article > div.title-styling {
-      display: none !important;
-    }
   }
 
   /* Smaller mobile screens */
   @media only screen and (max-width: 480px) {
-    #shopify-section-{{ section.id }} .hero-banner-container {
-      padding: 0 8px;
+    #shopify-section-{{ section.id }} {
+      padding: 0 !important;
     }
+  }
+
+  /* Ensure next section (Explore Categories) starts cleanly below the banner */
+  #shopify-section-{{ section.id }} + .shopify-section,
+  #shopify-section-{{ section.id }} + div {
+    position: relative !important;
+    z-index: 10 !important;
+    clear: both !important;
+    margin-top: 0 !important;
   }
 </style>
 
@@ -984,20 +1190,3 @@
   ]
 }
 {% endschema %}
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    if (typeof Swiper !== 'undefined') {
-      new Swiper('.side-promo-swiper-{{ section.id }}', {
-        loop: true,
-        autoplay: {
-          delay: 4500,
-          disableOnInteraction: false
-        },
-        speed: 700,
-        effect: 'fade',
-        fadeEffect: { crossFade: true }
-      });
-    }
-  });
-</script>

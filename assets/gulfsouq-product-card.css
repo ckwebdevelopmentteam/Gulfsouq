@@ -79,6 +79,21 @@ html body .shopify-section-header,
 }
 
 /* ==========================================================================
+   HOMEPAGE HERO BANNER ZERO GAP UNDER HEADER
+   ========================================================================== */
+body.template-index #content,
+body.template-index main#content {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
+body.template-index #content > [id*="shopify-section"]:first-child,
+body.template-index #content > [class*="shopify-section"]:first-child {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* ==========================================================================
    HEADER LOGO FULL VISIBILITY & UN-CROPPED SIZING FIX
    ========================================================================== */
 #logo,

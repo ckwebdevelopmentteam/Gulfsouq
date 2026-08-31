@@ -1,0 +1,223 @@
+{% comment %}
+  Section: Hero Marquee Strip
+  Description: Full-width vibrant gold/yellow infinite ticker strip directly below hero banner
+{% endcomment %}
+
+<div class="gs-hero-marquee-wrapper" id="gs-hero-marquee-{{ section.id }}">
+  <div class="gs-hero-marquee-track">
+    {%- capture marquee_content -%}
+      {%- if section.blocks.size > 0 -%}
+        {%- for i in (1..3) -%}
+          {%- for block in section.blocks -%}
+            <div class="gs-marquee-item" {{ block.shopify_attributes }}>
+              <span class="gs-marquee-text">{{ block.settings.text | escape }}</span>
+            </div>
+          {%- endfor -%}
+        {%- endfor -%}
+      {%- else -%}
+        {%- for i in (1..3) -%}
+          <div class="gs-marquee-item"><span class="gs-marquee-text">Gulf Products</span></div>
+          <div class="gs-marquee-item"><span class="gs-marquee-text">100% Original</span></div>
+          <div class="gs-marquee-item"><span class="gs-marquee-text">Free Shipping</span></div>
+          <div class="gs-marquee-item"><span class="gs-marquee-text">Cash on Delivery Available</span></div>
+          <div class="gs-marquee-item"><span class="gs-marquee-text">Fast Delivery</span></div>
+        {%- endfor -%}
+      {%- endif -%}
+    {%- endcapture -%}
+
+    <div class="gs-marquee-group">
+      {{ marquee_content }}
+    </div>
+    <div class="gs-marquee-group" aria-hidden="true">
+      {{ marquee_content }}
+    </div>
+  </div>
+</div>
+
+<style>
+  #shopify-section-{{ section.id }} {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background-color: {{ section.settings.bg_color | default: '#f3be00' }} !important;
+    overflow: hidden !important;
+    position: relative !important;
+    z-index: 5 !important;
+    clear: both !important;
+    display: block !important;
+  }
+
+  .gs-hero-marquee-wrapper {
+    width: 100%;
+    overflow: hidden;
+    background: {{ section.settings.bg_color | default: '#f3be00' }};
+    padding: {{ section.settings.padding_y | default: 15 }}px 0;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+  }
+
+  .gs-hero-marquee-track {
+    display: flex;
+    width: 100%;
+    overflow: hidden;
+    user-select: none;
+  }
+
+  .gs-marquee-group {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 14px;
+    padding-right: 14px;
+    animation: gsMarqueeScroll {{ section.settings.speed | default: 28 }}s linear infinite;
+  }
+
+  .gs-hero-marquee-wrapper:hover .gs-marquee-group {
+    animation-play-state: paused;
+  }
+
+  @keyframes gsMarqueeScroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-100%);
+    }
+  }
+
+  .gs-marquee-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+    color: {{ section.settings.text_color | default: '#111827' }};
+    font-size: 13.5px;
+    font-weight: 700;
+    letter-spacing: 0.1px;
+    font-family: inherit;
+  }
+
+  .gs-marquee-text {
+    color: inherit;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  @media only screen and (max-width: 768px) {
+    .gs-hero-marquee-wrapper {
+      padding: 11px 0;
+    }
+    .gs-marquee-group {
+      gap: 10px;
+      padding-right: 10px;
+      animation-duration: {{ section.settings.speed_mobile | default: 18 }}s;
+    }
+    .gs-marquee-item {
+      font-size: 12.5px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Hero Marquee Strip",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#f3be00"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#111827"
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "min": 10,
+      "max": 60,
+      "step": 2,
+      "unit": "s",
+      "label": "Desktop Scroll Speed",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "speed_mobile",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "s",
+      "label": "Mobile Scroll Speed",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "padding_y",
+      "min": 6,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Vertical Padding",
+      "default": 11
+    }
+  ],
+  "blocks": [
+    {
+      "type": "marquee_item",
+      "name": "Marquee Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Gulf Products"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Marquee Strip",
+      "blocks": [
+        {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Gulf Products"
+          }
+        },
+        {
+          "type": "marquee_item",
+          "settings": {
+            "text": "100% Original"
+          }
+        },
+        {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Free Shipping"
+          }
+        },
+        {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Cash on Delivery Available"
+          }
+        },
+        {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Fast Delivery"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
