@@ -292,20 +292,19 @@
         "fix_zindex": 0
       }
     },
-    "section_slideshow_Y9Da7g": {
-      "type": "section-slideshow",
-      "name": "Slideshow",
+    "section_brand_stats": {
+      "type": "section-brand-stats",
       "settings": {
-        "height": "adapt",
-        "width_banner": "boxed",
-        "width": "wide",
-        "autoplay": false,
-        "autoplay_seconds": 3,
-        "enable_controls": false,
-        "height_mobile": "adapt",
-        "spacing_desktop": 50,
-        "spacing_mobile": 30,
-        "fix_zindex": 0
+        "heading": "GULFSOUQ DATES & LUXURY PRODUCTS",
+        "description": "Welcome to Gulfsouq, where an unwavering commitment to authenticity brings you the finest treasures from the Arabian Gulf. Enjoy our unique assortment of dates, harvested with care, pure attars & luxury perfumes, exotic nuts, and imported delicacies. Experience true luxury with our curated collections delivered with freshness and quality across India.",
+        "stat1_num": "200+",
+        "stat1_label": "Stores Across India",
+        "stat2_num": "2+",
+        "stat2_label": "Countries Partnered",
+        "stat3_num": "5000+",
+        "stat3_label": "Happy Customers",
+        "stat4_num": "50+",
+        "stat4_label": "Varieties Of Premium Items"
       }
     },
     "ugc_video_H9tHBQ": {
@@ -952,7 +951,7 @@
     "section_custom_liquid_wUa8M4",
     "section_featured_products_TKk83n",
     "section_featured_products_hEGAKr",
-    "section_slideshow_Y9Da7g",
+    "section_brand_stats",
     "ugc_video_H9tHBQ",
     "176536168485f6182a",
     "17653676714a6f2fd7",
