@@ -146,19 +146,18 @@
   {%- endif -%}
 {%- endcapture -%}
 
-{% if collection.handle == 'offers' %}
 <style>
-  /* Offers page custom toolbar and layout overrides */
-  .offers-page.collection-wrapper,
-  #root .offers-page.collection-wrapper {
+  /* Collection page custom toolbar and layout overrides */
+  .collection-wrapper,
+  #root .collection-wrapper {
     padding-left: 0 !important;
     padding-right: 0 !important;
     display: block !important;
   }
-  .offers-page.collection-wrapper > aside {
+  .collection-wrapper > aside {
     display: none !important;
   }
-  .offers-page.collection-wrapper > div {
+  .collection-wrapper > div {
     width: 100% !important;
     max-width: 100% !important;
     margin: 0 !important;
@@ -434,8 +433,7 @@
     }
   }
 </style>
-{% endif %}
-<div class="collection-wrapper {% if collection.handle == 'offers' %}offers-page {% endif %}{% if show_filters_and_menu %}m6cl{% if section.settings.filter_sticky %} sticky{% endif %}{% endif %}{% if section.settings.filters_menu_alignment == 'right' %} m6cl-inv{% endif %} section-width-{{ section.settings.width }}">
+<div class="collection-wrapper offers-page {% if show_filters_and_menu %}m6cl{% if section.settings.filter_sticky %} sticky{% endif %}{% endif %}{% if section.settings.filters_menu_alignment == 'right' %} m6cl-inv{% endif %} section-width-{{ section.settings.width }}">
   {%- if show_filters_and_menu -%}<div>{%- endif -%}
     {%- for block in section.blocks -%}
       {%- case block.type -%}
@@ -445,7 +443,7 @@
           <div class="module-spacer" style="margin-bottom:{{ block.settings.height }}px;" {{ block.shopify_attributes }}></div>
         {%- when 'title'-%}
           <header {% if block.settings.text_alignment == 'center' %}class="text-center"{% endif %} {{ block.shopify_attributes }}>
-            <h1 class="collection-title {{ block.settings.title_size }}"{% if collection.handle == 'offers' %} style="font-size: 3.8rem; font-weight: 700; color: #111827;"{% endif %}>
+            <h1 class="collection-title {{ block.settings.title_size }}" style="font-size: 3.8rem; font-weight: 700; color: #111827;">
               {% if collection.handle == 'offers' %}Top Offers{% else %}{{ collection.title }}{% endif %}
             </h1>
           </header>

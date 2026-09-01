@@ -36,56 +36,221 @@
   assign img_width = 100 | divided_by: img_width_limit
 -%}
 {%- paginate collections by section.settings.pagination_qty -%}
-  <header class="cols">
-    <{{ section.settings.title_size }}>{{ 'collection.all_collections' | t }}</{{ section.settings.title_size }}>
-  </header>
-  <ul class="l4cl {% if settings.enable_quick_buy %}with-quick-buy{% endif %} mobile-wide category {{ image_ratio }} {{ width_class }} section-width-{{ section.settings.width }}">
-    {%- for collection in collections -%}
-      {%- liquid
-        capture current
-          cycle 1, 2, 3, 4, 5, 6
-        endcapture
-      -%}
-      <li>
-        <figure class="{% if settings.multiply_collection_images == 'multiply' %}img-multiply{% elsif settings.multiply_collection_images == 'multiply-bg' %}img-multiply-bg{% endif %}">
-          <picture>
-            {% if collection.featured_image %}
+  <div class="all-collections-container section-width-{{ section.settings.width }}">
+    <header class="all-collections-header">
+      <h1 class="all-collections-heading">{{ 'collection.all_collections' | t }}</h1>
+    </header>
+
+    <div class="all-collections-grid">
+      {%- for collection in collections -%}
+        {%- liquid
+          capture current
+            cycle 1, 2, 3, 4, 5, 6
+          endcapture
+          assign collection_img = collection.featured_image | default: collection.image | default: collection.products.first.featured_image
+        -%}
+        <a href="{{ collection.url }}" class="all-collection-card">
+          <div class="all-collection-card-img-box">
+            {%- if collection_img != blank -%}
               <img
-                src="{{ collection.featured_image | image_url: width: image_width, height: image_height }}"
-                srcset="
-                  {% if section.settings.fill_images %}
-                    {% render 'image-srcset', image: collection.featured_image, format: image_ratio, crop: 'center' %}
-                  {% else %}
-                    {% render 'image-srcset', image: collection.featured_image %}
-                  {% endif %}
-                "
-                sizes="
-                  {% if settings.width < 2000 %}
-                    (min-width: 1300px) {% if img_width == 100 %}calc({{ settings.width }}px * 0.2){% else %}calc({{ settings.width }}px * 0.{{ img_width }}){% endif %},
-                  {% endif %}
-                  (min-width: 760px) {% if img_width == 100 %}calc(100vw * 0.2){% else %}calc(100vw * 0.{{ img_width }}){% endif %},
-                  141px
-                "
-                width="{{ image_width }}"
-                height="{{ image_height }}"
-                alt="{% if collection.featured_image.alt == blank or collection.featured_image.alt == collection.title %}Collection image for: {% endif %}{{ collection.featured_image.alt | default: collection.title | escape }}"
-                {% if section.settings.fill_images %}class="filled"{% endif %}
-                loading="{% if section.index > 2 or forloop.first == false %}lazy{% else %}eager{% endif %}"
+                src="{{ collection_img | image_url: width: 400 }}"
+                alt="{{ collection.title | escape }}"
+                loading="lazy"
+                class="all-collection-card-img"
               >
-            {% else %}
-              {{ 'collection-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
-            {% endif %}
-          </picture>
-        </figure>
-        <p><a href="{{ collection.url }}" class="strong">{{ collection.title }}&nbsp;<i aria-hidden="true" class="icon-chevron-right mobile-hide"></i></a></p>
-      </li>
-    {%- endfor -%}
-  </ul>
-  {% render 'pagination',
-    paginate: paginate,
-    mobile_center: true
-  %}
+            {%- else -%}
+              <div class="all-collection-card-placeholder">
+                {{ 'collection-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+              </div>
+            {%- endif -%}
+          </div>
+          <div class="all-collection-card-content">
+            <span class="all-collection-card-title">{{ collection.title }}</span>
+            <span class="all-collection-card-accent"></span>
+          </div>
+        </a>
+      {%- endfor -%}
+    </div>
+
+    {% render 'pagination',
+      paginate: paginate,
+      mobile_center: true
+    %}
+  </div>
 {%- endpaginate -%}
+
+<style>
+  .all-collections-container {
+    padding: 36px 0 48px 0;
+  }
+
+  .all-collections-header {
+    margin-bottom: 32px;
+  }
+
+  .all-collections-heading {
+    font-size: 32px !important;
+    font-weight: 800 !important;
+    color: #0C3E61 !important;
+    margin: 0 !important;
+    letter-spacing: -0.3px !important;
+  }
+
+  .all-collections-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+
+  @media (max-width: 1300px) {
+    .all-collections-grid {
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .all-collections-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .all-collections-container {
+      padding: 24px 0 32px 0;
+    }
+    .all-collections-header {
+      margin-bottom: 20px;
+    }
+    .all-collections-heading {
+      font-size: 24px !important;
+    }
+    .all-collections-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .all-collections-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+  }
+
+  .all-collection-card {
+    background: #FFFFFF;
+    border: 1.5px solid #F1F5F9;
+    border-radius: 20px;
+    padding: 24px 16px 20px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    text-decoration: none;
+    box-shadow: 0 4px 16px rgba(12, 62, 97, 0.04);
+    transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.28s ease, border-color 0.28s ease;
+    min-height: 255px;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .all-collection-card:hover {
+    transform: translateY(-8px);
+    border-color: #BE982D;
+    box-shadow: 0 14px 32px rgba(12, 62, 97, 0.1), 0 4px 12px rgba(190, 152, 45, 0.15);
+  }
+
+  .all-collection-card-img-box {
+    width: 100%;
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    box-sizing: border-box;
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+
+  .all-collection-card-img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+  }
+
+  .all-collection-card:hover .all-collection-card-img {
+    transform: scale(1.08);
+  }
+
+  .all-collection-card-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .all-collection-card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-top: 14px;
+  }
+
+  .all-collection-card-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #0C3E61;
+    text-align: center;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 38px;
+    transition: color 0.2s ease;
+  }
+
+  .all-collection-card:hover .all-collection-card-title {
+    color: #BE982D;
+  }
+
+  .all-collection-card-accent {
+    width: 32px;
+    height: 3px;
+    background-color: #BE982D;
+    border-radius: 2px;
+    margin-top: 8px;
+    transition: width 0.28s ease, background-color 0.28s ease;
+  }
+
+  .all-collection-card:hover .all-collection-card-accent {
+    width: 48px;
+    background-color: #D4AF37;
+  }
+
+  @media (max-width: 480px) {
+    .all-collection-card {
+      min-height: 200px;
+      padding: 14px 10px 12px 10px;
+      border-radius: 16px;
+    }
+    .all-collection-card-img-box {
+      height: 95px;
+    }
+    .all-collection-card-title {
+      font-size: 12px;
+      height: 32px;
+    }
+  }
+</style>
 
 {% schema %}
 {
