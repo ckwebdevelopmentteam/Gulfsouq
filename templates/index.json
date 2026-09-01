@@ -818,7 +818,7 @@
         "title": "Explore Categories",
         "subtitle": "Curated collections for your daily needs",
         "view_all_text": "VIEW ALL",
-        "rows": "2"
+        "view_all_link": "/collections"
       }
     },
     "section_banner_dates": {
