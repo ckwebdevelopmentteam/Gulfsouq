@@ -15,58 +15,33 @@
             "title_underline_style": "none",
             "text": "",
             "show_first_link": false,
-            "first_link_text": "Button",
-            "first_link_url": "/",
+            "first_link_text": "",
+            "first_link_url": "",
             "first_button_style": "primary plain",
             "show_second_link": false,
-            "second_link_text": "Button",
+            "second_link_text": "",
             "second_link_url": "",
             "second_button_style": "secondary plain",
             "show_overlay_link": true,
-            "overlay_url": "",
+            "overlay_url": "/collections/all",
             "image_mobile": "shopify://shop_images/offer_banner_3_b571b92a-7dc4-46de-b214-78f622c6e2a4.png"
-          }
-        },
-        "slide_pW8JRx": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/ChatGPT_Image_Jul_3_2026_06_15_56_PM.png",
-            "layout": "background",
-            "overlay_opacity": 0,
-            "color_palette": "scheme-7",
-            "text_position": "align-center text-center",
-            "title": "",
-            "title_underline_style": "none",
-            "text": "",
-            "show_first_link": false,
-            "first_link_text": "Button",
-            "first_link_url": "/",
-            "first_button_style": "primary plain",
-            "show_second_link": false,
-            "second_link_text": "Button",
-            "second_link_url": "",
-            "second_button_style": "secondary plain",
-            "show_overlay_link": true,
-            "overlay_url": "",
-            "image_mobile": "shopify://shop_images/banner_for_web_2.png"
           }
         }
       },
       "block_order": [
-        "slide_FLUXWz",
-        "slide_pW8JRx"
+        "slide_FLUXWz"
       ],
       "name": "Hero Banner",
       "settings": {
         "height": "21/9",
-        "width_banner": "boxed",
-        "width": "boxed",
+        "width_banner": "wide",
+        "width": "wide",
         "autoplay": true,
-        "autoplay_seconds": 5,
-        "enable_controls": false,
+        "autoplay_seconds": 4,
+        "enable_controls": true,
         "height_mobile": "adapt",
-        "spacing_desktop": -125,
-        "spacing_mobile": 10,
+        "spacing_desktop": 0,
+        "spacing_mobile": 0,
         "fix_zindex": 0
       }
     },
@@ -292,12 +267,14 @@
       }
     },
     "section_featured_collection_homecoming": {
-      "type": "section-featured-products",
+      "type": "section-featured-collection",
       "name": "Homecoming Combo Boxes",
       "settings": {
-        "products": [],
-        "layout": "slider",
-        "number_of_items": 5,
+        "collection": "homecoming-boxes",
+        "layout": "grid",
+        "mobile_layout": "grid",
+        "limit": 4,
+        "number_of_items": 4,
         "text_alignment": "left",
         "width": "boxed",
         "title": "<h2>🧳 Homecoming Combo Boxes</h2>",
@@ -305,15 +282,11 @@
         "text": "<p>Special homecoming gift packages for loved ones</p>",
         "show_link": true,
         "link_text": "View All Homecoming Boxes",
-        "link_url": "/collections/homecoming-boxes",
         "button_style": "secondary plain",
         "enable_quick_buy_desktop": true,
         "enable_quick_buy_mobile": true,
         "enable_quick_buy_drawer": false,
         "enable_quick_buy_qty_selector": true,
-        "enable_color_picker": false,
-        "enable_quick_buy_compact": false,
-        "mobile_layout": "slider",
         "spacing_desktop": 30,
         "spacing_mobile": 20,
         "fix_zindex": 0
@@ -754,18 +727,78 @@
     "section_explore_categories": {
       "type": "section-explore-categories",
       "blocks": {
-        "cat_1": { "type": "category", "settings": { "collection": "chocolates" } },
-        "cat_2": { "type": "category", "settings": { "collection": "dates" } },
-        "cat_3": { "type": "category", "settings": { "collection": "athar-and-perfume" } },
-        "cat_4": { "type": "category", "settings": { "collection": "nuts-dry-fruits" } },
-        "cat_5": { "type": "category", "settings": { "collection": "gift-hamper-boxes" } },
-        "cat_6": { "type": "category", "settings": { "collection": "electronics-gadgets" } },
-        "cat_7": { "type": "category", "settings": { "collection": "homecoming-boxes" } },
-        "cat_8": { "type": "category", "settings": { "collection": "trending-watches" } },
-        "cat_9": { "type": "category", "settings": { "collection": "beauty-personal-care" } },
-        "cat_10": { "type": "category", "settings": { "collection": "spices-herbs" } },
-        "cat_11": { "type": "category", "settings": { "collection": "toys" } },
-        "cat_12": { "type": "category", "settings": { "collection": "home-living" } }
+        "cat_1": {
+          "type": "category",
+          "settings": {
+            "collection": "chocolates"
+          }
+        },
+        "cat_2": {
+          "type": "category",
+          "settings": {
+            "collection": "dates"
+          }
+        },
+        "cat_3": {
+          "type": "category",
+          "settings": {
+            "collection": "athar-and-perfume"
+          }
+        },
+        "cat_4": {
+          "type": "category",
+          "settings": {
+            "collection": "nuts-dry-fruits"
+          }
+        },
+        "cat_5": {
+          "type": "category",
+          "settings": {
+            "collection": "gift-hamper-boxes"
+          }
+        },
+        "cat_6": {
+          "type": "category",
+          "settings": {
+            "collection": "electronics-gadgets"
+          }
+        },
+        "cat_7": {
+          "type": "category",
+          "settings": {
+            "collection": "homecoming-boxes"
+          }
+        },
+        "cat_8": {
+          "type": "category",
+          "settings": {
+            "collection": "trending-watches"
+          }
+        },
+        "cat_9": {
+          "type": "category",
+          "settings": {
+            "collection": "beauty-personal-care"
+          }
+        },
+        "cat_10": {
+          "type": "category",
+          "settings": {
+            "collection": "spices-herbs"
+          }
+        },
+        "cat_11": {
+          "type": "category",
+          "settings": {
+            "collection": "toys"
+          }
+        },
+        "cat_12": {
+          "type": "category",
+          "settings": {
+            "collection": "home-living"
+          }
+        }
       },
       "block_order": [
         "cat_1",
@@ -784,7 +817,7 @@
       "settings": {
         "title": "Explore Categories",
         "subtitle": "Curated collections for your daily needs",
-        "view_all_text": "VIEW ALL →",
+        "view_all_text": "VIEW ALL",
         "rows": "2"
       }
     },
@@ -815,10 +848,95 @@
         "preset_image": "chocolates",
         "link": "/collections/chocolates"
       }
+    },
+    "section_hero_marquee": {
+      "type": "section-hero-marquee",
+      "blocks": {
+        "m_1": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Gulf Products"
+          }
+        },
+        "m_2": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "100% Original"
+          }
+        },
+        "m_3": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Free Shipping"
+          }
+        },
+        "m_4": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Cash on Delivery Available"
+          }
+        },
+        "m_5": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Fast Delivery"
+          }
+        },
+        "m_6": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Gulf Products"
+          }
+        },
+        "m_7": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "100% Original"
+          }
+        },
+        "m_8": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Free Shipping"
+          }
+        },
+        "m_9": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Cash on Delivery Available"
+          }
+        },
+        "m_10": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Fast Delivery"
+          }
+        }
+      },
+      "block_order": [
+        "m_1",
+        "m_2",
+        "m_3",
+        "m_4",
+        "m_5",
+        "m_6",
+        "m_7",
+        "m_8",
+        "m_9",
+        "m_10"
+      ],
+      "settings": {
+        "bg_color": "#f3be00",
+        "text_color": "#111827",
+        "speed": 28,
+        "speed_mobile": 18,
+        "padding_y": 15
+      }
     }
   },
   "order": [
     "section_slideshow_KjVeaW",
+    "section_hero_marquee",
     "section_explore_categories",
     "section_banner_combos",
     "section_featured_products_bDLXTh",

@@ -19,8 +19,9 @@
         <span class="explore-btn-circle" onclick="scrollExploreCategories('{{ section.id }}', 320)" title="Next">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
         </span>
+        {%- assign explore_view_all_text = section.settings.view_all_text | default: 'VIEW ALL' | replace: ' →', '' | replace: '→', '' | replace: ' &rarr;', '' | replace: '&rarr;', '' -%}
         <a href="{{ section.settings.view_all_link | default: '/collections' }}" class="explore-view-link">
-          {{ section.settings.view_all_text | default: 'VIEW ALL →' }}
+          {{ explore_view_all_text }}
         </a>
       </div>
     </div>
@@ -72,6 +73,15 @@
         {%- endif -%}
       </div>
     </div>
+
+    {%- if section.settings.view_all_link != blank or section.settings.view_all_text != blank -%}
+      {%- assign explore_view_all_text = section.settings.view_all_text | default: 'VIEW ALL' | replace: ' →', '' | replace: '→', '' | replace: ' &rarr;', '' | replace: '&rarr;', '' -%}
+      <div class="explore-footer-mobile">
+        <a href="{{ section.settings.view_all_link | default: '/collections' }}" class="explore-view-link-mobile">
+          {{ explore_view_all_text }}
+        </a>
+      </div>
+    {%- endif -%}
   </div>
 </div>
 
@@ -283,6 +293,10 @@
     background-color: #D4AF37;
   }
 
+  .explore-footer-mobile {
+    display: none;
+  }
+
   @media (max-width: 1200px) {
     .explore-categories-grid {
       grid-template-columns: repeat(3, 1fr);
@@ -309,14 +323,14 @@
       font-size: 12px !important;
       line-height: 1.25 !important;
     }
+    #explore-categories-{{ section.id }} .explore-header-right {
+      display: none !important;
+    }
     #explore-categories-{{ section.id }} .explore-btn-circle {
-      width: 34px !important;
-      height: 34px !important;
-      min-width: 34px !important;
-      min-height: 34px !important;
+      display: none !important;
     }
     #explore-categories-{{ section.id }} .explore-view-link {
-      font-size: 12px !important;
+      display: none !important;
     }
     .explore-categories-grid {
       display: flex;
@@ -338,6 +352,40 @@
       font-size: 13px;
       height: 34px;
     }
+    .explore-footer-mobile {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      margin-top: 14px !important;
+      width: 100% !important;
+      padding: 0 4px !important;
+      box-sizing: border-box !important;
+    }
+    #explore-categories-{{ section.id }} .explore-view-link-mobile {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 100% !important;
+      padding: 12px 20px !important;
+      background: #0C3E61 !important;
+      color: #FFFFFF !important;
+      border-radius: 12px !important;
+      font-size: 13px !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.5px !important;
+      text-transform: uppercase !important;
+      text-decoration: none !important;
+      box-shadow: 0 4px 12px rgba(12, 62, 97, 0.12) !important;
+      transition: all 0.2s ease !important;
+      text-align: center !important;
+      box-sizing: border-box !important;
+    }
+    #explore-categories-{{ section.id }} .explore-view-link-mobile:hover,
+    #explore-categories-{{ section.id }} .explore-view-link-mobile:active {
+      background: #082D47 !important;
+      color: #FFFFFF !important;
+      transform: translateY(-1px) !important;
+    }
   }
 
   @media (max-width: 480px) {
@@ -348,15 +396,6 @@
     .explore-subtitle {
       font-size: 11px !important;
       line-height: 1.2 !important;
-    }
-    #explore-categories-{{ section.id }} .explore-btn-circle {
-      width: 30px !important;
-      height: 30px !important;
-      min-width: 30px !important;
-      min-height: 30px !important;
-    }
-    #explore-categories-{{ section.id }} .explore-view-link {
-      font-size: 11px !important;
     }
     .explore-card-item {
       flex: 0 0 140px;
@@ -369,6 +408,10 @@
     .explore-card-title {
       font-size: 12px;
       height: 32px;
+    }
+    #explore-categories-{{ section.id }} .explore-view-link-mobile {
+      font-size: 12px !important;
+      padding: 11px 16px !important;
     }
   }
 </style>
@@ -393,7 +436,7 @@
       "type": "text",
       "id": "view_all_text",
       "label": "View All Text",
-      "default": "VIEW ALL →"
+      "default": "VIEW ALL"
     },
     {
       "type": "url",

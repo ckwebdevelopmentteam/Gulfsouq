@@ -108,96 +108,347 @@
   170px
 {%- endcapture -%}
 
-{%- if link %}
-  {%- capture link -%}
-    {%- liquid
-      assign button_color = section.settings.button_style | split: ' ' | first
-      assign button_style = section.settings.button_style | split: ' ' | last
-      assign is_link = false
-      if button_style == 'link'
-        assign is_link = true
-      endif
-    -%}
-    <p class="class-x link-btn"><a href="{{ collection.url }}" class="overlay-{{ button_color }} {% if is_link %}inline strong{% elsif button_style == 'inv' %}inv{% endif %}">{% if is_link %}<span>{% endif %}{{ section.settings.link_text }}{% if is_link %}</span>&nbsp;<i aria-hidden="true" class="icon-chevron-right"></i>{% endif %}</a></p>
-  {%- endcapture %}
+{%- liquid
+  assign fc_view_all_text = section.settings.link_text
+  if fc_view_all_text == blank or fc_view_all_text == 'Button'
+    assign fc_view_all_text = 'View All'
+  endif
+  assign fc_view_all_text = fc_view_all_text | replace: ' &rarr;', '' | replace: '&rarr;', '' | replace: ' →', '' | replace: '→', ''
+-%}
+
+<div class="deals-header-inner">
+  <div class="deals-header-titles">
+    <div class="deals-title">
+      {%- if section.settings.title != blank -%}
+        {{ section.settings.title }}
+      {%- else -%}
+        <h2>{{ collection.title }}</h2>
+      {%- endif -%}
+    </div>
+    {%- if section.settings.text != blank -%}
+      <p class="deals-subtitle">{{ section.settings.text }}</p>
+    {%- endif -%}
+  </div>
+  <div class="deals-header-right">
+    {%- if section.settings.show_link -%}
+      <a href="{{ collection.url | default: '/collections/all' }}" class="deals-view-link">
+        {{ fc_view_all_text }}
+      </a>
+    {%- endif -%}
+    {%- if slider -%}
+      <span class="deals-btn-circle" onclick="scrollFeaturedCollection('{{ section.id }}', -340)" title="Previous">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </span>
+      <span class="deals-btn-circle" onclick="scrollFeaturedCollection('{{ section.id }}', 340)" title="Next">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+      </span>
+    {%- endif -%}
+  </div>
+</div>
+
+{%- if slider -%}
+  <div class="deals-product-track-container section-width-{{ section.settings.width }}">
+    <ul id="FeaturedCollectionTrack-{{ section.id }}" class="deals-product-track {% if settings.enable_quick_buy and section.settings.hide_quick_buy == false %}with-quick-buy{% endif %}">
+      {%- liquid
+        assign featured_products = collection.products
+        if featured_products == blank or featured_products.size == 0
+          if collections['dates'].products.size > 0
+            assign featured_products = collections['dates'].products
+          elsif collections['all'].products.size > 0
+            assign featured_products = collections['all'].products
+          else
+            assign featured_products = collections.first.products
+          endif
+        endif
+        for product in featured_products limit: section.settings.limit
+          capture placeholder_int
+            cycle 1, 2, 3, 4, 5, 6
+          endcapture
+          if section.index == 1 and forloop.first
+            assign no_lazyload = true
+          endif
+          render 'product-item', product: product, placeholder_int: placeholder_int, enable_quick_buy_desktop: section.settings.enable_quick_buy_desktop, enable_quick_buy_mobile: section.settings.enable_quick_buy_mobile, enable_quick_buy_qty_selector: section.settings.enable_quick_buy_qty_selector, quick_buy_compact: section.settings.enable_quick_buy_compact, enable_quick_buy_drawer: section.settings.enable_quick_buy_drawer, sizes: image_sizes, enable_color_picker: section.settings.enable_color_picker, no_lazyload: no_lazyload
+        endfor
+      -%}
+    </ul>
+  </div>
+{%- else -%}
+  <div class="section-width-{{ section.settings.width }}">
+    <ul class="gs-product-grid {% if settings.enable_quick_buy and section.settings.hide_quick_buy == false %}with-quick-buy{% endif %} {{ width_class }}">
+      {%- liquid
+        assign featured_products = collection.products
+        if featured_products == blank or featured_products.size == 0
+          assign featured_products = collections.first.products
+        endif
+        for product in featured_products limit: section.settings.limit
+          capture placeholder_int
+            cycle 1, 2, 3, 4, 5, 6
+          endcapture
+          render 'product-item', product: product, placeholder_int: placeholder_int, enable_quick_buy_desktop: section.settings.enable_quick_buy_desktop, enable_quick_buy_mobile: section.settings.enable_quick_buy_mobile, enable_quick_buy_qty_selector: section.settings.enable_quick_buy_qty_selector, quick_buy_compact: section.settings.enable_quick_buy_compact, enable_quick_buy_drawer: section.settings.enable_quick_buy_drawer, sizes: image_sizes, enable_color_picker: section.settings.enable_color_picker, no_lazyload: no_lazyload
+        endfor
+      -%}
+    </ul>
+  </div>
 {%- endif -%}
 
-{%- if aside %}<div class="m6ac section-width-{{ section.settings.width }}">{%- endif -%}
-{%- if show_header -%}
-  <header
-    class="
-      {% unless aside %}cols{% if link and section.settings.show_link == false %} align-middle{% endif %}{% if section.settings.title == empty and section.settings.text == empty %} text-end{% endif %}{% endunless %} title-styling
-      {% if section.settings.title_underline_style != 'none' %}
-        title-underline-none
-        {% if section.settings.title_underline_style contains 'accent' %}
-          title-underline-accent
-        {% elsif section.settings.title_underline_style contains 'gradient' %}
-          title-underline-gradient
-        {% endif %}
-        {% if section.settings.title_underline_style contains 'secondary_font' %}
-          title-underline-secondary-font
-        {% endif %}
-      {% endif %}
-    "
-  >
-    {%- if container_div -%}<div class="{{ title_classes }}">{%- endif -%}
-    {%- if section.settings.title != blank -%}
-      {{ section.settings.title }}
-    {%- endif -%}
-    {%- if section.settings.text != empty -%}
-      {{ section.settings.text }}
-    {%- endif -%}
-    {%- if container_div -%}</div>{%- endif -%}
-    {%- if link and section.settings.text_alignment != 'center' -%}
-      {{ link | replace: 'class-x', 'mobile-hide' }}
-    {%- endif -%}
-  </header>
+{%- if section.settings.show_link -%}
+  <div class="deals-footer-mobile">
+    <a href="{{ collection.url | default: '/collections/all' }}" class="deals-view-link-mobile">
+      {{ fc_view_all_text }}
+    </a>
+  </div>
 {%- endif -%}
-{%- if aside %}<div>{%- endif -%}
-<ul class="l4cl {% unless slider %}gs-product-grid{% endunless %} {% if settings.enable_quick_buy and section.settings.hide_quick_buy == false %}with-quick-buy{% endif %} {{ width_class }} {% if slider %}slider{% else %}mobile-compact{% endif %}{% if section.settings.mobile_layout == 'grid' %} mobile-scroll w50-mobile{% endif %}{% unless aside %} section-width-{{ section.settings.width }}{% endunless %}">
-  {%- liquid
-    assign featured_products = collection.products
-    if featured_products == blank or featured_products.size == 0
-      assign featured_products = collections['all'].products
-    endif
-    for product in featured_products limit: section.settings.limit
-      capture placeholder_int
-        cycle 1, 2, 3, 4, 5, 6
-      endcapture
-      if section.index == 1 and forloop.first
-        assign no_lazyload = true
-      endif
-      render 'product-item', product: product, placeholder_int: placeholder_int, enable_quick_buy_desktop: section.settings.enable_quick_buy_desktop, enable_quick_buy_mobile: section.settings.enable_quick_buy_mobile, enable_quick_buy_qty_selector: section.settings.enable_quick_buy_qty_selector, quick_buy_compact: section.settings.enable_quick_buy_compact, enable_quick_buy_drawer: section.settings.enable_quick_buy_drawer, sizes: image_sizes, enable_color_picker: section.settings.enable_color_picker, no_lazyload: no_lazyload
-    endfor
-  -%}
-</ul>
-{%- if aside %}</div>{%- endif -%}
-{%- if link and section.settings.text_alignment == 'center' -%}
-  {{ link | replace: 'class-x', 'm0 text-center' }}
-{%- elsif link -%}
-  {{ link | replace: 'class-x', 'm0 mobile-only' }}
-{%- endif -%}
-{%- if aside %}</div>{%- endif -%}
 
 <style>
-  #shopify-section-{{ section.id }} { position: relative; z-index: {{ section.settings.fix_zindex }}!important; }
-  @media only screen and (min-width: 47.5em) {
-  {% if link and section.settings.text_alignment == 'center' %}
-    #shopify-section-{{ section.id }} { margin-bottom: {{ section.settings.spacing_desktop }}px; }
-  {% elsif section.settings.text_alignment == 'aside' %}
-    #shopify-section-{{ section.id }} .m6ac { margin-bottom: {{ section.settings.spacing_desktop | minus: 22 }}px; }
-  {% else %}
-    #shopify-section-{{ section.id }} .l4cl { margin-bottom: {{ section.settings.spacing_desktop | minus: 22 }}px; }
-  {% endif %}
+  #shopify-section-{{ section.id }} {
+    position: relative;
+    z-index: {{ section.settings.fix_zindex }}!important;
+    padding: 36px 0;
+    background: #FFFFFF;
   }
-  @media only screen and (max-width: 47.5em) {
-  {% if link %}
-    #shopify-section-{{ section.id }} { margin-bottom: {{ section.settings.spacing_mobile }}px; }
-  {% else %}
-    #shopify-section-{{ section.id }} .l4cl { margin-bottom: {{ section.settings.spacing_mobile | minus: 8 }}px; }
-  {% endif %}
+
+  #shopify-section-{{ section.id }} .deals-header-inner {
+    max-width: 1420px;
+    margin: 0 auto 24px auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  #shopify-section-{{ section.id }} .deals-title,
+  #shopify-section-{{ section.id }} .deals-title h2,
+  #shopify-section-{{ section.id }} .deals-title h1,
+  #shopify-section-{{ section.id }} .deals-title h3 {
+    font-size: 24px !important;
+    font-weight: 700 !important;
+    color: #0C3E61 !important;
+    margin: 0 0 4px 0 !important;
+    letter-spacing: -0.2px !important;
+    text-align: left !important;
+  }
+
+  #shopify-section-{{ section.id }} .deals-subtitle {
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    color: #64748B !important;
+    margin: 0 !important;
+  }
+
+  #shopify-section-{{ section.id }} .deals-header-right {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+  }
+
+  #shopify-section-{{ section.id }} .deals-btn-circle {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+    border-radius: 50% !important;
+    border: 1.5px solid #CBD5E1 !important;
+    background: #FFFFFF !important;
+    color: #0C3E61 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+    transition: all 0.2s ease !important;
+    user-select: none !important;
+    flex-shrink: 0 !important;
+  }
+
+  #shopify-section-{{ section.id }} .deals-btn-circle:hover {
+    background: #0C3E61 !important;
+    color: #FFFFFF !important;
+    border-color: #0C3E61 !important;
+  }
+
+  #shopify-section-{{ section.id }} .deals-view-link {
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    color: #0C3E61 !important;
+    text-decoration: none !important;
+    margin-left: 8px !important;
+    letter-spacing: 0.5px !important;
+    white-space: nowrap !important;
+    transition: color 0.2s ease !important;
+    flex-shrink: 0 !important;
+  }
+
+  #shopify-section-{{ section.id }} .deals-view-link:hover {
+    color: #BE982D !important;
+  }
+
+  #shopify-section-{{ section.id }} .deals-product-track-container {
+    max-width: 1420px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  #shopify-section-{{ section.id }} .deals-product-track {
+    display: flex !important;
+    gap: 16px !important;
+    overflow-x: auto !important;
+    scroll-behavior: smooth !important;
+    padding-bottom: 20px !important;
+    padding-top: 6px !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin: 0 !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+    align-items: stretch !important;
+    list-style: none !important;
+  }
+
+  #shopify-section-{{ section.id }} .deals-product-track::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  #shopify-section-{{ section.id }} .deals-product-track > li,
+  #shopify-section-{{ section.id }} .deals-product-track > .product-card,
+  #shopify-section-{{ section.id }} .deals-product-track > .gs-card {
+    flex: 0 0 calc((100% - 64px) / 5) !important;
+    width: calc((100% - 64px) / 5) !important;
+    min-width: 210px !important;
+    max-width: 280px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    list-style: none !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    flex-shrink: 0 !important;
+  }
+
+  .deals-footer-mobile {
+    display: none;
+  }
+
+  @media only screen and (max-width: 1024px) and (min-width: 769px) {
+    #shopify-section-{{ section.id }} .deals-product-track > li,
+    #shopify-section-{{ section.id }} .deals-product-track > .product-card,
+    #shopify-section-{{ section.id }} .deals-product-track > .gs-card {
+      flex: 0 0 calc((100% - 32px) / 3) !important;
+      width: calc((100% - 32px) / 3) !important;
+      min-width: 200px !important;
+      max-width: 280px !important;
+      flex-shrink: 0 !important;
+    }
+  }
+
+  @media only screen and (max-width: 768px) {
+    #shopify-section-{{ section.id }} {
+      padding: 24px 0 20px 0 !important;
+    }
+    #shopify-section-{{ section.id }} .deals-header-inner {
+      flex-direction: row !important;
+      align-items: flex-end !important;
+      justify-content: space-between !important;
+      margin-bottom: 16px !important;
+      padding-left: 16px !important;
+      padding-right: 16px !important;
+    }
+    #shopify-section-{{ section.id }} .deals-header-right {
+      display: none !important;
+    }
+    #shopify-section-{{ section.id }} .deals-btn-circle {
+      display: none !important;
+    }
+    #shopify-section-{{ section.id }} .deals-view-link {
+      display: none !important;
+    }
+    #shopify-section-{{ section.id }} .deals-title,
+    #shopify-section-{{ section.id }} .deals-title h2,
+    #shopify-section-{{ section.id }} .deals-title h1,
+    #shopify-section-{{ section.id }} .deals-title h3 {
+      font-size: 18px !important;
+      line-height: 1.25 !important;
+      margin-bottom: 2px !important;
+    }
+    #shopify-section-{{ section.id }} .deals-subtitle {
+      font-size: 12px !important;
+      line-height: 1.25 !important;
+    }
+    #shopify-section-{{ section.id }} .deals-product-track-container {
+      padding-left: 16px !important;
+      padding-right: 16px !important;
+    }
+    #shopify-section-{{ section.id }} .deals-product-track {
+      gap: 16px !important;
+      padding: 4px 0 16px 0 !important;
+    }
+    .deals-footer-mobile {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      margin: 16px auto 0 auto !important;
+      max-width: 1420px !important;
+      padding: 0 16px !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    #shopify-section-{{ section.id }} .deals-view-link-mobile {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 100% !important;
+      padding: 12px 20px !important;
+      background: #0C3E61 !important;
+      color: #FFFFFF !important;
+      border-radius: 12px !important;
+      font-size: 13px !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.5px !important;
+      text-transform: uppercase !important;
+      text-decoration: none !important;
+      box-shadow: 0 4px 12px rgba(12, 62, 97, 0.12) !important;
+      transition: all 0.2s ease !important;
+      text-align: center !important;
+      box-sizing: border-box !important;
+    }
+    #shopify-section-{{ section.id }} .deals-view-link-mobile:hover,
+    #shopify-section-{{ section.id }} .deals-view-link-mobile:active {
+      background: #082D47 !important;
+      color: #FFFFFF !important;
+      transform: translateY(-1px) !important;
+    }
+  }
+
+  @media only screen and (max-width: 480px) {
+    #shopify-section-{{ section.id }} .deals-title,
+    #shopify-section-{{ section.id }} .deals-title h2,
+    #shopify-section-{{ section.id }} .deals-title h1,
+    #shopify-section-{{ section.id }} .deals-title h3 {
+      font-size: 16px !important;
+      line-height: 1.2 !important;
+    }
+    #shopify-section-{{ section.id }} .deals-subtitle {
+      font-size: 11px !important;
+      line-height: 1.2 !important;
+    }
+    #shopify-section-{{ section.id }} .deals-product-track {
+      gap: 16px !important;
+    }
+    #shopify-section-{{ section.id }} .deals-view-link-mobile {
+      font-size: 12px !important;
+      padding: 11px 16px !important;
+    }
   }
 </style>
+
+<script>
+  function scrollFeaturedCollection(sectionId, offset) {
+    const track = document.getElementById('FeaturedCollectionTrack-' + sectionId);
+    if (track) {
+      track.scrollBy({ left: offset, behavior: 'smooth' });
+    }
+  }
+</script>
 
 {% schema %}
 {
