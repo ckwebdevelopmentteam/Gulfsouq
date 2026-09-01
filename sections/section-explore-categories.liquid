@@ -1,124 +1,154 @@
 {% comment %}
   Section: Explore Categories Grid
-  Description: Modern category grid with clean white cards, bold title, and gold accent underline matching reference design
+  Description: Premium category showcase with 2-row grid on desktop/tablet, smooth horizontal swipe carousel on mobile, and clean inline "View All →" action aligned in the header.
 {% endcomment %}
 
-<div class="explore-categories-section" id="explore-categories-{{ section.id }}">
+<div class="explore-categories-section" id="explore-categories-{{ section.id }}" data-section-id="{{ section.id }}">
   <div class="explore-categories-inner">
+    
+    <!-- Section Header (Heading Left, View All Right) -->
     <div class="explore-categories-header">
       <div class="header-titles">
-        <h2 class="explore-title">{{ section.settings.title | escape }}</h2>
+        <h2 class="explore-title">{{ section.settings.title | default: 'Explore Categories' | escape }}</h2>
         {%- if section.settings.subtitle != blank -%}
           <p class="explore-subtitle">{{ section.settings.subtitle | escape }}</p>
         {%- endif -%}
       </div>
-      <div class="explore-header-right">
-        <span class="explore-btn-circle" onclick="scrollExploreCategories('{{ section.id }}', -320)" title="Previous">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </span>
-        <span class="explore-btn-circle" onclick="scrollExploreCategories('{{ section.id }}', 320)" title="Next">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-        </span>
-        {%- assign explore_view_all_text = section.settings.view_all_text | default: 'VIEW ALL' | replace: ' →', '' | replace: '→', '' | replace: ' &rarr;', '' | replace: '&rarr;', '' -%}
-        <a href="{{ section.settings.view_all_link | default: '/collections' }}" class="explore-view-link">
-          {{ explore_view_all_text }}
-        </a>
-      </div>
+
+      {%- if section.settings.view_all_text != blank -%}
+        {%- assign view_all_clean = section.settings.view_all_text | replace: ' →', '' | replace: '→', '' | replace: ' &rarr;', '' | replace: '&rarr;', '' -%}
+        <div class="header-actions">
+          <a href="{{ section.settings.view_all_link | default: '/collections' }}" class="explore-view-all-link">
+            <span>{{ view_all_clean }}</span>
+            <span class="explore-arrow-icon" aria-hidden="true">→</span>
+          </a>
+        </div>
+      {%- endif -%}
     </div>
 
-    <div class="explore-categories-grid-wrapper">
-      <div class="explore-categories-grid" id="ExploreGrid-{{ section.id }}">
-        {%- if section.blocks.size > 0 -%}
-          {%- for block in section.blocks -%}
+    <!-- Categories Display (2 Equal Rows on Desktop, Swipeable on Mobile) -->
+    <div class="explore-categories-grid">
+      {%- if section.blocks.size > 0 -%}
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign collection = block.settings.collection
+            assign title = block.settings.title | default: collection.title
+            assign link = block.settings.link | default: collection.url | default: "/collections/all"
+            assign image = block.settings.image | default: collection.featured_image | default: collection.image | default: collection.products.first.featured_image
+          -%}
+
+          <a href="{{ link }}" class="explore-category-card" {{ block.shopify_attributes }}>
+            <div class="category-card-image-box">
+              {%- if image != blank -%}
+                <img src="{{ image | image_url: width: 300 }}"
+                     alt="{{ title | escape }}"
+                     loading="lazy"
+                     class="category-card-img">
+              {%- else -%}
+                <div class="category-card-placeholder">
+                  <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#0C3E61" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                    <line x1="12" y1="17" x2="12" y2="21"></line>
+                  </svg>
+                </div>
+              {%- endif -%}
+            </div>
+
+            <div class="category-card-content">
+              <span class="category-card-title">{{ title }}</span>
+              {%- if section.settings.show_product_count and collection.all_products_count > 0 -%}
+                <span class="category-card-count">{{ collection.all_products_count }} items</span>
+              {%- endif -%}
+            </div>
+          </a>
+        {%- endfor -%}
+
+      {%- else -%}
+        <!-- Fallback to store collections -->
+        {%- for collection in collections -%}
+          {%- unless collection.handle == 'frontpage' -%}
             {%- liquid
-              assign collection = block.settings.collection
-              assign title = block.settings.title | default: collection.title
-              assign image = block.settings.image | default: collection.featured_image | default: collection.image | default: collection.products.first.featured_image
-              assign link = block.settings.link | default: collection.url | default: "/collections/all"
+              assign title = collection.title
+              assign link = collection.url
+              assign image = collection.featured_image | default: collection.image | default: collection.products.first.featured_image
             -%}
-            <a href="{{ link }}" class="explore-card-item" {{ block.shopify_attributes }}>
-              <div class="explore-card-image-box">
+
+            <a href="{{ link }}" class="explore-category-card">
+              <div class="category-card-image-box">
                 {%- if image != blank -%}
-                  <img src="{{ image | image_url: width: 400 }}"
+                  <img src="{{ image | image_url: width: 300 }}"
                        alt="{{ title | escape }}"
                        loading="lazy"
-                       class="explore-card-img">
+                       class="category-card-img">
                 {%- else -%}
-                  <div class="explore-card-placeholder">
-                    {%- case forloop.index -%}
-                      {%- when 1 -%}
-                        <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#0C3E61" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
-                      {%- when 2 -%}
-                        <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#BE982D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                      {%- when 3 -%}
-                        <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V10"/><path d="M12 10C9 6 4 6 4 6s1 4 5 5"/><path d="M12 10C15 6 20 6 20 6s-1 4-5 5"/></svg>
-                      {%- when 4 -%}
-                        <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#0C3E61" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v3H9z"/><path d="M6 12a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v7a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3v-7z"/></svg>
-                      {%- when 5 -%}
-                        <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#BE982D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><line x1="12" y1="4" x2="12" y2="20"/><line x1="4" y1="12" x2="20" y2="12"/></svg>
-                      {%- when 6 -%}
-                        <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#0C3E61" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M12 8v12"/><path d="M19 8a3 3 0 1 0-3-3"/><path d="M5 8a3 3 0 1 1 3-3"/></svg>
-                      {%- else -%}
-                        <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#BE982D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4"/><path d="M8 6h8v4H8z"/><path d="M5 10h14v10a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V10z"/></svg>
-                    {%- endcase -%}
+                  <div class="category-card-placeholder">
+                    <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#0C3E61" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                      <line x1="8" y1="21" x2="16" y2="21"></line>
+                      <line x1="12" y1="17" x2="12" y2="21"></line>
+                    </svg>
                   </div>
                 {%- endif -%}
               </div>
-              <div class="explore-card-content">
-                <span class="explore-card-title">{{ title }}</span>
-                <span class="explore-card-accent"></span>
+
+              <div class="category-card-content">
+                <span class="category-card-title">{{ title }}</span>
+                {%- if section.settings.show_product_count and collection.all_products_count > 0 -%}
+                  <span class="category-card-count">{{ collection.all_products_count }} items</span>
+                {%- endif -%}
               </div>
             </a>
-          {%- endfor -%}
-        {%- endif -%}
-      </div>
+          {%- endunless -%}
+        {%- endfor -%}
+      {%- endif -%}
     </div>
 
-    {%- if section.settings.view_all_link != blank or section.settings.view_all_text != blank -%}
-      {%- assign explore_view_all_text = section.settings.view_all_text | default: 'VIEW ALL' | replace: ' →', '' | replace: '→', '' | replace: ' &rarr;', '' | replace: '&rarr;', '' -%}
-      <div class="explore-footer-mobile">
-        <a href="{{ section.settings.view_all_link | default: '/collections' }}" class="explore-view-link-mobile">
-          {{ explore_view_all_text }}
-        </a>
-      </div>
-    {%- endif -%}
   </div>
 </div>
 
-<script>
-  function scrollExploreCategories(sectionId, amount) {
-    const grid = document.getElementById('ExploreGrid-' + sectionId);
-    if (grid) {
-      grid.scrollBy({ left: amount, behavior: 'smooth' });
-    }
-  }
-</script>
-
 <style>
+  /* --------------------------------------------------
+     EXPLORE CATEGORIES - SECTION STYLING
+  --------------------------------------------------- */
   .explore-categories-section {
-    padding: 48px 0 40px 0;
+    padding: 38px 0 28px 0;
     background: #FFFFFF;
+    position: relative;
+    box-sizing: border-box;
   }
 
   .explore-categories-inner {
     max-width: 1420px;
     margin: 0 auto;
     padding: 0 24px;
+    box-sizing: border-box;
   }
 
+  /* Section Header: Heading on Left, View All on Right */
   .explore-categories-header {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
-    margin-bottom: 28px;
+    margin-bottom: 22px;
+    gap: 16px;
+  }
+
+  .explore-categories-header .header-titles {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+    flex: 1 1 auto;
   }
 
   .explore-title {
     font-size: 24px !important;
     font-weight: 800 !important;
     color: #0C3E61 !important;
-    margin: 0 0 4px 0 !important;
+    margin: 0 !important;
     letter-spacing: -0.3px !important;
+    line-height: 1.2 !important;
   }
 
   .explore-subtitle {
@@ -126,292 +156,327 @@
     font-weight: 500 !important;
     color: #64748B !important;
     margin: 0 !important;
+    line-height: 1.35 !important;
   }
 
-  #explore-categories-{{ section.id }} .explore-header-right {
-    display: flex !important;
-    align-items: center !important;
-    gap: 12px !important;
-    white-space: nowrap !important;
-    flex-shrink: 0 !important;
+  .header-actions {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    margin-bottom: 2px;
   }
 
-  #explore-categories-{{ section.id }} .explore-btn-circle {
-    width: 40px !important;
-    height: 40px !important;
-    min-width: 40px !important;
-    min-height: 40px !important;
-    border-radius: 50% !important;
-    border: 1.5px solid #CBD5E1 !important;
-    background: #FFFFFF !important;
-    color: #0C3E61 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    cursor: pointer !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
-    transition: all 0.2s ease !important;
-    user-select: none !important;
-    flex-shrink: 0 !important;
+  /* Bordered "View All →" Button */
+  .explore-view-all-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #0C3E61;
+    text-decoration: none;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    padding: 7px 14px;
+    border-radius: 8px;
+    background: #FFFFFF;
+    border: 1.5px solid #CBD5E1;
+    box-shadow: 0 2px 6px rgba(12, 62, 97, 0.04);
+    transition: all 0.22s ease;
+    cursor: pointer;
   }
 
-  #explore-categories-{{ section.id }} .explore-btn-circle:hover {
-    background: #0C3E61 !important;
-    color: #FFFFFF !important;
-    border-color: #0C3E61 !important;
+  .explore-view-all-link .explore-arrow-icon {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1;
+    display: inline-block;
+    transition: transform 0.2s ease;
   }
 
-  #explore-categories-{{ section.id }} .explore-view-link {
-    font-size: 14px !important;
-    font-weight: 800 !important;
-    color: #0C3E61 !important;
-    text-decoration: none !important;
-    margin-left: 8px !important;
-    letter-spacing: 0.5px !important;
-    white-space: nowrap !important;
-    transition: color 0.2s ease !important;
-    flex-shrink: 0 !important;
+  .explore-view-all-link:hover {
+    color: #BE982D;
+    border-color: #BE982D;
+    background: #FFFFFF;
+    box-shadow: 0 4px 12px rgba(190, 152, 45, 0.16);
   }
 
-  #explore-categories-{{ section.id }} .explore-view-link:hover {
-    color: #BE982D !important;
+  .explore-view-all-link:hover .explore-arrow-icon {
+    transform: translateX(3px);
   }
 
-  .explore-categories-grid-wrapper {
-    position: relative;
-  }
-
+  /* 2-Row Equal Grid Layout on Desktop */
   .explore-categories-grid {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    gap: 20px;
-    padding: 10px 4px 16px 4px;
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+    gap: 18px;
+    width: 100%;
+    box-sizing: border-box;
   }
 
-  .explore-categories-grid::-webkit-scrollbar {
-    display: none;
-  }
-
-  .explore-card-item {
+  /* Category Card */
+  .explore-category-card {
     background: #FFFFFF;
     border: 1.5px solid #F1F5F9;
-    border-radius: 20px;
-    padding: 24px 16px 20px 16px;
+    border-radius: 18px;
+    padding: 22px 14px 18px 14px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
     text-decoration: none;
-    box-shadow: 0 4px 16px rgba(12, 62, 97, 0.04);
-    transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.28s ease, border-color 0.28s ease;
-    min-height: 255px;
+    box-shadow: 0 3px 12px rgba(12, 62, 97, 0.03);
+    transition: transform 0.28s cubic-bezier(0.25, 0.8, 0.25, 1),
+                box-shadow 0.28s ease,
+                border-color 0.28s ease;
     box-sizing: border-box;
+    cursor: pointer;
+    min-height: 215px;
   }
 
-  .explore-card-item:hover {
-    transform: translateY(-8px);
+  .explore-category-card:hover {
+    transform: translateY(-5px);
     border-color: #BE982D;
-    box-shadow: 0 14px 32px rgba(12, 62, 97, 0.1), 0 4px 12px rgba(190, 152, 45, 0.15);
+    box-shadow: 0 12px 28px rgba(12, 62, 97, 0.09), 0 3px 10px rgba(190, 152, 45, 0.14);
   }
 
-  .explore-card-image-box {
+  /* Card Image */
+  .category-card-image-box {
     width: 100%;
-    height: 140px;
+    height: 110px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 4px;
+    position: relative;
     box-sizing: border-box;
-    border: none !important;
-    background: transparent !important;
-    box-shadow: none !important;
-    border-radius: 0 !important;
   }
 
-  .explore-card-img {
+  .category-card-img {
     max-width: 100%;
-    max-height: 100%;
+    max-height: 105px;
     width: auto;
     height: auto;
     object-fit: contain;
-    transition: transform 0.3s ease;
+    filter: drop-shadow(0 6px 12px rgba(12, 62, 97, 0.08));
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
-  .explore-card-item:hover .explore-card-img {
-    transform: scale(1.08);
+  .explore-category-card:hover .category-card-img {
+    transform: scale(1.09);
   }
 
-  .explore-card-placeholder {
+  .category-card-placeholder {
     width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    opacity: 0.4;
   }
 
-  .explore-card-content {
+  /* Card Title & Info */
+  .category-card-content {
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
     width: 100%;
-    margin-top: 14px;
+    margin-top: 12px;
+    gap: 2px;
   }
 
-  .explore-card-title {
-    font-size: 15px;
+  .category-card-title {
+    font-size: 14px;
     font-weight: 700;
     color: #0C3E61;
     text-align: center;
-    line-height: 1.3;
+    line-height: 1.25;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    height: 38px;
-    transition: color 0.2s ease;
+    height: 36px;
+    letter-spacing: -0.1px;
+    transition: color 0.22s ease;
   }
 
-  .explore-card-item:hover .explore-card-title {
+  .explore-category-card:hover .category-card-title {
     color: #BE982D;
   }
 
-  .explore-card-accent {
-    width: 32px;
-    height: 3px;
-    background-color: #BE982D;
-    border-radius: 2px;
-    margin-top: 8px;
-    transition: width 0.28s ease, background-color 0.28s ease;
+  .category-card-count {
+    font-size: 11.5px;
+    font-weight: 500;
+    color: #7E7E7E;
+    line-height: 1;
+    margin-top: 1px;
   }
 
-  .explore-card-item:hover .explore-card-accent {
-    width: 48px;
-    background-color: #D4AF37;
-  }
-
-  .explore-footer-mobile {
-    display: none;
-  }
-
+  /* --------------------------------------------------
+     RESPONSIVE BREAKPOINTS
+  --------------------------------------------------- */
   @media (max-width: 1200px) {
     .explore-categories-grid {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
     }
   }
 
-  @media (max-width: 768px) {
-    .explore-categories-section {
-      padding: 24px 0 20px 0;
-    }
-    .explore-categories-inner {
-      padding: 0 12px;
-    }
-    .explore-categories-header {
-      margin-bottom: 16px;
-      gap: 8px;
-    }
-    .explore-title {
-      font-size: 18px !important;
-      line-height: 1.25 !important;
-      margin-bottom: 2px !important;
-    }
-    .explore-subtitle {
-      font-size: 12px !important;
-      line-height: 1.25 !important;
-    }
-    #explore-categories-{{ section.id }} .explore-header-right {
-      display: none !important;
-    }
-    #explore-categories-{{ section.id }} .explore-btn-circle {
-      display: none !important;
-    }
-    #explore-categories-{{ section.id }} .explore-view-link {
-      display: none !important;
-    }
+  @media (max-width: 900px) {
     .explore-categories-grid {
-      display: flex;
-      scroll-snap-type: x mandatory;
-      gap: 12px;
-      padding: 4px 0 12px 0;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
     }
-    .explore-card-item {
-      flex: 0 0 min(160px, 44vw);
-      min-height: 220px;
-      padding: 16px 12px 14px 12px;
-      border-radius: 16px;
-      scroll-snap-align: start;
+    .explore-category-card {
+      min-height: 195px;
+      padding: 18px 12px 14px 12px;
     }
-    .explore-card-image-box {
-      height: 110px;
-    }
-    .explore-card-title {
-      font-size: 13px;
-      height: 34px;
-    }
-    .explore-footer-mobile {
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      margin-top: 14px !important;
-      width: 100% !important;
-      padding: 0 4px !important;
-      box-sizing: border-box !important;
-    }
-    #explore-categories-{{ section.id }} .explore-view-link-mobile {
-      display: inline-flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      width: 100% !important;
-      padding: 12px 20px !important;
-      background: #0C3E61 !important;
-      color: #FFFFFF !important;
-      border-radius: 12px !important;
-      font-size: 13px !important;
-      font-weight: 700 !important;
-      letter-spacing: 0.5px !important;
-      text-transform: uppercase !important;
-      text-decoration: none !important;
-      box-shadow: 0 4px 12px rgba(12, 62, 97, 0.12) !important;
-      transition: all 0.2s ease !important;
-      text-align: center !important;
-      box-sizing: border-box !important;
-    }
-    #explore-categories-{{ section.id }} .explore-view-link-mobile:hover,
-    #explore-categories-{{ section.id }} .explore-view-link-mobile:active {
-      background: #082D47 !important;
-      color: #FFFFFF !important;
-      transform: translateY(-1px) !important;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .explore-title {
-      font-size: 16px !important;
-      line-height: 1.2 !important;
-    }
-    .explore-subtitle {
-      font-size: 11px !important;
-      line-height: 1.2 !important;
-    }
-    .explore-card-item {
-      flex: 0 0 140px;
-      min-height: 200px;
-      padding: 14px 10px 12px 10px;
-    }
-    .explore-card-image-box {
+    .category-card-image-box {
       height: 95px;
     }
-    .explore-card-title {
-      font-size: 12px;
-      height: 32px;
+    .category-card-img {
+      max-height: 90px;
     }
-    #explore-categories-{{ section.id }} .explore-view-link-mobile {
+    .category-card-title {
+      font-size: 13px;
+      height: 33px;
+    }
+  }
+
+  /* Mobile Devices (<= 768px): Header with View All Right + Horizontal Swipe Carousel */
+  @media (max-width: 768px) {
+    .explore-categories-section {
+      padding: 24px 0 16px 0;
+    }
+
+    .explore-categories-inner {
+      padding: 0 14px;
+    }
+
+    .explore-categories-header {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      margin-bottom: 14px !important;
+      gap: 10px !important;
+    }
+
+    .explore-title {
+      font-size: 18px !important;
+      letter-spacing: -0.2px !important;
+    }
+
+    .explore-subtitle {
       font-size: 12px !important;
-      padding: 11px 16px !important;
+    }
+
+    .header-actions {
+      display: flex !important;
+      align-items: center !important;
+      flex-shrink: 0 !important;
+      margin-bottom: 0 !important;
+    }
+
+    .explore-view-all-link {
+      font-size: 12px !important;
+      font-weight: 700 !important;
+      color: #0C3E61 !important;
+      gap: 5px !important;
+      padding: 5px 10px !important;
+      border-radius: 7px !important;
+      border: 1.5px solid #CBD5E1 !important;
+      background: #FFFFFF !important;
+      box-shadow: 0 1px 4px rgba(12, 62, 97, 0.04) !important;
+    }
+
+    .explore-view-all-link .explore-arrow-icon {
+      font-size: 13px !important;
+    }
+
+    /* Horizontal Swipeable Track on Mobile */
+    .explore-categories-grid {
+      display: flex !important;
+      flex-wrap: nowrap !important;
+      overflow-x: auto !important;
+      scroll-behavior: smooth !important;
+      -webkit-overflow-scrolling: touch !important;
+      scroll-snap-type: x mandatory !important;
+      gap: 12px !important;
+      padding: 4px 4px 10px 4px !important;
+      margin: 0 !important;
+      scrollbar-width: none !important; /* Firefox */
+      -ms-overflow-style: none !important; /* IE/Edge */
+    }
+
+    .explore-categories-grid::-webkit-scrollbar {
+      display: none !important; /* Chrome/Safari */
+    }
+
+    .explore-category-card {
+      flex: 0 0 130px !important;
+      min-width: 130px !important;
+      max-width: 130px !important;
+      min-height: 175px !important;
+      scroll-snap-align: start !important;
+      border-radius: 16px !important;
+      padding: 15px 8px 12px 8px !important;
+      background: #FFFFFF !important;
+      border: 1.5px solid #F1F5F9 !important;
+      box-shadow: 0 2px 8px rgba(12, 62, 97, 0.04) !important;
+    }
+
+    .category-card-image-box {
+      height: 82px !important;
+    }
+
+    .category-card-img {
+      max-height: 78px !important;
+    }
+
+    .category-card-content {
+      margin-top: 10px !important;
+    }
+
+    .category-card-title {
+      font-size: 12px !important;
+      height: 30px !important;
+      line-height: 1.25 !important;
+    }
+
+    .category-card-count {
+      font-size: 10.5px !important;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .explore-category-card {
+      flex: 0 0 118px !important;
+      min-width: 118px !important;
+      max-width: 118px !important;
+      min-height: 165px !important;
+      padding: 12px 6px 10px 6px !important;
+    }
+
+    .category-card-image-box {
+      height: 75px !important;
+    }
+
+    .category-card-img {
+      max-height: 70px !important;
+    }
+
+    .category-card-title {
+      font-size: 11.5px !important;
+      height: 28px !important;
+    }
+
+    .explore-title {
+      font-size: 17px !important;
+    }
+
+    .explore-view-all-link {
+      font-size: 12px !important;
     }
   }
 </style>
@@ -433,10 +498,16 @@
       "default": "Curated collections for your daily needs"
     },
     {
+      "type": "checkbox",
+      "id": "show_product_count",
+      "label": "Show Product Count",
+      "default": false
+    },
+    {
       "type": "text",
       "id": "view_all_text",
       "label": "View All Text",
-      "default": "VIEW ALL"
+      "default": "View All"
     },
     {
       "type": "url",
@@ -447,7 +518,7 @@
   "blocks": [
     {
       "type": "category",
-      "name": "Category Item",
+      "name": "Category Card",
       "settings": [
         {
           "type": "collection",
@@ -457,33 +528,40 @@
         {
           "type": "text",
           "id": "title",
-          "label": "Title",
-          "info": "Leave blank to use collection title"
+          "label": "Custom Title",
+          "info": "Leave blank to use collection title dynamically"
         },
         {
           "type": "image_picker",
           "id": "image",
           "label": "Custom Image",
-          "info": "Leave blank to use collection featured image"
+          "info": "Leave blank to use collection featured image dynamically"
         },
         {
           "type": "url",
           "id": "link",
-          "label": "Link"
+          "label": "Custom Link",
+          "info": "Leave blank to link directly to collection URL"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Explore Categories",
+      "name": "Explore Categories Grid",
       "blocks": [
-        { "type": "category", "settings": { "title": "Refreshes Everyday" } },
-        { "type": "category", "settings": { "title": "Bulk Savings" } },
-        { "type": "category", "settings": { "title": "Fruits & Vegetables" } },
-        { "type": "category", "settings": { "title": "Dairy, Eggs & More" } },
-        { "type": "category", "settings": { "title": "Poultry, Meat & Seafood" } },
-        { "type": "category", "settings": { "title": "Food Cupboard" } }
+        { "type": "category", "settings": { "title": "Chocolates" } },
+        { "type": "category", "settings": { "title": "Dates" } },
+        { "type": "category", "settings": { "title": "Perfumes" } },
+        { "type": "category", "settings": { "title": "Nuts & Dry Fruits" } },
+        { "type": "category", "settings": { "title": "Gift Hampers" } },
+        { "type": "category", "settings": { "title": "Electronics" } },
+        { "type": "category", "settings": { "title": "Homecoming Boxes" } },
+        { "type": "category", "settings": { "title": "Watches" } },
+        { "type": "category", "settings": { "title": "Beauty & Personal Care" } },
+        { "type": "category", "settings": { "title": "Spices & Herbs" } },
+        { "type": "category", "settings": { "title": "Toys" } },
+        { "type": "category", "settings": { "title": "Home & Living" } }
       ]
     }
   ]
