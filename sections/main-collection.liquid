@@ -146,7 +146,294 @@
   {%- endif -%}
 {%- endcapture -%}
 
-<div class="collection-wrapper {% if show_filters_and_menu %}m6cl{% if section.settings.filter_sticky %} sticky{% endif %}{% endif %}{% if section.settings.filters_menu_alignment == 'right' %} m6cl-inv{% endif %} section-width-{{ section.settings.width }}">
+<style>
+  /* Collection page custom toolbar and layout overrides */
+  .collection-wrapper,
+  #root .collection-wrapper {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    display: block !important;
+  }
+  .collection-wrapper > aside {
+    display: none !important;
+  }
+  .collection-wrapper > div {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+  }
+
+  /* Offers Top Toolbar */
+  .offers-top-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 14px 0;
+    margin: 20px 0 28px 0;
+    position: relative;
+    z-index: 50;
+    font-family: inherit;
+    border-top: 1px solid #e5e7eb !important;
+    border-bottom: 1px solid #e5e7eb !important;
+  }
+  .offers-left-filters {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  .offers-right-controls {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  .offers-dropdown-container {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+  }
+  .offers-dropdown-btn {
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    padding: 0;
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #1f2937;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    line-height: 1;
+    transition: color 0.15s ease;
+  }
+  .offers-dropdown-btn:before,
+  .offers-dropdown-btn:after {
+    display: none !important;
+    content: none !important;
+    border: none !important;
+  }
+  .offers-dropdown-btn:hover,
+  .offers-dropdown-btn:focus,
+  .offers-dropdown-btn:active {
+    color: #0C3E61;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  .offers-dropdown-btn svg.offers-chevron {
+    transition: transform 0.2s ease;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .offers-dropdown-container.open .offers-dropdown-btn svg.offers-chevron {
+    transform: rotate(180deg);
+  }
+
+  /* Dropdown Menus */
+  .offers-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 14px);
+    left: 0;
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.04);
+    min-width: 200px;
+    z-index: 100;
+    padding: 8px 0;
+  }
+  .offers-dropdown-container.open .offers-dropdown-menu {
+    display: block;
+  }
+  .offers-dropdown-menu.offers-sort-menu {
+    left: auto;
+    right: 0;
+    min-width: 220px;
+  }
+
+  /* Checkbox / Filter Items */
+  .offers-filter-form {
+    padding: 8px 16px;
+  }
+  .offers-checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    font-size: 1.35rem;
+    color: #374151;
+    cursor: pointer;
+    user-select: none;
+  }
+  .offers-checkbox-item input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #0C3E61;
+    cursor: pointer;
+  }
+
+  /* Price Filter Menu */
+  .offers-dropdown-menu.offers-price-menu {
+    padding: 16px;
+    min-width: 240px;
+  }
+  .offers-price-inputs {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .offers-price-field {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .offers-price-field label {
+    font-size: 1.15rem;
+    color: #374151 !important;
+    font-weight: 500;
+  }
+  .offers-price-field input {
+    width: 100%;
+    padding: 6px 10px;
+    border: 1px solid #d1d5db !important;
+    border-radius: 6px;
+    font-size: 1.3rem;
+    color: #000000 !important;
+    background: #ffffff !important;
+  }
+  .offers-price-field input::placeholder {
+    color: #6b7280 !important;
+    opacity: 1 !important;
+  }
+  .offers-price-apply-btn {
+    width: 100%;
+    padding: 8px 16px;
+    background: #0C3E61 !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 0 !important;
+    outline: none !important;
+    box-shadow: none !important;
+    font-size: 1.3rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+  .offers-price-apply-btn:before,
+  .offers-price-apply-btn:after {
+    display: none !important;
+    content: none !important;
+    border: none !important;
+  }
+  .offers-price-apply-btn:hover,
+  .offers-price-apply-btn:focus,
+  .offers-price-apply-btn:active {
+    background: #092c45 !important;
+    color: #ffffff !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Item Count */
+  .offers-items-count {
+    font-size: 1.4rem;
+    color: #6b7280;
+    font-weight: 400;
+    white-space: nowrap;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* Sort Options List */
+  .offers-sort-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .offers-sort-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 18px;
+    font-size: 1.35rem;
+    color: #374151;
+    cursor: pointer;
+    transition: background 0.12s ease, color 0.12s ease;
+  }
+  .offers-sort-item:hover {
+    background: #f3f4f6;
+    color: #0C3E61;
+  }
+  .offers-sort-item.active {
+    font-weight: 600;
+    color: #0C3E61;
+  }
+  .offers-sort-tick {
+    width: 14px;
+    display: inline-block;
+    font-weight: 700;
+    color: #0C3E61;
+  }
+
+  /* Grid Toggles */
+  .offers-grid-toggles {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+  }
+  .offers-grid-btn {
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    padding: 0;
+    margin: 0;
+    color: #9ca3af;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: color 0.15s ease;
+    line-height: 1;
+  }
+  .offers-grid-btn:before,
+  .offers-grid-btn.after {
+    display: none !important;
+    content: none !important;
+    border: none !important;
+  }
+  .offers-grid-btn:hover,
+  .offers-grid-btn:focus,
+  .offers-grid-btn:active,
+  .offers-grid-btn.active {
+    color: #1f2937;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  @media (max-width: 768px) {
+    .offers-top-toolbar {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .offers-right-controls {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+</style>
+<div class="collection-wrapper offers-page {% if show_filters_and_menu %}m6cl{% if section.settings.filter_sticky %} sticky{% endif %}{% endif %}{% if section.settings.filters_menu_alignment == 'right' %} m6cl-inv{% endif %} section-width-{{ section.settings.width }}">
   {%- if show_filters_and_menu -%}<div>{%- endif -%}
     {%- for block in section.blocks -%}
       {%- case block.type -%}
@@ -156,8 +443,8 @@
           <div class="module-spacer" style="margin-bottom:{{ block.settings.height }}px;" {{ block.shopify_attributes }}></div>
         {%- when 'title'-%}
           <header {% if block.settings.text_alignment == 'center' %}class="text-center"{% endif %} {{ block.shopify_attributes }}>
-            <h1 class="collection-title {{ block.settings.title_size }}">
-              {% if block.settings.title != blank %}{{ block.settings.title }}{% else %}{{ collection.title }}{% endif %}
+            <h1 class="collection-title {{ block.settings.title_size }}" style="font-size: 3.8rem; font-weight: 700; color: #111827;">
+              {% if collection.handle == 'offers' %}Top Offers{% else %}{{ collection.title }}{% endif %}
             </h1>
           </header>
           {%- if sorting_block == nil and show_filters_and_menu -%}
