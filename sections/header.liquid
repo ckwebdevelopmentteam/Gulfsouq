@@ -209,18 +209,221 @@
           </svg>
         </span>
 
-        <!-- Account Icon -->
+        <!-- Account Icon & Login Dropdown Modal -->
         {%- if shop.customer_accounts_enabled -%}
-          <a 
-            href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" 
-            class="gs-action-icon-btn" 
-            aria-label="{% if customer %}My Account{% else %}Login{% endif %}"
-          >
-            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-          </a>
+          <div class="gs-account-wrapper">
+            <a 
+              href="{% if customer %}{{ routes.account_url }}{% else %}#login{% endif %}" 
+              class="gs-action-icon-btn gs-account-btn {% unless customer %}gs-login-modal-trigger{% endunless %}" 
+              id="gs-account-trigger"
+              aria-label="{% if customer %}My Account{% else %}Login{% endif %}"
+              {% unless customer %}aria-expanded="false" role="button"{% endunless %}
+            >
+              <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </a>            {%- unless customer -%}
+              <!-- AUTH DROPDOWN MODAL (Login, Register, Recover in-place) -->
+              <div class="gs-login-modal-dropdown" id="gs-login-modal-dropdown" role="dialog" aria-modal="true" aria-label="Customer Authentication">
+                <div class="gs-login-modal-arrow"></div>
+                <div class="gs-login-modal-inner">
+                  
+                  <!-- 1. LOGIN PANE -->
+                  <div class="gs-auth-pane is-active" id="gs-pane-login">
+                    <div class="gs-login-modal-header">
+                      <h3 class="gs-login-modal-title">Login</h3>
+                      <button type="button" class="gs-login-modal-close" aria-label="Close popup">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                      </button>
+                    </div>
+
+                    {%- form 'customer_login', id: 'gs-header-login-form', class: 'gs-header-login-form' -%}
+                      <input type="hidden" name="return_to" value="back">
+
+                      {%- if form.errors -%}
+                        <div class="gs-login-error-msg">
+                          {{ form.errors | default_errors }}
+                        </div>
+                      {%- endif -%}
+
+                      <div class="gs-login-field-group">
+                        <label for="gs-login-email" class="gs-login-label">Email</label>
+                        <input 
+                          type="email" 
+                          name="customer[email]" 
+                          id="gs-login-email" 
+                          class="gs-login-input" 
+                          placeholder="Email" 
+                          autocomplete="email"
+                          required
+                        >
+                      </div>
+
+                      <div class="gs-login-field-group">
+                        <div class="gs-login-label-row">
+                          <label for="gs-login-password" class="gs-login-label">Password</label>
+                        </div>
+                        <input 
+                          type="password" 
+                          name="customer[password]" 
+                          id="gs-login-password" 
+                          class="gs-login-input" 
+                          placeholder="Password" 
+                          autocomplete="current-password"
+                          required
+                        >
+                      </div>
+
+                      <div class="gs-login-forgot-row">
+                        <a href="#recover" class="gs-login-forgot-link gs-switch-view-trigger" data-switch-to="recover">Forgot password?</a>
+                      </div>
+
+                      <button type="submit" class="gs-login-btn">
+                        <span>Sign In</span>
+                      </button>
+
+                      <div class="gs-login-footer">
+                        <p class="gs-login-register-prompt">
+                          Don't have an account yet?
+                          <a href="#register" class="gs-login-register-link gs-switch-view-trigger" data-switch-to="register">Create account</a>
+                        </p>
+                      </div>
+                    {%- endform -%}
+                  </div>
+
+                  <!-- 2. REGISTER / CREATE ACCOUNT PANE -->
+                  <div class="gs-auth-pane" id="gs-pane-register">
+                    <div class="gs-login-modal-header">
+                      <h3 class="gs-login-modal-title">Create Account</h3>
+                      <button type="button" class="gs-login-modal-close" aria-label="Close popup">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                      </button>
+                    </div>
+
+                    {%- form 'create_customer', id: 'gs-header-register-form', class: 'gs-header-login-form' -%}
+                      <input type="hidden" name="return_to" value="back">
+
+                      {%- if form.errors -%}
+                        <div class="gs-login-error-msg">
+                          {{ form.errors | default_errors }}
+                        </div>
+                      {%- endif -%}
+
+                      <div class="gs-login-field-row">
+                        <div class="gs-login-field-group gs-field-half">
+                          <label for="gs-reg-first-name" class="gs-login-label">First Name</label>
+                          <input 
+                            type="text" 
+                            name="customer[first_name]" 
+                            id="gs-reg-first-name" 
+                            class="gs-login-input" 
+                            placeholder="First Name" 
+                            autocomplete="given-name"
+                            required
+                          >
+                        </div>
+                        <div class="gs-login-field-group gs-field-half">
+                          <label for="gs-reg-last-name" class="gs-login-label">Last Name</label>
+                          <input 
+                            type="text" 
+                            name="customer[last_name]" 
+                            id="gs-reg-last-name" 
+                            class="gs-login-input" 
+                            placeholder="Last Name" 
+                            autocomplete="family-name"
+                            required
+                          >
+                        </div>
+                      </div>
+
+                      <div class="gs-login-field-group">
+                        <label for="gs-reg-email" class="gs-login-label">Email</label>
+                        <input 
+                          type="email" 
+                          name="customer[email]" 
+                          id="gs-reg-email" 
+                          class="gs-login-input" 
+                          placeholder="Email" 
+                          autocomplete="email"
+                          required
+                        >
+                      </div>
+
+                      <div class="gs-login-field-group">
+                        <label for="gs-reg-password" class="gs-login-label">Password</label>
+                        <input 
+                          type="password" 
+                          name="customer[password]" 
+                          id="gs-reg-password" 
+                          class="gs-login-input" 
+                          placeholder="Password" 
+                          autocomplete="new-password"
+                          required
+                        >
+                      </div>
+
+                      <button type="submit" class="gs-login-btn">
+                        <span>Create Account</span>
+                      </button>
+
+                      <div class="gs-login-footer">
+                        <p class="gs-login-register-prompt">
+                          Already have an account?
+                          <a href="#login" class="gs-login-register-link gs-switch-view-trigger" data-switch-to="login">Sign In</a>
+                        </p>
+                      </div>
+                    {%- endform -%}
+                  </div>
+
+                  <!-- 3. RECOVER PASSWORD PANE -->
+                  <div class="gs-auth-pane" id="gs-pane-recover">
+                    <div class="gs-login-modal-header">
+                      <h3 class="gs-login-modal-title">Reset Password</h3>
+                      <button type="button" class="gs-login-modal-close" aria-label="Close popup">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                      </button>
+                    </div>
+
+                    <p class="gs-recover-info-text">Enter your email and we'll send you instructions to reset your password.</p>
+
+                    {%- form 'recover_customer_password', id: 'gs-header-recover-form', class: 'gs-header-login-form' -%}
+                      {%- if form.errors -%}
+                        <div class="gs-login-error-msg">
+                          {{ form.errors | default_errors }}
+                        </div>
+                      {%- endif -%}
+
+                      <div class="gs-login-field-group">
+                        <label for="gs-rec-email" class="gs-login-label">Email</label>
+                        <input 
+                          type="email" 
+                          name="email" 
+                          id="gs-rec-email" 
+                          class="gs-login-input" 
+                          placeholder="Email" 
+                          autocomplete="email"
+                          required
+                        >
+                      </div>
+
+                      <button type="submit" class="gs-login-btn">
+                        <span>Submit</span>
+                      </button>
+
+                      <div class="gs-login-footer">
+                        <p class="gs-login-register-prompt">
+                          Remember your password?
+                          <a href="#login" class="gs-login-register-link gs-switch-view-trigger" data-switch-to="login">Sign In</a>
+                        </p>
+                      </div>
+                    {%- endform -%}
+                  </div>
+
+                </div>
+              </div>
+            {%- endunless -%}
+          </div>
         {%- endif -%}
 
         <!-- Cart Icon -->
@@ -844,6 +1047,286 @@
     display: block !important;
     stroke: #FFFFFF !important;
     margin: 0 auto !important;
+  }
+
+  /* ── Account Wrapper & Login Modal Dropdown ── */
+  .gs-account-wrapper {
+    position: relative !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .gs-login-modal-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 12px);
+    right: -10px;
+    width: 320px;
+    background: #FFFFFF !important;
+    border-radius: 12px !important;
+    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.18), 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    z-index: 9999 !important;
+    box-sizing: border-box !important;
+    animation: gsDropdownFade 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    overflow: visible !important;
+  }
+
+  .gs-login-modal-dropdown.is-active {
+    display: block !important;
+  }
+
+  @keyframes gsDropdownFade {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Triangle Pointer Arrow */
+  .gs-login-modal-arrow {
+    position: absolute;
+    top: -6px;
+    right: 22px;
+    width: 12px;
+    height: 12px;
+    background: #FFFFFF !important;
+    border-left: 1px solid rgba(0, 0, 0, 0.08) !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.08) !important;
+    transform: rotate(45deg);
+    z-index: 1;
+  }
+
+  .gs-login-modal-inner {
+    padding: 24px 22px !important;
+    box-sizing: border-box !important;
+    text-align: left !important;
+  }
+
+  .gs-login-modal-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    margin-bottom: 18px !important;
+  }
+
+  .gs-login-modal-title {
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    color: #0F172A !important;
+    margin: 0 !important;
+    line-height: 1.2 !important;
+  }
+
+  .gs-login-modal-close {
+    all: unset !important;
+    cursor: pointer !important;
+    padding: 4px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #94A3B8 !important;
+    border-radius: 4px !important;
+    transition: color 0.15s ease !important;
+  }
+
+  .gs-login-modal-close:hover {
+    color: #0F172A !important;
+  }
+
+  .gs-header-login-form {
+    width: 100% !important;
+    margin: 0 !important;
+    text-align: left !important;
+  }
+
+  .gs-login-field-group {
+    margin-bottom: 14px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    text-align: left !important;
+  }
+
+  .gs-login-label-row {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    margin-bottom: 6px !important;
+  }
+
+  .gs-login-label {
+    font-size: 13.5px !important;
+    font-weight: 600 !important;
+    color: #334155 !important;
+    margin: 0 0 6px 0 !important;
+    display: block !important;
+    text-align: left !important;
+  }
+
+  .gs-login-input {
+    width: 100% !important;
+    height: 42px !important;
+    border-radius: 8px !important;
+    border: 1.5px solid #E2E8F0 !important;
+    background: #FFFFFF !important;
+    color: #0F172A !important;
+    font-size: 14px !important;
+    padding: 0 14px !important;
+    box-sizing: border-box !important;
+    outline: none !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+    box-shadow: none !important;
+  }
+
+  .gs-login-input:focus {
+    border-color: #103F60 !important;
+    box-shadow: 0 0 0 3px rgba(16, 63, 96, 0.12) !important;
+  }
+
+  .gs-login-input::placeholder {
+    color: #94A3B8 !important;
+    font-size: 13.5px !important;
+  }
+
+  .gs-login-forgot-row {
+    text-align: right !important;
+    margin-top: -6px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .gs-login-forgot-link {
+    font-size: 12.5px !important;
+    color: #64748B !important;
+    text-decoration: none !important;
+    transition: color 0.15s ease !important;
+  }
+
+  .gs-login-forgot-link:hover {
+    color: #103F60 !important;
+    text-decoration: underline !important;
+  }
+
+  .gs-login-btn {
+    all: unset !important;
+    width: 100% !important;
+    height: 42px !important;
+    background: #103F60 !important;
+    color: #FFFFFF !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    box-sizing: border-box !important;
+    transition: background 0.2s ease, transform 0.1s ease !important;
+    margin-bottom: 16px !important;
+  }
+
+  .gs-login-btn:hover {
+    background: #0C2E46 !important;
+  }
+
+  .gs-login-btn:active {
+    transform: scale(0.99) !important;
+  }
+
+  .gs-login-footer {
+    text-align: center !important;
+    border-top: 1px solid #F1F5F9 !important;
+    padding-top: 14px !important;
+    margin-top: 4px !important;
+  }
+
+  .gs-login-register-prompt {
+    font-size: 13px !important;
+    color: #64748B !important;
+    margin: 0 !important;
+    line-height: 1.4 !important;
+    text-align: center !important;
+  }
+
+  .gs-login-register-link {
+    color: #103F60 !important;
+    font-weight: 600 !important;
+    text-decoration: underline !important;
+    margin-left: 2px !important;
+  }
+
+  .gs-login-register-link:hover {
+    color: #BE982D !important;
+  }
+
+  .gs-login-error-msg {
+    background: #FEF2F2 !important;
+    border: 1px solid #FECACA !important;
+    color: #DC2626 !important;
+    font-size: 12.5px !important;
+    border-radius: 6px !important;
+    padding: 8px 12px !important;
+    margin-bottom: 12px !important;
+    line-height: 1.4 !important;
+  }
+
+  /* Multi-Pane Views (Login / Register / Recover) */
+  .gs-auth-pane {
+    display: none;
+  }
+
+  .gs-auth-pane.is-active {
+    display: block;
+    animation: gsPaneFade 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @keyframes gsPaneFade {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .gs-login-field-row {
+    display: flex !important;
+    gap: 10px !important;
+    margin-bottom: 0 !important;
+  }
+
+  .gs-field-half {
+    flex: 1 1 50% !important;
+    min-width: 0 !important;
+  }
+
+  .gs-recover-info-text {
+    font-size: 13px !important;
+    color: #64748B !important;
+    line-height: 1.5 !important;
+    margin: 0 0 14px 0 !important;
+  }
+
+  @media only screen and (max-width: 768px) {
+    .gs-login-modal-dropdown {
+      position: fixed !important;
+      top: 60px !important;
+      left: 16px !important;
+      right: 16px !important;
+      width: auto !important;
+      max-width: 360px !important;
+      margin: 0 auto !important;
+      border-radius: 12px !important;
+    }
+    .gs-login-modal-arrow {
+      display: none !important;
+    }
   }
 
   .gs-cart-count-badge {
@@ -1719,7 +2202,86 @@
         });
       });
 
-      // 3. Scroll Listener to Lock Header to Top (Leaves Announcement Bar to scroll away naturally)
+      // 3. Login / Register / Recover Modal Dropdown Toggle & View Switching
+      const loginTrigger = document.querySelector('.gs-login-modal-trigger');
+      const loginDropdown = document.getElementById('gs-login-modal-dropdown');
+
+      function switchAuthPane(targetPaneName) {
+        if (!loginDropdown) return;
+        const allPanes = loginDropdown.querySelectorAll('.gs-auth-pane');
+        allPanes.forEach(pane => pane.classList.remove('is-active'));
+        const targetPane = loginDropdown.querySelector('#gs-pane-' + targetPaneName);
+        if (targetPane) {
+          targetPane.classList.add('is-active');
+          const firstInput = targetPane.querySelector('input:not([type="hidden"])');
+          if (firstInput) {
+            setTimeout(() => firstInput.focus(), 80);
+          }
+        }
+      }
+
+      function openLoginModal(viewName = 'login') {
+        if (!loginDropdown) return;
+        switchAuthPane(viewName);
+        loginDropdown.classList.add('is-active');
+        if (loginTrigger) loginTrigger.setAttribute('aria-expanded', 'true');
+      }
+
+      function closeLoginModal() {
+        if (!loginDropdown) return;
+        loginDropdown.classList.remove('is-active');
+        if (loginTrigger) loginTrigger.setAttribute('aria-expanded', 'false');
+      }
+
+      if (loginTrigger) {
+        loginTrigger.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          if (loginDropdown && loginDropdown.classList.contains('is-active')) {
+            closeLoginModal();
+          } else {
+            closeSearchModal();
+            closeDrawer();
+            openLoginModal('login');
+          }
+        });
+      }
+
+      // Switch pane triggers (e.g. "Create account", "Sign In", "Forgot password?")
+      if (loginDropdown) {
+        const switchButtons = loginDropdown.querySelectorAll('.gs-switch-view-trigger');
+        switchButtons.forEach(btn => {
+          btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const target = this.getAttribute('data-switch-to');
+            if (target) {
+              switchAuthPane(target);
+            }
+          });
+        });
+
+        // Close buttons on all panes
+        const closeBtns = loginDropdown.querySelectorAll('.gs-login-modal-close');
+        closeBtns.forEach(btn => {
+          btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            closeLoginModal();
+          });
+        });
+      }
+
+      // Close when clicking outside of dropdown
+      document.addEventListener('click', function(e) {
+        if (loginDropdown && loginDropdown.classList.contains('is-active')) {
+          if (!loginDropdown.contains(e.target) && !loginTrigger.contains(e.target)) {
+            closeLoginModal();
+          }
+        }
+      });
+
+      // 4. Scroll Listener to Lock Header to Top (Leaves Announcement Bar to scroll away naturally)
       const headerSection = document.querySelector('.gs-header-section');
       const headerWrapper = document.querySelector('.gs-header-wrapper');
       const annBar = document.querySelector('.gs-announcement-bar');
@@ -1752,6 +2314,7 @@
         if (e.key === 'Escape') {
           closeSearchModal();
           closeDrawer();
+          closeLoginModal();
         }
       });
     }
