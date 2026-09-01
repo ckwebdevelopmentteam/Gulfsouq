@@ -9,6 +9,17 @@
   {% render 'breadcrumbs', hide_mobile: true %}
 {% enddoc %}
 
+<style>
+  .n6br,
+  .shopify-section-breadcrumbs .n6br,
+  #root .n6br,
+  #content .n6br {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    box-sizing: border-box !important;
+  }
+</style>
+
 <nav
   class="n6br{% if settings.breadcrumbs_font == 'primary' %} title-font{% endif %}"
   role="navigation"

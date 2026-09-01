@@ -277,9 +277,8 @@ window.addEventListener('filters', function (evt) {
 					form_cont.after(trickDiv);
 					form_cont.before(trickDist);
 
-					createEventListeners(form_cont.nextElementSibling);
-
-					observer.observe(form_cont.previousElementSibling);
+					if (form_cont.nextElementSibling) createEventListeners(form_cont.nextElementSibling);
+					if (form_cont.previousElementSibling) observer.observe(form_cont.previousElementSibling);
 				} else if (form_cont.classList.contains('mobile-sticky') && form_cont.classList.contains('mobile-compact')) {
 					const trg = form_cont.querySelector('.link-btn');
 
@@ -292,9 +291,11 @@ window.addEventListener('filters', function (evt) {
 					form_cont.prepend(trickDiv);
 					form_cont.prepend(trickDist);
 
-					createEventListeners(form_cont.querySelector('.inner-dist'));
+					const innerDistEl = form_cont.querySelector('.inner-dist');
+					if (innerDistEl) createEventListeners(innerDistEl);
 
-					observer.observe(form_cont.querySelector('.offset-dist'));
+					const offsetDistEl = form_cont.querySelector('.offset-dist');
+					if (offsetDistEl) observer.observe(offsetDistEl);
 					if (trg !== undefined && trg !== null) {
 						const clone_me = trg.cloneNode(true);
 						clone_me.classList.add('clone');
@@ -341,15 +342,19 @@ window.addEventListener('filters', function (evt) {
 									if (sliderPictures.length) {
 										for (const pic of sliderPictures) {
 											const firstChild = pic.firstChild;
-											if (firstChild && firstChild.nodeName.toLowerCase() === 'div') {
+											if (firstChild && firstChild.nodeName && firstChild.nodeName.toLowerCase() === 'div' && firstChild.swiper) {
 												const slideTo = (collectionImgView !== 'first') ? (pic.querySelectorAll('.second-first').length ? 0 : 1) : (pic.querySelectorAll('.second-first').length ? 1 : 0);
-												firstChild.swiper.slideTo(slideTo, 0, false);
+												if (typeof firstChild.swiper.slideTo === 'function') {
+													firstChild.swiper.slideTo(slideTo, 0, false);
+												}
 											} else {
 												const imgIndex = collectionImgView !== 'first' ? 2 : 1;
 												let img = pic.querySelector(`img[data-index="${imgIndex}"]`);
-												const closestLink = img.closest('a');
-												if (closestLink) img = closestLink;
-												pic.prepend(img);
+												if (img) {
+													const closestLink = img.closest('a');
+													if (closestLink) img = closestLink;
+													pic.prepend(img);
+												}
 											}
 										}
 									} else {

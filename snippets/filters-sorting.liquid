@@ -516,7 +516,7 @@
 
       <!-- Grid View Toggles -->
       <div class="offers-grid-toggles">
-        <button type="button" class="offers-grid-btn {% if collection_grid_view == 'w25' %}active{% endif %}" title="4 items per row" onclick="setOffersGrid('w25', this)">
+        <button type="button" class="offers-grid-btn active" title="Standard Grid View" onclick="setOffersGrid('standard', this)">
           <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor">
             <rect x="1" y="1" width="7" height="7" rx="1.5"/>
             <rect x="10" y="1" width="7" height="7" rx="1.5"/>
@@ -524,7 +524,7 @@
             <rect x="10" y="10" width="7" height="7" rx="1.5"/>
           </svg>
         </button>
-        <button type="button" class="offers-grid-btn {% if collection_grid_view == 'w20' or collection_grid_view == nil or collection_grid_view == '' or collection_grid_view != 'w25' %}active{% endif %}" title="5 items per row" onclick="setOffersGrid('w20', this)">
+        <button type="button" class="offers-grid-btn" title="Compact 7-per-row Grid View (Image & Title)" onclick="setOffersGrid('compact', this)">
           <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor">
             <rect x="1" y="1" width="4" height="4" rx="1"/>
             <rect x="7" y="1" width="4" height="4" rx="1"/>
@@ -602,28 +602,38 @@
       window.location.search = urlParams.toString();
     }
 
-    function setOffersGrid(gridClass, btn) {
-      const viewList = document.getElementById('collection');
-      if (viewList) {
-        viewList.classList.remove('w100', 'w50', 'w33', 'w25', 'w20', 'list');
-        viewList.classList.add(gridClass);
-        document.querySelectorAll('.offers-grid-btn').forEach(b => b.classList.remove('active'));
-        if (btn) btn.classList.add('active');
-        try {
-          if (typeof saveCollectionview === 'function') {
-            saveCollectionview('collection_grid_view', gridClass);
+    function setOffersGrid(mode, btn) {
+      try {
+        const viewList = document.getElementById('collection');
+        if (viewList && viewList.classList) {
+          if (mode === 'compact') {
+            viewList.classList.add('gs-compact-7');
+          } else {
+            viewList.classList.remove('gs-compact-7');
           }
-          localStorage.setItem('gs_grid_view_pref', gridClass);
-        } catch(e){}
+          const buttons = document.querySelectorAll('.offers-grid-btn');
+          if (buttons && buttons.length) {
+            buttons.forEach(b => { if (b && b.classList) b.classList.remove('active'); });
+          }
+          if (btn && btn.classList) btn.classList.add('active');
+          try {
+            localStorage.setItem('gs_grid_mode_pref', mode);
+          } catch(e){}
+        }
+      } catch(e) {
+        console.warn('setOffersGrid error:', e);
       }
     }
 
     document.addEventListener('DOMContentLoaded', function() {
       try {
-        const saved = localStorage.getItem('gs_grid_view_pref');
-        if (saved) {
-          const btn = document.querySelector(`.offers-grid-btn[onclick*="${saved}"]`);
-          if (btn) setOffersGrid(saved, btn);
+        const savedMode = localStorage.getItem('gs_grid_mode_pref');
+        if (savedMode === 'compact') {
+          const compactBtn = document.querySelector('.offers-grid-btn[onclick*="compact"]');
+          if (compactBtn) setOffersGrid('compact', compactBtn);
+        } else {
+          const standardBtn = document.querySelector('.offers-grid-btn[onclick*="standard"]');
+          if (standardBtn) setOffersGrid('standard', standardBtn);
         }
       } catch(e){}
     });

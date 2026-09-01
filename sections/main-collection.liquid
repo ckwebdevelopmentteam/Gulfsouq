@@ -150,9 +150,10 @@
   /* Collection page custom toolbar and layout overrides */
   .collection-wrapper,
   #root .collection-wrapper {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
     display: block !important;
+    box-sizing: border-box !important;
   }
   .collection-wrapper > aside {
     display: none !important;
@@ -431,6 +432,153 @@
       width: 100%;
       justify-content: space-between;
     }
+  }
+
+  /* Icon 2: Compact 6-per-row Grid View */
+  html body #collection.gs-compact-7 {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+  }
+
+  /* Override ALL theme li width/float rules (w50, w33, w25, etc.) with ultra-high specificity */
+  html body #collection.gs-compact-7 > li,
+  html body #collection.gs-compact-7 > li.gs-card,
+  html body #collection.gs-compact-7 > li.product-card,
+  html body #collection.gs-compact-7 > li[class] {
+    float: none !important;
+    width: calc((100% - 40px) / 6) !important;
+    max-width: calc((100% - 40px) / 6) !important;
+    min-width: calc((100% - 40px) / 6) !important;
+    flex: 0 0 calc((100% - 40px) / 6) !important;
+    box-sizing: border-box !important;
+    padding: 8px 6px 8px 6px !important;
+    min-height: auto !important;
+    border-radius: 10px !important;
+    border: 1px solid #ebebeb !important;
+    background: #fff !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    margin: 0 !important;
+  }
+
+  /* Responsive breakpoints for 6-per-row view */
+  @media (max-width: 1100px) {
+    html body #collection.gs-compact-7 > li,
+    html body #collection.gs-compact-7 > li[class] {
+      width: calc((100% - 32px) / 5) !important;
+      max-width: calc((100% - 32px) / 5) !important;
+      min-width: calc((100% - 32px) / 5) !important;
+      flex: 0 0 calc((100% - 32px) / 5) !important;
+    }
+  }
+
+  @media (max-width: 850px) {
+    html body #collection.gs-compact-7 > li,
+    html body #collection.gs-compact-7 > li[class] {
+      width: calc((100% - 24px) / 4) !important;
+      max-width: calc((100% - 24px) / 4) !important;
+      min-width: calc((100% - 24px) / 4) !important;
+      flex: 0 0 calc((100% - 24px) / 4) !important;
+    }
+  }
+
+  @media (max-width: 600px) {
+    html body #collection.gs-compact-7 > li,
+    html body #collection.gs-compact-7 > li[class] {
+      width: calc((100% - 16px) / 3) !important;
+      max-width: calc((100% - 16px) / 3) !important;
+      min-width: calc((100% - 16px) / 3) !important;
+      flex: 0 0 calc((100% - 16px) / 3) !important;
+    }
+  }
+
+  html body #collection.gs-compact-7 .gs-card-media,
+  html body #collection.gs-compact-7 > li figure,
+  html body #collection.gs-compact-7 > li .item-media {
+    height: auto !important;
+    min-height: 0 !important;
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    background: transparent !important;
+    position: static !important;
+  }
+
+  html body #collection.gs-compact-7 .gs-card-media picture img,
+  html body #collection.gs-compact-7 .gs-card-media img,
+  html body #collection.gs-compact-7 > li figure img,
+  html body #collection.gs-compact-7 > li .item-media img,
+  html body #collection.gs-compact-7 > li a > img,
+  html body #collection.gs-compact-7 > li picture img {
+    width: 100% !important;
+    height: 125px !important;
+    max-height: 125px !important;
+    max-width: 100% !important;
+    object-fit: contain !important;
+    position: static !important;
+    display: block !important;
+  }
+
+  html body #collection.gs-compact-7 .gs-card-content {
+    padding: 4px 2px 0 2px !important;
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  html body #collection.gs-compact-7 .gs-card-title,
+  html body #collection.gs-compact-7 h3,
+  html body #collection.gs-compact-7 h2,
+  html body #collection.gs-compact-7 > li .title,
+  html body #collection.gs-compact-7 > li p.title {
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    line-height: 1.3 !important;
+    color: #0C3E61 !important;
+    text-align: center !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    max-height: 34px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Hide everything except image and title in compact view */
+  html body #collection.gs-compact-7 .gs-card-badges,
+  html body #collection.gs-compact-7 .gs-wishlist-btn,
+  html body #collection.gs-compact-7 .gs-card-vendor,
+  html body #collection.gs-compact-7 .gs-card-rating,
+  html body #collection.gs-compact-7 .gs-stock-status,
+  html body #collection.gs-compact-7 .gs-card-price-wrap,
+  html body #collection.gs-compact-7 .gs-card-actions,
+  html body #collection.gs-compact-7 .s1pr,
+  html body #collection.gs-compact-7 .r6rt,
+  html body #collection.gs-compact-7 .submit,
+  html body #collection.gs-compact-7 .link-btn,
+  html body #collection.gs-compact-7 .label,
+  html body #collection.gs-compact-7 .overlay-buy_button,
+  html body #collection.gs-compact-7 .overlay-unavailable-buy-button,
+  html body #collection.gs-compact-7 form,
+  html body #collection.gs-compact-7 p.price,
+  html body #collection.gs-compact-7 .price,
+  html body #collection.gs-compact-7 .swatch,
+  html body #collection.gs-compact-7 .f8pr,
+  html body #collection.gs-compact-7 .badge,
+  html body #collection.gs-compact-7 [class*="badge"],
+  html body #collection.gs-compact-7 .wishlist,
+  html body #collection.gs-compact-7 [class*="wishlist"] {
+    display: none !important;
   }
 </style>
 <div class="collection-wrapper offers-page {% if show_filters_and_menu %}m6cl{% if section.settings.filter_sticky %} sticky{% endif %}{% endif %}{% if section.settings.filters_menu_alignment == 'right' %} m6cl-inv{% endif %} section-width-{{ section.settings.width }}">
