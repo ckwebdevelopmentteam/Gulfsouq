@@ -2680,3 +2680,63 @@ html body #root .shopify-section-footer::after,
 .shopify-section-footer::after {
   display: none !important;
 }
+
+/* ==========================================================================
+   FAQ SECTION MOBILE & DESKTOP PADDING & SEMI-BOLD ENHANCEMENT
+   ========================================================================== */
+.gs-faq-root-container {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: 1420px !important;
+  margin: 0 auto !important;
+  padding-left: 24px !important;
+  padding-right: 24px !important;
+}
+
+.gs-faq-summary {
+  margin: 0 !important;
+  font-family: inherit !important;
+  font-weight: 600 !important;
+}
+
+.gs-faq-question-text,
+.gs-faq-question-text strong,
+.gs-faq-question-text b {
+  font-family: inherit !important;
+  font-weight: 600 !important;
+}
+
+.gs-faq-title-wrap h1,
+.gs-faq-title-wrap h2,
+.gs-faq-title-wrap h3 {
+  font-weight: 600 !important;
+}
+
+.gs-faq-item[open],
+.shopify-section-faq .accordion-a details[open],
+.accordion-a:not(.compact) details[open] {
+  background: transparent !important;
+  background-color: transparent !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+.gs-faq-item[open]:before,
+.shopify-section-faq .accordion-a details[open]:before,
+.accordion-a:not(.compact) details[open]:before {
+  display: none !important;
+  background: transparent !important;
+}
+
+.gs-faq-item[open] .gs-faq-summary,
+.shopify-section-faq .accordion-a details[open] summary {
+  background: transparent !important;
+  color: #103F60 !important;
+}
+
+@media only screen and (max-width: 768px) {
+  .gs-faq-root-container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    margin: 20px auto !important;
+  }
+}

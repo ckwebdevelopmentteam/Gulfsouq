@@ -18,192 +18,384 @@
   endfor
 -%}
 {% if show %}
-  <article class="{% if section.settings.compact %}w940 align-center{% endif %} section-width-{{ section.settings.width }}">
-    {%- if section.settings.title != blank -%}
-      <div
-        class="
-          {{ title_classes }} title-styling
-          {% if section.settings.title_underline_style != 'none' %}
-            title-underline-none
-            {% if section.settings.title_underline_style contains 'accent' %}
-              title-underline-accent
-            {% elsif section.settings.title_underline_style contains 'gradient' %}
-              title-underline-gradient
+  <div class="gs-faq-root-container">
+    <article class="{% if section.settings.compact %}w940 align-center{% endif %} section-width-{{ section.settings.width }} gs-faq-article">
+      {%- if section.settings.title != blank -%}
+        <div
+          class="
+            {{ title_classes }} title-styling gs-faq-title-wrap
+            {% if section.settings.title_underline_style != 'none' %}
+              title-underline-none
+              {% if section.settings.title_underline_style contains 'accent' %}
+                title-underline-accent
+              {% elsif section.settings.title_underline_style contains 'gradient' %}
+                title-underline-gradient
+              {% endif %}
+              {% if section.settings.title_underline_style contains 'secondary_font' %}
+                title-underline-secondary-font
+              {% endif %}
             {% endif %}
-            {% if section.settings.title_underline_style contains 'secondary_font' %}
-              title-underline-secondary-font
-            {% endif %}
-          {% endif %}
-        "
-      >
-        {{ section.settings.title }}
-      </div>
-    {%- endif -%}
-    <div class="accordion-a">
-      {%- for block in section.blocks -%}
-        {%- liquid
-          assign show = false
-          if block.settings.faq_question != empty
-            if block.settings.faq_answer != empty or block.settings.page != blank or block.settings.image != blank or block.settings.liquid != blank or block.settings.html != blank or block.settings.show_contact_form
-              assign show = true
+          "
+        >
+          {{ section.settings.title }}
+        </div>
+      {%- endif -%}
+      <div class="accordion-a gs-faq-accordion-list">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign show = false
+            if block.settings.faq_question != empty
+              if block.settings.faq_answer != empty or block.settings.page != blank or block.settings.image != blank or block.settings.liquid != blank or block.settings.html != blank or block.settings.show_contact_form
+                assign show = true
+              endif
             endif
-          endif
-        -%}
-        {% if show %}
-          <details class="block-{{ block.id }}" {{ block.shopify_attributes }}>
-            <summary>
-              {%- assign image_width = block.settings.header_image_width -%}
-              {%- assign image_width_2 = image_width | times: 2 -%}
-              {%- if block.settings.header_image or block.settings.header_image_svg -%}
-                <img
-                  {% if block.settings.header_image_svg %}
-                    src="{{ block.settings.header_image_svg }}"
-                  {% elsif block.settings.header_image %}
-                    src="{{ block.settings.header_image | image_url: width: image_width }}"
-                    srcset="{{ block.settings.header_image | image_url: width: image_width }} 1x,{{ block.settings.header_image | image_url: width: image_width_2 }} 2x"
-                  {% endif %}
-                  height="20"
-                  width="{{ image_width }}"
-                  style="width:{{ image_width }}px!important"
-                  alt="{{ block.settings.header_image.alt | default: block.settings.faq_question | escape }}"
-                  loading="lazy"
-                >
-              {%- elsif block.settings.icon != 'none' -%}
-                {%- render 'icons', icon: block.settings.icon -%}
-                <style>
-                  #shopify-section-{{ section.id }} .block-{{ block.id }} svg { --secondary_bg: var(--primary_text); height: auto!important; width: {{ image_width }}px!important; }
-                </style>
-              {%- endif -%}
-              <span>{{ block.settings.faq_question }}</span>
-            </summary>
-            <div>
-              {%- if block.settings.faq_answer != empty -%}{{ block.settings.faq_answer }}{%- endif -%}
-              {%- if block.settings.page -%}{{ block.settings.page.content }}{%- endif %}
-              {%- if block.settings.image != blank -%}
-                <div class="m20">
+          -%}
+          {% if show %}
+            <details class="block-{{ block.id }} gs-faq-item" {{ block.shopify_attributes }}>
+              <summary class="gs-faq-summary">
+                {%- assign image_width = block.settings.header_image_width -%}
+                {%- assign image_width_2 = image_width | times: 2 -%}
+                {%- if block.settings.header_image or block.settings.header_image_svg -%}
                   <img
-                    src="{{ block.settings.image | image_url: width: block.settings.image_width }}"
-                    srcset="{% render 'image-srcset', image: block.settings.image %}"
-                    sizes="
-                      (min-width: 760px) 500px
-                      100vw
-                    "
-                    alt="{{ block.settings.image.alt | default: block.settings.title | escape }}"
-                    width="{{ block.settings.image_width }}"
-                    height="640"
+                    {% if block.settings.header_image_svg %}
+                      src="{{ block.settings.header_image_svg }}"
+                    {% elsif block.settings.header_image %}
+                      src="{{ block.settings.header_image | image_url: width: image_width }}"
+                      srcset="{{ block.settings.header_image | image_url: width: image_width }} 1x,{{ block.settings.header_image | image_url: width: image_width_2 }} 2x"
+                    {% endif %}
+                    height="20"
+                    width="{{ image_width }}"
+                    style="width:{{ image_width }}px!important"
+                    alt="{{ block.settings.header_image.alt | default: block.settings.faq_question | escape }}"
                     loading="lazy"
                   >
-                </div>
-              {%- endif -%}
-              {%- if block.settings.liquid != empty -%}{{ block.settings.liquid }}{%- endif -%}
-              {%- if block.settings.html != empty -%}{{ block.settings.html }}{%- endif -%}
-              {%- if block.settings.show_contact_form -%}
-                {%- liquid
-                  if section.settings.compact
-                    assign contactform_classes = 'f8cm f8vl wide m30'
-                  else
-                    assign contactform_classes = 'f8cm f8vl w940 m30'
-                  endif
-                  assign contactform_id = section.id | append: '-' | append: block.id
-                -%}
-                {%- form 'contact', id: contactform_id, class: contactform_classes -%}
-                  {%- if form.errors -%}
-                    <script>
-                      document.addEventListener('DOMContentLoaded', function () {
-                        var alertAttributes = {
-                            message: "{{ 'service.contact_form.email' | t }} {{ form.errors.messages['email'] }}",
-                            type: 'error',
-                            origin: '{{ contactform_id }}',
-                          },
-                          showAlertEvent = new CustomEvent('showAlert', { detail: alertAttributes });
-                        window.dispatchEvent(showAlertEvent);
-                      });
-                    </script>
-                  {%- elsif form.posted_successfully? -%}
-                    <script>
-                      document.addEventListener('DOMContentLoaded', function () {
-                        var alertAttributes = {
-                            message: "{{ 'service.contact_form.posted_successfully' | t }}",
-                            type: 'success',
-                            origin: '{{ contactform_id }}',
-                          },
-                          showAlertEvent = new CustomEvent('showAlert', { detail: alertAttributes });
-                        window.dispatchEvent(showAlertEvent);
-                      });
-                    </script>
-                  {%- endif -%}
-                  <fieldset>
-                    <legend>{{ 'service.contact_form.title' | t }}</legend>
-                    <p>
-                      <label for="subject">{{ 'service.contact_form.subject' | t }}</label>
-                      <input
-                        type="text"
-                        id="subject"
-                        name="contact[subject]"
-                        placeholder="{{ 'service.contact_form.subject' | t }}"
-                      >
-                    </p>
-                    <div class="cols">
-                      <p class="w50">
-                        <label for="name">{{ 'service.contact_form.name' | t }}</label>
+                {%- elsif block.settings.icon != 'none' -%}
+                  {%- render 'icons', icon: block.settings.icon -%}
+                  <style>
+                    #shopify-section-{{ section.id }} .block-{{ block.id }} svg { --secondary_bg: var(--primary_text); height: auto!important; width: {{ image_width }}px!important; }
+                  </style>
+                {%- endif -%}
+                <span class="gs-faq-question-text">{{ block.settings.faq_question }}</span>
+              </summary>
+              <div class="gs-faq-answer-content">
+                {%- if block.settings.faq_answer != empty -%}{{ block.settings.faq_answer }}{%- endif -%}
+                {%- if block.settings.page -%}{{ block.settings.page.content }}{%- endif %}
+                {%- if block.settings.image != blank -%}
+                  <div class="m20">
+                    <img
+                      src="{{ block.settings.image | image_url: width: block.settings.image_width }}"
+                      srcset="{% render 'image-srcset', image: block.settings.image %}"
+                      sizes="
+                        (min-width: 760px) 500px
+                        100vw
+                      "
+                      alt="{{ block.settings.image.alt | default: block.settings.title | escape }}"
+                      width="{{ block.settings.image_width }}"
+                      height="640"
+                      loading="lazy"
+                    >
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.liquid != empty -%}{{ block.settings.liquid }}{%- endif -%}
+                {%- if block.settings.html != empty -%}{{ block.settings.html }}{%- endif -%}
+                {%- if block.settings.show_contact_form -%}
+                  {%- liquid
+                    if section.settings.compact
+                      assign contactform_classes = 'f8cm f8vl wide m30'
+                    else
+                      assign contactform_classes = 'f8cm f8vl w940 m30'
+                    endif
+                    assign contactform_id = section.id | append: '-' | append: block.id
+                  -%}
+                  {%- form 'contact', id: contactform_id, class: contactform_classes -%}
+                    {%- if form.errors -%}
+                      <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                          var alertAttributes = {
+                              message: "{{ 'service.contact_form.email' | t }} {{ form.errors.messages['email'] }}",
+                              type: 'error',
+                              origin: '{{ contactform_id }}',
+                            },
+                            showAlertEvent = new CustomEvent('showAlert', { detail: alertAttributes });
+                          window.dispatchEvent(showAlertEvent);
+                        });
+                      </script>
+                    {%- elsif form.posted_successfully? -%}
+                      <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                          var alertAttributes = {
+                              message: "{{ 'service.contact_form.posted_successfully' | t }}",
+                              type: 'success',
+                              origin: '{{ contactform_id }}',
+                            },
+                            showAlertEvent = new CustomEvent('showAlert', { detail: alertAttributes });
+                          window.dispatchEvent(showAlertEvent);
+                        });
+                      </script>
+                    {%- endif -%}
+                    <fieldset>
+                      <legend>{{ 'service.contact_form.title' | t }}</legend>
+                      <p>
+                        <label for="subject">{{ 'service.contact_form.subject' | t }}</label>
                         <input
                           type="text"
-                          id="name"
-                          name="contact[name]"
-                          placeholder="{{ 'service.contact_form.name' | t }}"
+                          id="subject"
+                          name="contact[subject]"
+                          placeholder="{{ 'service.contact_form.subject' | t }}"
                         >
                       </p>
-                      <p class="w50">
-                        <label for="email">
-                          {{- 'service.contact_form.email' | t -}}
+                      <div class="cols">
+                        <p class="w50">
+                          <label for="name">{{ 'service.contact_form.name' | t }}</label>
+                          <input
+                            type="text"
+                            id="name"
+                            name="contact[name]"
+                            placeholder="{{ 'service.contact_form.name' | t }}"
+                          >
+                        </p>
+                        <p class="w50">
+                          <label for="email">
+                            {{- 'service.contact_form.email' | t -}}
+                            <span class="overlay-theme">*</span></label
+                          >
+                          <input
+                            type="email"
+                            id="email"
+                            name="contact[email]"
+                            placeholder="{{ 'service.contact_form.email' | t }}"
+                            required
+                          >
+                        </p>
+                      </div>
+                      <p>
+                        <label for="body">
+                          {{- 'service.contact_form.message' | t -}}
                           <span class="overlay-theme">*</span></label
                         >
-                        <input
-                          type="email"
-                          id="email"
-                          name="contact[email]"
-                          placeholder="{{ 'service.contact_form.email' | t }}"
+                        <textarea
+                          id="message"
+                          name="contact[body]"
+                          placeholder="{{ 'service.contact_form.message' | t }}"
                           required
-                        >
+                        ></textarea>
                       </p>
-                    </div>
-                    <p>
-                      <label for="body">
-                        {{- 'service.contact_form.message' | t -}}
-                        <span class="overlay-theme">*</span></label
-                      >
-                      <textarea
-                        id="message"
-                        name="contact[body]"
-                        placeholder="{{ 'service.contact_form.message' | t }}"
-                        required
-                      ></textarea>
-                    </p>
-                    <p class="submit m0">
-                      <button
-                        type="submit"
-                        {% if settings.button_style == 'inv' %}
-                          class="inv"
-                        {% endif %}
-                      >
-                        {{ 'service.contact_form.send' | t }}
-                      </button>
-                    </p>
-                  </fieldset>
-                {% endform %}
-              {%- endif -%}
-            </div>
-          </details>
-        {% endif %}
-      {%- endfor -%}
-    </div>
-  </article>
+                      <p class="submit m0">
+                        <button
+                          type="submit"
+                          {% if settings.button_style == 'inv' %}
+                            class="inv"
+                          {% endif %}
+                        >
+                          {{ 'service.contact_form.send' | t }}
+                        </button>
+                      </p>
+                    </fieldset>
+                  {% endform %}
+                {%- endif -%}
+              </div>
+            </details>
+          {% endif %}
+        {%- endfor -%}
+      </div>
+    </article>
+  </div>
 
   <style>
-    #shopify-section-{{ section.id }} { position: relative; z-index: {{ section.settings.fix_zindex }}!important; }
-    #shopify-section-{{ section.id }} .accordion-a { margin-bottom: {{ section.settings.spacing_desktop }}px; }
-    @media only screen and (max-width: 47.5em) {
-      #shopify-section-{{ section.id }} .accordion-a { margin-bottom: {{ section.settings.spacing_mobile }}px; }
+    .gs-faq-root-container {
+      width: 100% !important;
+      max-width: 1420px !important;
+      margin: 0 auto !important;
+      padding: 0 24px !important;
+      box-sizing: border-box !important;
+    }
+
+    .gs-faq-article {
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+
+    .gs-faq-title-wrap {
+      margin: 0 0 24px 0 !important;
+      padding: 0 !important;
+      text-align: left !important;
+    }
+
+    .gs-faq-title-wrap h1,
+    .gs-faq-title-wrap h2,
+    .gs-faq-title-wrap h3 {
+      font-size: 24px !important;
+      font-weight: 600 !important;
+      color: #103F60 !important;
+      letter-spacing: -0.2px !important;
+      line-height: 1.25 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      text-align: left !important;
+    }
+
+    .gs-faq-accordion-list {
+      width: 100% !important;
+      margin: 0 0 {{ section.settings.spacing_desktop }}px 0 !important;
+      box-sizing: border-box !important;
+    }
+
+    .gs-faq-item {
+      padding: 0 !important;
+      margin: 0 !important;
+      border: none !important;
+      border-top: 1px solid rgba(0, 0, 0, 0.08) !important;
+      box-sizing: border-box !important;
+      width: 100% !important;
+      background: transparent !important;
+      background-color: transparent !important;
+    }
+
+    .gs-faq-item:last-child {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+    }
+
+    .gs-faq-item:before,
+    .gs-faq-item:after {
+      display: none !important;
+      content: none !important;
+    }
+
+    .gs-faq-item[open],
+    .accordion-a details[open],
+    .accordion-a:not(.compact) details[open] {
+      background: transparent !important;
+      background-color: transparent !important;
+      border-color: rgba(0, 0, 0, 0.08) !important;
+      color: inherit !important;
+    }
+
+    .gs-faq-item[open]:before,
+    .accordion-a details[open]:before,
+    .accordion-a:not(.compact) details[open]:before {
+      display: none !important;
+      content: none !important;
+      background: transparent !important;
+    }
+
+    .gs-faq-summary {
+      margin: 0 !important;
+      padding: 18px 40px 18px 0 !important;
+      font-family: inherit !important;
+      font-size: 15.5px !important;
+      font-weight: 600 !important;
+      color: #103F60 !important;
+      line-height: 1.35 !important;
+      box-sizing: border-box !important;
+      position: relative !important;
+      cursor: pointer !important;
+      list-style: none !important;
+      display: flex !important;
+      align-items: center !important;
+      background: transparent !important;
+    }
+
+    .gs-faq-item[open] .gs-faq-summary,
+    .accordion-a details[open] summary {
+      background: transparent !important;
+      color: #103F60 !important;
+      margin-bottom: 0 !important;
+    }
+
+    .gs-faq-summary::-webkit-details-marker {
+      display: none !important;
+    }
+
+    .gs-faq-summary:before {
+      content: "+" !important;
+      position: absolute !important;
+      right: 0 !important;
+      left: auto !important;
+      top: 50% !important;
+      transform: translateY(-50%) !important;
+      font-size: 20px !important;
+      font-weight: 400 !important;
+      color: #103F60 !important;
+      line-height: 1 !important;
+      font-family: inherit !important;
+      width: auto !important;
+      margin: 0 !important;
+    }
+
+    .gs-faq-item[open] .gs-faq-summary:before {
+      content: "−" !important;
+      color: #103F60 !important;
+    }
+
+    .gs-faq-question-text {
+      font-family: inherit !important;
+      font-size: 15px !important;
+      font-weight: 600 !important;
+      color: #103F60 !important;
+      line-height: 1.35 !important;
+      letter-spacing: -0.1px !important;
+    }
+
+    .gs-faq-item[open] .gs-faq-question-text {
+      color: #103F60 !important;
+    }
+
+    .gs-faq-question-text strong,
+    .gs-faq-question-text b {
+      font-weight: 600 !important;
+      color: inherit !important;
+    }
+
+    .gs-faq-answer-content {
+      padding: 0 0 18px 0 !important;
+      font-size: 14px !important;
+      line-height: 1.6 !important;
+      color: #4A5568 !important;
+      box-sizing: border-box !important;
+      background: transparent !important;
+    }
+
+    @media only screen and (max-width: 768px) {
+      .gs-faq-root-container {
+        padding: 0 16px !important;
+        margin: 20px auto !important;
+      }
+
+      .gs-faq-title-wrap {
+        margin: 0 0 16px 0 !important;
+      }
+
+      .gs-faq-title-wrap h1,
+      .gs-faq-title-wrap h2,
+      .gs-faq-title-wrap h3 {
+        font-size: 19px !important;
+        font-weight: 600 !important;
+        line-height: 1.3 !important;
+      }
+
+      .gs-faq-accordion-list {
+        margin: 0 0 {{ section.settings.spacing_mobile }}px 0 !important;
+      }
+
+      .gs-faq-summary {
+        padding: 15px 32px 15px 0 !important;
+      }
+
+      .gs-faq-summary:before {
+        font-size: 18px !important;
+        right: 0 !important;
+      }
+
+      .gs-faq-question-text {
+        font-size: 14.5px !important;
+        font-weight: 600 !important;
+      }
+
+      .gs-faq-answer-content {
+        padding: 0 0 14px 0 !important;
+        font-size: 13.5px !important;
+        line-height: 1.55 !important;
+      }
     }
   </style>
   <script type="application/ld+json">
