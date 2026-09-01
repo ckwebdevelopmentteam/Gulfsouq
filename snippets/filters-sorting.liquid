@@ -425,6 +425,198 @@
   </form>
 
 {%- elsif display == 'sorting' -%}
+  {%- if collection.handle == 'offers' -%}
+    {%- assign sort_by = object.sort_by | default: object.default_sort_by -%}
+    {%- assign amount_of_products = collection.products_count | default: 0 -%}
+    <div class="offers-top-toolbar">
+      <!-- LEFT SIDE: Availability & Price Dropdowns -->
+      <div class="offers-left-filters">
+        <!-- Availability Filter Dropdown -->
+        <div class="offers-dropdown-container" id="offers-avail-container">
+          <button type="button" class="offers-dropdown-btn" onclick="toggleOffersDropdown('offers-avail-menu', event)">
+            <span>Availability</span>
+            <svg class="offers-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1L5 5L9 1"/></svg>
+          </button>
+          <div class="offers-dropdown-menu" id="offers-avail-menu">
+            <form class="offers-filter-form">
+              {%- assign avail_filter = object.filters | where: "param_name", "filter.v.availability" | first -%}
+              {%- if avail_filter == nil -%}
+                {%- assign avail_filter = object.filters | where: "label", "Availability" | first -%}
+              {%- endif -%}
+              {%- if avail_filter and avail_filter.values.size > 0 -%}
+                {%- for val in avail_filter.values -%}
+                  <label class="offers-checkbox-item">
+                    <input type="checkbox" name="{{ val.param_name }}" value="{{ val.value }}" {% if val.active %}checked{% endif %} onchange="submitOffersFilter(this)">
+                    <span>{{ val.label }}</span>
+                  </label>
+                {%- endfor -%}
+              {%- else -%}
+                <label class="offers-checkbox-item">
+                  <input type="checkbox" name="filter.v.availability" value="1" {% for f in object.filters %}{% for v in f.active_values %}{% if v.value == '1' %}checked{% endif %}{% endfor %}{% endfor %} onchange="submitOffersFilter(this)">
+                  <span>In stock</span>
+                </label>
+                <label class="offers-checkbox-item">
+                  <input type="checkbox" name="filter.v.availability" value="0" {% for f in object.filters %}{% for v in f.active_values %}{% if v.value == '0' %}checked{% endif %}{% endfor %}{% endfor %} onchange="submitOffersFilter(this)">
+                  <span>Out of stock</span>
+                </label>
+              {%- endif -%}
+            </form>
+          </div>
+        </div>
+
+        <!-- Price Filter Dropdown -->
+        <div class="offers-dropdown-container" id="offers-price-container">
+          <button type="button" class="offers-dropdown-btn" onclick="toggleOffersDropdown('offers-price-menu', event)">
+            <span>Price</span>
+            <svg class="offers-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1L5 5L9 1"/></svg>
+          </button>
+          <div class="offers-dropdown-menu offers-price-menu" id="offers-price-menu">
+            <form class="offers-filter-form" onsubmit="submitOffersPriceFilter(event, this)">
+              {%- assign price_filter = object.filters | where: "type", "price_range" | first -%}
+              <div class="offers-price-inputs">
+                <div class="offers-price-field">
+                  <label>From ({{ cart.currency.symbol }})</label>
+                  <input type="number" name="filter.v.price.gte" min="0" placeholder="0" value="{% if price_filter.min_value.value %}{{ price_filter.min_value.value | ceil | divided_by: 100 }}{% endif %}">
+                </div>
+                <div class="offers-price-field">
+                  <label>To ({{ cart.currency.symbol }})</label>
+                  <input type="number" name="filter.v.price.lte" min="0" placeholder="Max" value="{% if price_filter.max_value.value %}{{ price_filter.max_value.value | ceil | divided_by: 100 }}{% endif %}">
+                </div>
+              </div>
+              <button type="submit" class="offers-price-apply-btn">Apply</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT SIDE: Count, Sort, Grid toggles -->
+      <div class="offers-right-controls">
+        <span class="offers-items-count">{{ amount_of_products }} items</span>
+
+        <!-- Sort Dropdown -->
+        <div class="offers-dropdown-container" id="offers-sort-container">
+          <button type="button" class="offers-dropdown-btn" onclick="toggleOffersDropdown('offers-sort-menu', event)">
+            <span>Sort</span>
+            <svg class="offers-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1L5 5L9 1"/></svg>
+          </button>
+          <div class="offers-dropdown-menu offers-sort-menu" id="offers-sort-menu">
+            <ul class="offers-sort-list">
+              {%- for option in object.sort_options -%}
+                {%- assign is_active = false -%}
+                {%- if option.value == sort_by -%}
+                  {%- assign is_active = true -%}
+                {%- endif -%}
+                <li class="offers-sort-item {% if is_active %}active{% endif %}" onclick="selectOffersSort('{{ option.value }}')">
+                  <span class="offers-sort-tick">{% if is_active %}✓{% else %}&nbsp;{% endif %}</span>
+                  <span class="offers-sort-name">{{ option.name }}</span>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        </div>
+
+        <!-- Grid View Toggles -->
+        <div class="offers-grid-toggles">
+          <button type="button" class="offers-grid-btn {% if collection_grid_view == 'w25' %}active{% endif %}" title="4 items per row" onclick="setOffersGrid('w25', this)">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor">
+              <rect x="1" y="1" width="7" height="7" rx="1.5"/>
+              <rect x="10" y="1" width="7" height="7" rx="1.5"/>
+              <rect x="1" y="10" width="7" height="7" rx="1.5"/>
+              <rect x="10" y="10" width="7" height="7" rx="1.5"/>
+            </svg>
+          </button>
+          <button type="button" class="offers-grid-btn {% if collection_grid_view == 'w20' or collection_grid_view == nil or collection_grid_view == '' or collection_grid_view != 'w25' %}active{% endif %}" title="5 items per row" onclick="setOffersGrid('w20', this)">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor">
+              <rect x="1" y="1" width="4" height="4" rx="1"/>
+              <rect x="7" y="1" width="4" height="4" rx="1"/>
+              <rect x="13" y="1" width="4" height="4" rx="1"/>
+              <rect x="1" y="7" width="4" height="4" rx="1"/>
+              <rect x="7" y="7" width="4" height="4" rx="1"/>
+              <rect x="13" y="7" width="4" height="4" rx="1"/>
+              <rect x="1" y="13" width="4" height="4" rx="1"/>
+              <rect x="7" y="13" width="4" height="4" rx="1"/>
+              <rect x="13" y="13" width="4" height="4" rx="1"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hidden form so Shopify sort_by JS doesn't break -->
+    <form action="./" method="post" class="f8sr hidden" style="display:none;">
+      <select id="sort_by" name="sort_by">
+        {%- for option in object.sort_options -%}
+          <option value="{{ option.value }}" {% if option.value == sort_by %}selected{% endif %}>{{ option.name }}</option>
+        {%- endfor -%}
+      </select>
+    </form>
+
+    <script>
+      function toggleOffersDropdown(menuId, event) {
+        event.stopPropagation();
+        const btn = event.currentTarget;
+        const container = btn.closest('.offers-dropdown-container');
+        const isOpen = container.classList.contains('open');
+        document.querySelectorAll('.offers-dropdown-container').forEach(c => c.classList.remove('open'));
+        if (!isOpen) {
+          container.classList.add('open');
+        }
+      }
+
+      document.addEventListener('click', function(e) {
+        if (!e.target.closest('.offers-dropdown-container')) {
+          document.querySelectorAll('.offers-dropdown-container').forEach(c => c.classList.remove('open'));
+        }
+      });
+
+      function selectOffersSort(sortValue) {
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set('sort_by', sortValue);
+        window.location.search = urlParams.toString();
+      }
+
+      function submitOffersFilter(checkbox) {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (checkbox.checked) {
+          urlParams.set(checkbox.name, checkbox.value);
+        } else {
+          urlParams.delete(checkbox.name);
+        }
+        window.location.search = urlParams.toString();
+      }
+
+      function submitOffersPriceFilter(event, form) {
+        event.preventDefault();
+        const urlParams = new URLSearchParams(window.location.search);
+        const minInput = form.querySelector('[name="filter.v.price.gte"]');
+        const maxInput = form.querySelector('[name="filter.v.price.lte"]');
+        if (minInput && minInput.value !== '') {
+          urlParams.set('filter.v.price.gte', minInput.value);
+        } else {
+          urlParams.delete('filter.v.price.gte');
+        }
+        if (maxInput && maxInput.value !== '') {
+          urlParams.set('filter.v.price.lte', maxInput.value);
+        } else {
+          urlParams.delete('filter.v.price.lte');
+        }
+        window.location.search = urlParams.toString();
+      }
+
+      function setOffersGrid(gridClass, btn) {
+        const viewList = document.getElementById('collection');
+        if (viewList) {
+          viewList.classList.remove('w100', 'w50', 'w33', 'w25', 'w20');
+          viewList.classList.add(gridClass);
+          document.querySelectorAll('.offers-grid-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          if (typeof saveCollectionview === 'function') {
+            saveCollectionview('collection_grid_view', gridClass);
+          }
+        }
+      }
+    </script>
+  {%- else -%}
   <form action="./" method="post" class="f8sr {% if sticky %} mobile-sticky mobile-compact{% endif %}{% if collection_view == 'list' %} list{% endif %}">
     <fieldset>
       {%- if show_amount_of_products -%}
@@ -567,6 +759,7 @@
       </p>
     </fieldset>
   </form>
+  {%- endif -%}
 
 {%- elsif display == 'mobile-filter-button' and show_filters -%}
   <form action="./" method="post" class="f8sr desktop-hide{% if sticky %} mobile-sticky mobile-compact{% endif %}">
