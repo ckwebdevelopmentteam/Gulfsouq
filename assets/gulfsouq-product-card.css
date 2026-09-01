@@ -2643,3 +2643,40 @@ html body .gs-modal-price-regular,
   display: inline-block !important;
   margin: 0 !important;
 }
+
+/* ==========================================================================
+   GLOBAL EXPANDED FOOTER OVERRIDE (FULL-WIDTH EDGE-TO-EDGE)
+   ========================================================================== */
+html body #root .shopify-section-footer,
+html body .shopify-section-footer,
+.shopify-section-footer {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: #07243A !important;
+  overflow: visible !important;
+  box-sizing: border-box !important;
+  position: relative !important;
+  text-align: left !important;
+}
+
+html body #root .shopify-section-footer p,
+html body #root .shopify-section-footer ul,
+html body #root .shopify-section-footer li,
+html body #root .shopify-section-footer a,
+html body #root .shopify-section-footer div:not(.gs-footer-bottom, .gs-footer-payments),
+html body .shopify-section-footer p,
+html body .shopify-section-footer ul,
+html body .shopify-section-footer li,
+html body .shopify-section-footer a,
+html body .shopify-section-footer div:not(.gs-footer-bottom, .gs-footer-payments) {
+  text-align: left !important;
+}
+
+html body #root .shopify-section-footer::before,
+html body #root .shopify-section-footer::after,
+.shopify-section-footer::before,
+.shopify-section-footer::after {
+  display: none !important;
+}
