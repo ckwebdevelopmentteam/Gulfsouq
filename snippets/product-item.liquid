@@ -283,6 +283,85 @@
   {%- endcapture %}
 {%- endif -%}
 
+{%- if layout == 'list-compact' -%}
+  {%- liquid
+    if current_variant.featured_image
+      assign up_img = current_variant.featured_image
+    elsif product.selected_or_first_available_variant.featured_image
+      assign up_img = product.selected_or_first_available_variant.featured_image
+    elsif product.media.first
+      assign up_img = product.media.first
+    else
+      assign up_img = false
+    endif
+  -%}
+  <li class="gs-drawer-upsell-item" data-product-id="{{ product.id }}">
+    <!-- Mini Thumbnail -->
+    <figure class="gs-upsell-thumb">
+      <a href="{{ product.url }}" aria-label="{{ title | escape }}">
+        {%- if up_img -%}
+          <img
+            src="{{ up_img | image_url: width: 140, height: 140, crop: 'center' }}"
+            alt="{{ up_img.alt | default: title | escape }}"
+            loading="lazy"
+            width="56"
+            height="56"
+          >
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+      </a>
+    </figure>
+
+    <!-- Details: Title & Price -->
+    <div class="gs-upsell-details">
+      <h4 class="gs-upsell-title">
+        <a href="{{ product.url }}">{{ title }}</a>
+      </h4>
+      <div class="gs-upsell-price-row">
+        <span class="gs-upsell-price">{{ current_variant.price | money }}</span>
+        {%- if current_variant.compare_at_price > current_variant.price -%}
+          <span class="gs-upsell-old-price">{{ current_variant.compare_at_price | money }}</span>
+          {%- assign discount_pct = current_variant.compare_at_price | minus: current_variant.price | times: 100.0 | divided_by: current_variant.compare_at_price | round -%}
+          <span class="gs-upsell-discount-tag">{{ discount_pct }}% OFF</span>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <!-- Mini Add Action -->
+    <div class="gs-upsell-action">
+      {%- if current_variant.available -%}
+        {%- if product.has_only_default_variant or product.variants.size == 1 -%}
+          <button
+            type="button"
+            class="gs-upsell-add-btn gs-ajax-add-btn"
+            data-variant-id="{{ current_variant.id }}"
+            data-product-handle="{{ product.handle }}"
+            data-has-variants="false"
+            aria-label="Add {{ title | escape }} to cart"
+          >
+            <span>+ Add</span>
+          </button>
+        {%- else -%}
+          <button
+            type="button"
+            class="gs-upsell-add-btn gs-ajax-add-btn"
+            data-variant-id="{{ current_variant.id }}"
+            data-product-handle="{{ product.handle }}"
+            data-has-variants="true"
+            aria-label="Select options for {{ title | escape }}"
+          >
+            <span>Options</span>
+          </button>
+        {%- endif -%}
+      {%- else -%}
+        <button type="button" class="gs-upsell-add-btn disabled" disabled>
+          <span>Sold Out</span>
+        </button>
+      {%- endif -%}
+    </div>
+  </li>
+{%- else -%}
 <{{ container }}
   class="
     {% if extra_class %}{% unless extra_style contains '--vertical' %}{{ extra_class }}{% endunless %}{% endif %} product-card gs-card gs-card-wrapper {{ width_class }}{% if settings.enable_quick_buy != 'none' %} has-form{% endif %}
@@ -486,3 +565,4 @@
   </div>
   {% if extra_style contains '--vertical' %}</div>{% endif %}
 </{{ container }}>
+{%- endif -%}
