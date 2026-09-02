@@ -276,10 +276,41 @@
     }
   });
 
-  // Pre-fetch async-panels.css on idle
-  if ('requestIdleCallback' in window) {
-    window.requestIdleCallback(ensurePanelsCss);
+  // Pre-fetch side-cart section markup and panels CSS on idle
+  function warmCartDrawer() {
+    ensurePanelsCss();
+    const sideCart = document.getElementById('cart');
+    if (!sideCart || (sideCart.querySelector('header') && sideCart.children.length > 1)) return;
+    
+    const rootUrl = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || window.routes?.root_url || '/';
+    const cleanRoot = rootUrl.endsWith('/') ? rootUrl : rootUrl + '/';
+    fetch(cleanRoot + '?section_id=side-cart')
+      .then(res => res.text())
+      .then(text => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(text, 'text/html');
+        const markup = doc.querySelector('#shopify-section-side-cart')?.innerHTML;
+        if (markup && !sideCart.classList.contains('toggle')) {
+          sideCart.innerHTML = markup;
+          if (!sideCart.querySelector('.m6pn-close')) {
+            const closeBtn = document.createElement('a');
+            closeBtn.href = './';
+            closeBtn.className = 'm6pn-close';
+            closeBtn.setAttribute('aria-label', 'Close');
+            sideCart.appendChild(closeBtn);
+          }
+        }
+      })
+      .catch(() => {});
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      if ('requestIdleCallback' in window) window.requestIdleCallback(warmCartDrawer);
+      else setTimeout(warmCartDrawer, 300);
+    });
   } else {
-    setTimeout(ensurePanelsCss, 1500);
+    if ('requestIdleCallback' in window) window.requestIdleCallback(warmCartDrawer);
+    else setTimeout(warmCartDrawer, 300);
   }
 })();

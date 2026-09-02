@@ -1,1 +1,6 @@
-<aside class="m6pn base-font" id="cart" aria-hidden="true"></aside>
+<aside class="m6pn base-font" id="cart" aria-hidden="true">
+  <header data-totalqty="{{ cart.item_count }}" data-totalprice="{{ cart.total_price | money }}">
+    <h2>{{ 'cart.title' | t }}</h2>
+  </header>
+  <a href="./" class="m6pn-close" aria-label="Close"></a>
+</aside>

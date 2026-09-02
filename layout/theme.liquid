@@ -239,7 +239,12 @@
         unless customer
           render 'mobile-login-dropdown'
         endunless
-        render 'side-cart-container'
+      -%}
+      <aside class="m6pn base-font" id="cart" aria-hidden="true">
+        {% section 'side-cart' %}
+        <a href="./" class="m6pn-close" aria-label="Close"></a>
+      </aside>
+      {%- liquid
         render 'quickshop-container'
         render 'shop-the-look-container'
         render 'pickup-availability-container'
