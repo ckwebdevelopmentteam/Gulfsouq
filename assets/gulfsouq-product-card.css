@@ -432,10 +432,13 @@ html.template-index {
 }
 
 .template-index .deals-title h2,
+.template-index .deals-title h1,
+.template-index .deals-title h3,
+.template-index .deals-title,
 .template-index header.title-styling h2,
 .template-index .heading-title,
 .template-index .explore-title {
-  font-size: 26px !important;
+  font-size: 30px !important;
   font-weight: 800 !important;
   color: #0C3E61 !important;
   letter-spacing: -0.4px !important;
@@ -443,11 +446,14 @@ html.template-index {
 
 @media (max-width: 768px) {
   .template-index .deals-title h2,
+  .template-index .deals-title h1,
+  .template-index .deals-title h3,
+  .template-index .deals-title,
   .template-index header.title-styling h2,
   .template-index .heading-title,
   .template-index .explore-title,
   .explore-title {
-    font-size: 18px !important;
+    font-size: 22px !important;
     line-height: 1.25 !important;
     letter-spacing: -0.2px !important;
   }
@@ -460,11 +466,14 @@ html.template-index {
 
 @media (max-width: 480px) {
   .template-index .deals-title h2,
+  .template-index .deals-title h1,
+  .template-index .deals-title h3,
+  .template-index .deals-title,
   .template-index header.title-styling h2,
   .template-index .heading-title,
   .template-index .explore-title,
   .explore-title {
-    font-size: 16px !important;
+    font-size: 20px !important;
     line-height: 1.2 !important;
   }
 
@@ -6296,10 +6305,13 @@ html.template-index {
 }
 
 .template-index .deals-title h2,
+.template-index .deals-title h1,
+.template-index .deals-title h3,
+.template-index .deals-title,
 .template-index header.title-styling h2,
 .template-index .heading-title,
 .template-index .explore-title {
-  font-size: 26px !important;
+  font-size: 30px !important;
   font-weight: 800 !important;
   color: #0C3E61 !important;
   letter-spacing: -0.4px !important;
@@ -6307,11 +6319,14 @@ html.template-index {
 
 @media (max-width: 768px) {
   .template-index .deals-title h2,
+  .template-index .deals-title h1,
+  .template-index .deals-title h3,
+  .template-index .deals-title,
   .template-index header.title-styling h2,
   .template-index .heading-title,
   .template-index .explore-title,
   .explore-title {
-    font-size: 18px !important;
+    font-size: 22px !important;
     line-height: 1.25 !important;
     letter-spacing: -0.2px !important;
   }
@@ -6324,11 +6339,14 @@ html.template-index {
 
 @media (max-width: 480px) {
   .template-index .deals-title h2,
+  .template-index .deals-title h1,
+  .template-index .deals-title h3,
+  .template-index .deals-title,
   .template-index header.title-styling h2,
   .template-index .heading-title,
   .template-index .explore-title,
   .explore-title {
-    font-size: 16px !important;
+    font-size: 20px !important;
     line-height: 1.2 !important;
   }
 
