@@ -23,7 +23,8 @@
 -%}
 
 <header data-totalqty="{{ cart.item_count }}" data-totalprice="{{ cart.total_price | money }}">
-  <{{ settings.drawers_font_size_heading }}>{{ 'cart.title' | t }}</{{ settings.drawers_font_size_heading }}>
+  <h2>{{ 'cart.title' | t }}</h2>
+  <a href="./" class="m6pn-close gs-cart-close" aria-label="Close">✕</a>
 </header>
 {%- if cart.item_count == 0 -%}
   <p>
@@ -158,7 +159,10 @@
         {%- endif -%}
 
         <footer>
-          <p class="input-amount {% unless can_update_quantity %}hidden{% endunless %}">
+          <div class="input-amount gs-qty-stepper {% unless can_update_quantity %}hidden{% endunless %}">
+            {%- if line_item.quantity > 1 -%}
+              <button type="button" class="gs-qty-btn gs-qty-minus" aria-label="Decrease quantity" data-line="{{ forloop.index }}">−</button>
+            {%- endif -%}
             <label for="qty-side-{{ line_item.index | plus: 1 }}" class="hidden">{{ 'cart.product.qty' | t }}</label>
             <input
               type="number"
@@ -169,7 +173,7 @@
               data-line="{{ forloop.index }}"
               aria-label="quantity"
               autocomplete="off"
-              min="{{ line_item.variant.quantity_rule.min }}"
+              min="1"
               {% if line_item.variant.inventory_management == 'shopify'
                 and line_item.variant.inventory_policy == 'deny'
               -%}
@@ -181,7 +185,8 @@
                 step="{{ line_item.variant.quantity_rule.increment }}"
               {% endif %}
             >
-          </p>
+            <button type="button" class="gs-qty-btn gs-qty-plus" aria-label="Increase quantity" data-line="{{ forloop.index }}">+</button>
+          </div>
           <p class="{% unless can_remove %}hidden{% endunless %}">
             <a class="remove remove-from-cart-link" href="{{ line_item.url_to_remove }}" data-line="{{ forloop.index }}"
               ><i aria-hidden="true" class="icon-trash"></i>
@@ -348,27 +353,20 @@
 
     <form class="f8vl" action="{{ routes.cart_url }}" method="post" data-hold="0">
       <p class="link-btn wide m10">
+        <input type="hidden" name="checkout" value="Checkout">
+        <button
+          type="submit"
+          class="gs-cart-checkout-btn"
+          name="checkout"
+        >
+          <span>{{ 'cart.checkout' | t | default: 'Checkout' }}</span>
+        </button>
         <a
-          class="overlay-buy_button{% if settings.button_style == 'inv' %} inv{% endif %}"
+          class="gs-cart-view-btn"
           href="{{ routes.cart_url }}"
         >
-          {{- 'cart.to_cart' | t -}}
+          {{- 'cart.to_cart' | t | default: 'View Cart' -}}
         </a>
-        {%- if settings.cart_drawer_checkout_button -%}
-          {%- liquid
-            assign checkout_button_color = settings.checkout_button_style | split: ' ' | first
-            assign checkout_button_style = settings.checkout_button_style | split: ' ' | last
-          -%}
-          <input type="hidden" name="checkout" value="Checkout">
-          <button
-            class="overlay-{{ checkout_button_color }}{% if checkout_button_style == 'inv' %} inv{% endif %}"
-            name="checkout"
-          >
-            <span class="processing">{{ 'cart.button_processing' | t }}</span>
-            <span class="processed">{{ 'cart.button_proceed' | t }}</span>
-            <span>{{ 'cart.checkout' | t }}</span>
-          </button>
-        {%- endif -%}
       </p>
     </form>
   </div>

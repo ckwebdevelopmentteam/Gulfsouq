@@ -252,6 +252,39 @@
       return;
     }
 
+    // Quantity Stepper buttons (+ / -)
+    const qtyBtn = e.target.closest('.gs-qty-btn');
+    if (qtyBtn) {
+      e.preventDefault();
+      e.stopPropagation();
+      const stepper = qtyBtn.closest('.gs-qty-stepper');
+      if (!stepper) return;
+      const input = stepper.querySelector('input[type="number"]');
+      if (!input) return;
+
+      const isPlus = qtyBtn.classList.contains('gs-qty-plus');
+      const currentVal = parseInt(input.value) || 1;
+      const step = parseInt(input.step) || 1;
+      const min = parseInt(input.min) !== undefined && !isNaN(parseInt(input.min)) ? parseInt(input.min) : 0;
+      const max = parseInt(input.max) || 99999;
+
+      let newVal = isPlus ? (currentVal + step) : (currentVal - step);
+      if (newVal < min) newVal = min;
+      if (newVal > max) newVal = max;
+
+      input.value = newVal;
+      
+      // Trigger change event for any listeners
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+
+      // Fallback direct API call for seamless reliability
+      const line = input.dataset.line;
+      if (line) {
+        changeCartItemQty(line, newVal);
+      }
+      return;
+    }
+
     // AJAX Add-to-cart buttons
     const addBtn = e.target.closest('.gs-ajax-add-btn');
     if (addBtn) {
@@ -269,6 +302,46 @@
       }
     }
   });
+
+  async function changeCartItemQty(line, quantity) {
+    const rootUrl = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || window.routes?.root_url || '/';
+    const cleanRoot = rootUrl.endsWith('/') ? rootUrl : rootUrl + '/';
+    try {
+      const res = await fetch(cleanRoot + 'cart/change.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ line: parseInt(line), quantity: parseInt(quantity), sections: 'side-cart' })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        const sideCart = document.getElementById('cart');
+        if (sideCart && data.sections && data.sections['side-cart']) {
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(data.sections['side-cart'], 'text/html');
+          const markup = doc.querySelector('#shopify-section-side-cart')?.innerHTML;
+          if (markup) {
+            sideCart.innerHTML = markup;
+            if (!sideCart.querySelector('.m6pn-close')) {
+              const closeBtn = document.createElement('a');
+              closeBtn.href = './';
+              closeBtn.className = 'm6pn-close';
+              closeBtn.setAttribute('aria-label', 'Close');
+              closeBtn.textContent = 'Close';
+              sideCart.appendChild(closeBtn);
+            }
+          }
+        }
+        if (typeof data.item_count !== 'undefined') {
+          document.querySelectorAll('#cart-count, #cart-count--m, .cart-count, [data-cart-count]').forEach(el => {
+            el.textContent = data.item_count;
+            el.style.display = 'inline-flex';
+          });
+        }
+      }
+    } catch (err) {
+      console.warn('changeCartItemQty error:', err);
+    }
+  }
 
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
