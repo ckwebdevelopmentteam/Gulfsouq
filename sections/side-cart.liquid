@@ -15,318 +15,266 @@
   assign image_width_2 = image_width | times: 2
   assign image_height_2 = image_height | times: 2
 
+  assign free_shipping_amount = settings.free_shipping_amount | replace: ',', '.' | times: 1
   assign has_free_shipping_amount = false
   if settings.enable_free_shipping
     assign has_free_shipping_amount = true
-    assign free_shipping_amount = settings.free_shipping_amount | times: 1 | times: 100
+    assign free_shipping_amount = settings.free_shipping_amount | replace: ',', '.' | times: 1 | times: 100
   endif
 -%}
 
-<header data-totalqty="{{ cart.item_count }}" data-totalprice="{{ cart.total_price | money }}">
-  <h2>{{ 'cart.title' | t }}</h2>
-  <a href="./" class="m6pn-close gs-cart-close" aria-label="Close">✕</a>
+<!-- Side Cart Drawer Header -->
+<header class="gs-drawer-header" data-totalqty="{{ cart.item_count }}" data-totalprice="{{ cart.total_price | money }}">
+  <div class="gs-drawer-title-group">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <path d="M16 10a4 4 0 0 1-8 0"></path>
+    </svg>
+    <h2 class="gs-drawer-title">
+      {{ 'cart.title' | t | default: 'Shopping Cart' }}
+      {%- if cart.item_count > 0 -%}
+        <span class="gs-drawer-count-badge">{{ cart.item_count }}</span>
+      {%- endif -%}
+    </h2>
+  </div>
+  <a href="./" class="m6pn-close gs-cart-close" aria-label="Close" title="Close cart">✕</a>
 </header>
-{%- if cart.item_count == 0 -%}
-  <p>
-    <span class="empty">{{ settings.empty_cart_text | remove: '</p>' | remove: '<p>' }}</span>
-  </p>
-{%- else -%}
-  <p>
-    <a href="./" class="strong m6pn-close"
-      ><i aria-hidden="true" class="icon-chevron-left"></i> {{ 'cart.continue_shopping' | t -}}
-    </a>
-  </p>
-{% endif %}
-<ul
-  class="l4ca compact base-font"
-  {% if settings.enable_cart_drawer_undo_remove and settings.enable_cart_drawer_undo_remove_delay %}
-    data-delay="{{ settings.cart_drawer_undo_remove_delay | times: 1000 }}"
-  {% endif %}
->
-  {%- for line_item in cart.items -%}
-    {%- liquid
-      assign children_id = ''
-      if line_item.parent_relationship.parent != null
-        assign parent_key = line_item.parent_relationship.parent.key
-      else 
-        for item in cart.items
-          if item.parent_relationship.parent.key == line_item.key
-            assign children_id = children_id | append: item.id | append: ','
-          endif
-        endfor
-        assign children_id = children_id | remove_last: ','
-      endif
-      assign can_update_quantity = line_item.instructions.can_update_quantity | default: true, allow_false: true
-      assign can_remove = line_item.instructions.can_remove | default: true, allow_false: true
-    -%}
-    <li class="{% if line_item.parent_relationship.parent != null %} nested{% endif %}{% if settings.fill_product_images %} cover{% endif %}{% if line_item.original_line_price > line_item.final_line_price %} has-discount{% endif %}">
-      <figure class="{% if settings.multiply_product_images == 'multiply' %}img-multiply{% elsif settings.multiply_product_images == 'multiply-bg' %}img-multiply-bg{% endif %}">
-        <picture>
-          {%- if line_item.image -%}
-            <img
-              src="
-                {%- liquid
-                  if settings.fill_product_images
-                    echo line_item | image_url: width: image_width, height: image_height, crop: 'center'
-                  else
-                    echo line_item | image_url: width: image_width
-                  endif
-                -%}
-              "
-              width="{{ image_width }}"
-              height="{{ image_height }}"
-              alt="{{ line_item.image.alt | default: line_item.title | escape }}"
-            >
-          {%- else %}
-            {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
-          {%- endif -%}
-        </picture>
-      </figure>
-      <section>
-        <div class="cols">
-          <h2>
-            <a
-              href="{{ line_item.url }}"
-              {% if settings.product_titles_caps %}
-                class="text-uppercase"
-              {% endif %}
-            >
-              {{- line_item.product.title }}
-            </a>
-          </h2>
-          <p class="price s1pr">
-            {%- if line_item.variant.compare_at_price > line_item.variant.price -%}
-              <span class="old-price">{{ line_item.variant.compare_at_price | times: line_item.quantity | money }}</span
-              >&nbsp;
-            {%- endif -%}
-            {{ line_item.final_line_price | money }}
-          </p>
-        </div>
-        {% if line_item.item_components.size == 0 %}
-          {%- render 'cart-item-options', line_item: line_item, origin: 'cartpanel', bundle: false %}
-        {%- else -%}
-          <ul class="l4ca l4ca-bundle">
-            <li>
-              <p class="">
-                <a href="./" class="show-l4ca"
-                  ><span class="hidden">{{ 'general.accessibility.hide' | t }}</span>
-                  <span>{{ 'general.accessibility.show' | t }}</span> {{ line_item.item_components | sum: 'quantity' }}
-                  {{ 'cart.product.items' | t }}
-                  <i aria-hidden="true" class="icon-chevron-down"></i
-                ></a>
-              </p>
-              <li class="has-l4ca">
-                <ul class="l4ca l4ca-bundle">
-                  {%- for line_item in line_item.item_components -%}
-                    <li class="{% if settings.fill_product_images %}cover{% endif %}{% unless line_item.image %} no-image{% endunless %}">
-                      {%- if line_item.image -%}
-                        <figure
-                          {% if settings.multiply_product_images == 'multiply' %}
-                            class="img-multiply"
-                          {% elsif settings.multiply_product_images == 'multiply-bg' %}
-                            class="img-multiply-bg"
-                          {% endif %}
-                        >
-                          <picture>
-                            <img
-                              {% if settings.fill_product_images %}
-                                src="{{ line_item | image_url: width: image_width_2, height: image_height_2, crop: 'center' }}"
-                                srcset="{{ line_item | image_url: width: image_width, height: image_height, crop: 'center' }} 1x,{{ line_item | image_url: width: image_width_2, height: image_height_2, crop: 'center' }} 2x"
-                              {% else %}
-                                src="{{ line_item | image_url: width: image_width_2 }}"
-                                srcset="{{ line_item | image_url: width: image_width }} 1x,{{ line_item | image_url: width: image_width_2 }} 2x"
-                              {% endif %}
-                              width="105"
-                              height="105"
-                              alt="{{ line_item.image.alt | default: line_item.title | escape }}"
-                              loading="lazy"
-                            >
-                          </picture>
-                        </figure>
-                      {%- endif -%}
-                      <section>
-                        <h3>
-                          <a href="{{ line_item.url }}">{{ line_item.quantity }} x {{ line_item.product.title }}</a>
-                        </h3>
-                        {%- render 'cart-item-options', line_item: line_item, origin: 'cartpanel', bundle: true %}
-                      </section>
-                    </li>
-                  {%- endfor -%}
-                </ul>
-              </li>
-            </li>
-          </ul>
-        {%- endif -%}
 
-        <footer>
-          <div class="input-amount gs-qty-stepper {% unless can_update_quantity %}hidden{% endunless %}">
-            {%- if line_item.quantity > 1 -%}
-              <button type="button" class="gs-qty-btn gs-qty-minus" aria-label="Decrease quantity" data-line="{{ forloop.index }}">−</button>
-            {%- endif -%}
-            <label for="qty-side-{{ line_item.index | plus: 1 }}" class="hidden">{{ 'cart.product.qty' | t }}</label>
-            <input
-              type="number"
-              name="updates[]"
-              id="qty-side-{{ line_item.index | plus: 1 }}"
-              class="disable-on-change"
-              value="{{ line_item.quantity }}"
-              data-line="{{ forloop.index }}"
-              aria-label="quantity"
-              autocomplete="off"
-              min="1"
-              {% if line_item.variant.inventory_management == 'shopify'
-                and line_item.variant.inventory_policy == 'deny'
-              -%}
-                max="{{ line_item.variant.inventory_quantity }}"
-              {% elsif line_item.variant.quantity_rule.max %}
-                max="{{ line_item.variant.quantity_rule.max }}"
-              {% endif %}
-              {% if line_item.variant.quantity_rule.increment %}
-                step="{{ line_item.variant.quantity_rule.increment }}"
-              {% endif %}
-            >
-            <button type="button" class="gs-qty-btn gs-qty-plus" aria-label="Increase quantity" data-line="{{ forloop.index }}">+</button>
-          </div>
-          <p class="{% unless can_remove %}hidden{% endunless %}">
-            <a class="remove remove-from-cart-link" href="{{ line_item.url_to_remove }}" data-line="{{ forloop.index }}"
-              ><i aria-hidden="true" class="icon-trash"></i>
-              <span class="mobile-hide">{{ 'cart.product.remove' | t }}</span></a
-            >
-          </p>
-        </footer>
-      </section>
-      {%- if settings.enable_cart_drawer_undo_remove and can_remove -%}
-        <p class="removed base-font-small">
-          {{ 'cart.product.product_removed' | t: product_title: line_item.product.title }}&nbsp;
-          <a
-            data-id="{{ line_item.id }}"
-            data-qty="{{ line_item.quantity }}"
-            {% if parent_key %}
-              data-parent-key="{{ parent_key }}"
-            {% elsif children_id.size > 0 %}
-              data-children-id="{{ children_id }}"
-            {% endif %}
-            {% if line_item.selling_plan_allocation %}
-              data-selling_plan="{{ line_item.selling_plan_allocation.selling_plan.id }}"
-            {% endif %}
-            {% for property in line_item.properties %}
-              {%- unless property.last == blank -%}
-                data-property-{{ forloop.index }}="{{ property | json }}"
-              {%- endunless -%}
-            {% endfor %}
-          >
-            {{- 'cart.product.product_removed_undo' | t }}
-          </a>
-        </p>
-      {%- endif -%}
-    </li>
-  {%- endfor -%}
-</ul>
-{%- if cart.item_count > 0 -%}
-  {%- if settings.enable_cart_drawer_upsell_complementary or settings.enable_cart_drawer_upsell_related -%}
-    {%- assign upsell_limit = settings.cart_drawer_upsell_limit | default: 4 -%}
-    <div
-      class="product-recommendations hidden cart-upsell"
-      data-product-id="{% for line_item in cart.items %}{{ line_item.product.id }}{% unless forloop.last %},{% endunless %}{% endfor %}"
-      data-template="{{ section.id }}"
-      data-intent="
-        {%- if settings.enable_cart_drawer_upsell_complementary -%}complementary{%- endif -%}
-        {%- if settings.enable_cart_drawer_upsell_complementary and settings.enable_cart_drawer_upsell_related -%},{%- endif -%}
-        {%- if settings.enable_cart_drawer_upsell_related -%}related{%- endif -%}
-      "
-      data-upsell-limit="{{ upsell_limit }}"
-    >
-      <h3 class="size-16">{{ 'cart.upsell_title' | t }}</h3>
-      <ul class="l4ca compact in-panel base-font">
-        {%- if recommendations.performed -%}
-          {%- for product in recommendations.products limit: upsell_limit -%}
-            {%- unless product.requires_selling_plan -%}
-              {%- liquid
-                capture placeholder_int
-                  cycle 1, 2, 3, 4, 5, 6
-                endcapture
-              -%}
-              {%- render 'product-item',
-                product: product,
-                placeholder_int: placeholder_int,
-                enable_quick_buy_desktop: true,
-                enable_quick_buy_mobile: true,
-                enable_variant_picker: settings.enable_cart_drawer_upsell_variants,
-                quick_buy_compact: true,
-                layout: 'list-compact'
-              -%}
-            {%- endunless -%}
-          {%- endfor -%}
-        {%- endif -%}
-      </ul>
+<!-- Free Shipping Progress Bar (Top of Drawer) -->
+{%- if has_free_shipping_amount and cart.requires_shipping and cart.item_count > 0 -%}
+  <div class="gs-drawer-shipping-bar">
+    {%- if free_shipping_amount > cart.total_price -%}
+      {%- assign amount_remaining = free_shipping_amount | minus: cart.total_price | money -%}
+      {%- assign progress_pct = cart.total_price | times: 100.0 | divided_by: free_shipping_amount | round -%}
+      <div class="gs-drawer-shipping-text">
+        <span class="gs-fs-truck">🚚</span>
+        <span class="gs-fs-text">Add <strong>{{ amount_remaining }}</strong> for <span class="gs-fs-gold">FREE Shipping!</span></span>
+      </div>
+      <div class="gs-drawer-progress-track">
+        <div class="gs-drawer-progress-fill" style="width: {{ progress_pct | at_most: 100 }}%;"></div>
+      </div>
+    {%- else -%}
+      <div class="gs-drawer-shipping-text unlocked">
+        <span class="gs-fs-truck">🎉</span>
+        <span class="gs-fs-text"><strong>FREE Express Shipping</strong> Unlocked!</span>
+      </div>
+      <div class="gs-drawer-progress-track">
+        <div class="gs-drawer-progress-fill completed" style="width: 100%;"></div>
+      </div>
+    {%- endif -%}
+  </div>
+{%- endif -%}
+
+<!-- Scrollable Content Area: Cart Items + Upsells -->
+<div class="gs-drawer-scrollable-body">
+  {%- if cart.item_count == 0 -%}
+    <div class="gs-drawer-empty-wrap">
+      <div class="gs-drawer-empty-icon">
+        <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#ad8730" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <path d="M16 10a4 4 0 0 1-8 0"></path>
+        </svg>
+      </div>
+      <h3 class="gs-drawer-empty-title">{{ 'cart.empty_title' | t | default: 'Your Cart is Empty' }}</h3>
+      <p class="gs-drawer-empty-sub">{{ 'cart.empty_subtitle' | t | default: 'Explore our authentic Gulf perfumes, dates, chocolates, and gift sets!' }}</p>
+      <a href="{{ routes.collections_url }}" class="gs-drawer-empty-btn">
+        <span>Start Shopping</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+      </a>
     </div>
-  {%- endif -%}
-  {%- if has_free_shipping_amount and cart.requires_shipping -%}
-    <ul class="l4al inline base-font">
-      {%- if free_shipping_amount > cart.total_price -%}
-        {%- assign amount = free_shipping_amount | minus: cart.total_price | money -%}
-        <li class="overlay-rose">{{ 'cart.amount_to_free_shipping_long_html' | t: amount: amount }}</li>
-      {%- else -%}
-        <li class="overlay-lime">{{ 'cart.free_shipping_long_html' | t }}</li>
-      {%- endif -%}
+  {%- else -%}
+    <!-- Cart Items List -->
+    <ul
+      class="l4ca compact gs-drawer-items-list"
+      {% if settings.enable_cart_drawer_undo_remove and settings.enable_cart_drawer_undo_remove_delay %}
+        data-delay="{{ settings.cart_drawer_undo_remove_delay | times: 1000 }}"
+      {% endif %}
+    >
+      {%- for line_item in cart.items -%}
+        {%- liquid
+          assign can_update_quantity = line_item.instructions.can_update_quantity | default: true, allow_false: true
+          assign can_remove = line_item.instructions.can_remove | default: true, allow_false: true
+        -%}
+        <li class="gs-drawer-item-row" data-line="{{ forloop.index }}">
+          
+          <!-- Thumbnail Box -->
+          <figure class="gs-drawer-thumb">
+            <picture>
+              {%- if line_item.image -%}
+                <img
+                  src="{{ line_item | image_url: width: 160, height: 160, crop: 'center' }}"
+                  width="76"
+                  height="76"
+                  alt="{{ line_item.image.alt | default: line_item.title | escape }}"
+                  class="gs-drawer-img"
+                  loading="lazy"
+                >
+              {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </picture>
+          </figure>
+
+          <!-- Item Details -->
+          <section class="gs-drawer-info">
+            <div class="cols">
+              <h2 class="gs-drawer-item-title">
+                <a href="{{ line_item.url }}">{{ line_item.product.title }}</a>
+              </h2>
+              <div class="price gs-drawer-price-row">
+                {%- if line_item.variant.compare_at_price > line_item.variant.price -%}
+                  <span class="old-price">{{ line_item.variant.compare_at_price | times: line_item.quantity | money }}</span>
+                {%- endif -%}
+                <span class="gs-drawer-current-price">{{ line_item.final_line_price | money }}</span>
+              </div>
+            </div>
+
+            <!-- Variant / Bundle Options -->
+            {%- if line_item.item_components.size == 0 -%}
+              <div class="gs-drawer-options">
+                {%- render 'cart-item-options', line_item: line_item, origin: 'cartpanel', bundle: false -%}
+              </div>
+            {%- endif -%}
+
+            <!-- Quantity Stepper & Remove Row -->
+            <footer class="gs-drawer-item-footer">
+              <div class="gs-qty-stepper {% unless can_update_quantity %}hidden{% endunless %}">
+                <button type="button" class="gs-qty-btn gs-qty-minus" aria-label="Decrease quantity" data-line="{{ forloop.index }}">−</button>
+                <input
+                  type="number"
+                  name="updates[]"
+                  id="qty-side-{{ line_item.index | plus: 1 }}"
+                  class="disable-on-change gs-qty-input"
+                  value="{{ line_item.quantity }}"
+                  data-line="{{ forloop.index }}"
+                  aria-label="quantity"
+                  autocomplete="off"
+                  min="0"
+                  {% if line_item.variant.inventory_management == 'shopify' and line_item.variant.inventory_policy == 'deny' -%}
+                    max="{{ line_item.variant.inventory_quantity }}"
+                  {% elsif line_item.variant.quantity_rule.max %}
+                    max="{{ line_item.variant.quantity_rule.max }}"
+                  {% endif %}
+                  {% if line_item.variant.quantity_rule.increment %}
+                    step="{{ line_item.variant.quantity_rule.increment }}"
+                  {% endif %}
+                >
+                <button type="button" class="gs-qty-btn gs-qty-plus" aria-label="Increase quantity" data-line="{{ forloop.index }}">+</button>
+              </div>
+
+              <a
+                class="remove remove-from-cart-link gs-drawer-remove-btn"
+                href="{{ line_item.url_to_remove }}"
+                data-line="{{ forloop.index }}"
+                aria-label="{{ 'cart.product.remove' | t }}"
+                title="Remove item"
+              >
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="3 6 5 6 21 6"></polyline>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                  <line x1="10" y1="11" x2="10" y2="17"></line>
+                  <line x1="14" y1="11" x2="14" y2="17"></line>
+                </svg>
+                <span class="gs-remove-label">Remove</span>
+              </a>
+            </footer>
+
+          </section>
+
+        </li>
+      {%- endfor -%}
     </ul>
+
+    <!-- Upsell / Recommended Products -->
+    {%- if settings.enable_cart_drawer_upsell_complementary or settings.enable_cart_drawer_upsell_related -%}
+      {%- assign upsell_limit = settings.cart_drawer_upsell_limit | default: 3 -%}
+      <div
+        class="product-recommendations hidden cart-upsell gs-drawer-upsell-wrap"
+        data-product-id="{% for line_item in cart.items %}{{ line_item.product.id }}{% unless forloop.last %},{% endunless %}{% endfor %}"
+        data-template="{{ section.id }}"
+        data-intent="
+          {%- if settings.enable_cart_drawer_upsell_complementary -%}complementary{%- endif -%}
+          {%- if settings.enable_cart_drawer_upsell_complementary and settings.enable_cart_drawer_upsell_related -%},{%- endif -%}
+          {%- if settings.enable_cart_drawer_upsell_related -%}related{%- endif -%}
+        "
+        data-upsell-limit="{{ upsell_limit }}"
+      >
+        <h3 class="gs-drawer-upsell-title">
+          <span>✨ {{ 'cart.upsell_title' | t | default: 'You May Also Like' }}</span>
+        </h3>
+        <ul class="l4ca compact in-panel base-font gs-drawer-upsell-list">
+          {%- if recommendations.performed -%}
+            {%- for product in recommendations.products limit: upsell_limit -%}
+              {%- unless product.requires_selling_plan -%}
+                {%- liquid
+                  capture placeholder_int
+                    cycle 1, 2, 3, 4, 5, 6
+                  endcapture
+                -%}
+                {%- render 'product-item',
+                  product: product,
+                  placeholder_int: placeholder_int,
+                  enable_quick_buy_desktop: true,
+                  enable_quick_buy_mobile: true,
+                  enable_variant_picker: settings.enable_cart_drawer_upsell_variants,
+                  quick_buy_compact: true,
+                  layout: 'list-compact'
+                -%}
+              {%- endunless -%}
+            {%- endfor -%}
+          {%- endif -%}
+        </ul>
+      </div>
+    {%- endif -%}
+
   {%- endif -%}
-  <div class="sticky-in-panel">
-    <ul class="l4tt m15">
-      <li>
-        <span>{{ 'cart.total_products' | t }} ({{ cart.item_count }})</span> {{ cart.items_subtotal_price | money }}
-      </li>
+</div>
+
+<!-- Sticky Bottom Footer (Always Visible at Bottom) -->
+{%- if cart.item_count > 0 -%}
+  <div class="sticky-in-panel gs-drawer-sticky-footer">
+    
+    <!-- Subtotal Breakdown -->
+    <div class="gs-drawer-subtotal-box">
+      <div class="gs-drawer-subtotal-row">
+        <span class="gs-drawer-subtotal-label">{{ 'cart.total_products' | t | default: 'Subtotal' }} ({{ cart.item_count }} {% if cart.item_count == 1 %}item{% else %}items{% endif %})</span>
+        <span class="gs-drawer-subtotal-val">{{ cart.items_subtotal_price | money }}</span>
+      </div>
       {%- if cart.cart_level_discount_applications.size > 0 -%}
         {%- for discount in cart.cart_level_discount_applications -%}
-          <li class="overlay-gray">
-            <span class="text-uppercase">
-              <i aria-hidden="true" class="icon-label"></i>
-              {{ discount.title }}
-              {% if discount.type == 'discount_code' -%}
-                <a class="remove-discount text-no-underline" data-discount-code="{{ discount.title }}"
-                  ><i aria-hidden="true" class="icon-x-circle overlay-gray"></i>
-                  <span class="hidden">{{ 'cart.product.remove' | t }}</span></a
-                >
-              {%- endif %}
-            </span>
-            (-{{ discount.total_allocated_amount | money }})
-          </li>
+          <div class="gs-drawer-subtotal-row gs-drawer-discount-row">
+            <span class="gs-drawer-discount-title">🏷️ {{ discount.title }}</span>
+            <span class="gs-drawer-discount-amount">-{{ discount.total_allocated_amount | money }}</span>
+          </div>
         {%- endfor -%}
       {%- endif -%}
-      <li class="strong">
-        <span>
-          {%- if cart.taxes_included -%}
-            {{- 'cart.total_including_tax' | t -}}
-          {%- else -%}
-            {{- 'cart.total_excluding_tax' | t -}}
-          {%- endif -%}
-        </span>
-        {{- cart.total_price | money }}
-      </li>
-    </ul>
+      <div class="gs-drawer-subtotal-row gs-drawer-total-row">
+        <span class="gs-drawer-total-label">Estimated Total</span>
+        <span class="gs-drawer-total-val">{{ cart.total_price | money }}</span>
+      </div>
+    </div>
+
+    <!-- Optional Discount Code / Note Accordions -->
     {%- if settings.cart_drawer_discount_tab or settings.cart_drawer_order_notes -%}
-      <div class="accordion-a compact cp2 base-font">
+      <div class="accordion-a compact cp2 base-font gs-drawer-accordions">
         {% if settings.cart_drawer_discount_tab %}
-          <details>
+          <details class="gs-drawer-accordion-item">
             <summary>
-              <span class="label">{{ 'cart.discount_code.title' | t }}</span>
+              <span class="label">🏷️ {{ 'cart.discount_code.title' | t | default: 'Promo / Coupon Code' }}</span>
             </summary>
             <div>
-              <form id="discount-form-2" class="discount-form input-inline">
+              <form id="discount-form-2" class="discount-form input-inline gs-drawer-discount-form">
                 <input
                   type="text"
                   id="discount"
                   name="discount"
-                  placeholder="{{ 'cart.discount_code.placeholder' | t }}"
+                  placeholder="{{ 'cart.discount_code.placeholder' | t | default: 'Promo code' }}"
+                  autocomplete="off"
                 >
-                <button
-                  type="submit"
-                  form="discount-form-2"
-                  {% if settings.button_style == 'inv' %}
-                    class="inv"
-                  {% endif %}
-                >
-                  <i aria-hidden="true" class="icon-plus"></i> {{ 'cart.discount_code.submit' | t }}
+                <button type="submit" form="discount-form-2">
+                  <span>{{ 'cart.discount_code.submit' | t | default: 'Apply' }}</span>
                 </button>
                 <span class="not-applicable-error-message hidden">{{ 'cart.discount_code.not_applicable' | t }}</span>
                 <span class="already-applied-error-message hidden">{{ 'cart.discount_code.already_applied' | t }}</span>
@@ -335,15 +283,15 @@
           </details>
         {% endif %}
         {% if settings.cart_drawer_order_notes %}
-          <details>
+          <details class="gs-drawer-accordion-item">
             <summary>
-              <span class="label">{{ 'cart.add_note' | t }}</span>
+              <span class="label">📝 {{ 'cart.add_note' | t | default: 'Add Order Note' }}</span>
             </summary>
             <div>
               <textarea
                 name="note"
                 id="note_side"
-                placeholder="{{ 'cart.add_note_placeholder' | t }}"
+                placeholder="{{ 'cart.add_note_placeholder' | t | default: 'Add instructions here...' }}"
               >{{ cart.note }}</textarea>
             </div>
           </details>
@@ -351,31 +299,37 @@
       </div>
     {% endif %}
 
-    <form class="f8vl" action="{{ routes.cart_url }}" method="post" data-hold="0">
-      <p class="link-btn wide m10">
-        <input type="hidden" name="checkout" value="Checkout">
-        <button
-          type="submit"
-          class="gs-cart-checkout-btn"
-          name="checkout"
-        >
-          <span>{{ 'cart.checkout' | t | default: 'Checkout' }}</span>
-        </button>
-        <a
-          class="gs-cart-view-btn"
-          href="{{ routes.cart_url }}"
-        >
-          {{- 'cart.to_cart' | t | default: 'View Cart' -}}
-        </a>
-      </p>
+    <!-- Action Buttons (Checkout & View Cart) -->
+    <form class="f8vl gs-drawer-cta-form" action="{{ routes.cart_url }}" method="post" data-hold="0">
+      <input type="hidden" name="checkout" value="Checkout">
+      <button
+        type="submit"
+        class="gs-cart-checkout-btn"
+        name="checkout"
+      >
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+        <span>{{ 'cart.checkout' | t | default: 'PROCEED TO CHECKOUT' }}</span>
+      </button>
+      <a
+        class="gs-cart-view-btn"
+        href="{{ routes.cart_url }}"
+      >
+        <span>{{ 'cart.to_cart' | t | default: 'VIEW SHOPPING CART' }}</span>
+      </a>
     </form>
+
+    <!-- Trust Row -->
+    <div class="gs-drawer-trust-row">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+      <span>Guaranteed Safe & Secure Checkout</span>
+    </div>
+
+    <!-- Payment Icons -->
+    <ul class="l4pm text-center gs-drawer-payment-icons">
+      {%- for payment_method in shop.enabled_payment_types -%}
+        <li>{{ payment_method | payment_type_svg_tag }}</li>
+      {%- endfor -%}
+    </ul>
+
   </div>
-  {%- if settings.show_trustbadge -%}
-    {%- render 'trustbadge' -%}
-  {%- endif -%}
-  <ul class="l4pm text-center">
-    {%- for payment_method in shop.enabled_payment_types -%}
-      <li>{{ payment_method | payment_type_svg_tag }}</li>
-    {%- endfor -%}
-  </ul>
 {%- endif -%}

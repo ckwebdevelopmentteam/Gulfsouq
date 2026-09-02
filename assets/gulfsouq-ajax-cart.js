@@ -246,9 +246,21 @@
     }
 
     // Close buttons
-    if (e.target.matches('.overlay-close, .overlay-close-clipping, .m6pn-close, .m6pn-close *')) {
+    if (e.target.closest('.overlay-close, .overlay-close-clipping, .m6pn-close, .gs-cart-close')) {
       window.closeGulfSouqCart();
       e.preventDefault();
+      return;
+    }
+
+    // Remove item from side-cart drawer
+    const removeBtn = e.target.closest('.gs-drawer-remove-btn, .remove-from-cart-link');
+    if (removeBtn && removeBtn.closest('#cart')) {
+      e.preventDefault();
+      e.stopPropagation();
+      const line = removeBtn.dataset.line;
+      if (line) {
+        changeCartItemQty(line, 0);
+      }
       return;
     }
 
