@@ -62,12 +62,14 @@
           if (typeof ajaxCart !== 'undefined' && typeof ajaxCart.init === 'function') {
             ajaxCart.init();
           }
+          window.dispatchEvent(new CustomEvent('recommendedProducts'));
         }
       }
     } catch (err) {
       console.warn('Error fetching side-cart markup:', err);
     }
 
+    window.dispatchEvent(new CustomEvent('recommendedProducts'));
     window.dispatchEvent(new CustomEvent('themeCartOpened'));
   };
 
@@ -343,6 +345,7 @@
               closeBtn.textContent = 'Close';
               sideCart.appendChild(closeBtn);
             }
+            window.dispatchEvent(new CustomEvent('recommendedProducts'));
           }
         }
         if (typeof data.item_count !== 'undefined') {

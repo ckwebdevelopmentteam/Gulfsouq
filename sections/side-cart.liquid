@@ -187,25 +187,22 @@
       {%- endfor -%}
     </ul>
 
-    <!-- Upsell / Recommended Products -->
-    {%- if settings.enable_cart_drawer_upsell_complementary or settings.enable_cart_drawer_upsell_related -%}
+    <!-- Upsell / Recommended Products ("You May Also Like") -->
+    {%- if cart.item_count > 0 -%}
       {%- assign upsell_limit = settings.cart_drawer_upsell_limit | default: 3 -%}
       <div
-        class="product-recommendations hidden cart-upsell gs-drawer-upsell-wrap"
+        class="product-recommendations cart-upsell gs-drawer-upsell-wrap"
         data-product-id="{% for line_item in cart.items %}{{ line_item.product.id }}{% unless forloop.last %},{% endunless %}{% endfor %}"
         data-template="{{ section.id }}"
-        data-intent="
-          {%- if settings.enable_cart_drawer_upsell_complementary -%}complementary{%- endif -%}
-          {%- if settings.enable_cart_drawer_upsell_complementary and settings.enable_cart_drawer_upsell_related -%},{%- endif -%}
-          {%- if settings.enable_cart_drawer_upsell_related -%}related{%- endif -%}
-        "
+        data-intent="related,complementary"
+        data-limit="{{ upsell_limit }}"
         data-upsell-limit="{{ upsell_limit }}"
       >
         <h3 class="gs-drawer-upsell-title">
           <span>✨ {{ 'cart.upsell_title' | t | default: 'You May Also Like' }}</span>
         </h3>
         <ul class="l4ca compact in-panel base-font gs-drawer-upsell-list">
-          {%- if recommendations.performed -%}
+          {%- if recommendations.performed and recommendations.products_count > 0 -%}
             {%- for product in recommendations.products limit: upsell_limit -%}
               {%- unless product.requires_selling_plan -%}
                 {%- liquid
@@ -224,6 +221,40 @@
                 -%}
               {%- endunless -%}
             {%- endfor -%}
+          {%- else -%}
+            {%- comment -%} Fallback recommendations before AJAX fetch {%- endcomment -%}
+            {%- assign fallback_collection = collections['featured'] | default: collections['all'] -%}
+            {%- if fallback_collection and fallback_collection.products_count > 0 -%}
+              {%- assign rendered_count = 0 -%}
+              {%- for product in fallback_collection.products -%}
+                {%- unless product.available == false or rendered_count >= upsell_limit -%}
+                  {%- assign in_cart = false -%}
+                  {%- for line_item in cart.items -%}
+                    {%- if line_item.product_id == product.id -%}
+                      {%- assign in_cart = true -%}
+                      {%- break -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                  {%- unless in_cart -%}
+                    {%- liquid
+                      capture placeholder_int
+                        cycle 1, 2, 3, 4, 5, 6
+                      endcapture
+                      assign rendered_count = rendered_count | plus: 1
+                    -%}
+                    {%- render 'product-item',
+                      product: product,
+                      placeholder_int: placeholder_int,
+                      enable_quick_buy_desktop: true,
+                      enable_quick_buy_mobile: true,
+                      enable_variant_picker: settings.enable_cart_drawer_upsell_variants,
+                      quick_buy_compact: true,
+                      layout: 'list-compact'
+                    -%}
+                  {%- endunless -%}
+                {%- endunless -%}
+              {%- endfor -%}
+            {%- endif -%}
           {%- endif -%}
         </ul>
       </div>

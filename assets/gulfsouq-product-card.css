@@ -3310,28 +3310,39 @@ aside#cart ul.l4ca.compact > li section footer a.remove:after {
   content: none !important;
 }
 
-/* 6. Upsells Section (Compact Mini Cards) */
+/* 6. Upsells Section (Sleek Compact Horizontal Mini Cards) */
 .gs-drawer-upsell-wrap,
 .cart-upsell {
-  margin: 10px 18px 16px !important;
+  margin: 14px 18px 16px !important;
   padding: 12px 14px !important;
   background: #F8FAFC !important;
   border-radius: 12px !important;
   border: 1px solid #E2E8F0 !important;
   flex-shrink: 0 !important;
+  display: block !important;
+}
+
+.gs-drawer-upsell-wrap.hidden,
+.cart-upsell.hidden {
+  display: none !important;
 }
 
 .gs-drawer-upsell-title {
-  font-size: 12px !important;
+  font-family: var(--gs-font-heading) !important;
+  font-size: 12.5px !important;
   font-weight: 700 !important;
   color: #103F60 !important;
-  margin: 0 0 8px !important;
+  margin: 0 0 10px !important;
   text-transform: uppercase !important;
   letter-spacing: 0.5px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
 }
 
 .gs-drawer-upsell-list,
-.cart-upsell ul.l4ca {
+.cart-upsell ul.l4ca,
+.cart-upsell ul.gs-drawer-upsell-list {
   display: flex !important;
   flex-direction: column !important;
   gap: 8px !important;
@@ -3340,33 +3351,57 @@ aside#cart ul.l4ca.compact > li section footer a.remove:after {
   margin: 0 !important;
 }
 
-.gs-drawer-upsell-list li,
-.cart-upsell ul.l4ca > li {
+/* Mini Upsell Card (Single row: image + info + add button) */
+.gs-drawer-upsell-list > li,
+.cart-upsell ul.l4ca > li,
+.cart-upsell .gs-product-card {
   display: flex !important;
+  flex-direction: row !important;
   align-items: center !important;
+  justify-content: space-between !important;
   gap: 10px !important;
-  padding: 6px 8px !important;
+  padding: 8px 10px !important;
   background: #FFFFFF !important;
-  border-radius: 8px !important;
+  border-radius: 10px !important;
   border: 1px solid #E2E8F0 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;
   min-height: auto !important;
   height: auto !important;
   margin: 0 !important;
+  position: relative !important;
+  box-sizing: border-box !important;
 }
 
-.gs-drawer-upsell-list li figure,
-.cart-upsell ul.l4ca > li figure {
-  width: 44px !important;
-  height: 44px !important;
-  min-width: 44px !important;
-  max-width: 44px !important;
-  aspect-ratio: 1/1 !important;
-  border-radius: 6px !important;
-  margin: 0 !important;
+.cart-upsell .gs-product-card:hover {
+  transform: none !important;
+  border-color: #CBD5E1 !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Hide non-essential elements inside drawer upsell */
+.cart-upsell .gs-wishlist-btn,
+.cart-upsell .gs-card-rating,
+.cart-upsell .gs-stock-status,
+.cart-upsell .gs-card-vendor,
+.cart-upsell .gs-price-save-badge,
+.cart-upsell .l4ca-bundle {
+  display: none !important;
+}
+
+/* Image Wrap */
+.cart-upsell .gs-card-image-wrap,
+.cart-upsell figure,
+.gs-drawer-upsell-list figure {
+  width: 50px !important;
+  height: 50px !important;
+  min-width: 50px !important;
+  max-width: 50px !important;
+  aspect-ratio: 1 / 1 !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
   background: #F8FAFC !important;
   border: 1px solid #E2E8F0 !important;
   padding: 2px !important;
-  display: flex !important;
   align-items: center !important;
   justify-content: center !important;
 }
