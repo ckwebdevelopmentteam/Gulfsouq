@@ -260,8 +260,9 @@
       e.preventDefault();
       e.stopPropagation();
       const line = removeBtn.dataset.line;
+      const row = removeBtn.closest('.gs-drawer-item-row');
       if (line) {
-        changeCartItemQty(line, 0);
+        changeCartItemQty(line, 0, row);
       }
       return;
     }
@@ -294,8 +295,9 @@
       // If inside side-cart drawer, directly sync side cart markup
       if (qtyBtn.closest('#cart')) {
         const line = input.dataset.line;
+        const row = qtyBtn.closest('.gs-drawer-item-row');
         if (line) {
-          changeCartItemQty(line, newVal);
+          changeCartItemQty(line, newVal, row);
         }
       }
       return;
@@ -319,7 +321,12 @@
     }
   });
 
-  async function changeCartItemQty(line, quantity) {
+  async function changeCartItemQty(line, quantity, rowEl = null) {
+    if (rowEl) {
+      rowEl.style.opacity = '0.4';
+      rowEl.style.pointerEvents = 'none';
+      rowEl.style.transition = 'opacity 0.2s ease';
+    }
     const rootUrl = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || window.routes?.root_url || '/';
     const cleanRoot = rootUrl.endsWith('/') ? rootUrl : rootUrl + '/';
     try {
@@ -331,32 +338,55 @@
       if (res.ok) {
         const data = await res.json();
         const sideCart = document.getElementById('cart');
-        if (sideCart && data.sections && data.sections['side-cart']) {
+        let markup = '';
+        if (data.sections && data.sections['side-cart']) {
           const parser = new DOMParser();
           const doc = parser.parseFromString(data.sections['side-cart'], 'text/html');
-          const markup = doc.querySelector('#shopify-section-side-cart')?.innerHTML;
-          if (markup) {
-            sideCart.innerHTML = markup;
-            if (!sideCart.querySelector('.m6pn-close')) {
-              const closeBtn = document.createElement('a');
-              closeBtn.href = './';
-              closeBtn.className = 'm6pn-close';
-              closeBtn.setAttribute('aria-label', 'Close');
-              closeBtn.textContent = 'Close';
-              sideCart.appendChild(closeBtn);
-            }
-            window.dispatchEvent(new CustomEvent('recommendedProducts'));
+          markup = doc.querySelector('#shopify-section-side-cart')?.innerHTML || doc.body.innerHTML;
+        } else {
+          const fallbackRes = await fetch(cleanRoot + '?section_id=side-cart');
+          if (fallbackRes.ok) {
+            const fallbackText = await fallbackRes.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(fallbackText, 'text/html');
+            markup = doc.querySelector('#shopify-section-side-cart')?.innerHTML || doc.body.innerHTML;
           }
+        }
+        if (sideCart && markup) {
+          sideCart.innerHTML = markup;
+          if (!sideCart.querySelector('.m6pn-close')) {
+            const closeBtn = document.createElement('a');
+            closeBtn.href = './';
+            closeBtn.className = 'm6pn-close';
+            closeBtn.setAttribute('aria-label', 'Close');
+            closeBtn.textContent = 'Close';
+            sideCart.appendChild(closeBtn);
+          }
+          if (typeof ajaxCart !== 'undefined' && typeof ajaxCart.init === 'function') {
+            ajaxCart.init();
+          }
+          window.dispatchEvent(new CustomEvent('recommendedProducts'));
         }
         if (typeof data.item_count !== 'undefined') {
           document.querySelectorAll('#cart-count, #cart-count--m, .cart-count, [data-cart-count]').forEach(el => {
             el.textContent = data.item_count;
-            el.style.display = 'inline-flex';
+            el.style.display = data.item_count > 0 ? 'inline-flex' : 'none';
           });
+        }
+        document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart: data } }));
+        document.dispatchEvent(new CustomEvent('cart:refresh', { detail: { cart: data } }));
+      } else {
+        if (rowEl) {
+          rowEl.style.opacity = '1';
+          rowEl.style.pointerEvents = '';
         }
       }
     } catch (err) {
       console.warn('changeCartItemQty error:', err);
+      if (rowEl) {
+        rowEl.style.opacity = '1';
+        rowEl.style.pointerEvents = '';
+      }
     }
   }
 
@@ -394,13 +424,110 @@
       .catch(() => {});
   }
 
+  // =========================================================================
+  // GULF SOUQ: "You May Also Like" Carousel Controller
+  // =========================================================================
+  function updateDrawerUpsellNavButtons() {
+    const upsellWrap = document.querySelector('#cart .gs-drawer-upsell-wrap, .cart-upsell');
+    if (!upsellWrap) return;
+
+    const track = upsellWrap.querySelector('.gs-upsell-carousel, .gs-drawer-upsell-list, ul.l4ca');
+    const prevBtn = upsellWrap.querySelector('.gs-upsell-prev-btn');
+    const nextBtn = upsellWrap.querySelector('.gs-upsell-next-btn');
+    const navControls = upsellWrap.querySelector('.gs-upsell-nav-controls');
+
+    if (!track) return;
+
+    const canScroll = track.scrollWidth > track.clientWidth + 4;
+    if (navControls) {
+      if (!canScroll) {
+        navControls.style.display = 'none';
+      } else {
+        navControls.style.display = '';
+      }
+    }
+
+    if (prevBtn) {
+      prevBtn.disabled = track.scrollLeft <= 3;
+    }
+    if (nextBtn) {
+      const isEnd = (track.scrollLeft + track.clientWidth) >= (track.scrollWidth - 6);
+      nextBtn.disabled = isEnd;
+    }
+  }
+
+  function scrollDrawerUpsellCarousel(direction) {
+    const upsellWrap = document.querySelector('#cart .gs-drawer-upsell-wrap, .cart-upsell');
+    if (!upsellWrap) return;
+
+    const track = upsellWrap.querySelector('.gs-upsell-carousel, .gs-drawer-upsell-list, ul.l4ca');
+    if (!track) return;
+
+    // Scroll by exactly one product card width + gap (12px)
+    const firstItem = track.querySelector('li');
+    const step = firstItem ? (firstItem.offsetWidth + 12) : 168;
+
+    track.scrollBy({
+      left: direction === 'next' ? step : -step,
+      behavior: 'smooth'
+    });
+
+    setTimeout(updateDrawerUpsellNavButtons, 350);
+  }
+
+  // Delegated click handler for prev/next buttons
+  document.addEventListener('click', function(e) {
+    const prevBtn = e.target.closest('.gs-upsell-prev-btn');
+    if (prevBtn) {
+      e.preventDefault();
+      scrollDrawerUpsellCarousel('prev');
+      return;
+    }
+
+    const nextBtn = e.target.closest('.gs-upsell-next-btn');
+    if (nextBtn) {
+      e.preventDefault();
+      scrollDrawerUpsellCarousel('next');
+      return;
+    }
+  });
+
+  // Attach scroll listeners to the carousel track
+  function bindDrawerUpsellScrollListener() {
+    const track = document.querySelector('#cart .gs-upsell-carousel, #cart .gs-drawer-upsell-list, #cart ul.l4ca');
+    if (track && !track.dataset.navBound) {
+      track.dataset.navBound = 'true';
+      let scrollTimer = null;
+      track.addEventListener('scroll', function() {
+        if (scrollTimer) clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(updateDrawerUpsellNavButtons, 60);
+      }, { passive: true });
+    }
+    updateDrawerUpsellNavButtons();
+  }
+
+  window.addEventListener('recommendedProducts', function() {
+    setTimeout(bindDrawerUpsellScrollListener, 200);
+  });
+  window.addEventListener('themeCartOpened', function() {
+    setTimeout(bindDrawerUpsellScrollListener, 200);
+  });
+  document.addEventListener('cart:updated', function() {
+    setTimeout(bindDrawerUpsellScrollListener, 200);
+  });
+  window.addEventListener('resize', function() {
+    updateDrawerUpsellNavButtons();
+  });
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
       if ('requestIdleCallback' in window) window.requestIdleCallback(warmCartDrawer);
       else setTimeout(warmCartDrawer, 300);
+      setTimeout(bindDrawerUpsellScrollListener, 500);
     });
   } else {
     if ('requestIdleCallback' in window) window.requestIdleCallback(warmCartDrawer);
     else setTimeout(warmCartDrawer, 300);
+    setTimeout(bindDrawerUpsellScrollListener, 500);
   }
 })();

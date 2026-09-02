@@ -3275,198 +3275,691 @@ aside#cart .gs-qty-stepper input::-webkit-inner-spin-button,
   margin: 0 !important;
 }
 
-/* Sleek Remove Button */
+/* Delete / Remove button in cart drawer */
 .gs-drawer-remove-btn,
-aside#cart ul.l4ca.compact > li section footer a.remove,
-#cart ul.l4ca.compact > li section footer a.remove {
+aside#cart .gs-drawer-remove-btn,
+#cart .gs-drawer-remove-btn,
+aside#cart ul.l4ca.compact > li section footer .gs-drawer-remove-btn,
+#cart ul.l4ca.compact > li section footer .gs-drawer-remove-btn {
   display: inline-flex !important;
   align-items: center !important;
-  gap: 4px !important;
-  color: #94A3B8 !important;
-  font-size: 11.5px !important;
-  font-weight: 600 !important;
-  text-decoration: none !important;
-  padding: 4px 8px !important;
+  justify-content: center !important;
+  gap: 5px !important;
+  padding: 5px 9px !important;
   border-radius: 6px !important;
+  color: #94A3B8 !important;
   background: #F8FAFC !important;
   border: 1px solid #E2E8F0 !important;
-  transition: all 0.2s ease !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
   cursor: pointer !important;
-}
-
-.gs-drawer-remove-btn:hover,
-aside#cart ul.l4ca.compact > li section footer a.remove:hover,
-#cart ul.l4ca.compact > li section footer a.remove:hover {
-  color: #DC2626 !important;
-  background: #FEF2F2 !important;
-  border-color: #FEE2E2 !important;
-}
-
-.gs-drawer-remove-btn:before,
-.gs-drawer-remove-btn:after,
-aside#cart ul.l4ca.compact > li section footer a.remove:before,
-aside#cart ul.l4ca.compact > li section footer a.remove:after {
-  display: none !important;
-  content: none !important;
-}
-
-/* 6. Upsells Section (Sleek Compact Horizontal Mini Cards) */
-.gs-drawer-upsell-wrap,
-.cart-upsell {
-  margin: 10px 18px 14px !important;
-  padding: 12px 14px !important;
-  background: #F8FAFC !important;
-  border-radius: 12px !important;
-  border: 1px solid #E2E8F0 !important;
-  flex-shrink: 0 !important;
-  display: block !important;
+  text-decoration: none !important;
+  line-height: 1 !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  user-select: none !important;
   box-sizing: border-box !important;
 }
 
+.gs-drawer-remove-btn:hover,
+aside#cart .gs-drawer-remove-btn:hover,
+#cart .gs-drawer-remove-btn:hover,
+aside#cart ul.l4ca.compact > li section footer .gs-drawer-remove-btn:hover,
+#cart ul.l4ca.compact > li section footer .gs-drawer-remove-btn:hover {
+  color: #DC2626 !important;
+  background: #FEF2F2 !important;
+  border-color: #FECACA !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 2px 4px rgba(220, 38, 38, 0.08) !important;
+}
+
+.gs-drawer-remove-btn:active,
+aside#cart .gs-drawer-remove-btn:active,
+#cart .gs-drawer-remove-btn:active {
+  transform: translateY(0) !important;
+}
+
+.gs-drawer-remove-btn svg,
+.l4ca.compact .gs-drawer-remove-btn svg,
+aside#cart .gs-drawer-remove-btn svg,
+#cart .gs-drawer-remove-btn svg {
+  position: static !important;
+  display: inline-block !important;
+  width: 14px !important;
+  min-width: 14px !important;
+  max-width: 14px !important;
+  height: 14px !important;
+  min-height: 14px !important;
+  max-height: 14px !important;
+  stroke: currentColor !important;
+  stroke-width: 2 !important;
+  flex-shrink: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+  top: auto !important;
+  bottom: auto !important;
+  left: auto !important;
+  right: auto !important;
+  object-fit: unset !important;
+  transition: stroke 0.2s ease !important;
+}
+
+.gs-drawer-remove-btn span {
+  display: inline-block !important;
+  font-size: 11.5px !important;
+  font-weight: 600 !important;
+  color: inherit !important;
+  line-height: 1 !important;
+  letter-spacing: 0.2px !important;
+}
+
+/* Hide legacy fallback remove tags if any */
+aside#cart ul.l4ca.compact > li section footer a.remove:not(.gs-drawer-remove-btn),
+#cart ul.l4ca.compact > li section footer a.remove:not(.gs-drawer-remove-btn),
+aside#cart a.remove:not(.gs-drawer-remove-btn),
+#cart a.remove:not(.gs-drawer-remove-btn) {
+  display: none !important;
+}
+
+/* ==========================================================================
+   CART DRAWER "YOU MAY ALSO LIKE" RECOMMENDATIONS CAROUSEL (VERTICAL CARDS)
+   ========================================================================== */
+
+/* Outer Container: Clean, integrated, no large border */
+#root #cart .product-recommendations,
+#root #cart .cart-upsell,
+#root aside#cart .cart-upsell,
+#cart .gs-drawer-upsell-wrap,
+.gs-drawer-upsell-wrap,
+.cart-upsell {
+  margin: 14px 0 20px 0 !important;
+  padding: 12px 0 0 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  border-top: 1px solid #F1F5F9 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  flex-shrink: 0 !important;
+  display: block !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+}
+
+#root #cart .cart-upsell.hidden,
 .gs-drawer-upsell-wrap.hidden,
 .cart-upsell.hidden {
   display: none !important;
 }
 
+/* Header: Large "✨ You May Also Like" + Actions ("See All →" + Desktop [‹] [›]) */
+#root #cart .gs-drawer-upsell-header,
+#cart .gs-drawer-upsell-header,
+.gs-drawer-upsell-header {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 2px 22px 14px 22px !important;
+  margin: 0 !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+#root #cart .gs-drawer-upsell-title,
+#cart .gs-drawer-upsell-title,
 .gs-drawer-upsell-title {
-  font-family: var(--gs-font-heading) !important;
-  font-size: 12px !important;
-  font-weight: 700 !important;
+  font-family: var(--gs-font-heading, "Outfit", "Plus Jakarta Sans", sans-serif) !important;
+  font-size: 21px !important;
+  font-weight: 800 !important;
   color: #103F60 !important;
-  margin: 0 0 10px !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.5px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  letter-spacing: -0.4px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  line-height: 1.2 !important;
+}
+
+#root #cart .gs-drawer-upsell-title .gs-upsell-sparkle,
+#cart .gs-drawer-upsell-title .gs-upsell-sparkle,
+.gs-drawer-upsell-title .gs-upsell-sparkle {
+  font-size: 22px !important;
+  line-height: 1 !important;
+  display: inline-block !important;
+  vertical-align: middle !important;
+}
+
+#root #cart .gs-drawer-upsell-title .gs-upsell-title-text,
+#cart .gs-drawer-upsell-title .gs-upsell-title-text,
+.gs-drawer-upsell-title .gs-upsell-title-text {
+  color: #103F60 !important;
+  font-weight: 800 !important;
+  font-size: 21px !important;
+  letter-spacing: -0.4px !important;
+}
+
+@media (max-width: 480px) {
+  #root #cart .gs-drawer-upsell-title,
+  #cart .gs-drawer-upsell-title,
+  .gs-drawer-upsell-title {
+    font-size: 19.5px !important;
+  }
+  #root #cart .gs-drawer-upsell-title .gs-upsell-sparkle,
+  #cart .gs-drawer-upsell-title .gs-upsell-sparkle,
+  .gs-drawer-upsell-title .gs-upsell-sparkle {
+    font-size: 20px !important;
+  }
+  #root #cart .gs-drawer-upsell-title .gs-upsell-title-text,
+  #cart .gs-drawer-upsell-title .gs-upsell-title-text,
+  .gs-drawer-upsell-title .gs-upsell-title-text {
+    font-size: 19.5px !important;
+  }
+}
+
+#root #cart .gs-drawer-upsell-actions,
+#cart .gs-drawer-upsell-actions,
+.gs-drawer-upsell-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+#root #cart .gs-drawer-upsell-see-all,
+#cart .gs-drawer-upsell-see-all,
+.gs-drawer-upsell-see-all {
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: #ad8730 !important;
+  text-decoration: none !important;
+  transition: color 0.15s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 3px !important;
+  cursor: pointer !important;
+  user-select: none !important;
+  white-space: nowrap !important;
+}
+
+#root #cart .gs-drawer-upsell-see-all:hover,
+#cart .gs-drawer-upsell-see-all:hover,
+.gs-drawer-upsell-see-all:hover {
+  color: #103F60 !important;
+  text-decoration: underline !important;
+}
+
+/* Desktop Carousel Navigation Controls */
+#root #cart .gs-upsell-nav-controls,
+#cart .gs-upsell-nav-controls,
+.gs-upsell-nav-controls {
   display: flex !important;
   align-items: center !important;
   gap: 6px !important;
 }
 
-.gs-drawer-upsell-list,
-.cart-upsell ul.l4ca,
-.cart-upsell ul.gs-drawer-upsell-list {
+#root #cart .gs-upsell-nav-btn,
+#cart .gs-upsell-nav-btn,
+.gs-upsell-nav-btn {
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  max-width: 28px !important;
+  min-height: 28px !important;
+  max-height: 28px !important;
+  border-radius: 50% !important;
+  background: #FFFFFF !important;
+  background-color: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+  color: #103F60 !important;
   display: flex !important;
-  flex-direction: column !important;
-  gap: 8px !important;
-  list-style: none !important;
+  align-items: center !important;
+  justify-content: center !important;
   padding: 0 !important;
   margin: 0 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+  outline: none !important;
+  user-select: none !important;
+  flex-shrink: 0 !important;
+  position: static !important;
 }
 
-/* Dedicated Mini Upsell Row Card */
-.gs-drawer-upsell-item,
-.gs-drawer-upsell-list > li,
-.cart-upsell ul.l4ca > li,
-.cart-upsell .gs-product-card {
-  display: grid !important;
-  grid-template-columns: 52px 1fr auto !important;
-  align-items: center !important;
+#root #cart .gs-upsell-nav-btn:hover:not(:disabled),
+#cart .gs-upsell-nav-btn:hover:not(:disabled),
+.gs-upsell-nav-btn:hover:not(:disabled) {
+  background: #F8FAFC !important;
+  border-color: #103F60 !important;
+  color: #103F60 !important;
+  box-shadow: 0 2px 5px rgba(16, 63, 96, 0.15) !important;
+  transform: translateY(-1px) !important;
+}
+
+#root #cart .gs-upsell-nav-btn:active:not(:disabled),
+#cart .gs-upsell-nav-btn:active:not(:disabled),
+.gs-upsell-nav-btn:active:not(:disabled) {
+  transform: translateY(0) !important;
+}
+
+#root #cart .gs-upsell-nav-btn:disabled,
+#cart .gs-upsell-nav-btn:disabled,
+.gs-upsell-nav-btn:disabled {
+  opacity: 0.35 !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+#root #cart .gs-upsell-nav-btn svg,
+#cart .gs-upsell-nav-btn svg,
+.gs-upsell-nav-btn svg {
+  width: 12px !important;
+  height: 12px !important;
+  stroke: currentColor !important;
+  display: block !important;
+  pointer-events: none !important;
+}
+
+/* Hide desktop arrow controls on mobile screens */
+@media (max-width: 768px) {
+  #root #cart .gs-upsell-nav-controls,
+  #cart .gs-upsell-nav-controls,
+  .gs-upsell-nav-controls {
+    display: none !important;
+  }
+}
+
+/* Horizontal Swipeable Track with Left Gap from Drawer Frame */
+#root #cart .cart-upsell ul.l4ca,
+#root #cart .cart-upsell ul.gs-drawer-upsell-list,
+#root #cart .gs-drawer-upsell-list,
+#cart .gs-drawer-upsell-list,
+.gs-drawer-upsell-list,
+.gs-upsell-carousel {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: stretch !important;
   gap: 12px !important;
-  padding: 8px 10px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scroll-snap-type: x mandatory !important;
+  scroll-padding-left: 22px !important;
+  scroll-padding-right: 22px !important;
+  -webkit-overflow-scrolling: touch !important;
+  padding: 6px 22px 14px 22px !important;
+  margin: 0 !important;
+  list-style: none !important;
+  border: none !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+#root #cart .cart-upsell ul.l4ca::-webkit-scrollbar,
+#cart .gs-drawer-upsell-list::-webkit-scrollbar,
+.gs-upsell-carousel::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* TRUE VERTICAL PRODUCT CARD:
+   On mobile (~390px), show 2 complete cards + peek of 3rd card */
+#root #cart .cart-upsell ul.l4ca > li,
+#root #cart .gs-drawer-upsell-list > li,
+#cart .gs-drawer-upsell-item,
+.gs-drawer-upsell-item,
+.cart-upsell .gs-drawer-upsell-item {
+  flex: 0 0 calc((100% - 20px) / 2.25) !important;
+  width: calc((100% - 20px) / 2.25) !important;
+  min-width: calc((100% - 20px) / 2.25) !important;
+  max-width: calc((100% - 20px) / 2.25) !important;
+  scroll-snap-align: start !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  align-items: stretch !important;
   background: #FFFFFF !important;
-  border-radius: 10px !important;
+  background-color: #FFFFFF !important;
   border: 1px solid #E2E8F0 !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;
-  min-height: auto !important;
-  height: auto !important;
+  border-radius: 12px !important;
+  padding: 10px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
   margin: 0 !important;
   position: relative !important;
   box-sizing: border-box !important;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+  float: none !important;
+  clear: none !important;
+  min-height: 0 !important;
+  height: auto !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease !important;
 }
 
-.gs-drawer-upsell-item:hover,
-.cart-upsell .gs-product-card:hover {
-  transform: none !important;
+#root #cart .cart-upsell ul.l4ca > li:hover,
+#cart .gs-drawer-upsell-item:hover,
+.gs-drawer-upsell-item:hover {
   border-color: #CBD5E1 !important;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06) !important;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.07) !important;
+  transform: translateY(-1px) !important;
 }
 
-/* Hide non-essential elements inside drawer upsell */
-.cart-upsell .gs-wishlist-btn,
-.cart-upsell .gs-card-rating,
-.cart-upsell .gs-stock-status,
-.cart-upsell .gs-card-vendor,
-.cart-upsell .gs-price-save-badge,
-.cart-upsell .gs-card-badges,
-.cart-upsell .l4ca-bundle {
+/* Clear ALL theme pseudo-elements that create broken overlays */
+#root #cart .cart-upsell *:before,
+#root #cart .cart-upsell *:after,
+#cart .cart-upsell *:before,
+#cart .cart-upsell *:after,
+.gs-drawer-upsell-wrap *:before,
+.gs-drawer-upsell-wrap *:after {
+  display: none !important;
+  content: none !important;
+}
+
+/* Hide non-essential theme elements inside drawer upsell */
+#root #cart .cart-upsell .gs-wishlist-btn,
+#root #cart .cart-upsell .gs-card-rating,
+#root #cart .cart-upsell .gs-stock-status,
+#root #cart .cart-upsell .gs-card-vendor,
+#root #cart .cart-upsell .gs-price-save-badge,
+#root #cart .cart-upsell .gs-card-badges,
+#root #cart .cart-upsell .l4ca-bundle {
   display: none !important;
 }
 
-/* Thumbnail Box */
-.gs-upsell-thumb,
-.cart-upsell .gs-card-image-wrap,
-.cart-upsell figure,
-.gs-drawer-upsell-list figure {
-  width: 52px !important;
-  height: 52px !important;
-  min-width: 52px !important;
-  max-width: 52px !important;
-  aspect-ratio: 1 / 1 !important;
-  border-radius: 8px !important;
-  overflow: hidden !important;
-  background: #F8FAFC !important;
-  border: 1px solid #E2E8F0 !important;
-  padding: 2px !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-.gs-drawer-upsell-list li figure img,
-.cart-upsell ul.l4ca > li figure img {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: contain !important;
-}
-
-.gs-drawer-upsell-list li section,
-.cart-upsell ul.l4ca > li section {
-  flex: 1 !important;
-  min-width: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
+/* 1. PRODUCT IMAGE AT TOP (Dedicated 105px Container) */
+#root #cart .cart-upsell figure,
+#root #cart .cart-upsell .gs-upsell-thumb,
+#root #cart .cart-upsell .gs-card-image-wrap,
+#cart .gs-upsell-thumb,
+.gs-upsell-thumb {
   display: flex !important;
   flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
+  height: 105px !important;
+  min-height: 105px !important;
+  max-height: 105px !important;
+  border-radius: 9px !important;
+  overflow: hidden !important;
+  background: #F8FAFC !important;
+  background-color: #F8FAFC !important;
+  border: 1px solid #F1F5F9 !important;
+  padding: 6px !important;
+  margin: 0 0 8px 0 !important;
+  flex-shrink: 0 !important;
+  position: relative !important;
+  float: none !important;
+  clear: both !important;
+  box-sizing: border-box !important;
 }
 
-.gs-drawer-upsell-list li section h2,
-.gs-drawer-upsell-list li section h3,
-.cart-upsell ul.l4ca > li section h2,
-.cart-upsell ul.l4ca > li section h3 {
+#root #cart .cart-upsell figure a,
+#cart .gs-upsell-thumb a,
+.gs-upsell-thumb a {
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  float: none !important;
+  position: static !important;
+}
+
+#root #cart .cart-upsell figure img,
+#root #cart .cart-upsell figure picture img,
+#cart .gs-upsell-thumb img,
+.gs-upsell-thumb img {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+  display: block !important;
+  position: static !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  float: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* 2. PRODUCT DETAILS (DIRECTLY BELOW IMAGE, NOT BESIDE IT) */
+#root #cart .cart-upsell section,
+#root #cart .cart-upsell .gs-upsell-details,
+#root #cart .cart-upsell .gs-card-content,
+#cart .gs-upsell-details,
+.gs-upsell-details {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  gap: 3px !important;
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 0 8px 0 !important;
+  padding: 0 !important;
+  text-align: left !important;
+  flex: 1 1 auto !important;
+  float: none !important;
+  clear: both !important;
+  box-sizing: border-box !important;
+}
+
+/* Product Title: 12px, clamped to 2 lines */
+#root #cart .cart-upsell h4,
+#root #cart .cart-upsell h3,
+#root #cart .cart-upsell h2,
+#root #cart .cart-upsell .gs-upsell-title,
+#cart .gs-upsell-title,
+.gs-upsell-title {
   font-size: 12px !important;
   font-weight: 600 !important;
   color: #103F60 !important;
-  margin: 0 !important;
-  line-height: 1.25 !important;
+  margin: 0 0 4px 0 !important;
+  padding: 0 !important;
+  line-height: 1.35 !important;
   display: -webkit-box !important;
-  -webkit-line-clamp: 1 !important;
+  -webkit-line-clamp: 2 !important;
   -webkit-box-orient: vertical !important;
   overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  min-height: 33px !important;
+  max-height: 33px !important;
+  height: 33px !important;
+  width: 100% !important;
+  float: none !important;
+  clear: both !important;
+  word-break: break-word !important;
 }
 
-.gs-drawer-upsell-list li section .price,
-.cart-upsell ul.l4ca > li section .price {
-  font-size: 12px !important;
+#root #cart .cart-upsell .gs-upsell-title a,
+#cart .gs-upsell-title a,
+.gs-upsell-title a {
+  color: #103F60 !important;
+  text-decoration: none !important;
+  transition: color 0.15s ease !important;
+}
+
+#root #cart .cart-upsell .gs-upsell-title a:hover,
+#cart .gs-upsell-title a:hover,
+.gs-upsell-title a:hover {
+  color: #ad8730 !important;
+}
+
+/* Pricing Row */
+#root #cart .cart-upsell .gs-upsell-price-row,
+#root #cart .cart-upsell .price,
+#cart .gs-upsell-price-row,
+.gs-upsell-price-row {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 5px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  flex-wrap: wrap !important;
+  width: 100% !important;
+  float: none !important;
+  clear: both !important;
+}
+
+#root #cart .cart-upsell .gs-upsell-price,
+#cart .gs-upsell-price,
+.gs-upsell-price {
+  font-size: 13.5px !important;
   font-weight: 700 !important;
   color: #103F60 !important;
-  margin-top: 2px !important;
+  line-height: 1.2 !important;
+  display: inline-block !important;
 }
 
-.gs-drawer-upsell-list li .submit button,
-.cart-upsell ul.l4ca > li .submit button {
-  height: 28px !important;
-  padding: 0 10px !important;
-  font-size: 11px !important;
+#root #cart .cart-upsell .gs-upsell-old-price,
+#cart .gs-upsell-old-price,
+.gs-upsell-old-price {
+  font-size: 10.5px !important;
+  color: #94A3B8 !important;
+  text-decoration: line-through !important;
+  font-weight: 400 !important;
+  display: inline-block !important;
+}
+
+#root #cart .cart-upsell .gs-upsell-discount-tag,
+#cart .gs-upsell-discount-tag,
+.gs-upsell-discount-tag {
+  font-size: 9px !important;
   font-weight: 700 !important;
-  border-radius: 6px !important;
-  background: #103F60 !important;
-  color: #FFFFFF !important;
-  border: none !important;
-  cursor: pointer !important;
-  width: auto !important;
-  min-width: 0 !important;
+  color: #DC2626 !important;
+  background: #FEF2F2 !important;
+  background-color: #FEF2F2 !important;
+  border: 1px solid #FECACA !important;
+  padding: 1px 4px !important;
+  border-radius: 3px !important;
+  line-height: 1.1 !important;
+  display: inline-block !important;
 }
 
-/* 7. Sticky Footer Container (Always Pinned at Bottom) */
+/* 3. COMPACT "+ ADD" BUTTON AT BOTTOM (Full Card Width, 32px tall) */
+#root #cart .cart-upsell .submit,
+#root #cart .cart-upsell .gs-upsell-action,
+#root #cart .cart-upsell .gs-card-actions,
+#cart .gs-upsell-action,
+.gs-upsell-action {
+  display: block !important;
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
+  margin: auto 0 0 0 !important;
+  padding: 0 !important;
+  flex-shrink: 0 !important;
+  position: static !important;
+  float: none !important;
+  clear: both !important;
+  box-sizing: border-box !important;
+}
+
+#root #cart .cart-upsell .gs-upsell-add-btn,
+#root #cart .cart-upsell .submit button,
+#root #cart .cart-upsell .gs-add-cart-btn,
+#cart .gs-upsell-add-btn,
+.gs-upsell-add-btn {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  max-height: 32px !important;
+  padding: 0 8px !important;
+  background: #F1F5F9 !important;
+  background-color: #F1F5F9 !important;
+  color: #103F60 !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.2px !important;
+  border-radius: 6px !important;
+  border: 1px solid #CBD5E1 !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+  transition: all 0.2s ease !important;
+  box-sizing: border-box !important;
+  text-decoration: none !important;
+  user-select: none !important;
+  box-shadow: none !important;
+  float: none !important;
+}
+
+#root #cart .cart-upsell .gs-upsell-add-btn:hover,
+#root #cart .cart-upsell .submit button:hover,
+#cart .gs-upsell-add-btn:hover,
+.gs-upsell-add-btn:hover {
+  background: #103F60 !important;
+  background-color: #103F60 !important;
+  color: #FFFFFF !important;
+  border-color: #103F60 !important;
+  box-shadow: 0 2px 6px rgba(16, 63, 96, 0.25) !important;
+}
+
+#root #cart .cart-upsell .gs-upsell-add-btn:active,
+#cart .gs-upsell-add-btn:active,
+.gs-upsell-add-btn:active {
+  transform: translateY(0) !important;
+}
+
+#root #cart .cart-upsell .gs-upsell-add-btn span,
+#cart .gs-upsell-add-btn span,
+.gs-upsell-add-btn span {
+  color: #103F60 !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  display: inline-block !important;
+  transition: color 0.2s ease !important;
+}
+
+#root #cart .cart-upsell .gs-upsell-add-btn:hover span,
+#cart .gs-upsell-add-btn:hover span,
+.gs-upsell-add-btn:hover span {
+  color: #FFFFFF !important;
+}
+
+#root #cart .cart-upsell .gs-upsell-add-btn.disabled,
+#root #cart .cart-upsell .gs-upsell-add-btn[disabled],
+.gs-upsell-add-btn.disabled,
+.gs-upsell-add-btn[disabled] {
+  background: #F8FAFC !important;
+  background-color: #F8FAFC !important;
+  color: #94A3B8 !important;
+  border-color: #E2E8F0 !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+#root #cart .cart-upsell .gs-upsell-add-btn.disabled span,
+#root #cart .cart-upsell .gs-upsell-add-btn[disabled] span,
+.gs-upsell-add-btn.disabled span,
+.gs-upsell-add-btn[disabled] span {
+  color: #94A3B8 !important;
+}
+
+/* ==========================================================================
+   STICKY CART FOOTER (Always Pinned at Bottom with Separation Shadow)
+   ========================================================================== */
+#root aside#cart .sticky-in-panel,
+#root #cart .sticky-in-panel,
 aside#cart .sticky-in-panel,
 #cart .sticky-in-panel,
 .gs-drawer-sticky-footer {
@@ -3483,6 +3976,10 @@ aside#cart .sticky-in-panel,
   width: 100% !important;
 }
 
+#root aside#cart .sticky-in-panel:before,
+#root aside#cart .sticky-in-panel:after,
+#root #cart .sticky-in-panel:before,
+#root #cart .sticky-in-panel:after,
 aside#cart .sticky-in-panel:before,
 aside#cart .sticky-in-panel:after,
 #cart .sticky-in-panel:before,
@@ -6764,177 +7261,7 @@ html.gs-search-active #gs-search-overlay {
   text-overflow: ellipsis !important;
 }
 
-/* Upsell Container */
-.gs-upsell-thumb {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  position: relative !important;
-  flex-shrink: 0 !important;
-}
 
-.gs-upsell-thumb a,
-.cart-upsell .gs-card-image-wrap a,
-.cart-upsell figure a {
-  width: 100% !important;
-  height: 100% !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  padding: 0 !important;
-  margin: 0 !important;
-}
-
-.gs-upsell-thumb img,
-.cart-upsell .gs-card-image-wrap img,
-.cart-upsell figure img,
-.gs-drawer-upsell-list figure img {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: contain !important;
-  position: static !important;
-  display: block !important;
-}
-
-/* Middle Details: Title & Price */
-.gs-upsell-details,
-.cart-upsell .gs-card-content,
-.cart-upsell section,
-.gs-drawer-upsell-list section {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 2px !important;
-  min-width: 0 !important;
-  padding: 0 !important;
-.gs-upsell-details {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 2px !important;
-  min-width: 0 !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  flex: 1 1 auto !important;
-}
-
-.gs-upsell-title {
-  font-size: 12.5px !important;
-  font-weight: 600 !important;
-  line-height: 1.3 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-.gs-upsell-title a {
-  color: #103F60 !important;
-  text-decoration: none !important;
-  display: -webkit-box !important;
-  -webkit-line-clamp: 1 !important;
-  -webkit-box-orient: vertical !important;
-  overflow: hidden !important;
-  transition: color 0.15s ease !important;
-}
-
-.gs-upsell-title a:hover,
-.cart-upsell .gs-card-title a:hover {
-  color: #ad8730 !important;
-}
-
-.gs-upsell-price-row,
-.cart-upsell .gs-card-price-wrap,
-.cart-upsell section .price {
-  display: flex !important;
-  align-items: baseline !important;
-  gap: 5px !important;
-  margin: 2px 0 0 !important;
-  padding: 0 !important;
-  flex-wrap: wrap !important;
-}
-
-.gs-upsell-price,
-.cart-upsell .gs-price-current,
-.cart-upsell section .price {
-  font-size: 13px !important;
-  font-weight: 700 !important;
-  color: #103F60 !important;
-}
-
-.gs-upsell-old-price,
-.cart-upsell .gs-price-compare {
-  font-size: 11px !important;
-  color: #94A3B8 !important;
-  text-decoration: line-through !important;
-  font-weight: 400 !important;
-}
-
-.gs-upsell-discount-tag {
-  font-size: 9.5px !important;
-  font-weight: 700 !important;
-  color: #DC2626 !important;
-  background: #FEF2F2 !important;
-  border: 1px solid #FEE2E2 !important;
-  padding: 1px 4px !important;
-  border-radius: 4px !important;
-  line-height: 1 !important;
-}
-
-/* Right Action: Sleek Mini + Add Button */
-.gs-upsell-action,
-.cart-upsell .gs-card-actions,
-.cart-upsell .submit {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: flex-end !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  flex-shrink: 0 !important;
-}
-
-.gs-upsell-add-btn,
-.cart-upsell .gs-add-cart-btn,
-.cart-upsell .submit button {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  height: 28px !important;
-  padding: 0 12px !important;
-  background: #103F60 !important;
-  background-color: #103F60 !important;
-  color: #FFFFFF !important;
-  font-size: 11.5px !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.3px !important;
-  border-radius: 6px !important;
-  border: none !important;
-  cursor: pointer !important;
-  white-space: nowrap !important;
-  transition: all 0.2s ease !important;
-  box-sizing: border-box !important;
-  width: auto !important;
-  min-width: 0 !important;
-}
-
-.gs-upsell-add-btn:before,
-.gs-upsell-add-btn:after,
-.cart-upsell .gs-add-cart-btn:before,
-.cart-upsell .gs-add-cart-btn:after {
-  display: none !important;
-  content: none !important;
-}
-
-.gs-upsell-add-btn:hover,
-.cart-upsell .gs-add-cart-btn:hover,
-.cart-upsell .submit button:hover {
-  background: #ad8730 !important;
-  background-color: #ad8730 !important;
-  color: #FFFFFF !important;
-  transform: translateY(-1px) !important;
-  box-shadow: 0 2px 8px rgba(173, 135, 48, 0.3) !important;
-}
-
-.gs-upsell-add-btn span,
-.cart-upsell .gs-add-cart-btn span {
-  color: #FFFFFF !important;
-}
 
 /* Title Slot */
 .gs-card h3.gs-card-title,

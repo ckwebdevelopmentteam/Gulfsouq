@@ -295,17 +295,18 @@
       assign up_img = false
     endif
   -%}
-  <li class="gs-drawer-upsell-item" data-product-id="{{ product.id }}">
-    <!-- Mini Thumbnail -->
-    <figure class="gs-upsell-thumb">
-      <a href="{{ product.url }}" aria-label="{{ title | escape }}">
+  <li class="gs-drawer-upsell-item" data-product-id="{{ product.id }}" style="display: flex !important; flex-direction: column !important; justify-content: space-between !important; align-items: stretch !important; float: none !important; clear: none !important; box-sizing: border-box !important;">
+    <!-- 1. Product Image on TOP -->
+    <figure class="gs-upsell-thumb" style="display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; width: 100% !important; min-width: 100% !important; max-width: 100% !important; height: 105px !important; min-height: 105px !important; max-height: 105px !important; float: none !important; clear: both !important; margin: 0 0 8px 0 !important; padding: 6px !important; box-sizing: border-box !important;">
+      <a href="{{ product.url }}" aria-label="{{ title | escape }}" style="display: flex !important; align-items: center !important; justify-content: center !important; width: 100% !important; height: 100% !important; margin: 0 !important; padding: 0 !important; float: none !important;">
         {%- if up_img -%}
           <img
-            src="{{ up_img | image_url: width: 140, height: 140, crop: 'center' }}"
+            src="{{ up_img | image_url: width: 240, height: 240, crop: 'center' }}"
             alt="{{ up_img.alt | default: title | escape }}"
             loading="lazy"
-            width="56"
-            height="56"
+            width="120"
+            height="105"
+            style="width: 100% !important; height: 100% !important; max-width: 100% !important; max-height: 100% !important; object-fit: contain !important; display: block !important; margin: 0 auto !important; position: static !important; float: none !important;"
           >
         {%- else -%}
           {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
@@ -313,12 +314,12 @@
       </a>
     </figure>
 
-    <!-- Details: Title & Price -->
-    <div class="gs-upsell-details">
-      <h4 class="gs-upsell-title">
-        <a href="{{ product.url }}">{{ title }}</a>
+    <!-- 2. Product Details BELOW Image -->
+    <div class="gs-upsell-details" style="display: flex !important; flex-direction: column !important; align-items: flex-start !important; justify-content: flex-start !important; width: 100% !important; min-width: 100% !important; max-width: 100% !important; margin: 0 0 8px 0 !important; padding: 0 !important; flex: 1 1 auto !important; float: none !important; clear: both !important; box-sizing: border-box !important;">
+      <h4 class="gs-upsell-title" style="display: -webkit-box !important; -webkit-line-clamp: 2 !important; -webkit-box-orient: vertical !important; overflow: hidden !important; text-overflow: ellipsis !important; min-height: 33px !important; max-height: 33px !important; height: 33px !important; width: 100% !important; margin: 0 0 4px 0 !important; padding: 0 !important; float: none !important; clear: both !important; font-size: 12px !important; line-height: 1.35 !important; word-break: break-word !important;">
+        <a href="{{ product.url }}" title="{{ title | escape }}">{{ title }}</a>
       </h4>
-      <div class="gs-upsell-price-row">
+      <div class="gs-upsell-price-row" style="display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: flex-start !important; gap: 5px !important; margin: 0 !important; padding: 0 !important; flex-wrap: wrap !important; width: 100% !important; float: none !important; clear: both !important;">
         <span class="gs-upsell-price">{{ current_variant.price | money }}</span>
         {%- if current_variant.compare_at_price > current_variant.price -%}
           <span class="gs-upsell-old-price">{{ current_variant.compare_at_price | money }}</span>
@@ -328,8 +329,8 @@
       </div>
     </div>
 
-    <!-- Mini Add Action -->
-    <div class="gs-upsell-action">
+    <!-- 3. Action Button at Bottom -->
+    <div class="gs-upsell-action" style="display: block !important; width: 100% !important; min-width: 100% !important; max-width: 100% !important; margin: auto 0 0 0 !important; padding: 0 !important; float: none !important; clear: both !important; box-sizing: border-box !important;">
       {%- if current_variant.available -%}
         {%- if product.has_only_default_variant or product.variants.size == 1 -%}
           <button
@@ -339,6 +340,7 @@
             data-product-handle="{{ product.handle }}"
             data-has-variants="false"
             aria-label="Add {{ title | escape }} to cart"
+            style="width: 100% !important; height: 32px !important; min-height: 32px !important; max-height: 32px !important; display: flex !important; align-items: center !important; justify-content: center !important; float: none !important;"
           >
             <span>+ Add</span>
           </button>
@@ -350,12 +352,13 @@
             data-product-handle="{{ product.handle }}"
             data-has-variants="true"
             aria-label="Select options for {{ title | escape }}"
+            style="width: 100% !important; height: 32px !important; min-height: 32px !important; max-height: 32px !important; display: flex !important; align-items: center !important; justify-content: center !important; float: none !important;"
           >
             <span>Options</span>
           </button>
         {%- endif -%}
       {%- else -%}
-        <button type="button" class="gs-upsell-add-btn disabled" disabled>
+        <button type="button" class="gs-upsell-add-btn disabled" disabled style="width: 100% !important; height: 32px !important; min-height: 32px !important; max-height: 32px !important; display: flex !important; align-items: center !important; justify-content: center !important; float: none !important;">
           <span>Sold Out</span>
         </button>
       {%- endif -%}
