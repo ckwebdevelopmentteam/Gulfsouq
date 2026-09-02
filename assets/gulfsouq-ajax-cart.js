@@ -519,6 +519,30 @@
     updateDrawerUpsellNavButtons();
   });
 
+  // Global Cart Checkout Button Trigger Handler (Cart Page & Drawer)
+  document.addEventListener('click', function(e) {
+    const checkoutBtn = e.target.closest('.gs-checkout-main-btn, .gs-sticky-checkout-btn, .gs-cart-checkout-btn');
+    if (!checkoutBtn) return;
+
+    // Check for terms and conditions if present on cart page
+    const termsCheckbox = document.querySelector('.gs-terms-checkbox-wrap input[type="checkbox"][required]');
+    if (termsCheckbox && !termsCheckbox.checked) {
+      e.preventDefault();
+      termsCheckbox.focus();
+      try {
+        termsCheckbox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        termsCheckbox.reportValidity();
+      } catch (err) {}
+      return;
+    }
+
+    const form = checkoutBtn.form || checkoutBtn.closest('form') || document.querySelector('.gs-cart-checkout-form');
+    if (form) {
+      const checkoutUrl = (window.routes?.root_url || '/').replace(/\/$/, '') + '/checkout';
+      form.action = checkoutUrl;
+    }
+  });
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
       if ('requestIdleCallback' in window) window.requestIdleCallback(warmCartDrawer);

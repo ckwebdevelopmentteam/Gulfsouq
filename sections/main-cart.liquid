@@ -403,11 +403,10 @@
           {%- endif -%}
 
           <!-- Main Checkout Form & CTA -->
-          <form class="f8vl gs-cart-checkout-form" id="{{ form_id }}" data-hold="0" action="{{ routes.cart_url }}" method="post">
+          <form class="gs-cart-checkout-form" id="{{ form_id }}" data-hold="0" action="{{ routes.root_url | append: 'checkout' | replace: '//', '/' }}" method="post">
             <input type="hidden" name="attributes[collection_grid_view]" value="">
             <input type="hidden" name="attributes[collection_grid_view_mobile]" value="">
             <input type="hidden" name="attributes[collection_view]" value="">
-            <input type="hidden" name="checkout" value="Checkout">
 
             <!-- Optional Terms and Conditions Checkbox -->
             {% if section.settings.enable_terms_checkbox and section.settings.terms_text != empty %}
@@ -415,8 +414,8 @@
                 <input
                   type="checkbox"
                   id="check_{{ section.id }}"
+                  name="terms"
                   aria-label="{{ section.settings.terms_text | strip_html | escape }}"
-                  data-bind="check_{{ section.id }}_mobile"
                   required
                   class="gs-custom-checkbox"
                 >
