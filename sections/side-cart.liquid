@@ -298,7 +298,10 @@
       {%- if cart.cart_level_discount_applications.size > 0 -%}
         {%- for discount in cart.cart_level_discount_applications -%}
           <div class="gs-drawer-subtotal-row gs-drawer-discount-row">
-            <span class="gs-drawer-discount-title">🏷️ {{ discount.title }}</span>
+            <span class="gs-drawer-discount-title">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+              {{ discount.title }}
+            </span>
             <span class="gs-drawer-discount-amount">-{{ discount.total_allocated_amount | money }}</span>
           </div>
         {%- endfor -%}
@@ -311,13 +314,17 @@
 
     <!-- Optional Discount Code / Note Accordions -->
     {%- if settings.cart_drawer_discount_tab or settings.cart_drawer_order_notes -%}
-      <div class="accordion-a compact cp2 base-font gs-drawer-accordions">
+      <div class="gs-drawer-accordions">
         {% if settings.cart_drawer_discount_tab %}
           <details class="gs-drawer-accordion-item">
-            <summary>
-              <span class="label">🏷️ {{ 'cart.discount_code.title' | t | default: 'Promo / Coupon Code' }}</span>
+            <summary class="gs-drawer-accordion-summary">
+              <div class="gs-accordion-title">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+                <span>{{ 'cart.discount_code.title' | t | default: 'Promo / Coupon Code' }}</span>
+              </div>
+              <svg class="gs-accordion-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
             </summary>
-            <div>
+            <div class="gs-accordion-content">
               <form id="discount-form-2" class="discount-form input-inline gs-drawer-discount-form">
                 <input
                   type="text"
@@ -337,14 +344,18 @@
         {% endif %}
         {% if settings.cart_drawer_order_notes %}
           <details class="gs-drawer-accordion-item">
-            <summary>
-              <span class="label">📝 {{ 'cart.add_note' | t | default: 'Add Order Note' }}</span>
+            <summary class="gs-drawer-accordion-summary">
+              <div class="gs-accordion-title">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                <span>{{ 'cart.add_note' | t | default: 'Special instructions for the seller' }}</span>
+              </div>
+              <svg class="gs-accordion-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
             </summary>
-            <div>
+            <div class="gs-accordion-content">
               <textarea
                 name="note"
                 id="note_side"
-                placeholder="{{ 'cart.add_note_placeholder' | t | default: 'Add instructions here...' }}"
+                placeholder="{{ 'cart.add_note_placeholder' | t | default: 'Add special delivery or product instructions here...' }}"
               >{{ cart.note }}</textarea>
             </div>
           </details>
@@ -353,27 +364,29 @@
     {% endif %}
 
     <!-- Action Buttons (Checkout & View Cart) -->
-    <form class="f8vl gs-drawer-cta-form" action="{{ routes.cart_url }}" method="post" data-hold="0">
+    <form class="f8vl gs-drawer-cta-form" action="{{ routes.cart_url }}" method="post" data-hold="0" style="display: flex !important; flex-direction: column !important; gap: 8px !important; width: 100% !important; margin: 0 0 12px 0 !important;">
       <input type="hidden" name="checkout" value="Checkout">
       <button
         type="submit"
         class="gs-cart-checkout-btn"
         name="checkout"
+        style="display: flex !important; align-items: center !important; justify-content: center !important; gap: 8px !important; width: 100% !important; height: 48px !important; min-height: 48px !important; max-height: 48px !important; background: linear-gradient(135deg, #BE982D 0%, #A68022 100%) !important; background-color: #BE982D !important; color: #FFFFFF !important; font-size: 15px !important; font-weight: 700 !important; letter-spacing: 0.6px !important; border-radius: 8px !important; border: none !important; box-shadow: 0 4px 14px rgba(190, 152, 45, 0.3) !important; cursor: pointer !important; text-transform: uppercase !important; box-sizing: border-box !important; position: relative !important; z-index: 1 !important;"
       >
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-        <span>{{ 'cart.checkout' | t | default: 'PROCEED TO CHECKOUT' }}</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #FFFFFF !important; stroke: #FFFFFF !important; width: 16px !important; height: 16px !important; display: block !important; position: relative !important; z-index: 2 !important;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+        <span style="color: #FFFFFF !important; font-size: 15px !important; font-weight: 700 !important; letter-spacing: 0.6px !important; display: inline-block !important; position: relative !important; z-index: 2 !important;">{{ 'cart.checkout' | t | default: 'CHECKOUT' }}</span>
       </button>
       <a
         class="gs-cart-view-btn"
         href="{{ routes.cart_url }}"
+        style="display: flex !important; align-items: center !important; justify-content: center !important; width: 100% !important; height: 38px !important; min-height: 38px !important; max-height: 38px !important; background: #F8FAFC !important; background-color: #F8FAFC !important; color: #103F60 !important; font-size: 13.5px !important; font-weight: 600 !important; border-radius: 8px !important; border: 1.5px solid #CBD5E1 !important; text-decoration: none !important; box-sizing: border-box !important;"
       >
-        <span>{{ 'cart.to_cart' | t | default: 'VIEW SHOPPING CART' }}</span>
+        <span style="color: #103F60 !important; font-size: 13.5px !important; font-weight: 600 !important;">{{ 'cart.to_cart' | t | default: 'View cart' }}</span>
       </a>
     </form>
 
     <!-- Trust Row -->
     <div class="gs-drawer-trust-row">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg>
       <span>Guaranteed Safe & Secure Checkout</span>
     </div>
 

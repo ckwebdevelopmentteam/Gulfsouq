@@ -3956,7 +3956,7 @@ aside#cart a.remove:not(.gs-drawer-remove-btn),
 }
 
 /* ==========================================================================
-   STICKY CART FOOTER (Always Pinned at Bottom with Separation Shadow)
+   STICKY CART FOOTER (PREMIUM CLEAN LUXURY REDESIGN)
    ========================================================================== */
 #root aside#cart .sticky-in-panel,
 #root #cart .sticky-in-panel,
@@ -3967,11 +3967,12 @@ aside#cart .sticky-in-panel,
   bottom: 0 !important;
   z-index: 20 !important;
   background: #FFFFFF !important;
+  background-color: #FFFFFF !important;
   border-top: 1px solid #E2E8F0 !important;
-  padding: 14px 18px 18px !important;
+  padding: 16px 20px 20px !important;
   margin-top: auto !important;
   flex-shrink: 0 !important;
-  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06) !important;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05) !important;
   box-sizing: border-box !important;
   width: 100% !important;
 }
@@ -3988,139 +3989,368 @@ aside#cart .sticky-in-panel:after,
   content: none !important;
 }
 
-/* Subtotal List */
+/* 1. Subtotal & Estimated Total Box */
 .gs-drawer-subtotal-box {
   display: flex !important;
   flex-direction: column !important;
-  gap: 5px !important;
-  margin-bottom: 10px !important;
+  gap: 7px !important;
+  margin-bottom: 12px !important;
 }
 
 .gs-drawer-subtotal-row {
   display: flex !important;
   justify-content: space-between !important;
   align-items: center !important;
-  font-size: 13px !important;
+  font-size: 13.5px !important;
   color: #64748B !important;
+  line-height: 1.3 !important;
+}
+
+.gs-drawer-subtotal-label {
+  font-size: 13.5px !important;
+  color: #64748B !important;
+  font-weight: 500 !important;
 }
 
 .gs-drawer-subtotal-val {
   font-weight: 600 !important;
   color: #103F60 !important;
+  font-size: 14px !important;
 }
 
 .gs-drawer-discount-row {
   color: #16A34A !important;
+  font-size: 13px !important;
+}
+
+.gs-drawer-discount-title {
+  display: flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  color: #16A34A !important;
+  font-weight: 600 !important;
+}
+
+.gs-drawer-discount-amount {
+  color: #16A34A !important;
+  font-weight: 700 !important;
 }
 
 .gs-drawer-total-row {
-  font-size: 15px !important;
-  font-weight: 800 !important;
+  font-size: 15.5px !important;
+  font-weight: 700 !important;
   color: #103F60 !important;
-  border-top: 1px dashed #E2E8F0 !important;
-  padding-top: 6px !important;
-  margin-top: 2px !important;
+  border-top: 1px solid #F1F5F9 !important;
+  padding-top: 8px !important;
+  margin-top: 3px !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+.gs-drawer-total-label {
+  font-size: 15.5px !important;
+  font-weight: 700 !important;
+  color: #103F60 !important;
+  letter-spacing: -0.2px !important;
 }
 
 .gs-drawer-total-val {
   font-size: 18px !important;
   font-weight: 800 !important;
-  color: #ad8730 !important;
-  font-family: var(--gs-font-heading) !important;
+  color: #103F60 !important;
+  font-family: var(--gs-font-heading, "Outfit", sans-serif) !important;
+  letter-spacing: -0.3px !important;
 }
 
-.gs-drawer-tax-note {
-  font-size: 11px !important;
-  color: #94A3B8 !important;
-  margin: 0 0 10px !important;
+/* 2. Sleek Order Notes / Discount Code Accordions */
+.gs-drawer-accordions {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 6px !important;
+  margin-bottom: 14px !important;
+  width: 100% !important;
 }
 
-/* Action Buttons Form */
+.gs-drawer-accordion-item {
+  border: 1px solid #F1F5F9 !important;
+  border-radius: 8px !important;
+  background: #FAFAFA !important;
+  overflow: hidden !important;
+  transition: all 0.2s ease !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+}
+
+.gs-drawer-accordion-item[open] {
+  background: #FFFFFF !important;
+  border-color: #E2E8F0 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+
+.gs-drawer-accordion-summary {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 8px 12px !important;
+  cursor: pointer !important;
+  user-select: none !important;
+  list-style: none !important;
+  outline: none !important;
+}
+
+.gs-drawer-accordion-summary::-webkit-details-marker {
+  display: none !important;
+}
+
+.gs-accordion-title {
+  display: flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  font-size: 12.5px !important;
+  font-weight: 600 !important;
+  color: #475569 !important;
+}
+
+.gs-accordion-title svg {
+  stroke: #64748B !important;
+  flex-shrink: 0 !important;
+}
+
+.gs-accordion-chevron {
+  stroke: #94A3B8 !important;
+  transition: transform 0.2s ease, stroke 0.2s ease !important;
+  flex-shrink: 0 !important;
+}
+
+.gs-drawer-accordion-item[open] .gs-accordion-chevron {
+  transform: rotate(180deg) !important;
+  stroke: #103F60 !important;
+}
+
+.gs-accordion-content {
+  padding: 0 12px 12px 12px !important;
+  box-sizing: border-box !important;
+}
+
+.gs-accordion-content textarea {
+  width: 100% !important;
+  border: 1px solid #CBD5E1 !important;
+  border-radius: 6px !important;
+  padding: 8px 10px !important;
+  font-size: 12.5px !important;
+  color: #1E293B !important;
+  background: #FFFFFF !important;
+  resize: vertical !important;
+  min-height: 56px !important;
+  max-height: 120px !important;
+  outline: none !important;
+  box-sizing: border-box !important;
+  font-family: inherit !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.gs-accordion-content textarea:focus {
+  border-color: #103F60 !important;
+  box-shadow: 0 0 0 3px rgba(16, 63, 96, 0.08) !important;
+}
+
+.gs-drawer-discount-form {
+  display: flex !important;
+  gap: 6px !important;
+  align-items: center !important;
+  width: 100% !important;
+}
+
+.gs-drawer-discount-form input {
+  flex: 1 1 auto !important;
+  height: 36px !important;
+  border: 1px solid #CBD5E1 !important;
+  border-radius: 6px !important;
+  padding: 0 10px !important;
+  font-size: 12.5px !important;
+  outline: none !important;
+}
+
+.gs-drawer-discount-form button {
+  height: 36px !important;
+  background: #103F60 !important;
+  color: #FFFFFF !important;
+  border: none !important;
+  border-radius: 6px !important;
+  padding: 0 14px !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+}
+
+/* 3. Action Buttons (Refined Hierarchy) */
 .gs-drawer-cta-form,
 aside#cart form.f8vl,
 #cart form.f8vl {
   display: flex !important;
   flex-direction: column !important;
   gap: 8px !important;
-  margin: 0 !important;
+  margin: 0 0 12px 0 !important;
   padding: 0 !important;
   width: 100% !important;
 }
 
-aside#cart form.f8vl:before,
-aside#cart form.f8vl:after,
-#cart form.f8vl:before,
-#cart form.f8vl:after {
+/* Primary High-Converting Checkout Button */
+#root button[name="checkout"]:before,
+#root button[name="checkout"]:after,
+#root .gs-cart-checkout-btn:before,
+#root .gs-cart-checkout-btn:after,
+#root aside#cart button:before,
+#root aside#cart button:after,
+#root #cart button:before,
+#root #cart button:after,
+#root aside#cart .gs-cart-checkout-btn:before,
+#root aside#cart .gs-cart-checkout-btn:after,
+#root #cart .gs-cart-checkout-btn:before,
+#root #cart .gs-cart-checkout-btn:after,
+#root aside#cart button[name="checkout"]:before,
+#root aside#cart button[name="checkout"]:after,
+#root #cart button[name="checkout"]:before,
+#root #cart button[name="checkout"]:after,
+#root aside#cart a.gs-cart-view-btn:before,
+#root aside#cart a.gs-cart-view-btn:after,
+#root #cart a.gs-cart-view-btn:before,
+#root #cart a.gs-cart-view-btn:after,
+.gs-cart-checkout-btn:before,
+.gs-cart-checkout-btn:after {
   display: none !important;
   content: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
 }
 
-/* Primary Checkout Button (Rich Gold #ad8730) */
+#root aside#cart .gs-cart-checkout-btn,
+#root #cart .gs-cart-checkout-btn,
+#root aside#cart button[name="checkout"],
+#root #cart button[name="checkout"],
 aside#cart .gs-cart-checkout-btn,
-aside#cart button[name="checkout"],
 #cart .gs-cart-checkout-btn,
-#cart button[name="checkout"],
-.gs-drawer-cta-form button[name="checkout"] {
+.gs-cart-checkout-btn,
+button[name="checkout"] {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   gap: 8px !important;
   width: 100% !important;
   height: 48px !important;
-  background: #ad8730 !important;
-  background-color: #ad8730 !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+  background: linear-gradient(135deg, #BE982D 0%, #A68022 100%) !important;
+  background-color: #BE982D !important;
   color: #FFFFFF !important;
   font-size: 15px !important;
   font-weight: 700 !important;
-  letter-spacing: 0.5px !important;
+  letter-spacing: 0.6px !important;
   border-radius: 8px !important;
   text-transform: uppercase !important;
   text-decoration: none !important;
   border: none !important;
   cursor: pointer !important;
-  box-shadow: 0 4px 14px rgba(173, 135, 48, 0.3) !important;
+  box-shadow: 0 4px 14px rgba(190, 152, 45, 0.3) !important;
   transition: all 0.2s ease !important;
   box-sizing: border-box !important;
+  user-select: none !important;
   position: relative !important;
   overflow: hidden !important;
+  z-index: 1 !important;
+  padding: 0 16px !important;
 }
 
-aside#cart .gs-cart-checkout-btn:before,
-aside#cart .gs-cart-checkout-btn:after,
-aside#cart button[name="checkout"]:before,
-aside#cart button[name="checkout"]:after,
-#cart .gs-cart-checkout-btn:before,
-#cart .gs-cart-checkout-btn:after,
-#cart button[name="checkout"]:before,
-#cart button[name="checkout"]:after {
-  display: none !important;
-  content: none !important;
+#root aside#cart .gs-cart-checkout-btn,
+#root #cart .gs-cart-checkout-btn,
+#root aside#cart button[name="checkout"],
+#root #cart button[name="checkout"],
+.gs-cart-checkout-btn,
+button[name="checkout"] {
+  color: #FFFFFF !important;
 }
 
-aside#cart .gs-cart-checkout-btn *,
-aside#cart button[name="checkout"] *,
-#cart .gs-cart-checkout-btn *,
-#cart button[name="checkout"] * {
+#root aside#cart .gs-cart-checkout-btn span,
+#root #cart .gs-cart-checkout-btn span,
+#root aside#cart button[name="checkout"] span,
+#root #cart button[name="checkout"] span,
+.gs-cart-checkout-btn span,
+button[name="checkout"] span {
   color: #FFFFFF !important;
   font-size: 15px !important;
   font-weight: 700 !important;
+  letter-spacing: 0.6px !important;
   position: relative !important;
-  z-index: 2 !important;
-  opacity: 1 !important;
-  visibility: visible !important;
+  z-index: 5 !important;
+  display: inline-block !important;
 }
 
+#root aside#cart .gs-cart-checkout-btn svg,
+#root #cart .gs-cart-checkout-btn svg,
+#root aside#cart button[name="checkout"] svg,
+#root #cart button[name="checkout"] svg,
+.gs-cart-checkout-btn svg,
+button[name="checkout"] svg {
+  width: 16px !important;
+  height: 16px !important;
+  min-width: 16px !important;
+  max-width: 16px !important;
+  fill: none !important;
+  stroke: #FFFFFF !important;
+  stroke-width: 2.2px !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+  display: inline-block !important;
+  vertical-align: middle !important;
+  position: relative !important;
+  z-index: 5 !important;
+  flex-shrink: 0 !important;
+}
+
+#root aside#cart .gs-cart-checkout-btn svg *,
+#root #cart .gs-cart-checkout-btn svg *,
+#root aside#cart button[name="checkout"] svg *,
+#root #cart button[name="checkout"] svg *,
+.gs-cart-checkout-btn svg *,
+button[name="checkout"] svg * {
+  fill: none !important;
+  stroke: #FFFFFF !important;
+  stroke-width: 2.2px !important;
+}
+
+#root aside#cart .gs-cart-checkout-btn:hover,
+#root aside#cart button[name="checkout"]:hover,
+#root #cart .gs-cart-checkout-btn:hover,
+#root #cart button[name="checkout"]:hover,
 aside#cart .gs-cart-checkout-btn:hover,
 aside#cart button[name="checkout"]:hover,
 #cart .gs-cart-checkout-btn:hover,
 #cart button[name="checkout"]:hover {
-  background: #937123 !important;
-  background-color: #937123 !important;
+  background: linear-gradient(135deg, #C9A436 0%, #B08A28 100%) !important;
+  background-color: #C9A436 !important;
   transform: translateY(-1px) !important;
-  box-shadow: 0 6px 18px rgba(173, 135, 48, 0.4) !important;
+  box-shadow: 0 6px 18px rgba(190, 152, 45, 0.4) !important;
 }
 
-/* Secondary View Cart Button (Signature Navy #103F60) */
+#root aside#cart .gs-cart-checkout-btn:active,
+#root aside#cart button[name="checkout"]:active,
+#root #cart .gs-cart-checkout-btn:active,
+#root #cart button[name="checkout"]:active,
+aside#cart .gs-cart-checkout-btn:active,
+aside#cart button[name="checkout"]:active,
+#cart .gs-cart-checkout-btn:active,
+#cart button[name="checkout"]:active {
+  transform: translateY(0) !important;
+  box-shadow: 0 2px 6px rgba(190, 152, 45, 0.25) !important;
+}
+
+/* Secondary Refined View Cart Button (Clean Ghost Button) */
 aside#cart .gs-cart-view-btn,
 aside#cart a.overlay-buy_button,
 #cart .gs-cart-view-btn,
@@ -4129,83 +4359,108 @@ aside#cart a.overlay-buy_button,
   align-items: center !important;
   justify-content: center !important;
   width: 100% !important;
-  height: 42px !important;
-  background: #103F60 !important;
-  background-color: #103F60 !important;
-  color: #FFFFFF !important;
-  font-size: 14px !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+  background: #F8FAFC !important;
+  background-color: #F8FAFC !important;
+  color: #103F60 !important;
+  font-size: 13.5px !important;
   font-weight: 600 !important;
   border-radius: 8px !important;
+  border: 1px solid #E2E8F0 !important;
   text-decoration: none !important;
   transition: all 0.2s ease !important;
   box-sizing: border-box !important;
-  border: none !important;
-  position: relative !important;
-  overflow: hidden !important;
-  order: 2 !important;
-}
-
-aside#cart .gs-cart-view-btn:before,
-aside#cart .gs-cart-view-btn:after,
-aside#cart a.overlay-buy_button:before,
-aside#cart a.overlay-buy_button:after,
-#cart .gs-cart-view-btn:before,
-#cart .gs-cart-view-btn:after,
-#cart a.overlay-buy_button:before,
-#cart a.overlay-buy_button:after {
-  display: none !important;
-  content: none !important;
+  user-select: none !important;
 }
 
 aside#cart .gs-cart-view-btn span,
-aside#cart a.overlay-buy_button span,
-#cart .gs-cart-view-btn span,
-#cart a.overlay-buy_button span {
-  color: #FFFFFF !important;
-  font-size: 14px !important;
+#cart .gs-cart-view-btn span {
+  color: #103F60 !important;
+  font-size: 13.5px !important;
   font-weight: 600 !important;
-  position: relative !important;
-  z-index: 2 !important;
-  display: inline-block !important;
+  transition: color 0.2s ease !important;
 }
 
 aside#cart .gs-cart-view-btn:hover,
-aside#cart a.overlay-buy_button:hover,
-#cart .gs-cart-view-btn:hover,
-#cart a.overlay-buy_button:hover {
-  background: #0C2E46 !important;
-  background-color: #0C2E46 !important;
+#cart .gs-cart-view-btn:hover {
+  background: #103F60 !important;
+  background-color: #103F60 !important;
+  border-color: #103F60 !important;
   color: #FFFFFF !important;
   transform: translateY(-1px) !important;
+  box-shadow: 0 2px 8px rgba(16, 63, 96, 0.15) !important;
 }
 
-/* Trust / Payment Icons */
-aside#cart ul.l4pm,
-#cart ul.l4pm {
+aside#cart .gs-cart-view-btn:hover span,
+#cart .gs-cart-view-btn:hover span {
+  color: #FFFFFF !important;
+}
+
+/* 4. Trust Row */
+.gs-drawer-trust-row {
   display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: #475569 !important;
+  margin: 6px 0 10px 0 !important;
+  text-align: center !important;
+}
+
+.gs-drawer-trust-row svg {
+  width: 14px !important;
+  height: 14px !important;
+  stroke: #16A34A !important;
+  flex-shrink: 0 !important;
+}
+
+/* 5. Payment Icons (Clean Badges with No Clipping) */
+aside#cart ul.l4pm,
+#cart ul.l4pm,
+.gs-drawer-payment-icons {
+  display: flex !important;
+  flex-wrap: wrap !important;
   justify-content: center !important;
   align-items: center !important;
-  gap: 10px !important;
+  gap: 6px !important;
   list-style: none !important;
-  padding: 10px 0 0 !important;
+  padding: 0 !important;
   margin: 0 !important;
-  flex-wrap: wrap !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  overflow: visible !important;
 }
 
-aside#cart ul.l4pm:before,
-aside#cart ul.l4pm:after,
-#cart ul.l4pm:before,
-#cart ul.l4pm:after,
-aside#cart .l4al-trustbadge,
-#cart .l4al-trustbadge {
-  display: none !important;
-  content: none !important;
+aside#cart ul.l4pm li,
+#cart ul.l4pm li,
+.gs-drawer-payment-icons li {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+  border-radius: 4px !important;
+  padding: 2px 6px !important;
+  height: 24px !important;
+  min-width: 38px !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02) !important;
 }
 
 aside#cart ul.l4pm li svg,
-#cart ul.l4pm li svg {
-  height: 20px !important;
+#cart ul.l4pm li svg,
+.gs-drawer-payment-icons li svg {
+  height: 15px !important;
+  max-height: 15px !important;
   width: auto !important;
+  max-width: 32px !important;
+  display: block !important;
+  object-fit: contain !important;
 }
 
 /* Backdrop Overlay when cart or any panel is open */
