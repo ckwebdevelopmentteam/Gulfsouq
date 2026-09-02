@@ -3,46 +3,161 @@
   Description: Responsive promotional banner matching reference design (Desktop wide format & Mobile stacked card format)
 {% endcomment %}
 
-<div class="gs-cat-banner-section" id="gs-cat-banner-{{ section.id }}">
-  <div class="gs-cat-banner-container">
-    <a href="{{ section.settings.link | default: '/collections/all' }}" class="gs-cat-banner-card" aria-label="{{ section.settings.title | default: 'Shop Category' | escape }}">
-      <div class="gs-cat-banner-img-wrap">
-        {%- if section.settings.image != blank -%}
-          <img src="{{ section.settings.image | image_url: width: 1420 }}" 
-               alt="{{ section.settings.title | escape }}" 
-               loading="lazy" 
-               class="gs-cat-banner-img"
-               width="1420"
-               height="450">
-        {%- elsif section.settings.preset_image == 'combos' -%}
-          <img src="{{ 'banner_combos.jpg' | asset_url }}" alt="Combo Hampers Banner" loading="lazy" class="gs-cat-banner-img" width="1420" height="450">
-        {%- elsif section.settings.preset_image == 'perfumes' -%}
-          <img src="{{ 'banner_perfumes.jpg' | asset_url }}" alt="Perfumes & Attar Banner" loading="lazy" class="gs-cat-banner-img" width="1420" height="450">
-        {%- elsif section.settings.preset_image == 'chocolates' -%}
-          <img src="{{ 'banner_chocolates.jpg' | asset_url }}" alt="Chocolates Banner" loading="lazy" class="gs-cat-banner-img" width="1420" height="450">
-        {%- else -%}
-          <img src="{{ 'banner_dates.jpg' | asset_url }}" alt="Handpicked Dates Banner" loading="lazy" class="gs-cat-banner-img" width="1420" height="450">
-        {%- endif -%}
-      </div>
+{%- assign is_perfume_poster = false -%}
+{%- if section.settings.preset_image == 'perfumes' or section.settings.use_split_design -%}
+  {%- assign is_perfume_poster = true -%}
+{%- endif -%}
 
-      {%- if section.settings.show_text_overlay -%}
-        <div class="gs-cat-banner-overlay-content {% if section.settings.text_position == 'left' %}pos-left{% else %}pos-right{% endif %}">
-          {%- if section.settings.subtitle != blank -%}
-            <span class="gs-cat-banner-subtitle">{{ section.settings.subtitle | escape }}</span>
-          {%- endif -%}
-          {%- if section.settings.title != blank -%}
-            <h2 class="gs-cat-banner-title">{{ section.settings.title | escape }}</h2>
-          {%- endif -%}
-          {%- if section.settings.button_text != blank -%}
-            <span class="gs-cat-banner-btn">{{ section.settings.button_text | escape }}</span>
+<div class="gs-cat-banner-section" id="gs-cat-banner-{{ section.id }}" style="{% if is_perfume_poster %}padding: 0; margin-top: 30px;{% endif %}">
+  <div class="gs-cat-banner-container" {% if is_perfume_poster %}style="max-width: 100%; width: 100%; padding: 0; margin: 0;"{% endif %}>
+    {%- if is_perfume_poster -%}
+      <a href="{{ section.settings.link | default: '/collections/athar-and-perfume' }}" class="gs-split-banner-card" aria-label="Shop Fragrances">
+        <div class="gs-split-banner-content">
+          <div class="gs-split-banner-text-inner">
+            <h2 class="gs-split-banner-title">
+              {%- if section.settings.title != blank and section.settings.title != "Handpicked Dates – A Taste of Tradition" -%}
+                {{ section.settings.title | escape }}
+              {%- else -%}
+                STORING YOUR FAVOURITE ARABIAN & LUXURY FRAGRANCES!
+              {%- endif -%}
+            </h2>
+
+            <p>For immediate usage, store these products in airtight containers at cool, dark spot reducing the exposure of light, oxygen and moisture.</p>
+            <p>Do not expose to heat as it may go rancid or alter the delicate undertones of pure attars and natural oils.</p>
+            <p>For longer user, keep it in a cool place giving it the right scent profile and more flavourful vibrant to these tasteful Products.</p>
+          </div>
+        </div>
+
+        <div class="gs-split-banner-img-wrap">
+          {%- if section.settings.image != blank -%}
+            <img src="{{ section.settings.image | image_url: width: 1420 }}" alt="Arabian Fragrances" loading="lazy" class="gs-split-banner-img" width="710" height="450">
+          {%- else -%}
+            <img src="{{ 'banner_perfumes.jpg' | asset_url }}" alt="Perfumes & Attar Banner" loading="lazy" class="gs-split-banner-img" width="710" height="450">
           {%- endif -%}
         </div>
-      {%- endif -%}
-    </a>
+      </a>
+    {%- else -%}
+      <a href="{{ section.settings.link | default: '/collections/all' }}" class="gs-cat-banner-card" aria-label="{{ section.settings.title | default: 'Shop Category' | escape }}">
+        <div class="gs-cat-banner-img-wrap">
+          {%- if section.settings.image != blank -%}
+            <img src="{{ section.settings.image | image_url: width: 1420 }}" 
+                 alt="{{ section.settings.title | escape }}" 
+                 loading="lazy" 
+                 class="gs-cat-banner-img"
+                 width="1420"
+                 height="450">
+          {%- elsif section.settings.preset_image == 'combos' -%}
+            <img src="{{ 'banner_combos.jpg' | asset_url }}" alt="Combo Hampers Banner" loading="lazy" class="gs-cat-banner-img" width="1420" height="450">
+          {%- elsif section.settings.preset_image == 'perfumes' -%}
+            <img src="{{ 'banner_perfumes.jpg' | asset_url }}" alt="Perfumes & Attar Banner" loading="lazy" class="gs-cat-banner-img" width="1420" height="450">
+          {%- elsif section.settings.preset_image == 'chocolates' -%}
+            <img src="{{ 'banner_chocolates.jpg' | asset_url }}" alt="Chocolates Banner" loading="lazy" class="gs-cat-banner-img" width="1420" height="450">
+          {%- else -%}
+            <img src="{{ 'banner_dates.jpg' | asset_url }}" alt="Handpicked Dates Banner" loading="lazy" class="gs-cat-banner-img" width="1420" height="450">
+          {%- endif -%}
+        </div>
+
+        {%- if section.settings.show_text_overlay -%}
+          <div class="gs-cat-banner-overlay-content {% if section.settings.text_position == 'left' %}pos-left{% else %}pos-right{% endif %}">
+            {%- if section.settings.subtitle != blank -%}
+              <span class="gs-cat-banner-subtitle">{{ section.settings.subtitle | escape }}</span>
+            {%- endif -%}
+            {%- if section.settings.title != blank -%}
+              <h2 class="gs-cat-banner-title">{{ section.settings.title | escape }}</h2>
+            {%- endif -%}
+            {%- if section.settings.button_text != blank -%}
+              <span class="gs-cat-banner-btn">{{ section.settings.button_text | escape }}</span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </a>
+    {%- endif -%}
   </div>
 </div>
 
 <style>
+  /* Split Banner Card (Perfumes Only) */
+  .gs-split-banner-card {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    text-decoration: none !important;
+    border-top: 1.5px solid #dfb85a !important;
+    border-bottom: 1.5px solid #dfb85a !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-radius: 0 !important;
+    overflow: hidden !important;
+    background: #faf6ea !important;
+    box-shadow: none !important;
+    align-items: stretch !important;
+    transition: transform 0.28s ease !important;
+  }
+
+  .gs-split-banner-card:hover {
+    transform: translateY(-2px) !important;
+  }
+
+  .gs-split-banner-content {
+    width: 50% !important;
+    padding: 38px 0 !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    background: #faf6ea !important;
+  }
+
+  .gs-split-banner-text-inner {
+    width: 60% !important;
+    max-width: 60% !important;
+    margin: 0 auto !important;
+    box-sizing: border-box !important;
+  }
+
+  .gs-split-banner-title {
+    font-size: 21px !important;
+    font-weight: 800 !important;
+    color: #0C3E61 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    line-height: 1.35 !important;
+    margin-top: 0 !important;
+    margin-bottom: 20px !important;
+  }
+
+  .gs-split-banner-content p {
+    font-size: 14px !important;
+    color: #2D3748 !important;
+    line-height: 1.65 !important;
+    margin-top: 0 !important;
+    margin-bottom: 14px !important;
+    font-weight: 400 !important;
+  }
+
+  .gs-split-banner-content p:last-child {
+    margin-bottom: 0 !important;
+  }
+
+  .gs-split-banner-img-wrap {
+    width: 50% !important;
+    position: relative !important;
+    overflow: hidden !important;
+    background: #faf6ea !important;
+  }
+
+  .gs-split-banner-img {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 380px !important;
+    max-height: 480px !important;
+    object-fit: cover !important;
+    object-position: right center !important;
+    display: block !important;
+  }
+
   .gs-cat-banner-section {
     width: 100%;
     padding: 24px 0;
@@ -157,6 +272,33 @@
   }
 
   @media (max-width: 768px) {
+    .gs-split-banner-card {
+      flex-direction: column-reverse !important;
+    }
+    .gs-split-banner-content,
+    .gs-split-banner-img-wrap {
+      width: 100% !important;
+    }
+    .gs-split-banner-text-inner {
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+    .gs-split-banner-content {
+      padding: 28px 20px !important;
+    }
+    .gs-split-banner-title {
+      font-size: 18px !important;
+      margin-bottom: 12px !important;
+    }
+    .gs-split-banner-content p {
+      font-size: 13px !important;
+      margin-bottom: 10px !important;
+    }
+    .gs-split-banner-img {
+      min-height: 240px !important;
+      max-height: 300px !important;
+    }
+
     .gs-cat-banner-section {
       padding: 16px 0;
     }
