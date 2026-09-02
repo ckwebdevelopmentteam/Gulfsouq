@@ -19,8 +19,7 @@
         {%- assign view_all_clean = section.settings.view_all_text | replace: ' →', '' | replace: '→', '' | replace: ' &rarr;', '' | replace: '&rarr;', '' -%}
         <div class="header-actions">
           <a href="{{ section.settings.view_all_link | default: '/collections' }}" class="explore-view-all-link">
-            <span>{{ view_all_clean }}</span>
-            <span class="explore-arrow-icon" aria-hidden="true">→</span>
+            <strong>{{ view_all_clean }}</strong>
           </a>
         </div>
       {%- endif -%}
@@ -170,38 +169,42 @@
 
   /* Bordered "View All →" Button */
   .explore-view-all-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 13px;
-    font-weight: 700;
-    color: #0C3E61;
-    text-decoration: none;
-    letter-spacing: 0.4px;
-    text-transform: uppercase;
-    white-space: nowrap;
-    padding: 7px 14px;
-    border-radius: 8px;
-    background: #FFFFFF;
-    border: 1.5px solid #CBD5E1;
-    box-shadow: 0 2px 6px rgba(12, 62, 97, 0.04);
-    transition: all 0.22s ease;
-    cursor: pointer;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    color: #FFFFFF !important;
+    text-decoration: none !important;
+    letter-spacing: 0.3px !important;
+    text-transform: none !important;
+    white-space: nowrap !important;
+    padding: 8px 24px !important;
+    min-width: 110px !important;
+    border-radius: 8px !important;
+    background: #0C3E61 !important;
+    border: 1.5px solid #0C3E61 !important;
+    box-shadow: 0 2px 6px rgba(12, 62, 97, 0.12) !important;
+    transition: all 0.22s ease !important;
+    cursor: pointer !important;
   }
 
   .explore-view-all-link .explore-arrow-icon {
-    font-size: 14px;
-    font-weight: 700;
-    line-height: 1;
-    display: inline-block;
-    transition: transform 0.2s ease;
+    display: none !important;
+  }
+
+  .explore-view-all-link strong {
+    font-weight: 600 !important;
+    color: inherit !important;
+    font-style: normal !important;
   }
 
   .explore-view-all-link:hover {
-    color: #BE982D;
-    border-color: #BE982D;
-    background: #FFFFFF;
-    box-shadow: 0 4px 12px rgba(190, 152, 45, 0.16);
+    color: #FFFFFF !important;
+    border-color: #082D47 !important;
+    background: #082D47 !important;
+    box-shadow: 0 4px 12px rgba(12, 62, 97, 0.25) !important;
   }
 
   .explore-view-all-link:hover .explore-arrow-icon {
@@ -381,19 +384,21 @@
     }
 
     .explore-view-all-link {
-      font-size: 12px !important;
-      font-weight: 700 !important;
-      color: #0C3E61 !important;
+      font-size: 13px !important;
+      font-weight: 600 !important;
+      color: #FFFFFF !important;
       gap: 5px !important;
-      padding: 5px 10px !important;
+      padding: 6px 14px !important;
       border-radius: 7px !important;
-      border: 1.5px solid #CBD5E1 !important;
-      background: #FFFFFF !important;
-      box-shadow: 0 1px 4px rgba(12, 62, 97, 0.04) !important;
+      border: 1.5px solid #0C3E61 !important;
+      background: #0C3E61 !important;
+      box-shadow: 0 1px 4px rgba(12, 62, 97, 0.12) !important;
+      text-transform: none !important;
     }
 
     .explore-view-all-link .explore-arrow-icon {
       font-size: 13px !important;
+      font-weight: 700 !important;
     }
 
     /* Horizontal Swipeable Track on Mobile */

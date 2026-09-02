@@ -158,8 +158,7 @@
     {%- if section.settings.show_link -%}
       <div class="deals-header-right">
         <a href="{{ section.settings.link_url | default: '/collections/all' }}" class="deals-view-all-link">
-          <span>{{ deals_view_all_text }}</span>
-          <span class="deals-arrow-icon" aria-hidden="true">→</span>
+          <strong>{{ deals_view_all_text }}</strong>
         </a>
       </div>
     {%- endif -%}
@@ -216,8 +215,7 @@
   {%- if section.settings.show_link -%}
     <div class="deals-footer-mobile">
       <a href="{{ section.settings.link_url | default: '/collections/all' }}" class="deals-view-link-mobile">
-        <span>{{ deals_view_all_text }}</span>
-        <span class="deals-arrow-icon" aria-hidden="true">→</span>
+        <strong>{{ deals_view_all_text }}</strong>
       </a>
     </div>
   {%- endif -%}
@@ -294,36 +292,41 @@
   #shopify-section-{{ section.id }} .deals-view-all-link {
     display: inline-flex !important;
     align-items: center !important;
+    justify-content: center !important;
     gap: 6px !important;
-    font-size: 13px !important;
-    font-weight: 700 !important;
-    color: #0C3E61 !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    color: #FFFFFF !important;
     text-decoration: none !important;
-    letter-spacing: 0.4px !important;
-    text-transform: uppercase !important;
+    letter-spacing: 0.3px !important;
+    text-transform: none !important;
     white-space: nowrap !important;
-    padding: 7px 14px !important;
+    padding: 8px 24px !important;
+    min-width: 110px !important;
     border-radius: 8px !important;
-    background: #FFFFFF !important;
-    border: 1.5px solid #CBD5E1 !important;
-    box-shadow: 0 2px 6px rgba(12, 62, 97, 0.04) !important;
+    background: #0C3E61 !important;
+    border: 1.5px solid #0C3E61 !important;
+    box-shadow: 0 2px 6px rgba(12, 62, 97, 0.12) !important;
     transition: all 0.22s ease !important;
     cursor: pointer !important;
   }
 
   #shopify-section-{{ section.id }} .deals-view-all-link .deals-arrow-icon {
-    font-size: 14px !important;
-    font-weight: 700 !important;
-    line-height: 1 !important;
-    display: inline-block !important;
-    transition: transform 0.2s ease !important;
+    display: none !important;
+  }
+
+  #shopify-section-{{ section.id }} .deals-view-all-link strong,
+  #shopify-section-{{ section.id }} .deals-view-link-mobile strong {
+    font-weight: 600 !important;
+    color: inherit !important;
+    font-style: normal !important;
   }
 
   #shopify-section-{{ section.id }} .deals-view-all-link:hover {
-    color: #BE982D !important;
-    border-color: #BE982D !important;
-    background: #FFFFFF !important;
-    box-shadow: 0 4px 12px rgba(190, 152, 45, 0.16) !important;
+    color: #FFFFFF !important;
+    border-color: #082D47 !important;
+    background: #082D47 !important;
+    box-shadow: 0 4px 12px rgba(12, 62, 97, 0.25) !important;
   }
 
   #shopify-section-{{ section.id }} .deals-view-all-link:hover .deals-arrow-icon {
@@ -453,10 +456,10 @@
       color: #FFFFFF !important;
       border: 1.5px solid #0C3E61 !important;
       border-radius: 10px !important;
-      font-size: 13px !important;
-      font-weight: 700 !important;
-      letter-spacing: 0.4px !important;
-      text-transform: uppercase !important;
+      font-size: 14px !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.3px !important;
+      text-transform: none !important;
       text-decoration: none !important;
       box-shadow: 0 3px 10px rgba(12, 62, 97, 0.12) !important;
       transition: all 0.2s ease !important;

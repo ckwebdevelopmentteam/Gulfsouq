@@ -189,7 +189,6 @@
         }
       },
       "font_weight": {
-        "label": "Text font weight",
         "100": {
           "label": "Thin"
         },
@@ -216,7 +215,8 @@
         },
         "900": {
           "label": "Black"
-        }
+        },
+        "label": "Text font weight"
       },
       "text_position": {
         "label": "Content position",
@@ -4887,7 +4887,7 @@
           },
           "enable_follow_on_shop": {
             "label": "Enable Follow on Shop",
-            "info": "To allow customers to follow your store on the Shop app from your storefront, Shop Pay must be enabled. [Learn more](https:\/\/help.shopify.com\/manual\/online-store\/themes\/customizing-themes\/follow-on-shop)"
+            "info": "To allow customers to follow your store on the Shop app from your storefront, Shop Pay must be enabled. [Learn more](https://help.shopify.com/manual/online-store/themes/customizing-themes/follow-on-shop)"
           }
         },
         "payment_methods": {
@@ -4940,7 +4940,7 @@
             },
             "enable_follow_on_shop": {
               "label": "Enable Follow on Shop",
-              "info": "To allow customers to follow your store on the Shop app from your storefront, Shop Pay must be enabled. [Learn more](https:\/\/help.shopify.com\/manual\/online-store\/themes\/customizing-themes\/follow-on-shop)"
+              "info": "To allow customers to follow your store on the Shop app from your storefront, Shop Pay must be enabled. [Learn more](https://help.shopify.com/manual/online-store/themes/customizing-themes/follow-on-shop)"
             },
             "newsletter": {
               "header": "Newsletter"
@@ -5222,6 +5222,79 @@
     }
   },
   "main": {
+    "404": {
+      "name": "404 page",
+      "settings": {
+        "image": {
+          "label": "Background",
+          "info": "For best results with full background setting, use an image with a 3:2 aspect ratio. [Learn more](https://intercom.help/someoneyouknow/en/articles/6208050-404-page)"
+        },
+        "overlay_opacity": {
+          "label": "Image overlay opacity"
+        },
+        "color_palette": {
+          "label": "Color scheme",
+          "options__1": {
+            "label": "Lightest"
+          },
+          "options__2": {
+            "label": "Darkest"
+          },
+          "options__3": {
+            "label": "Light"
+          },
+          "options__4": {
+            "label": "Dark"
+          },
+          "options__5": {
+            "label": "Accent"
+          },
+          "options__6": {
+            "label": "Accent light"
+          },
+          "options__7": {
+            "label": "Gradient light"
+          },
+          "options__8": {
+            "label": "Gradient dark"
+          }
+        },
+        "video": {
+          "label": "Video",
+          "info": "Video plays in the page."
+        },
+        "link_text": {
+          "label": "Button label"
+        },
+        "link_url": {
+          "label": "Link"
+        },
+        "button_color_palette": {
+          "label": "Button color scheme",
+          "options__1": {
+            "label": "Lightest"
+          },
+          "options__2": {
+            "label": "Darkest"
+          },
+          "options__3": {
+            "label": "Light"
+          },
+          "options__4": {
+            "label": "Dark"
+          },
+          "options__5": {
+            "label": "Accent"
+          },
+          "options__6": {
+            "label": "Accent light"
+          }
+        },
+        "show_link": {
+          "label": "Show link instead of button"
+        }
+      }
+    },
     "product": {
       "name": "Product",
       "settings": {
@@ -5526,7 +5599,7 @@
             },
             "variant_selector_color_scheme": {
               "label": "Variant selector color scheme"
-            },
+            }
           }
         },
         "urgency": {
@@ -6097,7 +6170,7 @@
               "header": "Gift card",
               "show_gift_card_recipient": {
                 "label": "Show recipient information form for gift card products",
-                "info": "Gift card products can optionally be sent direct to a recipient on a scheduled date along with a personal message. [Learn more](https:\/\/help.shopify.com\/manual\/online-store\/themes\/customizing-themes\/add-gift-card-recipient-fields)"
+                "info": "Gift card products can optionally be sent direct to a recipient on a scheduled date along with a personal message. [Learn more](https://help.shopify.com/manual/online-store/themes/customizing-themes/add-gift-card-recipient-fields)"
               }
             }
           }
@@ -6123,7 +6196,7 @@
           },
           "show_amount_of_products_in_collection": {
             "label": "Show total amount of products"
-          },
+          }
         },
         "grid": {
           "header": "Grid",
@@ -6920,79 +6993,6 @@
               "label": "Required field"
             }
           }
-        }
-      }
-    },
-    "404": {
-      "name": "404 page",
-      "settings": {
-        "image": {
-          "label": "Background",
-          "info": "For best results with full background setting, use an image with a 3:2 aspect ratio. [Learn more](https://intercom.help/someoneyouknow/en/articles/6208050-404-page)"
-        },
-        "overlay_opacity": {
-          "label": "Image overlay opacity"
-        },
-        "color_palette": {
-          "label": "Color scheme",
-          "options__1": {
-            "label": "Lightest"
-          },
-          "options__2": {
-            "label": "Darkest"
-          },
-          "options__3": {
-            "label": "Light"
-          },
-          "options__4": {
-            "label": "Dark"
-          },
-          "options__5": {
-            "label": "Accent"
-          },
-          "options__6": {
-            "label": "Accent light"
-          },
-          "options__7": {
-            "label": "Gradient light"
-          },
-          "options__8": {
-            "label": "Gradient dark"
-          }
-        },
-        "video": {
-          "label": "Video",
-          "info": "Video plays in the page."
-        },
-        "link_text": {
-          "label": "Button label"
-        },
-        "link_url": {
-          "label": "Link"
-        },
-        "button_color_palette": {
-          "label": "Button color scheme",
-          "options__1": {
-            "label": "Lightest"
-          },
-          "options__2": {
-            "label": "Darkest"
-          },
-          "options__3": {
-            "label": "Light"
-          },
-          "options__4": {
-            "label": "Dark"
-          },
-          "options__5": {
-            "label": "Accent"
-          },
-          "options__6": {
-            "label": "Accent light"
-          }
-        },
-        "show_link": {
-          "label": "Show link instead of button"
         }
       }
     },

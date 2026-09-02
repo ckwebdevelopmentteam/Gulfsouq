@@ -17,6 +17,43 @@
 }
 
 /* ==========================================================================
+   GLOBAL CUSTOM SCROLLBAR (OFF-WHITE TRACK & NAVBAR BLUE THUMB)
+   ========================================================================== */
+
+html,
+body,
+* {
+  scrollbar-width: thin !important;
+  scrollbar-color: #0C3E61 #FAF7F2 !important;
+}
+
+::-webkit-scrollbar {
+  width: 10px !important;
+  height: 10px !important;
+}
+
+::-webkit-scrollbar-track {
+  background: #FAF7F2 !important;
+  background-color: #FAF7F2 !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0C3E61 !important;
+  background-color: #0C3E61 !important;
+  border-radius: 6px !important;
+  border: 2px solid #FAF7F2 !important;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #082D47 !important;
+  background-color: #082D47 !important;
+}
+
+::-webkit-scrollbar-corner {
+  background: #FAF7F2 !important;
+}
+
+/* ==========================================================================
    GLOBAL TYPOGRAPHY SYSTEM (OUTFIT & PLUS JAKARTA SANS)
    ========================================================================== */
 
@@ -5861,8 +5898,6 @@ button.gs-checkout-main-btn:hover {
     padding-bottom: 110px !important;
   }
 }
-
-=======
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 :root {

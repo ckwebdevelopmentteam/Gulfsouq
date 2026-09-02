@@ -189,7 +189,6 @@
         }
       },
       "font_weight": {
-        "label": "Text font weight",
         "100": {
           "label": "Thin"
         },
@@ -216,7 +215,8 @@
         },
         "900": {
           "label": "Black"
-        }
+        },
+        "label": "Text font weight"
       },
       "text_position": {
         "label": "Content position",
@@ -4971,7 +4971,7 @@
           },
           "enable_follow_on_shop": {
             "label": "'Volgen op Shop' inschakelen",
-            "info": "Klanten kunnen de winkel alleen vanuit de webshop volgen in de Shop-app als Shop Pay is ingeschakeld. [Meer informatie](https:\/\/help.shopify.com\/manual\/online-store\/themes\/customizing-themes\/follow-on-shop)"
+            "info": "Klanten kunnen de winkel alleen vanuit de webshop volgen in de Shop-app als Shop Pay is ingeschakeld. [Meer informatie](https://help.shopify.com/manual/online-store/themes/customizing-themes/follow-on-shop)"
           }
         },
         "payment_methods": {
@@ -5024,7 +5024,7 @@
             },
             "enable_follow_on_shop": {
               "label": "'Volgen op Shop' inschakelen",
-              "info": "Klanten kunnen de winkel alleen vanuit de webshop volgen in de Shop-app als Shop Pay is ingeschakeld. [Meer informatie](https:\/\/help.shopify.com\/manual\/online-store\/themes\/customizing-themes\/follow-on-shop)"
+              "info": "Klanten kunnen de winkel alleen vanuit de webshop volgen in de Shop-app als Shop Pay is ingeschakeld. [Meer informatie](https://help.shopify.com/manual/online-store/themes/customizing-themes/follow-on-shop)"
             },
             "newsletter": {
               "header": "Nieuwsbrief"
@@ -5315,6 +5315,79 @@
     }
   },
   "main": {
+    "404": {
+      "name": "404 pagina",
+      "settings": {
+        "image": {
+          "label": "Achtergrond",
+          "info": "Gebruik voor de beste resultaten een afbeelding met een beeldverhouding van 3:2. [Lees meer](https://intercom.help/someoneyouknow/en/articles/6208050-404-page)"
+        },
+        "overlay_opacity": {
+          "label": "Afbeelding overlay doorzichtigheid"
+        },
+        "color_palette": {
+          "label": "Kleurenschema",
+          "options__1": {
+            "label": "Lichtste"
+          },
+          "options__2": {
+            "label": "Donkerste"
+          },
+          "options__3": {
+            "label": "Licht"
+          },
+          "options__4": {
+            "label": "Donker"
+          },
+          "options__5": {
+            "label": "Accent"
+          },
+          "options__6": {
+            "label": "Accent licht"
+          },
+          "options__7": {
+            "label": "Kleurverloop licht"
+          },
+          "options__8": {
+            "label": "Kleurverloop donker"
+          }
+        },
+        "video": {
+          "label": "Video",
+          "info": "Video wordt afgespeeld op de pagina."
+        },
+        "link_text": {
+          "label": "Knop label"
+        },
+        "link_url": {
+          "label": "Link"
+        },
+        "button_color_palette": {
+          "label": "Knop kleurenschema",
+          "options__1": {
+            "label": "Lichtste"
+          },
+          "options__2": {
+            "label": "Donkerste"
+          },
+          "options__3": {
+            "label": "Licht"
+          },
+          "options__4": {
+            "label": "Donker"
+          },
+          "options__5": {
+            "label": "Accent"
+          },
+          "options__6": {
+            "label": "Accent licht"
+          }
+        },
+        "show_link": {
+          "label": "Toon link in plaats van knop"
+        }
+      }
+    },
     "product": {
       "name": "Product",
       "settings": {
@@ -5628,7 +5701,7 @@
             },
             "variant_selector_color_scheme": {
               "label": "Variant selector kleurschema"
-            },
+            }
           }
         },
         "variant_selection": {
@@ -6188,7 +6261,7 @@
               "header": "Cadeaubon",
               "show_gift_card_recipient": {
                 "label": "Formulier voor gegevens van ontvanger weergeven voor cadeaubonnen",
-                "info": "Klanten kunnen cadeaubonnen rechtstreeks naar de ontvanger laten sturen op een geplande datum met een persoonlijk bericht. [Meer informatie](https:\/\/help.shopify.com\/manual\/online-store\/themes\/customizing-themes\/add-gift-card-recipient-fields)"
+                "info": "Klanten kunnen cadeaubonnen rechtstreeks naar de ontvanger laten sturen op een geplande datum met een persoonlijk bericht. [Meer informatie](https://help.shopify.com/manual/online-store/themes/customizing-themes/add-gift-card-recipient-fields)"
               }
             }
           }
@@ -7020,79 +7093,6 @@
               "label": "Verplicht veld"
             }
           }
-        }
-      }
-    },
-    "404": {
-      "name": "404 pagina",
-      "settings": {
-        "image": {
-          "label": "Achtergrond",
-          "info": "Gebruik voor de beste resultaten een afbeelding met een beeldverhouding van 3:2. [Lees meer](https://intercom.help/someoneyouknow/en/articles/6208050-404-page)"
-        },
-        "overlay_opacity": {
-          "label": "Afbeelding overlay doorzichtigheid"
-        },
-        "color_palette": {
-          "label": "Kleurenschema",
-          "options__1": {
-            "label": "Lichtste"
-          },
-          "options__2": {
-            "label": "Donkerste"
-          },
-          "options__3": {
-            "label": "Licht"
-          },
-          "options__4": {
-            "label": "Donker"
-          },
-          "options__5": {
-            "label": "Accent"
-          },
-          "options__6": {
-            "label": "Accent licht"
-          },
-          "options__7": {
-            "label": "Kleurverloop licht"
-          },
-          "options__8": {
-            "label": "Kleurverloop donker"
-          }
-        },
-        "video": {
-          "label": "Video",
-          "info": "Video wordt afgespeeld op de pagina."
-        },
-        "link_text": {
-          "label": "Knop label"
-        },
-        "link_url": {
-          "label": "Link"
-        },
-        "button_color_palette": {
-          "label": "Knop kleurenschema",
-          "options__1": {
-            "label": "Lichtste"
-          },
-          "options__2": {
-            "label": "Donkerste"
-          },
-          "options__3": {
-            "label": "Licht"
-          },
-          "options__4": {
-            "label": "Donker"
-          },
-          "options__5": {
-            "label": "Accent"
-          },
-          "options__6": {
-            "label": "Accent licht"
-          }
-        },
-        "show_link": {
-          "label": "Toon link in plaats van knop"
         }
       }
     },
