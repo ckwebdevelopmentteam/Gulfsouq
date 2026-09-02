@@ -2740,3 +2740,135 @@ html body #root .shopify-section-footer::after,
     margin: 20px auto !important;
   }
 }
+
+/* ===== Arabian Perfumes — Ajfan-Style Product Card Overrides ===== */
+#shopify-section-section_featured_collection_perfumes .product-card,
+#shopify-section-section_featured_collection_perfumes .gs-card,
+#shopify-section-section_featured_collection_perfumes .gs-card-wrapper,
+#shopify-section-section_featured_collection_perfumes .deals-product-track > li {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  text-align: center !important;
+  min-height: auto !important;
+  height: auto !important;
+}
+
+#shopify-section-section_featured_collection_perfumes .gs-card:hover,
+#shopify-section-section_featured_collection_perfumes .product-card:hover,
+#shopify-section-section_featured_collection_perfumes .deals-product-track > li:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: none !important;
+  border-color: transparent !important;
+}
+
+#shopify-section-section_featured_collection_perfumes .gs-card-media {
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06) !important;
+  aspect-ratio: 1 / 1.18 !important;
+  min-height: 240px !important;
+  width: 100% !important;
+  position: relative !important;
+  margin-bottom: 0 !important;
+}
+
+#shopify-section-section_featured_collection_perfumes .gs-card-media a,
+#shopify-section-section_featured_collection_perfumes .gs-card-media picture {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+#shopify-section-section_featured_collection_perfumes .gs-card-media img.primary-img,
+#shopify-section-section_featured_collection_perfumes .gs-card-media img.secondary-img,
+#shopify-section-section_featured_collection_perfumes .gs-card-media picture img,
+#shopify-section-section_featured_collection_perfumes .gs-card-media img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  padding: 0 !important;
+  border-radius: 12px !important;
+  display: block !important;
+}
+
+#shopify-section-section_featured_collection_perfumes .gs-card-content {
+  padding: 10px 4px 0 4px !important;
+  text-align: center !important;
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+#shopify-section-section_featured_collection_perfumes .gs-card-title {
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: #1E293B !important;
+  text-align: center !important;
+  line-height: 1.35 !important;
+  margin: 10px 0 4px 0 !important;
+  padding: 0 !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}
+
+#shopify-section-section_featured_collection_perfumes .gs-card-title a {
+  color: #1E293B !important;
+  text-decoration: none !important;
+}
+
+#shopify-section-section_featured_collection_perfumes .gs-card-title a:hover {
+  color: #0C3E61 !important;
+}
+
+#shopify-section-section_featured_collection_perfumes .gs-card-price-wrap,
+#shopify-section-section_featured_collection_perfumes p.price {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  margin-top: 4px !important;
+  margin-bottom: 0 !important;
+  padding: 0 !important;
+}
+
+#shopify-section-section_featured_collection_perfumes .gs-price-current,
+#shopify-section-section_featured_collection_perfumes p.price,
+#shopify-section-section_featured_collection_perfumes .price {
+  font-size: 17px !important;
+  font-weight: 800 !important;
+  color: #0C3E61 !important; /* Navbar blue color */
+  text-align: center !important;
+  margin: 0 !important;
+}
+
+#shopify-section-section_featured_collection_perfumes .gs-price-compare,
+#shopify-section-section_featured_collection_perfumes .old-price {
+  display: inline-block !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: #DC2626 !important; /* Red color for strikethrough price */
+  text-decoration: line-through !important;
+}
+
+/* Hide unneeded elements for Perfumes section */
+#shopify-section-section_featured_collection_perfumes .gs-stock-status,
+#shopify-section-section_featured_collection_perfumes .gs-card-rating,
+#shopify-section-section_featured_collection_perfumes .gs-card-vendor,
+#shopify-section-section_featured_collection_perfumes .gs-price-save-badge,
+#shopify-section-section_featured_collection_perfumes .gs-card-actions,
+#shopify-section-section_featured_collection_perfumes .gs-wishlist-btn,
+#shopify-section-section_featured_collection_perfumes .gs-card-badges,
+#shopify-section-section_featured_collection_perfumes .submit,
+#shopify-section-section_featured_collection_perfumes form {
+  display: none !important;
+}
