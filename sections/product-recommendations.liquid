@@ -341,9 +341,6 @@
   <div>
     <div
       id="section-related"
-      {% if recommendations.products_count == 0 %}
-        data-hide
-      {% endif %}
       class="product-recommendations{% if section.settings.mobile_collapse %} tab-closed{% endif %}"
       data-template="{{ section.id }}"
       data-product-id="{{ product.id }}"
@@ -362,9 +359,10 @@
           {%- endif -%}
         </div>
 
-        {%- if recommendations.products_count > 0 -%}
+        {%- assign display_limit = section.settings.products_to_show | default: section.settings.recommended_products_qty | at_least: 5 -%}
 
-          {%- assign display_limit = section.settings.products_to_show | default: section.settings.recommended_products_qty | at_least: 5 -%}
+        {%- if recommendations.performed and recommendations.products_count > 0 -%}
+
           <div class="gs-rec-grid">
             {%- for product in recommendations.products limit: display_limit -%}
               {%- liquid
@@ -470,16 +468,110 @@
 
         {%- else -%}
 
+          {%- comment -%} Smart Category / Collection Fallback {%- endcomment -%}
+          {%- assign rec_collection = product.collections.first -%}
+          {%- if rec_collection == blank or rec_collection.handle == 'all' or rec_collection.handle == 'frontpage' -%}
+            {%- for col in product.collections -%}
+              {%- if col.handle != 'all' and col.handle != 'frontpage' -%}
+                {%- assign rec_collection = col -%}
+                {%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
+          {%- if rec_collection == blank or rec_collection.products_count <= 1 -%}
+            {%- assign rec_collection = collections['athar-and-perfume'] | default: collections['dates'] | default: collections['all'] -%}
+          {%- endif -%}
+
+          {%- assign rendered_count = 0 -%}
           <div class="gs-rec-grid">
-            {%- for i in (1..4) -%}
-              <div class="gs-rec-skel">
-                <div class="gs-rec-skel-img"></div>
-                <div class="gs-rec-skel-body">
-                  <div class="gs-rec-skel-line"></div>
-                  <div class="gs-rec-skel-line gs-short"></div>
-                  <div class="gs-rec-skel-btn"></div>
+            {%- for rel_product in rec_collection.products -%}
+              {%- if rel_product.id != product.id and rel_product.available and rendered_count < display_limit -%}
+                {%- assign rendered_count = rendered_count | plus: 1 -%}
+                {%- liquid
+                  assign first_variant = rel_product.first_available_variant | default: rel_product.variants.first
+                  assign qty = first_variant.inventory_quantity
+                  assign on_sale = false
+                  if rel_product.compare_at_price > rel_product.price
+                    assign on_sale = true
+                    assign savings_pct = rel_product.compare_at_price | minus: rel_product.price | times: 100 | divided_by: rel_product.compare_at_price
+                  endif
+                  assign show_stock_badge = false
+                  if qty <= 5 and qty > 0 and rel_product.available
+                    assign show_stock_badge = true
+                  endif
+                  assign is_single_variant = false
+                  if rel_product.variants.size == 1 and rel_product.has_only_default_variant
+                    assign is_single_variant = true
+                  endif
+                -%}
+
+                <div class="gs-rec-card" data-url="{{ rel_product.url }}">
+                  <div class="gs-rec-img">
+                    {%- if rel_product.featured_image -%}
+                      <img
+                        src="{{ rel_product.featured_image | image_url: width: 400 }}"
+                        alt="{{ rel_product.featured_image.alt | default: rel_product.title | escape }}"
+                        width="400"
+                        height="400"
+                        loading="lazy"
+                      >
+                    {%- else -%}
+                      {{ 'product-1' | placeholder_svg_tag }}
+                    {%- endif -%}
+
+                    {%- if on_sale -%}
+                      <span class="gs-badge-sale">−{{ savings_pct }}%</span>
+                    {%- endif -%}
+
+                    {%- if show_stock_badge -%}
+                      <span class="gs-badge-stock">Only {{ qty }} left</span>
+                    {%- else -%}
+                      <button class="gs-wish" aria-label="Add to wishlist" data-product-id="{{ rel_product.id }}">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
+                          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                        </svg>
+                      </button>
+                    {%- endif -%}
+                  </div>
+
+                  <div class="gs-rec-info">
+                    <p class="gs-rec-name">{{ rel_product.title | escape }}</p>
+
+                    <div class="gs-rec-price">
+                      <span class="gs-rec-price-sale">{{ rel_product.price | money }}</span>
+                      {%- if on_sale -%}
+                        <span class="gs-rec-price-compare">{{ rel_product.compare_at_price | money }}</span>
+                      {%- endif -%}
+                    </div>
+
+                    {%- if section.settings.show_quick_add -%}
+                      {%- if is_single_variant -%}
+                        <button
+                          class="gs-quick-add"
+                          data-variant-id="{{ first_variant.id }}"
+                          data-product-url="{{ rel_product.url }}"
+                          aria-label="Add {{ rel_product.title | escape }} to cart"
+                        >
+                          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                            <line x1="3" y1="6" x2="21" y2="6"/>
+                            <path d="M16 10a4 4 0 0 1-8 0"/>
+                          </svg>
+                          Add to cart
+                        </button>
+                      {%- else -%}
+                        <button
+                          class="gs-quick-add"
+                          data-product-url="{{ rel_product.url }}"
+                          aria-label="Choose options for {{ rel_product.title | escape }}"
+                        >
+                          Choose options
+                        </button>
+                      {%- endif -%}
+                    {%- endif -%}
+                  </div>
                 </div>
-              </div>
+              {%- endif -%}
             {%- endfor -%}
           </div>
 

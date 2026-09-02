@@ -225,56 +225,122 @@
         </div>
         <ul class="l4ca compact in-panel base-font gs-drawer-upsell-list gs-upsell-carousel">
           {%- if recommendations.performed and recommendations.products_count > 0 -%}
-            {%- for product in recommendations.products limit: upsell_limit -%}
-              {%- unless product.requires_selling_plan -%}
-                {%- liquid
-                  capture placeholder_int
-                    cycle 1, 2, 3, 4, 5, 6
-                  endcapture
-                -%}
-                {%- render 'product-item',
-                  product: product,
-                  placeholder_int: placeholder_int,
-                  enable_quick_buy_desktop: true,
-                  enable_quick_buy_mobile: true,
-                  enable_variant_picker: settings.enable_cart_drawer_upsell_variants,
-                  quick_buy_compact: true,
-                  layout: 'list-compact'
-                -%}
+            {%- assign rendered_count = 0 -%}
+            {%- for product in recommendations.products -%}
+              {%- unless product.requires_selling_plan or rendered_count >= upsell_limit -%}
+                {%- assign in_cart = false -%}
+                {%- for line_item in cart.items -%}
+                  {%- if line_item.product_id == product.id -%}
+                    {%- assign in_cart = true -%}
+                    {%- break -%}
+                  {%- endif -%}
+                {%- endfor -%}
+                {%- unless in_cart or product.available == false -%}
+                  {%- liquid
+                    capture placeholder_int
+                      cycle 1, 2, 3, 4, 5, 6
+                    endcapture
+                    assign rendered_count = rendered_count | plus: 1
+                  -%}
+                  {%- render 'product-item',
+                    product: product,
+                    placeholder_int: placeholder_int,
+                    enable_quick_buy_desktop: true,
+                    enable_quick_buy_mobile: true,
+                    enable_variant_picker: settings.enable_cart_drawer_upsell_variants,
+                    quick_buy_compact: true,
+                    layout: 'list-compact'
+                  -%}
+                {%- endunless -%}
               {%- endunless -%}
             {%- endfor -%}
           {%- else -%}
-            {%- comment -%} Fallback recommendations before AJAX fetch {%- endcomment -%}
-            {%- assign fallback_collection = collections['featured'] | default: collections['all'] -%}
-            {%- if fallback_collection and fallback_collection.products_count > 0 -%}
-              {%- assign rendered_count = 0 -%}
-              {%- for product in fallback_collection.products -%}
-                {%- unless product.available == false or rendered_count >= upsell_limit -%}
-                  {%- assign in_cart = false -%}
-                  {%- for line_item in cart.items -%}
-                    {%- if line_item.product_id == product.id -%}
-                      {%- assign in_cart = true -%}
-                      {%- break -%}
+            {%- comment -%}
+              Smart Category & Collection Matcher based on Cart Items:
+              Pulls products from the exact same collections and categories as the items in the user's cart
+            {%- endcomment -%}
+            {%- assign rendered_count = 0 -%}
+            {%- assign rendered_product_ids = '' -%}
+
+            {%- comment -%} 1. First pass: Collect related products from each cart item's collections {%- endcomment -%}
+            {%- for line_item in cart.items -%}
+              {%- if rendered_count >= upsell_limit -%}{%- break -%}{%- endif -%}
+              {%- for item_collection in line_item.product.collections -%}
+                {%- if item_collection.handle != 'all' and item_collection.handle != 'frontpage' -%}
+                  {%- for rel_product in item_collection.products -%}
+                    {%- if rendered_count >= upsell_limit -%}{%- break -%}{%- endif -%}
+                    {%- if rel_product.available -%}
+                      {%- assign in_cart = false -%}
+                      {%- for c_item in cart.items -%}
+                        {%- if c_item.product_id == rel_product.id -%}
+                          {%- assign in_cart = true -%}
+                          {%- break -%}
+                        {%- endif -%}
+                      {%- endfor -%}
+
+                      {%- unless in_cart or rendered_product_ids contains rel_product.id -%}
+                        {%- assign rendered_product_ids = rendered_product_ids | append: rel_product.id | append: ',' -%}
+                        {%- liquid
+                          capture placeholder_int
+                            cycle 1, 2, 3, 4, 5, 6
+                          endcapture
+                          assign rendered_count = rendered_count | plus: 1
+                        -%}
+                        {%- render 'product-item',
+                          product: rel_product,
+                          placeholder_int: placeholder_int,
+                          enable_quick_buy_desktop: true,
+                          enable_quick_buy_mobile: true,
+                          enable_variant_picker: settings.enable_cart_drawer_upsell_variants,
+                          quick_buy_compact: true,
+                          layout: 'list-compact'
+                        -%}
+                      {%- endunless -%}
                     {%- endif -%}
                   {%- endfor -%}
-                  {%- unless in_cart -%}
-                    {%- liquid
-                      capture placeholder_int
-                        cycle 1, 2, 3, 4, 5, 6
-                      endcapture
-                      assign rendered_count = rendered_count | plus: 1
-                    -%}
-                    {%- render 'product-item',
-                      product: product,
-                      placeholder_int: placeholder_int,
-                      enable_quick_buy_desktop: true,
-                      enable_quick_buy_mobile: true,
-                      enable_variant_picker: settings.enable_cart_drawer_upsell_variants,
-                      quick_buy_compact: true,
-                      layout: 'list-compact'
-                    -%}
-                  {%- endunless -%}
-                {%- endunless -%}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endfor -%}
+
+            {%- comment -%} 2. Second pass: Fill any remaining slots with popular Gulf category products {%- endcomment -%}
+            {%- if rendered_count < upsell_limit -%}
+              {%- assign priority_collections = 'athar-and-perfume,chocolates,dates,nuts-and-dry-fruits,pravasi-boxes' | split: ',' -%}
+              {%- for coll_handle in priority_collections -%}
+                {%- if rendered_count >= upsell_limit -%}{%- break -%}{%- endif -%}
+                {%- assign popular_coll = collections[coll_handle] -%}
+                {%- if popular_coll and popular_coll.products_count > 0 -%}
+                  {%- for rel_product in popular_coll.products -%}
+                    {%- if rendered_count >= upsell_limit -%}{%- break -%}{%- endif -%}
+                    {%- if rel_product.available -%}
+                      {%- assign in_cart = false -%}
+                      {%- for c_item in cart.items -%}
+                        {%- if c_item.product_id == rel_product.id -%}
+                          {%- assign in_cart = true -%}
+                          {%- break -%}
+                        {%- endif -%}
+                      {%- endfor -%}
+
+                      {%- unless in_cart or rendered_product_ids contains rel_product.id -%}
+                        {%- assign rendered_product_ids = rendered_product_ids | append: rel_product.id | append: ',' -%}
+                        {%- liquid
+                          capture placeholder_int
+                            cycle 1, 2, 3, 4, 5, 6
+                          endcapture
+                          assign rendered_count = rendered_count | plus: 1
+                        -%}
+                        {%- render 'product-item',
+                          product: rel_product,
+                          placeholder_int: placeholder_int,
+                          enable_quick_buy_desktop: true,
+                          enable_quick_buy_mobile: true,
+                          enable_variant_picker: settings.enable_cart_drawer_upsell_variants,
+                          quick_buy_compact: true,
+                          layout: 'list-compact'
+                        -%}
+                      {%- endunless -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                {%- endif -%}
               {%- endfor -%}
             {%- endif -%}
           {%- endif -%}
