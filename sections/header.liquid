@@ -429,8 +429,8 @@
         <!-- Cart Icon -->
         <a 
           href="{{ routes.cart_url }}" 
-          class="gs-action-icon-btn gs-cart-btn" 
-          {% if settings.enable_cart_drawer %}data-panel="cart"{% endif %} 
+          class="gs-action-icon-btn gs-cart-btn js-cart-drawer-trigger" 
+          data-panel="cart" 
           aria-label="Shopping Cart"
         >
           <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -2279,6 +2279,24 @@
             closeLoginModal();
           }
         }
+      });
+
+      // Cart Button Trigger
+      const cartTriggers = document.querySelectorAll('.gs-cart-btn, a[data-panel="cart"], .js-cart-drawer-trigger');
+      cartTriggers.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          if (typeof window.openGulfSouqCart === 'function') {
+            window.openGulfSouqCart();
+          } else if (typeof ajaxCart !== 'undefined' && typeof ajaxCart.load === 'function') {
+            ajaxCart.load(false, true, false, true);
+          } else if (typeof openPanel === 'function') {
+            openPanel('cart');
+          } else {
+            window.location.href = '{{ routes.cart_url }}';
+          }
+        });
       });
 
       // 4. Scroll Listener to Lock Header to Top (Leaves Announcement Bar to scroll away naturally)

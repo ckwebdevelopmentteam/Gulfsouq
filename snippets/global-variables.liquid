@@ -5,6 +5,7 @@
 -%}
 <script>
     window.routes = {
+        root_url: '{{ routes.root_url }}',
         predictive_search_url: '{{ routes.predictive_search_url }}',
         cart_url: '{{ routes.cart_url }}',
         cart_add_url: '{{ routes.cart_add_url }}',
@@ -12,6 +13,12 @@
         cart_update_url: '{{ routes.cart_update_url }}',
         product_recommendations_url: '{{ routes.product_recommendations_url }}'
     };
+    window.Shopify = window.Shopify || {};
+    window.Shopify.routes = window.Shopify.routes || {};
+    window.Shopify.routes.root = '{{ routes.root_url }}';
+    if (!window.Shopify.routes.root.endsWith('/')) {
+        window.Shopify.routes.root += '/';
+    }
     window.general = {
         {% if template.name == 'product' %}
         viewed_product: '{{ product.url }}',

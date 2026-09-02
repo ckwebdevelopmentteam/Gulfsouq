@@ -48,6 +48,7 @@
     {{ 'screen.css' | asset_url | stylesheet_tag: media: 'screen' }}
     {{ 'theme-xtra.css' | asset_url | stylesheet_tag: media: 'screen' }}
     {{ 'screen-settings.css' | asset_url | stylesheet_tag: media: 'screen' }}
+    {{ 'async-panels.css' | asset_url | stylesheet_tag: media: 'screen' }}
     {{ 'gulfsouq-product-card.css' | asset_url | stylesheet_tag: media: 'screen' }}
     <noscript><link rel="stylesheet" href="{{ 'async-menu.css' | asset_url }}"></noscript>
     {%- if template.name == 'blog' or template.name == 'article' -%}

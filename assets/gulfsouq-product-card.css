@@ -270,7 +270,6 @@ body.template-index #content > [class*="shopify-section"]:first-child {
   nav#nav:not(#nav-bar),
   .mobile-nav,
   .mobile-menu,
-  .m6pn,
   #root #nav:not(#nav-bar),
   .shopify-section-header #nav:not(#nav-bar) {
     display: none !important;
@@ -2739,4 +2738,166 @@ html body #root .shopify-section-footer::after,
     padding-right: 16px !important;
     margin: 20px auto !important;
   }
+}
+
+/* ═══════════════════════════════════════════════════════
+   GULF SOUQ — BULLETPROOF SIDE CART DRAWER & BACKDROP
+   ═══════════════════════════════════════════════════════ */
+.m6pn,
+aside#cart.m6pn {
+  display: block;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: fixed !important;
+  right: 0 !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  z-index: 999999 !important;
+  width: 100% !important;
+  max-width: 440px !important;
+  background: #FFFFFF !important;
+  color: #103F60 !important;
+  padding: 30px 24px 24px !important;
+  box-shadow: -6px 0 30px rgba(0, 0, 0, 0.22) !important;
+  box-sizing: border-box !important;
+  transform: translateX(100%) !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.32s ease, visibility 0.32s ease !important;
+  font-family: 'Outfit', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
+}
+
+.has-panels .m6pn.toggle,
+.m6pn-open .m6pn.toggle,
+html.has-panels aside#cart.m6pn.toggle,
+html.m6pn-open aside#cart.m6pn.toggle {
+  display: flex !important;
+  flex-direction: column !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  transform: translateX(0) !important;
+  pointer-events: auto !important;
+}
+
+/* Header Bar inside Cart Drawer (#103F60 Navy background same as main header) */
+aside#cart > header,
+.m6pn > header,
+#cart header {
+  background-color: #103F60 !important;
+  background: #103F60 !important;
+  color: #FFFFFF !important;
+  margin: -30px -24px 20px -24px !important;
+  padding: 16px 56px 16px 24px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+  min-height: 58px !important;
+  box-sizing: border-box !important;
+}
+
+aside#cart > header h1,
+aside#cart > header h2,
+aside#cart > header h3,
+aside#cart > header h4,
+.m6pn > header h1,
+.m6pn > header h2,
+.m6pn > header h3,
+.m6pn > header h4,
+#cart header h2 {
+  color: #FFFFFF !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  letter-spacing: 0.3px !important;
+  line-height: 1.2 !important;
+}
+
+/* Close Button on Top-Right of Side-Cart Drawer (Transparent background, No white BG) */
+.m6pn > .m6pn-close:not(.strong),
+aside#cart .m6pn-close:not(.strong),
+aside#cart > .m6pn-close:not(.strong),
+#cart .m6pn-close:not(.strong) {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: absolute !important;
+  right: 14px !important;
+  top: 13px !important;
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 50% !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  color: #FFFFFF !important;
+  font-size: 0 !important;
+  line-height: 1 !important;
+  text-decoration: none !important;
+  text-indent: 0 !important;
+  z-index: 1000000 !important;
+  cursor: pointer !important;
+  overflow: hidden !important;
+  transition: background-color 0.2s ease, transform 0.2s ease !important;
+}
+
+.m6pn > .m6pn-close:not(.strong):before,
+aside#cart .m6pn-close:not(.strong):before,
+aside#cart > .m6pn-close:not(.strong):before,
+#cart .m6pn-close:not(.strong):before {
+  content: "✕" !important;
+  font-family: inherit !important;
+  font-size: 17px !important;
+  font-weight: 500 !important;
+  color: #FFFFFF !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: static !important;
+  margin: 0 !important;
+  line-height: 1 !important;
+  text-indent: 0 !important;
+}
+
+.m6pn > .m6pn-close:not(.strong) svg,
+aside#cart .m6pn-close:not(.strong) svg {
+  display: block !important;
+  stroke: #FFFFFF !important;
+}
+
+.m6pn > .m6pn-close:not(.strong):hover,
+aside#cart .m6pn-close:not(.strong):hover,
+aside#cart > .m6pn-close:not(.strong):hover,
+#cart .m6pn-close:not(.strong):hover {
+  background: rgba(255, 255, 255, 0.16) !important;
+  background-color: rgba(255, 255, 255, 0.16) !important;
+  color: #FFFFFF !important;
+  transform: scale(1.08) !important;
+}
+
+/* Backdrop Overlay when cart or any panel is open */
+.has-panels #root > .overlay-close,
+.m6pn-open #root > .overlay-close,
+html.has-panels .overlay-close,
+html.m6pn-open .overlay-close {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  z-index: 999990 !important;
+  background: rgba(0, 0, 0, 0.45) !important;
+  backdrop-filter: blur(2px) !important;
+  -webkit-backdrop-filter: blur(2px) !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  transition: opacity 0.3s ease, visibility 0.3s ease !important;
 }

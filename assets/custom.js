@@ -803,7 +803,7 @@ window.addEventListener('top', function (event) {
 		if (calcLogoOffsetScheduled) return;
 		calcLogoOffsetScheduled = true;
 		requestAnimationFrame(() => {
-			if (header_id && logo_id && header_inner.classList.contains('text-center-logo')) {
+			if (header_id && logo_id && header_inner && header_inner.classList.contains('text-center-logo')) {
 				const header_width = header_id.getBoundingClientRect().width;
 				const offsetPercent = (logo_id.offsetLeft / header_width) * 100 + '%';
 				html_tag.style.setProperty('--logo_offset', offsetPercent);
@@ -1015,15 +1015,15 @@ window.addEventListener('top', function (event) {
 				} else {
 					setTimeout(() => {
 						countNavDistF(nmu, nml, nms, nav_main);
-						header_outer.classList.add('ready');
+						header_outer?.classList.add('ready');
 					}, 250);
 				}
 
 				window.addEventListener('resize', throttle(() => {
 					calcLogoOffset();
-					header_outer.classList.remove('ready');
+					header_outer?.classList.remove('ready');
 					countNavDistF(nmu, nml, nms, nav_main);
-					header_outer.classList.add('ready');
+					header_outer?.classList.add('ready');
 				}, 250));
 			}
 

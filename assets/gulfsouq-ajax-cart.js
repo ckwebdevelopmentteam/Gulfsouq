@@ -1,8 +1,86 @@
 /**
- * GULF SOUQ — AJAX Cart & Quick Variant Add Modal
- * Ensures Add to Cart opens Cart Drawer directly or redirects to /cart, never to Product Page.
+ * GULF SOUQ — AJAX Cart & Quick Variant Add Modal & Side Cart Drawer Controller
+ * Ensures header cart icon and Add to Cart triggers open the side cart drawer reliably.
  */
 (function() {
+  // Ensure async panels CSS is loaded
+  function ensurePanelsCss() {
+    if (!document.getElementById('css-panels')) {
+      const link = document.createElement('link');
+      link.id = 'css-panels';
+      link.rel = 'stylesheet';
+      link.href = (window.filepaths && window.filepaths.async_panels_css) || '/cdn/shop/t/29/assets/async-panels.css';
+      document.head.appendChild(link);
+    }
+  }
+
+  // Open the side cart drawer
+  window.openGulfSouqCart = async function() {
+    const sideCart = document.getElementById('cart');
+    if (!sideCart) {
+      window.location.href = window.routes?.cart_url || '/cart';
+      return;
+    }
+
+    ensurePanelsCss();
+
+    // Visual open state immediately
+    document.documentElement.classList.add('has-panels', 'm6pn-open');
+    sideCart.classList.add('toggle');
+    sideCart.setAttribute('aria-hidden', 'false');
+
+    // Ensure close button exists
+    if (!sideCart.querySelector('.m6pn-close')) {
+      const closeBtn = document.createElement('a');
+      closeBtn.href = './';
+      closeBtn.className = 'm6pn-close';
+      closeBtn.setAttribute('aria-label', 'Close');
+      closeBtn.textContent = 'Close';
+      sideCart.appendChild(closeBtn);
+    }
+
+    // Fetch and sync latest side-cart markup
+    try {
+      const rootUrl = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || window.routes?.root_url || '/';
+      const cleanRoot = rootUrl.endsWith('/') ? rootUrl : rootUrl + '/';
+      const res = await fetch(cleanRoot + '?section_id=side-cart');
+      if (res.ok) {
+        const text = await res.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(text, 'text/html');
+        const markup = doc.querySelector('#shopify-section-side-cart')?.innerHTML;
+        if (markup) {
+          sideCart.innerHTML = markup;
+          if (!sideCart.querySelector('.m6pn-close')) {
+            const closeBtn = document.createElement('a');
+            closeBtn.href = './';
+            closeBtn.className = 'm6pn-close';
+            closeBtn.setAttribute('aria-label', 'Close');
+            closeBtn.textContent = 'Close';
+            sideCart.appendChild(closeBtn);
+          }
+          if (typeof ajaxCart !== 'undefined' && typeof ajaxCart.init === 'function') {
+            ajaxCart.init();
+          }
+        }
+      }
+    } catch (err) {
+      console.warn('Error fetching side-cart markup:', err);
+    }
+
+    window.dispatchEvent(new CustomEvent('themeCartOpened'));
+  };
+
+  // Close the side cart drawer
+  window.closeGulfSouqCart = function() {
+    document.documentElement.classList.remove('has-panels', 'm6pn-open');
+    const sideCart = document.getElementById('cart');
+    if (sideCart) {
+      sideCart.classList.remove('toggle');
+      sideCart.setAttribute('aria-hidden', 'true');
+    }
+  };
+
   function updateCartCounters(cart) {
     const count = cart.item_count !== undefined ? cart.item_count : 0;
     document.querySelectorAll('#cart-count, #cart-count--m, .cart-count, [data-cart-count]').forEach(el => {
@@ -10,25 +88,12 @@
       el.style.display = 'inline-flex';
     });
 
-    // 1. Try triggering theme side-cart drawer
-    const drawerTrigger = document.querySelector('a[data-panel="cart"], .js-cart-drawer-trigger, #cart-icon-bubble, .header__icon--cart');
-    if (drawerTrigger && typeof drawerTrigger.click === 'function') {
-      drawerTrigger.click();
-    }
+    // Open side-cart drawer
+    window.openGulfSouqCart();
 
-    // 2. Dispatch custom events for theme listeners
+    // Dispatch custom events for theme listeners
     document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart } }));
     document.dispatchEvent(new CustomEvent('cart:refresh', { detail: { cart } }));
-
-    // 3. Direct to /cart if side-cart panel does not open
-    setTimeout(() => {
-      const isDrawerOpen = document.body.classList.contains('cart-drawer-open') ||
-                           document.body.classList.contains('panel-open') ||
-                           document.querySelector('#side-cart.active, .side-cart.active, [data-side-cart].active, .panel-cart.active, [aria-expanded="true"]');
-      if (!isDrawerOpen) {
-        window.location.href = '/cart';
-      }
-    }, 450);
   }
 
   async function addToCart(variantId, quantity = 1, buttonElement = null) {
@@ -164,29 +229,57 @@
 
     } catch (e) {
       console.error('Error fetching product variant details:', e);
-      // Fallback direct add if variant ID present
       if (initialVariantId) {
         addToCart(initialVariantId, 1, buttonElement);
       }
     }
   }
 
-  // Global Event Listener for AJAX Cart & Quick Add Buttons
+  // Global Event Listener for Cart Trigger Clicks
   document.addEventListener('click', function(e) {
-    const btn = e.target.closest('.gs-ajax-add-btn');
-    if (!btn) return;
+    const cartTrigger = e.target.closest('a[data-panel="cart"], .gs-cart-btn, .js-cart-drawer-trigger');
+    if (cartTrigger) {
+      e.preventDefault();
+      e.stopPropagation();
+      window.openGulfSouqCart();
+      return;
+    }
 
-    e.preventDefault();
-    e.stopPropagation();
+    // Close buttons
+    if (e.target.matches('.overlay-close, .overlay-close-clipping, .m6pn-close, .m6pn-close *')) {
+      window.closeGulfSouqCart();
+      e.preventDefault();
+      return;
+    }
 
-    const variantId = btn.dataset.variantId;
-    const handle = btn.dataset.productHandle;
-    const hasVariants = btn.dataset.hasVariants === 'true';
+    // AJAX Add-to-cart buttons
+    const addBtn = e.target.closest('.gs-ajax-add-btn');
+    if (addBtn) {
+      e.preventDefault();
+      e.stopPropagation();
 
-    if (hasVariants && handle) {
-      openQuickAddModal(handle, variantId, btn);
-    } else if (variantId) {
-      addToCart(variantId, 1, btn);
+      const variantId = addBtn.dataset.variantId;
+      const handle = addBtn.dataset.productHandle;
+      const hasVariants = addBtn.dataset.hasVariants === 'true';
+
+      if (hasVariants && handle) {
+        openQuickAddModal(handle, variantId, addBtn);
+      } else if (variantId) {
+        addToCart(variantId, 1, addBtn);
+      }
     }
   });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      window.closeGulfSouqCart();
+    }
+  });
+
+  // Pre-fetch async-panels.css on idle
+  if ('requestIdleCallback' in window) {
+    window.requestIdleCallback(ensurePanelsCss);
+  } else {
+    setTimeout(ensurePanelsCss, 1500);
+  }
 })();

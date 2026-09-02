@@ -1330,7 +1330,7 @@ window.addEventListener('stickyNav', function () {
 	};
 
 	// Append distance counter to proper container
-	(html_tag.classList.contains('t1sn') ? header_id : root_id).append(distance_counter);
+	(html_tag.classList.contains('t1sn') && header_id ? header_id : (root_id || document.body)).append(distance_counter);
 
 	// Add events for updating distance counter
 	if (!isMobile) window.addEventListener('mousemove', updateDistanceCounterPosition, asyncOnce);
@@ -1339,27 +1339,31 @@ window.addEventListener('stickyNav', function () {
 	document.addEventListener('scroll', updateDistanceCounterPosition, asyncPass);
 
 	// Add header classes based on conditions
-	header_inner.classList.contains('no-sticky') ? html_tag.classList.add('no-sticky') : html_tag.classList.remove('no-sticky');
-	header_inner.classList.contains('mobile-visible-search') && top_id.classList.add('has-mobile-visible-search');
-	header_inner.classList.contains('hide-btn-mobile') && top_id.classList.add('hide-btn-mobile');
+	if (header_inner) {
+		header_inner.classList.contains('no-sticky') ? html_tag.classList.add('no-sticky') : html_tag.classList.remove('no-sticky');
+		header_inner.classList.contains('mobile-visible-search') && top_id && top_id.classList.add('has-mobile-visible-search');
+		header_inner.classList.contains('hide-btn-mobile') && top_id && top_id.classList.add('hide-btn-mobile');
 
-	// Add hover behavior for header_outer
-	if (header_inner.classList.contains('tr_h') && !isMobile) {
-		top_id.classList.add('tr_h');
-		header_outer.addEventListener('mouseenter', () => html_tag.classList.add('tr_hh'));
-		header_outer.addEventListener('mouseleave', () => {
-			if (!html_tag.classList.contains('search-full') && !html_tag.classList.contains('search-compact-active')) {
-				html_tag.classList.remove('tr_hh');
-			}
-		});
+		// Add hover behavior for header_outer
+		if (header_inner.classList.contains('tr_h') && !isMobile && header_outer) {
+			top_id && top_id.classList.add('tr_h');
+			header_outer.addEventListener('mouseenter', () => html_tag.classList.add('tr_hh'));
+			header_outer.addEventListener('mouseleave', () => {
+				if (!html_tag.classList.contains('search-full') && !html_tag.classList.contains('search-compact-active')) {
+					html_tag.classList.remove('tr_hh');
+				}
+			});
+		}
 	}
 
 	// Observe distance counter for sticky logic
-	header_id.classList.contains('no-sticky') ? html_tag.classList.add('t1ns') : new IntersectionObserver(io, {
-		root: null,
-		rootMargin: '0px',
-		threshold: 0.9
-	}).observe(distance_counter);
+	if (header_id) {
+		header_id.classList.contains('no-sticky') ? html_tag.classList.add('t1ns') : new IntersectionObserver(io, {
+			root: null,
+			rootMargin: '0px',
+			threshold: 0.9
+		}).observe(distance_counter);
+	}
 
 	// .overlay-close Add behaviours for closing the overlays
 	if (top_id) {
@@ -4483,10 +4487,14 @@ if (cookieSetNo || hasPopupBlocker) {
 
 
 // .m6pn - manages opening, closing, and accessibility of sidebar panels on product/cart pages, including focus handling, sticky footers, CSS loading, and interactive sliders.
+const module_panel = document.querySelectorAll('.m6pn');
+const a_module_panel = document.querySelectorAll('a[data-panel]');
+
 function hidePanels() {
 	html_tag.classList.remove('m6pn-open', 'm6cp-open', 'f8fl-open');
 
-	for (const el of module_panel) {
+	const panels = module_panel.length ? module_panel : document.querySelectorAll('.m6pn');
+	for (const el of panels) {
 		el.classList.remove('toggle');
 		el.setAttribute('aria-hidden', true);
 		negTabIn(el);
@@ -4562,8 +4570,8 @@ function openPanel(id) {
 
 	getStickyFooters();
 	new_css('css-panels', css_panels);
-	if (linked[0].classList.contains('m6pr-compact')) new_css('product-css', css_product);
-	if (linked[0].hasAttribute('data-delay')) setTimeout(() => hidePanels(), parseFloat(linked[0].getAttribute('data-delay')));
+	if (linked[0] && linked[0].classList.contains('m6pr-compact')) new_css('product-css', css_product);
+	if (linked[0] && linked[0].hasAttribute('data-delay')) setTimeout(() => hidePanels(), parseFloat(linked[0].getAttribute('data-delay')));
 }
 
 function handlePanelEvents(e) {
@@ -4591,9 +4599,6 @@ function handlePanelEvents(e) {
 }
 
 const modulePanelEvt = new CustomEvent('modulePanel');
-
-const module_panel = document.querySelectorAll('.m6pn');
-const a_module_panel = document.querySelectorAll('a[data-panel]');
 
 if (module_panel.length) {
 	document.addEventListener('click', e => {
@@ -6831,24 +6836,38 @@ var ajaxCart = (function (module) {
 	}
 
 	updateCartPanel = function (response = false, openCartPanel = true, undoRemove = false, forceRefetch = false) {
-		if (response) {
-			const resultsMarkup = new DOMParser().parseFromString(response.sections["side-cart"], 'text/html').querySelector('#shopify-section-side-cart').innerHTML;
-			handleCartPanel(resultsMarkup, openCartPanel, undoRemove);
-		} else if (sideCartContainer.childNodes.length < 3 || forceRefetch) {
-			fetch(window.Shopify.routes.root + "?section_id=side-cart")
+		if (!sideCartContainer) sideCartContainer = document.getElementById('cart');
+		if (!sideCartContainer) return;
+
+		const rootUrl = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || window.routes?.root_url || '/';
+		const sectionUrl = (rootUrl.endsWith('/') ? rootUrl : rootUrl + '/') + "?section_id=side-cart";
+
+		if (response && response.sections && response.sections["side-cart"]) {
+			const resultsMarkup = new DOMParser().parseFromString(response.sections["side-cart"], 'text/html').querySelector('#shopify-section-side-cart')?.innerHTML;
+			if (resultsMarkup) handleCartPanel(resultsMarkup, openCartPanel, undoRemove);
+			else showCartPanel();
+		} else if (!sideCartContainer.childNodes || sideCartContainer.childNodes.length < 3 || forceRefetch) {
+			fetch(sectionUrl)
 				.then((response) => {
 					if (!response.ok) {
 						console.warn('Request failed:', response.status, response.statusText);
+						showCartPanel();
 						return;
 					}
 					return response.text();
 				})
 				.then((text) => {
-					const resultsMarkup = new DOMParser().parseFromString(text, 'text/html').querySelector('#shopify-section-side-cart').innerHTML;
-					handleCartPanel(resultsMarkup, openCartPanel);
+					if (text) {
+						const resultsMarkup = new DOMParser().parseFromString(text, 'text/html').querySelector('#shopify-section-side-cart')?.innerHTML;
+						if (resultsMarkup) handleCartPanel(resultsMarkup, openCartPanel);
+						else showCartPanel();
+					} else {
+						showCartPanel();
+					}
 				})
 				.catch((error) => {
 					console.warn("updateCartPanel error", error);
+					showCartPanel();
 				});
 		} else {
 			showCartPanel();
