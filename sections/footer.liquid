@@ -110,15 +110,20 @@
     {%- comment -%} FOOTER BOTTOM BAR {%- endcomment -%}
     <div class="gs-footer-bottom">
       <div class="gs-footer-copyright">
-        &copy; {{ 'now' | date: "%Y" }} <span class="gs-brand-name">GULF SOUQ</span>. All rights reserved. Powered by Shopify.
+        &copy; {{ 'now' | date: "%Y" }} <span class="gs-brand-name">GULF SOUQ</span>. All rights reserved.
       </div>
-      {%- if section.settings.show_payment_methods -%}
-        <div class="gs-footer-payments">
-          {%- for type in shop.enabled_payment_types -%}
-            <span class="gs-payment-badge">{{ type | payment_type_svg_tag }}</span>
-          {%- endfor -%}
-        </div>
-      {%- endif -%}
+      <div class="gs-footer-dev-credit">
+        Designed and developed by <a href="https://www.thynck.in/" target="_blank" rel="noopener noreferrer" class="gs-developer-link">thynck</a>.
+      </div>
+      <div class="gs-footer-payments-col">
+        {%- if section.settings.show_payment_methods -%}
+          <div class="gs-footer-payments">
+            {%- for type in shop.enabled_payment_types -%}
+              <span class="gs-payment-badge">{{ type | payment_type_svg_tag }}</span>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
     </div>
 
   </div>
@@ -419,6 +424,18 @@
     color: #94A3B8 !important;
     margin: 0 !important;
     line-height: 1.5 !important;
+    flex: 1 1 0 !important;
+    text-align: left !important;
+  }
+
+  .gs-footer-dev-credit {
+    font-size: 13px !important;
+    color: #94A3B8 !important;
+    margin: 0 !important;
+    line-height: 1.5 !important;
+    flex: 0 0 auto !important;
+    text-align: center !important;
+    white-space: nowrap !important;
   }
 
   .gs-brand-name {
@@ -426,9 +443,28 @@
     font-weight: 600 !important;
   }
 
+  .gs-developer-link {
+    color: #BE982D !important;
+    text-decoration: none !important;
+    font-weight: 600 !important;
+    transition: color 0.15s ease, text-decoration 0.15s ease !important;
+  }
+
+  .gs-developer-link:hover {
+    color: #FDE047 !important;
+    text-decoration: underline !important;
+  }
+
+  .gs-footer-payments-col {
+    flex: 1 1 0 !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+  }
+
   .gs-footer-payments {
     display: flex !important;
     align-items: center !important;
+    justify-content: flex-end !important;
     gap: 8px !important;
     flex-wrap: wrap !important;
   }
