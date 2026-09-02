@@ -274,13 +274,15 @@
 
       input.value = newVal;
       
-      // Trigger change event for any listeners
+      // Trigger change event for listeners (like custom-async.js on cart page)
       input.dispatchEvent(new Event('change', { bubbles: true }));
 
-      // Fallback direct API call for seamless reliability
-      const line = input.dataset.line;
-      if (line) {
-        changeCartItemQty(line, newVal);
+      // If inside side-cart drawer, directly sync side cart markup
+      if (qtyBtn.closest('#cart')) {
+        const line = input.dataset.line;
+        if (line) {
+          changeCartItemQty(line, newVal);
+        }
       }
       return;
     }
