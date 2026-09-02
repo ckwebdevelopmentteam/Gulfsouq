@@ -177,8 +177,8 @@
 
                 <!-- Quantity Controls Stepper -->
                 <div class="gs-item-qty-col">
-                  <div class="gs-qty-stepper {% unless can_update_quantity %}hidden{% endunless %}">
-                    <button type="button" class="gs-qty-btn gs-qty-minus" aria-label="Decrease quantity" data-line="{{ forloop.index }}">−</button>
+                  <div class="gs-qty-stepper {% unless can_update_quantity %}hidden{% endunless %}" style="display: inline-flex !important; flex-direction: row !important; align-items: center !important; height: 32px !important; border: 1.5px solid #CBD5E1 !important; border-radius: 6px !important; background: #FFFFFF !important; margin: 0 !important; padding: 0 !important; box-sizing: border-box !important; overflow: hidden !important;">
+                    <button type="button" class="gs-qty-btn gs-qty-minus" aria-label="Decrease quantity" data-line="{{ forloop.index }}" style="display: inline-flex !important; align-items: center !important; justify-content: center !important; width: 28px !important; height: 32px !important; border: none !important; background: #F8FAFC !important; color: #103F60 !important; font-size: 15px !important; font-weight: 700 !important; cursor: pointer !important; padding: 0 !important; margin: 0 !important; user-select: none !important;">−</button>
                     <input
                       type="number"
                       name="updates[]"
@@ -198,8 +198,9 @@
                       {% if line_item.variant.quantity_rule.increment %}
                         step="{{ line_item.variant.quantity_rule.increment }}"
                       {% endif %}
+                      style="width: 36px !important; min-width: 36px !important; max-width: 36px !important; height: 32px !important; border: none !important; border-left: 1px solid #E2E8F0 !important; border-right: 1px solid #E2E8F0 !important; background: #FFFFFF !important; text-align: center !important; font-size: 13.5px !important; font-weight: 700 !important; color: #0F172A !important; padding: 0 !important; margin: 0 !important; box-shadow: none !important; outline: none !important;"
                     >
-                    <button type="button" class="gs-qty-btn gs-qty-plus" aria-label="Increase quantity" data-line="{{ forloop.index }}">+</button>
+                    <button type="button" class="gs-qty-btn gs-qty-plus" aria-label="Increase quantity" data-line="{{ forloop.index }}" style="display: inline-flex !important; align-items: center !important; justify-content: center !important; width: 28px !important; height: 32px !important; border: none !important; background: #F8FAFC !important; color: #103F60 !important; font-size: 15px !important; font-weight: 700 !important; cursor: pointer !important; padding: 0 !important; margin: 0 !important; user-select: none !important;">+</button>
                   </div>
                 </div>
 
@@ -357,7 +358,7 @@
             {%- if cart.taxes_included -%}
               {{- 'cart.total_including_tax' | t | default: 'Total including VAT' -}}
             {%- else -%}
-              {{- 'cart.total_excluding_tax' | t | default: 'Taxes and shipping calculated at checkout.' -}}
+              {{- 'cart.total_excluding_tax' | t | default: 'Taxes and shipping calculated at checkout' -}}
             {%- endif -%}
           </p>
 
@@ -375,7 +376,7 @@
               <form class="discount-form gs-discount-form">
                 <div class="gs-discount-input-row">
                   <div class="gs-discount-field">
-                    <svg class="gs-promo-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+                    <svg class="gs-promo-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
                     <input
                       type="text"
                       id="discount"
@@ -420,7 +421,7 @@
                   class="gs-custom-checkbox"
                 >
                 <label for="check_{{ section.id }}" class="gs-terms-label">
-                  {{- section.settings.terms_text | remove: '</p>' | remove: '<p>' -}}
+                  {{- section.settings.terms_text | remove: '</p>' | remove: '<p>' | replace: 'privacy_policy', 'privacy policy' | replace: 'terms_and_conditions', 'terms & conditions' -}}
                 </label>
               </div>
             {% endif %}
@@ -431,10 +432,8 @@
               class="gs-checkout-main-btn"
               name="checkout"
             >
-              <span class="gs-btn-lock-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-              </span>
-              <span class="gs-btn-text">{{ 'cart.checkout' | t | default: 'PROCEED TO CHECKOUT' }}</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="gs-btn-lock-svg"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" fill="none" stroke="#FFFFFF" stroke-width="2.2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4" fill="none" stroke="#FFFFFF" stroke-width="2.2"></path></svg>
+              <span class="gs-btn-text">{{ 'cart.checkout' | t | default: 'CHECKOUT' }}</span>
             </button>
           </form>
 
@@ -447,7 +446,7 @@
 
           <!-- Safe & Secure SSL Badge -->
           <div class="gs-secure-badge-row">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg>
             <span>Guaranteed Safe & Secure Checkout</span>
           </div>
 
