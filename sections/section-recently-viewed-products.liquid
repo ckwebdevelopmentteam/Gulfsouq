@@ -417,9 +417,8 @@
           + '<path d="M16 10a4 4 0 0 1-8 0"/>'
           + '</svg> Add to cart</button>';
       } else {
-        quickAddHtml = '<button class="gs-quick-add"'
-          + ' data-product-url="' + escAttr(productUrl) + '">'
-          + 'Choose options</button>';
+        quickAddHtml = '<a href="' + escAttr(productUrl) + '" class="gs-quick-add gs-select-options-btn">'
+          + 'Select Options</a>';
       }
     }
 

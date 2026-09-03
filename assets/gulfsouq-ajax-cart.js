@@ -303,19 +303,35 @@
       return;
     }
 
+    // Handle Select Options navigation
+    const selectOptBtn = e.target.closest('.gs-select-options-btn');
+    if (selectOptBtn) {
+      const targetHref = selectOptBtn.getAttribute('href');
+      if (targetHref) {
+        window.location.href = targetHref;
+        return;
+      }
+    }
+
     // AJAX Add-to-cart buttons
     const addBtn = e.target.closest('.gs-ajax-add-btn');
     if (addBtn) {
-      e.preventDefault();
-      e.stopPropagation();
-
       const variantId = addBtn.dataset.variantId;
       const handle = addBtn.dataset.productHandle;
       const hasVariants = addBtn.dataset.hasVariants === 'true';
 
-      if (hasVariants && handle) {
-        openQuickAddModal(handle, variantId, addBtn);
-      } else if (variantId) {
+      if (hasVariants) {
+        const targetUrl = addBtn.getAttribute('href') || (handle ? `/products/${handle}` : null);
+        if (targetUrl) {
+          window.location.href = targetUrl;
+          return;
+        }
+      }
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (variantId) {
         addToCart(variantId, 1, addBtn);
       }
     }

@@ -2508,6 +2508,9 @@ ul.l4cl>li,
 .product-card .gs-add-cart-btn,
 #collection .gs-add-cart-btn,
 .gs-add-cart-btn,
+.gs-select-options-btn,
+a.gs-add-cart-btn,
+a.gs-select-options-btn,
 .gs-card button,
 .product-card button,
 #collection button,
@@ -2576,9 +2579,21 @@ ul.l4cl>li,
 .gs-card .gs-add-cart-btn:hover,
 .product-card .gs-add-cart-btn:hover,
 #collection .gs-add-cart-btn:hover,
-.gs-rec-card .gs-quick-add:hover {
+.gs-rec-card .gs-quick-add:hover,
+a.gs-add-cart-btn:hover,
+a.gs-select-options-btn:hover {
   background-color: #082D47 !important;
   border-color: #082D47 !important;
+  color: #FFFFFF !important;
+  text-decoration: none !important;
+}
+
+a.gs-add-cart-btn:visited,
+a.gs-select-options-btn:visited,
+a.gs-add-cart-btn:active,
+a.gs-select-options-btn:active {
+  color: #FFFFFF !important;
+  text-decoration: none !important;
 }
 
 /* ==========================================================================

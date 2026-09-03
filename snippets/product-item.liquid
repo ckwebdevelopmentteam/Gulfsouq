@@ -345,17 +345,14 @@
             <span>+ Add</span>
           </button>
         {%- else -%}
-          <button
-            type="button"
-            class="gs-upsell-add-btn gs-ajax-add-btn"
-            data-variant-id="{{ current_variant.id }}"
-            data-product-handle="{{ product.handle }}"
-            data-has-variants="true"
+          <a
+            href="{{ product.url }}"
+            class="gs-upsell-add-btn gs-select-options-btn"
             aria-label="Select options for {{ title | escape }}"
-            style="width: 100% !important; height: 32px !important; min-height: 32px !important; max-height: 32px !important; display: flex !important; align-items: center !important; justify-content: center !important; float: none !important;"
+            style="width: 100% !important; height: 32px !important; min-height: 32px !important; max-height: 32px !important; display: flex !important; align-items: center !important; justify-content: center !important; float: none !important; text-decoration: none !important;"
           >
             <span>Options</span>
-          </button>
+          </a>
         {%- endif -%}
       {%- else -%}
         <button type="button" class="gs-upsell-add-btn disabled" disabled style="width: 100% !important; height: 32px !important; min-height: 32px !important; max-height: 32px !important; display: flex !important; align-items: center !important; justify-content: center !important; float: none !important;">
@@ -546,16 +543,13 @@
             <span>+ Add to Cart</span>
           </button>
         {%- else -%}
-          <button
-            type="button"
-            class="gs-add-cart-btn gs-ajax-add-btn"
-            data-variant-id="{{ current_variant.id }}"
-            data-product-handle="{{ product.handle }}"
-            data-has-variants="true"
+          <a
+            href="{{ product.url }}"
+            class="gs-add-cart-btn gs-select-options-btn"
             aria-label="Select options for {{ title | escape }}"
           >
             <span>Select Options</span>
-          </button>
+          </a>
         {%- endif -%}
       {%- else -%}
         <button type="button" class="gs-add-cart-btn disabled" disabled>
