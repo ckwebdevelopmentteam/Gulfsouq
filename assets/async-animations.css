@@ -129,5 +129,5 @@
 /*[style*="nav_delay:"] .swiper-button-nav { transition-delay: var(--nav_delay) !important; }*/
 /*[data-sal-arrow-delay] .swiper-button-nav*/
 @media only screen and (max-width: 760px)  { 
-.l4cl: not(.mobile-scroll, .hr, .mobile-featured, .product) li, .l4ts li, .l4ts.s4wi li { opacity: 1 !important; transform: none !important; }
-; }
+  /* mobile scroll animation override removed for smooth appearance */
+}
