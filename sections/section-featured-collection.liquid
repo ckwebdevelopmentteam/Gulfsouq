@@ -688,6 +688,13 @@
     box-shadow: 0 6px 16px rgba(12, 62, 97, 0.28) !important;
     transform: translateY(-2px) !important;
   }
+
+  @media only screen and (max-width: 768px) {
+    #shopify-section-{{ section.id }} .gs-product-grid > *:nth-child(n+7),
+    #shopify-section-{{ section.id }} .deals-product-track > *:nth-child(n+7) {
+      display: none !important;
+    }
+  }
   {% endif %}
 </style>
 
