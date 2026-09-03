@@ -70,9 +70,9 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    gap: 14px;
-    padding-right: 14px;
-    animation: gsMarqueeScroll {{ section.settings.speed | default: 28 }}s linear infinite;
+    gap: 54px;
+    padding-right: 54px;
+    animation: gsMarqueeScroll {{ section.settings.speed | default: 96 }}s linear infinite;
   }
 
   .gs-hero-marquee-wrapper:hover .gs-marquee-group {
@@ -111,9 +111,9 @@
       padding: 11px 0;
     }
     .gs-marquee-group {
-      gap: 10px;
-      padding-right: 10px;
-      animation-duration: {{ section.settings.speed_mobile | default: 18 }}s;
+      gap: 36px;
+      padding-right: 36px;
+      animation-duration: {{ section.settings.speed_mobile | default: 64 }}s;
     }
     .gs-marquee-item {
       font-size: 12.5px;
@@ -141,21 +141,21 @@
       "type": "range",
       "id": "speed",
       "min": 10,
-      "max": 60,
+      "max": 150,
       "step": 2,
       "unit": "s",
       "label": "Desktop Scroll Speed",
-      "default": 28
+      "default": 96
     },
     {
       "type": "range",
       "id": "speed_mobile",
       "min": 8,
-      "max": 40,
+      "max": 120,
       "step": 2,
       "unit": "s",
       "label": "Mobile Scroll Speed",
-      "default": 18
+      "default": 64
     },
     {
       "type": "range",

@@ -92,46 +92,12 @@
         <span class="img-overlay" style="opacity:{{ block.settings.overlay_opacity | divided_by: 100.0 }}"></span>
         {%- if block.settings.video -%}
           {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false }}
-        {%- elsif block.settings.image or block.settings.image_mobile -%}
-          {%- assign main_img = block.settings.image | default: block.settings.image_mobile -%}
+        {%- else -%}
           <picture>
-            {%- if block.settings.image_mobile -%}
-              {% capture srcset_mobile %}
-                {% render 'image-srcset', image: block.settings.image_mobile, max_width: 940 %}
-              {% endcapture %}
-              <source media="(max-width: 767px)" srcset="{{ srcset_mobile }}" sizes="100vw">
-            {%- endif -%}
-            {% capture srcset_desktop %}
-              {% render 'image-srcset', image: main_img, max_width: 2900 %}
-            {% endcapture %}
-            {% capture sizes_desktop %}
-              {% if section.settings.width == 'boxed' or settings.width < 2000 %}
-                (min-width: 1300px) {% if block.settings.layout == 'background' %}{{ settings.width }}px{% else %}calc({{ settings.width }}px / 2){% endif %},
-              {% endif %}
-              (min-width: 768px) {% if block.settings.layout == 'background' %}100vw{% else %}calc(100vw / 2){% endif %},
-              100vw
-            {% endcapture %}
-            {% assign alt_text = block.settings.image_mobile.alt | default: block.settings.image.alt | default: block.settings.title | escape %}
-            {% assign img_height = main_img.height %}
-            {%- if section.index > 1 or forloop.first == false -%}
-              {{
-                main_img
-                | image_url: width: 1400, height: img_height, crop: 'center'
-                | image_tag: srcset: srcset_desktop, sizes: sizes_desktop, loading: 'lazy', alt: alt_text
-              }}
-            {%- else -%}
-              {{
-                main_img
-                | image_url: width: 1400, height: img_height, crop: 'center'
-                | image_tag: srcset: srcset_desktop, sizes: sizes_desktop, preload: true, alt: alt_text
-              }}
-            {%- endif -%}
+            <source media="(min-width: 1220px)" srcset="{{ 'hero-banner-desktop.png' | asset_url }}" width="1024" height="443">
+            <img src="{{ 'hero-banner-mobile.jpg' | asset_url }}" alt="EXCLUSIVE DEALS Happening Now! - Dates, Fragrances & Chocolates" loading="eager" fetchpriority="high" width="1024" height="546" class="hero-banner-img">
           </picture>
-        {% else %}
-          <picture>
-            <img src="{{ 'banner-02.jpg' | asset_url }}" alt="Milka Oreo Chocolates" loading="eager" fetchpriority="high" width="1920" height="600" class="hero-banner-img">
-          </picture>
-        {% endif %}
+        {%- endif -%}
       </figure>
       <div
         class="
@@ -288,16 +254,16 @@
     overflow: hidden !important;
   }
 
-  /* Desktop-only slideshow slide and image sizing - increased height (500px) */
+  /* Desktop slideshow slide and image sizing - compact hero height (max 480px - 500px) */
   @media only screen and (min-width: 47.501em) {
     #shopify-section-{{ section.id }},
     #shopify-section-{{ section.id }} .m6fr,
     #shopify-section-{{ section.id }} .m6fr article,
     #shopify-section-{{ section.id }} .swiper-wrapper,
     #shopify-section-{{ section.id }} .swiper-slide {
-      height: 500px !important;
-      min-height: 460px !important;
-      max-height: 540px !important;
+      height: 480px !important;
+      min-height: 440px !important;
+      max-height: 500px !important;
     }
 
     #shopify-section-{{ section.id }} .m6fr article {
@@ -305,9 +271,9 @@
       overflow: hidden !important;
       border: none !important;
       width: 100% !important;
-      height: 500px !important;
-      min-height: 460px !important;
-      max-height: 540px !important;
+      height: 480px !important;
+      min-height: 440px !important;
+      max-height: 500px !important;
       margin: 0 !important;
       padding: 0 !important;
       box-sizing: border-box !important;
@@ -321,12 +287,12 @@
       top: 0 !important;
       bottom: 0 !important;
       width: 100% !important;
-      height: 500px !important;
-      min-height: 460px !important;
-      max-height: 540px !important;
+      height: 480px !important;
+      min-height: 440px !important;
+      max-height: 500px !important;
       margin: 0 !important;
       padding: 0 !important;
-      background: transparent !important;
+      background: #F6EADA !important;
       z-index: 1 !important;
       overflow: hidden !important;
     }
@@ -345,14 +311,17 @@
       max-width: 100% !important;
       max-height: 100% !important;
       display: block !important;
-      background: transparent !important;
+      background: #F6EADA !important;
     }
 
     #shopify-section-{{ section.id }} .m6fr .title-styling {
-      position: relative !important;
+      position: absolute !important;
+      inset: 0 !important;
       z-index: 10 !important;
-      max-width: 480px !important;
-      padding: 0 50px !important;
+      max-width: 100% !important;
+      width: 100% !important;
+      height: 100% !important;
+      padding: 0 !important;
       display: flex !important;
       flex-direction: column !important;
       align-items: flex-start !important;

@@ -17,6 +17,43 @@
 }
 
 /* ==========================================================================
+   GLOBAL CUSTOM SCROLLBAR (OFF-WHITE TRACK & NAVBAR BLUE THUMB)
+   ========================================================================== */
+
+html,
+body,
+* {
+  scrollbar-width: thin !important;
+  scrollbar-color: #0C3E61 #FAF7F2 !important;
+}
+
+::-webkit-scrollbar {
+  width: 10px !important;
+  height: 10px !important;
+}
+
+::-webkit-scrollbar-track {
+  background: #FAF7F2 !important;
+  background-color: #FAF7F2 !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0C3E61 !important;
+  background-color: #0C3E61 !important;
+  border-radius: 6px !important;
+  border: 2px solid #FAF7F2 !important;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #082D47 !important;
+  background-color: #082D47 !important;
+}
+
+::-webkit-scrollbar-corner {
+  background: #FAF7F2 !important;
+}
+
+/* ==========================================================================
    GLOBAL TYPOGRAPHY SYSTEM (OUTFIT & PLUS JAKARTA SANS)
    ========================================================================== */
 
@@ -395,10 +432,13 @@ html.template-index {
 }
 
 .template-index .deals-title h2,
+.template-index .deals-title h1,
+.template-index .deals-title h3,
+.template-index .deals-title,
 .template-index header.title-styling h2,
 .template-index .heading-title,
 .template-index .explore-title {
-  font-size: 26px !important;
+  font-size: 30px !important;
   font-weight: 800 !important;
   color: #0C3E61 !important;
   letter-spacing: -0.4px !important;
@@ -406,11 +446,14 @@ html.template-index {
 
 @media (max-width: 768px) {
   .template-index .deals-title h2,
+  .template-index .deals-title h1,
+  .template-index .deals-title h3,
+  .template-index .deals-title,
   .template-index header.title-styling h2,
   .template-index .heading-title,
   .template-index .explore-title,
   .explore-title {
-    font-size: 18px !important;
+    font-size: 22px !important;
     line-height: 1.25 !important;
     letter-spacing: -0.2px !important;
   }
@@ -423,11 +466,14 @@ html.template-index {
 
 @media (max-width: 480px) {
   .template-index .deals-title h2,
+  .template-index .deals-title h1,
+  .template-index .deals-title h3,
+  .template-index .deals-title,
   .template-index header.title-styling h2,
   .template-index .heading-title,
   .template-index .explore-title,
   .explore-title {
-    font-size: 16px !important;
+    font-size: 20px !important;
     line-height: 1.2 !important;
   }
 
