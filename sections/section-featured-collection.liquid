@@ -504,15 +504,191 @@
     }
   }
 
-  @media only screen and (max-width: 420px) {
-    #shopify-section-{{ section.id }} .deals-title,
-    #shopify-section-{{ section.id }} .deals-title h2,
-    #shopify-section-{{ section.id }} .deals-title h1,
-    #shopify-section-{{ section.id }} .deals-title h3 {
-      font-size: 20px !important;
-    }
+  {% assign clean_title_check = section.settings.title | strip_html | strip %}
+  {% if section.settings.collection == 'athar-and-perfume' or collection.handle == 'athar-and-perfume' or clean_title_check contains 'Arabian' or clean_title_check contains 'Perfume' %}
+  /* ===== Arabian Perfumes — Image Card Box with Name & Price Below ===== */
+  #shopify-section-{{ section.id }} .product-card,
+  #shopify-section-{{ section.id }} .gs-card,
+  #shopify-section-{{ section.id }} .gs-card-wrapper,
+  #shopify-section-{{ section.id }} .deals-product-track > li {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    text-align: center !important;
+    min-height: auto !important;
+    height: auto !important;
+    box-sizing: border-box !important;
   }
 
+  #shopify-section-{{ section.id }} .gs-card:hover .gs-card-media,
+  #shopify-section-{{ section.id }} .product-card:hover .gs-card-media,
+  #shopify-section-{{ section.id }} .deals-product-track > li:hover .gs-card-media {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08) !important;
+    border-color: #CBD5E1 !important;
+  }
+
+  #shopify-section-{{ section.id }} .gs-card-media {
+    border-radius: 12px !important;
+    border: 1px solid #E2E8F0 !important;
+    overflow: hidden !important;
+    background: #FFFFFF !important;
+    background-color: #FFFFFF !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04) !important;
+    aspect-ratio: 1 / 1.1 !important;
+    min-height: 210px !important;
+    width: 100% !important;
+    position: relative !important;
+    margin-bottom: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease !important;
+  }
+
+  #shopify-section-{{ section.id }} .gs-card-media a,
+  #shopify-section-{{ section.id }} .gs-card-media picture {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  #shopify-section-{{ section.id }} .gs-card-media img.primary-img,
+  #shopify-section-{{ section.id }} .gs-card-media img.secondary-img,
+  #shopify-section-{{ section.id }} .gs-card-media picture img,
+  #shopify-section-{{ section.id }} .gs-card-media img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    background: #FFFFFF !important;
+    background-color: #FFFFFF !important;
+    padding: 8px !important;
+    border-radius: 12px !important;
+    display: block !important;
+  }
+
+  #shopify-section-{{ section.id }} .gs-card-content {
+    padding: 10px 4px 0 4px !important;
+    text-align: center !important;
+    background: transparent !important;
+    background-color: transparent !important;
+  }
+
+  #shopify-section-{{ section.id }} .gs-card-title {
+    font-size: 13.5px !important;
+    font-weight: 600 !important;
+    color: #1E293B !important;
+    text-align: center !important;
+    line-height: 1.35 !important;
+    margin: 8px 0 4px 0 !important;
+    padding: 0 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
+
+  #shopify-section-{{ section.id }} .gs-card-title a {
+    color: #1E293B !important;
+    text-decoration: none !important;
+  }
+
+  #shopify-section-{{ section.id }} .gs-card-title a:hover {
+    color: #0C3E61 !important;
+  }
+
+  #shopify-section-{{ section.id }} .gs-card-price-wrap,
+  #shopify-section-{{ section.id }} p.price {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    margin-top: 4px !important;
+    margin-bottom: 0 !important;
+    padding: 0 !important;
+  }
+
+  #shopify-section-{{ section.id }} .gs-price-current,
+  #shopify-section-{{ section.id }} p.price,
+  #shopify-section-{{ section.id }} .price {
+    font-size: 17px !important;
+    font-weight: 800 !important;
+    color: #0C3E61 !important;
+    text-align: center !important;
+    margin: 0 !important;
+  }
+
+  #shopify-section-{{ section.id }} .gs-price-compare,
+  #shopify-section-{{ section.id }} .old-price {
+    display: inline-block !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    color: #DC2626 !important;
+    text-decoration: line-through !important;
+  }
+
+  /* Hide unneeded elements */
+  #shopify-section-{{ section.id }} .gs-stock-status,
+  #shopify-section-{{ section.id }} .gs-card-rating,
+  #shopify-section-{{ section.id }} .gs-card-vendor,
+  #shopify-section-{{ section.id }} .gs-price-save-badge,
+  #shopify-section-{{ section.id }} .gs-card-actions,
+  #shopify-section-{{ section.id }} .gs-wishlist-btn,
+  #shopify-section-{{ section.id }} .gs-card-badges,
+  #shopify-section-{{ section.id }} .submit,
+  #shopify-section-{{ section.id }} form {
+    display: none !important;
+  }
+
+  /* Move View All button to bottom center below product grid and style prominently */
+  #shopify-section-{{ section.id }} .deals-header-right {
+    display: none !important;
+  }
+
+  #shopify-section-{{ section.id }} .deals-footer-mobile {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+    margin-top: 32px !important;
+    padding: 0 !important;
+  }
+
+  #shopify-section-{{ section.id }} .deals-view-link-mobile {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    width: auto !important;
+    min-width: 190px !important;
+    padding: 12px 36px !important;
+    background: #0C3E61 !important;
+    color: #FFFFFF !important;
+    border: 1.5px solid #0C3E61 !important;
+    border-radius: 8px !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.3px !important;
+    text-transform: none !important;
+    text-decoration: none !important;
+    box-shadow: 0 4px 10px rgba(12, 62, 97, 0.18) !important;
+    transition: all 0.22s ease !important;
+  }
+
+  #shopify-section-{{ section.id }} .deals-view-link-mobile:hover {
+    color: #FFFFFF !important;
+    border-color: #082D47 !important;
+    background: #082D47 !important;
+    box-shadow: 0 6px 16px rgba(12, 62, 97, 0.28) !important;
+    transform: translateY(-2px) !important;
+  }
+  {% endif %}
 </style>
 
 <script>

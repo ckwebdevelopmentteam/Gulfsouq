@@ -172,8 +172,8 @@
       "settings": {
         "collection": "athar-and-perfume",
         "layout": "grid",
-        "limit": 8,
-        "number_of_items": 4,
+        "limit": 10,
+        "number_of_items": 5,
         "text_alignment": "left",
         "width": "boxed",
         "title": "<h2>Arabian Perfumes</h2>",
