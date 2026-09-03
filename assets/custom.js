@@ -2548,8 +2548,7 @@ if ('IntersectionObserver' in window) {
 			entries.forEach(entry => {
 				if (entry.isIntersecting) {
 					entry.target.classList.add('scroll-visible');
-				} else {
-					entry.target.classList.remove('scroll-visible');
+					observer.unobserve(entry.target);
 				}
 			});
 		}, {
