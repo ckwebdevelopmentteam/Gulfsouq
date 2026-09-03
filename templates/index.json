@@ -920,8 +920,8 @@
       "settings": {
         "bg_color": "#f3be00",
         "text_color": "#111827",
-        "speed": 28,
-        "speed_mobile": 18,
+        "speed": 96,
+        "speed_mobile": 64,
         "padding_y": 15
       }
     }
