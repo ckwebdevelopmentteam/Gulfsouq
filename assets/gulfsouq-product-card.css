@@ -483,13 +483,13 @@ ul.l4cl.deals-product-track > li,
 #root .deals-product-track > li {
   flex: 0 0 240px !important;
   width: 240px !important;
-  min-width: 220px !important;
+  min-width: 200px !important;
   max-width: 280px !important;
   display: flex !important;
   flex-direction: column !important;
-  justify-content: space-between !important;
-  height: auto !important;
-  min-height: 380px !important;
+  justify-content: flex-start !important;
+  height: 100% !important;
+  min-height: 0 !important;
   box-sizing: border-box !important;
   list-style: none !important;
   margin: 0 !important;
@@ -506,9 +506,9 @@ ul.l4cl.deals-product-track > li,
   ul.deals-product-track > li,
   ul.l4cl.deals-product-track > li,
   #root .deals-product-track > li {
-    flex: 0 0 calc((100% - 64px) / 5) !important;
-    width: calc((100% - 64px) / 5) !important;
-    min-width: 210px !important;
+    flex: 0 0 calc((100% - 48px) / 5) !important;
+    width: calc((100% - 48px) / 5) !important;
+    min-width: 200px !important;
     max-width: 280px !important;
     flex-shrink: 0 !important;
   }
@@ -524,23 +524,64 @@ ul.l4cl.deals-product-track > li,
   ul.deals-product-track > li,
   ul.l4cl.deals-product-track > li,
   #root .deals-product-track > li {
-    flex: 0 0 calc((100% - 32px) / 3) !important;
-    width: calc((100% - 32px) / 3) !important;
+    flex: 0 0 calc((100% - 24px) / 3) !important;
+    width: calc((100% - 24px) / 3) !important;
     min-width: 200px !important;
-    max-width: 280px !important;
     flex-shrink: 0 !important;
   }
 }
 
-/* Mobile: Product Slider Track Gap (Keeping Original Card Size) */
+/* Mobile: Product Slider Track Gap & 2.25 Cards View */
 @media only screen and (max-width: 768px) {
   ul.l4cl.slider,
   .l4cl.slider,
   .deals-product-track,
   #root .deals-product-track {
-    gap: 16px !important;
-    padding-left: 16px !important;
-    padding-right: 16px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    padding: 6px 0 16px 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scroll-behavior: smooth !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-x pan-y !important;
+    scroll-snap-type: x mandatory !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+    box-sizing: border-box !important;
+    list-style: none !important;
+  }
+
+  ul.l4cl.slider::-webkit-scrollbar,
+  .deals-product-track::-webkit-scrollbar,
+  #root .deals-product-track::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  ul.l4cl.slider > li,
+  .l4cl.slider > li,
+  .deals-product-track > li,
+  .deals-product-track > .product-card,
+  .deals-product-track > .gs-card,
+  ul.deals-product-track > li,
+  ul.l4cl.deals-product-track > li,
+  #root .deals-product-track > li {
+    flex: 0 0 calc((100vw - 36px) / 2.25) !important;
+    width: calc((100vw - 36px) / 2.25) !important;
+    min-width: calc((100vw - 36px) / 2.25) !important;
+    max-width: calc((100vw - 36px) / 2.25) !important;
+    flex-shrink: 0 !important;
+    scroll-snap-align: start !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
   }
 }
 
@@ -583,14 +624,14 @@ ul.l4cl:not(.slider)>li,
 .deals-product-track>li {
   display: flex !important;
   flex-direction: column !important;
-  justify-content: space-between !important;
+  justify-content: flex-start !important;
   height: 100% !important;
-  min-height: 380px !important;
+  min-height: 0 !important;
   background: #FFFFFF !important;
-  border: 1px solid var(--gs-card-border) !important;
-  border-radius: var(--gs-card-radius) !important;
+  border: 1px solid #E5EAF0 !important;
+  border-radius: 14px !important;
   padding: 0 !important;
-  box-shadow: 0 4px 12px rgba(12, 62, 97, 0.04) !important;
+  box-shadow: 0 2px 8px rgba(12, 62, 97, 0.05) !important;
   transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease !important;
   box-sizing: border-box !important;
   position: relative !important;
@@ -608,9 +649,9 @@ ul.l4cl:not(.slider)>li,
   ul.l4cl.gs-product-grid>li:hover,
   ul.l4cl:not(.slider)>li:hover,
   .deals-product-track>li:hover {
-    transform: translateY(-6px) !important;
-    box-shadow: 0 16px 36px rgba(12, 62, 97, 0.12), 0 0 0 1.5px rgba(190, 152, 45, 0.35) !important;
-    border-color: rgba(190, 152, 45, 0.5) !important;
+    transform: translateY(-4px) !important;
+    box-shadow: 0 12px 28px rgba(12, 62, 97, 0.12), 0 0 0 1px #BE982D !important;
+    border-color: #BE982D !important;
   }
 }
 
@@ -628,7 +669,7 @@ ul.l4cl:not(.slider)>li,
   body[class*="template-collection"] #collection,
   body[class*="template-search"] #collection {
     gap: 10px !important;
-    padding: 10px 12px !important;
+    padding: 6px 16px 16px 16px !important;
   }
 
   #collection>li,
@@ -641,14 +682,14 @@ ul.l4cl:not(.slider)>li,
   .template-search #collection>li,
   body[class*="template-collection"] #collection>li,
   body[class*="template-search"] #collection>li {
-    flex: 0 0 calc(50% - 5px) !important;
-    width: calc(50% - 5px) !important;
-    min-width: calc(50% - 5px) !important;
-    max-width: calc(50% - 5px) !important;
+    flex: 0 0 calc((100% - 10px) / 2) !important;
+    width: calc((100% - 10px) / 2) !important;
+    min-width: calc((100% - 10px) / 2) !important;
+    max-width: calc((100% - 10px) / 2) !important;
     margin: 0 !important;
     box-sizing: border-box !important;
-    border-radius: 12px !important;
-    min-height: 340px !important;
+    border-radius: 14px !important;
+    min-height: 0 !important;
   }
 }
 
@@ -1639,28 +1680,34 @@ html.gs-search-active #gs-search-overlay {
 
 .gs-card .gs-badge,
 .product-card .gs-badge,
-#collection .gs-badge {
-  font-size: 11px !important;
+#collection .gs-badge,
+.gs-badge-discount {
+  font-size: 10.5px !important;
   font-weight: 800 !important;
-  padding: 3px 8px !important;
-  border-radius: 6px !important;
-  line-height: 1.2 !important;
-  letter-spacing: 0.2px !important;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12) !important;
-  display: inline-block !important;
+  padding: 3px 4.5px !important;
+  border-radius: 4px !important;
+  line-height: 1.1 !important;
+  letter-spacing: 0.1px !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   width: auto !important;
   height: auto !important;
-  text-transform: none !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+  box-sizing: border-box !important;
+  border: none !important;
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 370px) {
 
   .gs-card .gs-badge,
   .product-card .gs-badge,
-  #collection .gs-badge {
+  #collection .gs-badge,
+  .gs-badge-discount {
     font-size: 9.5px !important;
-    padding: 2px 6px !important;
-    border-radius: 4px !important;
+    padding: 2.5px 3.5px !important;
   }
 }
 
@@ -1668,10 +1715,12 @@ html.gs-search-active #gs-search-overlay {
 .gs-card .gs-badge-discount,
 .product-card .gs-badge-discount,
 #collection .gs-badge-discount,
-.gs-card .gs-badge-sale {
+.gs-card .gs-badge-sale,
+.gs-badge-discount {
   background: #FACC15 !important;
+  background-color: #FACC15 !important;
   color: #0C3E61 !important;
-  box-shadow: 0 2px 8px rgba(250, 204, 21, 0.45) !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08) !important;
 }
 
 /* Out of Stock Badge */
@@ -2161,29 +2210,48 @@ html.gs-search-active #gs-search-overlay {
    PERFECT PRODUCT CARD GRID ALIGNMENT FIX (ALL CARDS, PRICES & BUTTONS)
    ========================================================================== */
 
-/* 1. Equal Height Card Container */
+/* 1. Master Equal Height Card Container */
 .gs-card,
 .product-card,
 #collection>li,
 ul#collection>li,
-.deals-product-track>li {
+.deals-product-track>li,
+.gs-product-grid>li,
+ul.gs-product-grid>li,
+ul.l4cl>li,
+.gs-rec-card {
   display: flex !important;
   flex-direction: column !important;
-  justify-content: space-between !important;
+  justify-content: flex-start !important;
   height: 100% !important;
+  min-height: 0 !important;
   box-sizing: border-box !important;
+  background: #FFFFFF !important;
+  border: 1px solid #E5EAF0 !important;
+  border-radius: 14px !important;
 }
 
 /* 2. Content Body Flexbox */
 .gs-card .gs-card-content,
 .product-card .gs-card-content,
-#collection .gs-card-content {
+#collection .gs-card-content,
+.gs-rec-card .gs-rec-info {
   display: flex !important;
   flex-direction: column !important;
-  justify-content: space-between !important;
+  justify-content: flex-start !important;
   flex: 1 1 auto !important;
-  padding: 12px 14px 14px !important;
+  padding: 10px 8px 12px 8px !important;
   box-sizing: border-box !important;
+  background: #FFFFFF !important;
+}
+
+@media only screen and (min-width: 769px) {
+  .gs-card .gs-card-content,
+  .product-card .gs-card-content,
+  #collection .gs-card-content,
+  .gs-rec-card .gs-rec-info {
+    padding: 12px 14px 14px 14px !important;
+  }
 }
 
 .gs-card .gs-card-content>div:first-child,
@@ -2191,222 +2259,219 @@ ul#collection>li,
 #collection .gs-card-content>div:first-child {
   display: flex !important;
   flex-direction: column !important;
-  flex: 1 1 auto !important;
+  flex: 0 0 auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
 }
 
-/* 3. Title Slot (ALWAYS 2-Line Height = 38px on desktop, 34px on mobile) */
+/* 3. Title Slot (Fixed height to align all subsequent rows) */
 .gs-card h3.gs-card-title,
 .product-card h3.gs-card-title,
 #collection h3.gs-card-title,
 .gs-card .gs-card-title,
 .product-card .gs-card-title,
-#collection .gs-card-title {
-  height: 38px !important;
-  min-height: 38px !important;
-  max-height: 38px !important;
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: center !important;
-  margin: 2px 0 4px 0 !important;
+#collection .gs-card-title,
+.gs-rec-card .gs-rec-name {
+  height: 34px !important;
+  min-height: 34px !important;
+  max-height: 34px !important;
+  margin: 0 0 4px 0 !important;
   padding: 0 !important;
-  overflow: hidden !important;
-}
-
-.gs-card .gs-card-title a,
-.product-card .gs-card-title a,
-#collection .gs-card-title a {
   display: -webkit-box !important;
   -webkit-line-clamp: 2 !important;
   -webkit-box-orient: vertical !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
   line-height: 1.35 !important;
-  font-size: 13.5px !important;
+  font-size: 12px !important;
   font-weight: 600 !important;
-  color: #172B3A !important;
-  text-decoration: none !important;
+  color: #0C3E61 !important;
+  box-sizing: border-box !important;
+  text-align: left !important;
 }
 
-.text-center .gs-card-title,
-.text-center .gs-card-title a,
-.gs-card.text-center .gs-card-title,
-.product-card.text-center .gs-card-title,
-.text-center .gs-card-vendor,
-.gs-card.text-center .gs-card-vendor,
-.product-card.text-center .gs-card-vendor {
-  text-align: center !important;
-}
-
-@media only screen and (max-width: 768px) {
-
+@media only screen and (min-width: 769px) {
   .gs-card h3.gs-card-title,
   .product-card h3.gs-card-title,
   #collection h3.gs-card-title,
   .gs-card .gs-card-title,
   .product-card .gs-card-title,
-  #collection .gs-card-title {
-    height: 34px !important;
-    min-height: 34px !important;
-    max-height: 34px !important;
-  }
-
-  .gs-card .gs-card-title a,
-  .product-card .gs-card-title a,
-  #collection .gs-card-title a {
-    font-size: 12px !important;
+  #collection .gs-card-title,
+  .gs-rec-card .gs-rec-name {
+    font-size: 13px !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    max-height: 36px !important;
+    margin: 0 0 6px 0 !important;
   }
 }
 
-/* 4. Rating Stars Slot (ALWAYS Fixed 18px Height) */
+.gs-card .gs-card-title a,
+.product-card .gs-card-title a,
+#collection .gs-card-title a {
+  color: #0C3E61 !important;
+  text-decoration: none !important;
+}
+
+.gs-card .gs-card-title a:hover,
+.product-card .gs-card-title a:hover {
+  color: #BE982D !important;
+}
+
+/* 4. Rating Stars Slot (Fixed 16px Height) */
 .gs-card .gs-card-rating,
 .product-card .gs-card-rating,
 #collection .gs-card-rating {
-  height: 18px !important;
-  min-height: 18px !important;
-  max-height: 18px !important;
+  height: 16px !important;
+  min-height: 16px !important;
+  max-height: 16px !important;
+  margin: 0 0 3px 0 !important;
+  padding: 0 !important;
   display: flex !important;
   align-items: center !important;
-  justify-content: flex-start !important;
-  margin: 2px 0 4px 0 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
 }
 
-.text-center .gs-card-rating,
-.gs-card.text-center .gs-card-rating,
-.product-card.text-center .gs-card-rating {
-  justify-content: center !important;
+.gs-card .gs-rating-stars,
+.product-card .gs-rating-stars {
+  color: #F59E0B !important;
+  font-size: 12px !important;
+  letter-spacing: 1px !important;
+  line-height: 1 !important;
+}
+
+.gs-card .gs-rating-count,
+.product-card .gs-rating-count {
+  color: #64748B !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  margin-left: 3px !important;
+  line-height: 1 !important;
 }
 
 .gs-card .gs-card-rating.empty,
 .product-card .gs-card-rating.empty,
 #collection .gs-card-rating.empty {
   display: flex !important;
-  height: 18px !important;
-  min-height: 18px !important;
-  max-height: 18px !important;
+  height: 16px !important;
+  min-height: 16px !important;
+  max-height: 16px !important;
   visibility: hidden !important;
 }
 
-/* 5. Stock Status Slot (ALWAYS Fixed 18px Height) */
+/* 5. Stock Status Slot (Fixed 16px Height) */
 .gs-card .gs-stock-status,
 .product-card .gs-stock-status,
 #collection .gs-stock-status {
-  height: 18px !important;
-  min-height: 18px !important;
-  max-height: 18px !important;
+  height: 16px !important;
+  min-height: 16px !important;
+  max-height: 16px !important;
+  margin: 0 0 4px 0 !important;
+  padding: 0 !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  color: #16A34A !important;
   display: flex !important;
   align-items: center !important;
-  justify-content: flex-start !important;
-  text-align: left !important;
-  font-size: 12px !important;
-  font-weight: 700 !important;
-  color: #22C55E !important;
-  margin: 2px 0 4px 0 !important;
-}
-
-.text-center .gs-stock-status,
-.gs-card.text-center .gs-stock-status,
-.product-card.text-center .gs-stock-status {
-  justify-content: center !important;
-  text-align: center !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  box-sizing: border-box !important;
 }
 
 .gs-card .gs-stock-status.empty,
 .product-card .gs-stock-status.empty,
 #collection .gs-stock-status.empty {
   display: flex !important;
-  height: 18px !important;
-  min-height: 18px !important;
-  max-height: 18px !important;
+  height: 16px !important;
+  min-height: 16px !important;
+  max-height: 16px !important;
   visibility: hidden !important;
 }
 
-/* 6. Price Row — Single Line Non-Wrapping */
+/* 6. Price Row — Prominent Current Price + Muted Strikethrough Compare Price (NO discount badge in row) */
 .gs-card .gs-card-price-wrap,
 .product-card .gs-card-price-wrap,
-#collection .gs-card-price-wrap {
+#collection .gs-card-price-wrap,
+.gs-rec-card .gs-rec-price {
   display: flex !important;
   align-items: center !important;
-  justify-content: flex-start !important;
+  flex-direction: row !important;
   flex-wrap: nowrap !important;
   white-space: nowrap !important;
   gap: 6px !important;
-  margin: 4px 0 8px 0 !important;
-  height: 26px !important;
-  min-height: 26px !important;
-  max-height: 26px !important;
-  overflow: hidden !important;
-}
-
-.text-center .gs-card-price-wrap,
-.gs-card.text-center .gs-card-price-wrap,
-.product-card.text-center .gs-card-price-wrap {
-  justify-content: center !important;
-}
-
-.gs-card .gs-price-compare,
-.product-card .gs-price-compare,
-#collection .gs-price-compare {
-  font-size: 13px !important;
-  font-weight: 700 !important;
-  color: #EF4444 !important;
-  text-decoration: line-through !important;
-  white-space: nowrap !important;
-  flex-shrink: 0 !important;
-  line-height: 1 !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 20px !important;
+  min-height: 20px !important;
+  max-height: 20px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  overflow: visible !important;
 }
 
 .gs-card .gs-price-current,
 .product-card .gs-price-current,
-#collection .gs-price-current {
-  font-size: 17px !important;
-  font-weight: 900 !important;
+#collection .gs-price-current,
+.gs-rec-card .gs-rec-price-sale {
+  font-size: 14px !important;
+  font-weight: 800 !important;
   color: #0C3E61 !important;
-  letter-spacing: -0.3px !important;
   white-space: nowrap !important;
   flex-shrink: 0 !important;
   line-height: 1 !important;
-}
-
-.gs-card .gs-price-save-badge,
-.product-card .gs-price-save-badge,
-#collection .gs-price-save-badge {
-  font-size: 10px !important;
-  font-weight: 800 !important;
-  color: #D97706 !important;
-  background: #FEF3C7 !important;
-  border: 1px solid #FCD34D !important;
-  padding: 1px 5px !important;
-  border-radius: 4px !important;
-  line-height: 1.2 !important;
-  white-space: nowrap !important;
-  flex-shrink: 0 !important;
+  letter-spacing: -0.2px !important;
   display: inline-flex !important;
   align-items: center !important;
 }
 
-@media only screen and (max-width: 768px) {
-
+@media only screen and (min-width: 769px) {
   .gs-card .gs-price-current,
   .product-card .gs-price-current,
-  #collection .gs-price-current {
-    font-size: 14px !important;
-  }
-
-  .gs-card .gs-price-compare,
-  .product-card .gs-price-compare,
-  #collection .gs-price-compare {
-    font-size: 11.5px !important;
-  }
-
-  .gs-card .gs-price-save-badge,
-  .product-card .gs-price-save-badge,
-  #collection .gs-price-save-badge {
-    font-size: 9px !important;
-    padding: 1px 4px !important;
+  #collection .gs-price-current,
+  .gs-rec-card .gs-rec-price-sale {
+    font-size: 16px !important;
   }
 }
 
-/* 7. Action Container & Form Wrappers — Force 100% Full Width & Bottom Baseline */
+.gs-card .gs-price-compare,
+.product-card .gs-price-compare,
+#collection .gs-price-compare,
+.gs-rec-card .gs-rec-price-compare {
+  font-size: 11.5px !important;
+  font-weight: 500 !important;
+  color: #94A3B8 !important;
+  text-decoration: line-through !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  line-height: 1 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+@media only screen and (min-width: 769px) {
+  .gs-card .gs-price-compare,
+  .product-card .gs-price-compare,
+  #collection .gs-price-compare,
+  .gs-rec-card .gs-rec-price-compare {
+    font-size: 12.5px !important;
+  }
+}
+
+/* Remove duplicate discount badge beside price completely */
+.gs-card .gs-price-save-badge,
+.product-card .gs-price-save-badge,
+#collection .gs-price-save-badge,
+.gs-price-save-badge {
+  display: none !important;
+}
+
+/* 7. Action Container & Form Wrappers */
 .gs-card-actions,
 .gs-card .gs-card-actions,
 .product-card .gs-card-actions,
@@ -2423,7 +2488,7 @@ ul#collection>li,
 .gs-card fieldset,
 .product-card fieldset,
 #collection fieldset {
-  margin-top: auto !important;
+  margin-top: 14px !important;
   margin-bottom: 0 !important;
   margin-left: 0 !important;
   margin-right: 0 !important;
@@ -2431,13 +2496,11 @@ ul#collection>li,
   min-width: 100% !important;
   max-width: 100% !important;
   padding: 0 !important;
-  position: relative !important;
-  z-index: 10 !important;
+  flex: 0 0 auto !important;
   box-sizing: border-box !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  text-align: center !important;
 }
 
 /* 8. Unify EVERY Single Action Button (ADD TO CART, SELECT OPTIONS, OUT OF STOCK) */
@@ -2456,37 +2519,36 @@ ul#collection>li,
 #collection a.overlay-buy_button,
 .gs-card .link-btn a,
 .product-card .link-btn a,
-#collection .link-btn a {
+#collection .link-btn a,
+.gs-rec-card .gs-quick-add {
   width: 100% !important;
   min-width: 100% !important;
   max-width: 100% !important;
-  height: 38px !important;
-  min-height: 38px !important;
-  max-height: 38px !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  max-height: 36px !important;
   background-color: #0C3E61 !important;
   background: #0C3E61 !important;
+  border: 1px solid #0C3E61 !important;
   color: #FFFFFF !important;
   font-size: 12px !important;
   font-weight: 700 !important;
-  letter-spacing: 0.5px !important;
+  letter-spacing: 0.2px !important;
   border-radius: 8px !important;
-  border: none !important;
   cursor: pointer !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   text-align: center !important;
   text-decoration: none !important;
-  box-shadow: 0 2px 6px rgba(12, 62, 97, 0.15) !important;
   box-sizing: border-box !important;
   margin: 0 !important;
   padding: 0 6px !important;
-  -webkit-appearance: none !important;
-  appearance: none !important;
+  white-space: nowrap !important;
+  transition: background 0.2s ease, border-color 0.2s ease !important;
 }
 
-@media only screen and (max-width: 768px) {
-
+@media only screen and (min-width: 769px) {
   .gs-card .gs-add-cart-btn,
   .product-card .gs-add-cart-btn,
   #collection .gs-add-cart-btn,
@@ -2502,13 +2564,21 @@ ul#collection>li,
   #collection a.overlay-buy_button,
   .gs-card .link-btn a,
   .product-card .link-btn a,
-  #collection .link-btn a {
-    height: 34px !important;
-    min-height: 34px !important;
-    max-height: 34px !important;
-    font-size: 11px !important;
-    border-radius: 6px !important;
+  #collection .link-btn a,
+  .gs-rec-card .gs-quick-add {
+    height: 38px !important;
+    min-height: 38px !important;
+    max-height: 38px !important;
+    font-size: 13px !important;
   }
+}
+
+.gs-card .gs-add-cart-btn:hover,
+.product-card .gs-add-cart-btn:hover,
+#collection .gs-add-cart-btn:hover,
+.gs-rec-card .gs-quick-add:hover {
+  background-color: #082D47 !important;
+  border-color: #082D47 !important;
 }
 
 /* ==========================================================================
@@ -5863,137 +5933,7 @@ button.gs-checkout-main-btn:hover {
 }
 
 
-/* ===== Arabian Perfumes — Ajfan-Style Product Card Overrides ===== */
-#shopify-section-section_featured_collection_perfumes .product-card,
-#shopify-section-section_featured_collection_perfumes .gs-card,
-#shopify-section-section_featured_collection_perfumes .gs-card-wrapper,
-#shopify-section-section_featured_collection_perfumes .deals-product-track > li {
-  background: transparent !important;
-  background-color: transparent !important;
-  border: none !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  padding: 0 !important;
-  overflow: visible !important;
-  text-align: center !important;
-  min-height: auto !important;
-  height: auto !important;
-}
 
-#shopify-section-section_featured_collection_perfumes .gs-card:hover,
-#shopify-section-section_featured_collection_perfumes .product-card:hover,
-#shopify-section-section_featured_collection_perfumes .deals-product-track > li:hover {
-  transform: translateY(-4px) !important;
-  box-shadow: none !important;
-  border-color: transparent !important;
-}
-
-#shopify-section-section_featured_collection_perfumes .gs-card-media {
-  border-radius: 12px !important;
-  overflow: hidden !important;
-  background: transparent !important;
-  background-color: transparent !important;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06) !important;
-  aspect-ratio: 1 / 1.18 !important;
-  min-height: 240px !important;
-  width: 100% !important;
-  position: relative !important;
-  margin-bottom: 0 !important;
-}
-
-#shopify-section-section_featured_collection_perfumes .gs-card-media a,
-#shopify-section-section_featured_collection_perfumes .gs-card-media picture {
-  display: block !important;
-  width: 100% !important;
-  height: 100% !important;
-}
-
-#shopify-section-section_featured_collection_perfumes .gs-card-media img.primary-img,
-#shopify-section-section_featured_collection_perfumes .gs-card-media img.secondary-img,
-#shopify-section-section_featured_collection_perfumes .gs-card-media picture img,
-#shopify-section-section_featured_collection_perfumes .gs-card-media img {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-  background: transparent !important;
-  background-color: transparent !important;
-  padding: 0 !important;
-  border-radius: 12px !important;
-  display: block !important;
-}
-
-#shopify-section-section_featured_collection_perfumes .gs-card-content {
-  padding: 10px 4px 0 4px !important;
-  text-align: center !important;
-  background: transparent !important;
-  background-color: transparent !important;
-}
-
-#shopify-section-section_featured_collection_perfumes .gs-card-title {
-  font-size: 13px !important;
-  font-weight: 500 !important;
-  color: #1E293B !important;
-  text-align: center !important;
-  line-height: 1.35 !important;
-  margin: 10px 0 4px 0 !important;
-  padding: 0 !important;
-  display: -webkit-box !important;
-  -webkit-line-clamp: 2 !important;
-  -webkit-box-orient: vertical !important;
-  overflow: hidden !important;
-}
-
-#shopify-section-section_featured_collection_perfumes .gs-card-title a {
-  color: #1E293B !important;
-  text-decoration: none !important;
-}
-
-#shopify-section-section_featured_collection_perfumes .gs-card-title a:hover {
-  color: #0C3E61 !important;
-}
-
-#shopify-section-section_featured_collection_perfumes .gs-card-price-wrap,
-#shopify-section-section_featured_collection_perfumes p.price {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 6px !important;
-  margin-top: 4px !important;
-  margin-bottom: 0 !important;
-  padding: 0 !important;
-}
-
-#shopify-section-section_featured_collection_perfumes .gs-price-current,
-#shopify-section-section_featured_collection_perfumes p.price,
-#shopify-section-section_featured_collection_perfumes .price {
-  font-size: 17px !important;
-  font-weight: 800 !important;
-  color: #0C3E61 !important; /* Navbar blue color */
-  text-align: center !important;
-  margin: 0 !important;
-}
-
-#shopify-section-section_featured_collection_perfumes .gs-price-compare,
-#shopify-section-section_featured_collection_perfumes .old-price {
-  display: inline-block !important;
-  font-size: 13px !important;
-  font-weight: 500 !important;
-  color: #DC2626 !important; /* Red color for strikethrough price */
-  text-decoration: line-through !important;
-}
-
-/* Hide unneeded elements for Perfumes section */
-#shopify-section-section_featured_collection_perfumes .gs-stock-status,
-#shopify-section-section_featured_collection_perfumes .gs-card-rating,
-#shopify-section-section_featured_collection_perfumes .gs-card-vendor,
-#shopify-section-section_featured_collection_perfumes .gs-price-save-badge,
-#shopify-section-section_featured_collection_perfumes .gs-card-actions,
-#shopify-section-section_featured_collection_perfumes .gs-wishlist-btn,
-#shopify-section-section_featured_collection_perfumes .gs-card-badges,
-#shopify-section-section_featured_collection_perfumes .submit,
-#shopify-section-section_featured_collection_perfumes form {
-  display: none !important;
-}
 
 /* ── Cart Page Estimated Delivery Timeline Card ── */
 .gs-cart-delivery-card {

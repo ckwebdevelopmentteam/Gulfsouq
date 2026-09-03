@@ -366,18 +366,28 @@
   @media only screen and (max-width: 768px) {
     #shopify-section-{{ section.id }} {
       padding: 24px 0 16px 0 !important;
+      overflow-x: clip !important;
+      box-sizing: border-box !important;
     }
     #shopify-section-{{ section.id }} .deals-section-inner {
-      padding: 0 14px !important;
+      padding-left: 16px !important;
+      padding-right: 0 !important;
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
     }
     #shopify-section-{{ section.id }} .deals-header-inner {
       display: flex !important;
       align-items: flex-start !important;
       justify-content: space-between !important;
       margin-bottom: 14px !important;
-      padding: 0 !important;
+      padding-left: 0 !important;
+      padding-right: 16px !important;
       gap: 10px !important;
       width: 100% !important;
+      box-sizing: border-box !important;
     }
     #shopify-section-{{ section.id }} .deals-header-right {
       display: none !important;
@@ -390,20 +400,58 @@
       letter-spacing: -0.2px !important;
       line-height: 1.25 !important;
       margin-bottom: 0 !important;
+      box-sizing: border-box !important;
     }
     #shopify-section-{{ section.id }} .deals-subtitle,
     #shopify-section-{{ section.id }} .deals-subtitle p {
       font-size: 12px !important;
       line-height: 1.25 !important;
+      box-sizing: border-box !important;
     }
     #shopify-section-{{ section.id }} .deals-product-track-container {
       padding: 0 !important;
+      margin: 0 !important;
       width: 100% !important;
+      max-width: 100% !important;
+      overflow: hidden !important;
+      box-sizing: border-box !important;
     }
     #shopify-section-{{ section.id }} .deals-product-track {
-      gap: 12px !important;
-      padding: 4px 4px 6px 4px !important;
+      display: flex !important;
+      flex-direction: row !important;
+      flex-wrap: nowrap !important;
+      align-items: stretch !important;
+      gap: 10px !important;
+      padding: 6px 0 16px 0 !important;
       margin: 0 !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      overflow-x: auto !important;
+      overflow-y: hidden !important;
+      scroll-behavior: smooth !important;
+      -webkit-overflow-scrolling: touch !important;
+      touch-action: pan-x pan-y !important;
+      scroll-snap-type: x mandatory !important;
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+      box-sizing: border-box !important;
+      list-style: none !important;
+    }
+    #shopify-section-{{ section.id }} .deals-product-track::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+    }
+    #shopify-section-{{ section.id }} .deals-product-track > li,
+    #shopify-section-{{ section.id }} .deals-product-track > .product-card,
+    #shopify-section-{{ section.id }} .deals-product-track > .gs-card {
+      flex: 0 0 calc((100vw - 36px) / 2.25) !important;
+      width: calc((100vw - 36px) / 2.25) !important;
+      min-width: calc((100vw - 36px) / 2.25) !important;
+      max-width: calc((100vw - 36px) / 2.25) !important;
+      flex-shrink: 0 !important;
+      scroll-snap-align: start !important;
+      box-sizing: border-box !important;
     }
     #shopify-section-{{ section.id }} .deals-footer-mobile {
       display: flex !important;
@@ -411,7 +459,10 @@
       justify-content: center !important;
       width: 100% !important;
       margin-top: 14px !important;
-      padding: 0 !important;
+      padding-left: 0 !important;
+      padding-right: 16px !important;
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
       box-sizing: border-box !important;
     }
     #shopify-section-{{ section.id }} .deals-view-link-mobile {
@@ -459,140 +510,6 @@
     }
   }
 
-  {% assign clean_title_check = section.settings.title | strip_html | strip %}
-  {% if section.settings.collection == 'athar-and-perfume' or collection.handle == 'athar-and-perfume' or clean_title_check contains 'Arabian' %}
-  /* ===== Arabian Perfumes — Ajfan-style Minimal Card Design ===== */
-  #shopify-section-{{ section.id }} .product-card,
-  #shopify-section-{{ section.id }} .gs-card,
-  #shopify-section-{{ section.id }} .gs-card-wrapper,
-  #shopify-section-{{ section.id }} .deals-product-track > li {
-    background: transparent !important;
-    background-color: transparent !important;
-    border: none !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-    overflow: visible !important;
-    text-align: center !important;
-    min-height: auto !important;
-    height: auto !important;
-  }
-
-  #shopify-section-{{ section.id }} .gs-card:hover,
-  #shopify-section-{{ section.id }} .product-card:hover,
-  #shopify-section-{{ section.id }} .deals-product-track > li:hover {
-    transform: translateY(-4px) !important;
-    box-shadow: none !important;
-    border-color: transparent !important;
-  }
-
-  #shopify-section-{{ section.id }} .gs-card-media {
-    border-radius: 12px !important;
-    overflow: hidden !important;
-    background: transparent !important;
-    background-color: transparent !important;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06) !important;
-    aspect-ratio: 1 / 1.18 !important;
-    min-height: 240px !important;
-    width: 100% !important;
-    position: relative !important;
-    margin-bottom: 0 !important;
-  }
-
-  #shopify-section-{{ section.id }} .gs-card-media a,
-  #shopify-section-{{ section.id }} .gs-card-media picture {
-    display: block !important;
-    width: 100% !important;
-    height: 100% !important;
-  }
-
-  #shopify-section-{{ section.id }} .gs-card-media img.primary-img,
-  #shopify-section-{{ section.id }} .gs-card-media img.secondary-img,
-  #shopify-section-{{ section.id }} .gs-card-media picture img,
-  #shopify-section-{{ section.id }} .gs-card-media img {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-    background: transparent !important;
-    background-color: transparent !important;
-    padding: 0 !important;
-    border-radius: 12px !important;
-    display: block !important;
-  }
-
-  #shopify-section-{{ section.id }} .gs-card-content {
-    padding: 10px 4px 0 4px !important;
-    text-align: center !important;
-    background: transparent !important;
-    background-color: transparent !important;
-  }
-
-  #shopify-section-{{ section.id }} .gs-card-title {
-    font-size: 13px !important;
-    font-weight: 500 !important;
-    color: #1E293B !important;
-    text-align: center !important;
-    line-height: 1.35 !important;
-    margin: 10px 0 4px 0 !important;
-    padding: 0 !important;
-    display: -webkit-box !important;
-    -webkit-line-clamp: 2 !important;
-    -webkit-box-orient: vertical !important;
-    overflow: hidden !important;
-  }
-
-  #shopify-section-{{ section.id }} .gs-card-title a {
-    color: #1E293B !important;
-    text-decoration: none !important;
-  }
-
-  #shopify-section-{{ section.id }} .gs-card-title a:hover {
-    color: #0C3E61 !important;
-  }
-
-  #shopify-section-{{ section.id }} .gs-card-price-wrap,
-  #shopify-section-{{ section.id }} p.price {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 6px !important;
-    margin-top: 4px !important;
-    margin-bottom: 0 !important;
-    padding: 0 !important;
-  }
-
-  #shopify-section-{{ section.id }} .gs-price-current,
-  #shopify-section-{{ section.id }} p.price,
-  #shopify-section-{{ section.id }} .price {
-    font-size: 17px !important;
-    font-weight: 800 !important;
-    color: #0C3E61 !important; /* Navbar blue color */
-    text-align: center !important;
-    margin: 0 !important;
-  }
-
-  #shopify-section-{{ section.id }} .gs-price-compare,
-  #shopify-section-{{ section.id }} .old-price {
-    display: inline-block !important;
-    font-size: 13px !important;
-    font-weight: 500 !important;
-    color: #DC2626 !important; /* Red color for strikethrough price */
-    text-decoration: line-through !important;
-  }
-
-  /* Hide unneeded elements */
-  #shopify-section-{{ section.id }} .gs-stock-status,
-  #shopify-section-{{ section.id }} .gs-card-rating,
-  #shopify-section-{{ section.id }} .gs-card-vendor,
-  #shopify-section-{{ section.id }} .gs-price-save-badge,
-  #shopify-section-{{ section.id }} .gs-card-actions,
-  #shopify-section-{{ section.id }} .gs-wishlist-btn,
-  #shopify-section-{{ section.id }} .gs-card-badges,
-  #shopify-section-{{ section.id }} .submit,
-  #shopify-section-{{ section.id }} form {
-    display: none !important;
-  }
-  {% endif %}
 </style>
 
 <script>

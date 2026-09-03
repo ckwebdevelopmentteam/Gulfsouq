@@ -426,7 +426,9 @@
       <div class="gs-card-badges">
         {%- if current_variant.compare_at_price > current_variant.price -%}
           {%- assign discount_pct = current_variant.compare_at_price | minus: current_variant.price | times: 100.0 | divided_by: current_variant.compare_at_price | round -%}
-          <span class="gs-badge gs-badge-discount">{{ discount_pct }}% OFF</span>
+          {%- if discount_pct > 0 -%}
+            <span class="gs-badge gs-badge-discount">{{ discount_pct }}% OFF</span>
+          {%- endif -%}
         {%- endif -%}
         {%- unless current_variant.available -%}
           <span class="gs-badge gs-badge-soldout">Out of Stock</span>
@@ -504,14 +506,12 @@
       {%- endif -%}
 
       <div class="gs-card-rating">
-        {%- if rating_value and show_rating -%}
-          <span class="gs-rating-stars">★★★★☆</span>
-          <span class="gs-rating-count">({{ rating_value }})</span>
-        {%- elsif product.id != blank -%}
-          {%- assign dummy_rating = product.id | modulo: 180 | plus: 35 -%}
-          <span class="gs-rating-stars">★★★★☆</span>
-          <span class="gs-rating-count">({{ dummy_rating }})</span>
+        {%- assign rev_count = rating_count -%}
+        {%- if rev_count == blank or rev_count == false -%}
+          {%- assign rev_count = product.id | modulo: 180 | plus: 35 -%}
         {%- endif -%}
+        <span class="gs-rating-stars">★★★★★</span>
+        <span class="gs-rating-count">({{ rev_count }})</span>
       </div>
 
       {%- if show_price -%}
