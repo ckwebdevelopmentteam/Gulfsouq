@@ -180,10 +180,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // ── 1. Grab key elements ──────────────────────────────────────────
   const qtyInput   = document.querySelector('input[name="quantity"]');
-  const priceEl    = document.querySelector('[data-product-price]');
+  const priceEl    = document.querySelector('[data-product-price][data-base-price], .main-product [data-product-price]:not(.gs-wishlist-btn), #product-form [data-product-price]:not(.gs-wishlist-btn)');
   const form       = document.querySelector('form[action="/cart/add"]');
 
-  if (!priceEl) return;
+  if (!priceEl || priceEl.closest('.gs-wishlist-btn') || priceEl.matches('.gs-wishlist-btn')) return;
 
   // Store the base price (in paise) — updated on variant change
   let currentBasePrice = parseInt(priceEl.dataset.basePrice) || 0;

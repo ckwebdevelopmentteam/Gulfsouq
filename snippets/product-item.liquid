@@ -426,7 +426,7 @@
       <div class="gs-card-badges">
         {%- if current_variant.compare_at_price > current_variant.price -%}
           {%- assign discount_pct = current_variant.compare_at_price | minus: current_variant.price | times: 100.0 | divided_by: current_variant.compare_at_price | round -%}
-          <span class="gs-badge gs-badge-discount">Sale -{{ discount_pct }}%</span>
+          <span class="gs-badge gs-badge-discount">{{ discount_pct }}% OFF</span>
         {%- endif -%}
         {%- unless current_variant.available -%}
           <span class="gs-badge gs-badge-soldout">Out of Stock</span>
@@ -526,8 +526,6 @@
           <span class="gs-price-current">{{ current_variant.price | money }}</span>
           {%- if current_variant.compare_at_price > current_variant.price -%}
             <span class="gs-price-compare">{{ current_variant.compare_at_price | money }}</span>
-            {%- assign discount_pct = current_variant.compare_at_price | minus: current_variant.price | times: 100.0 | divided_by: current_variant.compare_at_price | round -%}
-            <span class="gs-price-save-badge">{{ discount_pct }}% OFF</span>
           {%- endif -%}
         </div>
       {%- endif -%}
