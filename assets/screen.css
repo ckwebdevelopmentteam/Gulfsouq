@@ -6,8 +6,23 @@
 ---------------------------------------------  */
 *, *:before, *:after { margin: 0; padding: 0; box-sizing: border-box; outline-color: var(--secondary_bg); transform-origin: center center; }
 
-html { overflow-x: hidden; overflow-y: scroll; width: 100%; min-height: 100%; margin: 0; padding-bottom: 0 !important; font-size: 100.01%; -webkit-tap-highlight-color: transparent; -moz-osx-font-smoothing: grayscale; -webkit-overflow-scrolling: touch; -ms-content-zooming: none; -ms-overflow-style: scrollbar; scroll-behavior: smooth; }
+html { overflow-x: hidden; overflow-y: scroll; width: 100%; min-height: 100%; margin: 0; padding-bottom: 0 !important; font-size: 100.01%; -webkit-tap-highlight-color: transparent; -moz-osx-font-smoothing: grayscale; -webkit-overflow-scrolling: touch; -ms-content-zooming: none; -ms-overflow-style: scrollbar; scroll-behavior: smooth !important; }
 body { overflow-x: hidden; width: 100%; min-height: 100%; background: var(--custom_footer_bg_bottom); font-size: var(--main_fz); -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; direction: ltr; }
+
+/* Pure Slow Scroll Opacity Fade (Appearing & Disappearing) */
+.scroll-animated {
+	opacity: 0;
+	transition: opacity 0.8s ease-in-out;
+	will-change: opacity;
+}
+.scroll-animated.scroll-visible {
+	opacity: 1;
+}
+/* Disable scroll animation on main Hero Banner / Slideshow */
+.shopify-section-header ~ #content > .shopify-section:first-child .m6fr, 
+.shopify-section-header ~ #content > .shopify-section:first-child [class*="slideshow"] {
+	opacity: 1 !important;
+}
 @-ms-viewport { width: device-width; }
 @viewport { width: device-width; }	
 

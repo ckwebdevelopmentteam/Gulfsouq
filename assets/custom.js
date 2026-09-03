@@ -2497,8 +2497,8 @@ window.addEventListener('listProductSlider', event => {
 window.dispatchEvent(listProductSliderEvt);
 
 
-// DROPPED: [data-sal] - initializes scroll animations by asynchronously loading the JS and CSS,
-/*const dataSalEvent = new CustomEvent('dataSal');
+// [data-sal] - initializes scroll animations by asynchronously loading the JS and CSS
+const dataSalEvent = new CustomEvent('dataSal');
 window.addEventListener('dataSal', () => {
 	const data_sal = document.querySelectorAll('[data-sal]');
 	if (!data_sal.length) return;
@@ -2512,12 +2512,84 @@ window.addEventListener('dataSal', () => {
 		if (typeof sal !== 'function') return;
 
 		sal({
-			threshold: 1,
-			once: true
+			threshold: 0.15,
+			once: false
 		});
 	});
 });
-window.dispatchEvent(dataSalEvent);*/
+window.dispatchEvent(dataSalEvent);
+
+// Smooth Card & Image Appear and Disappear on Scroll across every page
+if ('IntersectionObserver' in window) {
+	const initCardScrollAnimations = () => {
+		const cardSelectors = [
+			'.l4cl > li',
+			'.l4ft > li',
+			'.l4ts > li',
+			'.l4ne > li',
+			'.l4vw > li',
+			'.l4ca > li',
+			'.product-card',
+			'.product-item',
+			'.m6bx',
+			'.m6fr article',
+			'.m6cl .results > div',
+			'.m6cl .results > li',
+			'article',
+			'.card',
+			'#content h1',
+			'#content h2',
+			'#content h3',
+			'#content .ff-heading',
+			'#content .has-text'
+		].join(', ');
+
+		const observer = new IntersectionObserver((entries) => {
+			entries.forEach(entry => {
+				if (entry.isIntersecting) {
+					entry.target.classList.add('scroll-visible');
+				} else {
+					entry.target.classList.remove('scroll-visible');
+				}
+			});
+		}, {
+			threshold: 0.1,
+			rootMargin: '0px 0px -30px 0px'
+		});
+
+		const attachObserver = () => {
+			const elements = document.querySelectorAll(cardSelectors);
+			const firstSection = document.querySelector('#content > .shopify-section:first-child');
+			elements.forEach(el => {
+				const isHeroBanner = firstSection && firstSection.contains(el) && (el.closest('.m6fr') || el.closest('[class*="slideshow"]'));
+				if (
+					!el.classList.contains('scroll-animated') &&
+					!isHeroBanner &&
+					!el.closest('.shopify-section-header')
+				) {
+					el.classList.add('scroll-animated');
+					observer.observe(el);
+				}
+			});
+		};
+
+		attachObserver();
+
+		// Handle dynamic/ajax loaded cards
+		if ('MutationObserver' in window) {
+			const mutObs = new MutationObserver(() => {
+				attachObserver();
+			});
+			mutObs.observe(document.body, { childList: true, subtree: true });
+		}
+	};
+
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', initCardScrollAnimations);
+	} else {
+		initCardScrollAnimations();
+	}
+}
 
 
 // select - adds styling and change tracking to all <select> elements, marks their parent/closest paragraph with 'has-select'.

@@ -265,6 +265,72 @@
   }
 </style>
 
+<script>
+  (function() {
+    function initBrandStatsCounter() {
+      const section = document.getElementById('gs-brand-stats-{{ section.id }}');
+      if (!section) return;
+
+      const statNums = section.querySelectorAll('.gs-brand-stat-num');
+      if (!statNums.length) return;
+
+      let animated = false;
+
+      function startCountUp() {
+        if (animated) return;
+        animated = true;
+
+        statNums.forEach(el => {
+          const originalText = el.textContent.trim();
+          const targetNum = parseInt(originalText.replace(/[^0-9]/g, ''), 10);
+          const suffix = originalText.replace(/[0-9]/g, '');
+
+          if (isNaN(targetNum)) return;
+
+          const duration = 1800; // ms
+          const startTime = performance.now();
+
+          function updateNumber(currentTime) {
+            const elapsedTime = currentTime - startTime;
+            const progress = Math.min(elapsedTime / duration, 1);
+            
+            // Ease out quad
+            const easeProgress = 1 - (1 - progress) * (1 - progress);
+            const currentNum = Math.floor(easeProgress * targetNum);
+
+            el.textContent = currentNum.toLocaleString() + suffix;
+
+            if (progress < 1) {
+              requestAnimationFrame(updateNumber);
+            } else {
+              el.textContent = targetNum.toLocaleString() + suffix;
+            }
+          }
+
+          requestAnimationFrame(updateNumber);
+        });
+      }
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            startCountUp();
+            observer.disconnect();
+          }
+        });
+      }, { threshold: 0.2 });
+
+      observer.observe(section);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initBrandStatsCounter);
+    } else {
+      initBrandStatsCounter();
+    }
+  })();
+</script>
+
 {% schema %}
 {
   "name": "Brand Stats & Story",

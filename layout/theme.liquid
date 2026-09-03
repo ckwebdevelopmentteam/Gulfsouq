@@ -27,9 +27,6 @@
     {% unless settings.heading_font.system? and settings.body_font.system? -%}
       <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
     {%- endunless -%}
-    <link rel="preload" as="style" href="{{ 'screen.css' | asset_url }}">
-    <link rel="preload" as="style" href="{{ 'theme-xtra.css' | asset_url }}">
-    <link rel="preload" as="style" href="{{ 'screen-settings.css' | asset_url }}">
     {% if rtl_languages contains localization.language.iso_code -%}
       <link rel="preload" as="style" href="{{ 'rtl.css' | asset_url }}">
     {%- endif %}
