@@ -102,9 +102,17 @@
           <ul class="gs-nav-list">
             {%- if main_nav_links.size > 0 -%}
               {%- for link in main_nav_links -%}
+                {%- liquid
+                  assign item_title = link.title
+                  assign item_url = link.url
+                  if item_title contains 'Baby' or item_url contains 'baby'
+                    assign item_title = 'Electronics & Gadgets'
+                    assign item_url = '/collections/electronics-and-gadgets'
+                  endif
+                -%}
                 <li class="gs-nav-item {% if link.links.size > 0 %}has-dropdown{% endif %}">
-                  <a href="{{ link.url }}" class="gs-nav-link {% if link.active %}active{% endif %}">
-                    <span>{{ link.title }}</span>
+                  <a href="{{ item_url }}" class="gs-nav-link {% if link.active %}active{% endif %}">
+                    <span>{{ item_title }}</span>
                     {%- if link.links.size > 0 -%}
                       <svg class="gs-dropdown-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="6 9 12 15 18 9"></polyline>
@@ -115,9 +123,17 @@
                   {%- if link.links.size > 0 -%}
                     <ul class="gs-dropdown-menu">
                       {%- for child_link in link.links -%}
+                        {%- liquid
+                          assign child_title = child_link.title
+                          assign child_url = child_link.url
+                          if child_title contains 'Baby' or child_url contains 'baby'
+                            assign child_title = 'Electronics & Gadgets'
+                            assign child_url = '/collections/electronics-and-gadgets'
+                          endif
+                        -%}
                         <li class="gs-dropdown-item">
-                          <a href="{{ child_link.url }}" class="gs-dropdown-link">
-                            {{ child_link.title }}
+                          <a href="{{ child_url }}" class="gs-dropdown-link">
+                            {{ child_title }}
                           </a>
                         </li>
                       {%- endfor -%}
@@ -139,6 +155,7 @@
                   <li class="gs-dropdown-item"><a href="/collections/chocolates" class="gs-dropdown-link">Chocolates</a></li>
                   <li class="gs-dropdown-item"><a href="/collections/nuts-and-dry-fruits" class="gs-dropdown-link">Nuts & Dry Fruits</a></li>
                   <li class="gs-dropdown-item"><a href="/collections/gift-hamper-boxes" class="gs-dropdown-link">Gift Hampers</a></li>
+                  <li class="gs-dropdown-item"><a href="/collections/electronics-and-gadgets" class="gs-dropdown-link">Electronics & Gadgets</a></li>
                 </ul>
               </li>
               <li class="gs-nav-item">
@@ -541,13 +558,21 @@
       <ul class="gs-mobile-links-list">
         {%- if main_nav_links.size > 0 -%}
           {%- for link in main_nav_links -%}
+            {%- liquid
+              assign mob_title = link.title
+              assign mob_url = link.url
+              if mob_title contains 'Baby' or mob_url contains 'baby'
+                assign mob_title = 'Electronics & Gadgets'
+                assign mob_url = '/collections/electronics-and-gadgets'
+              endif
+            -%}
             <li class="gs-mobile-link-item {% if link.links.size > 0 %}has-sublinks{% endif %}">
               <div class="gs-mobile-link-row">
-                <a href="{{ link.url }}" class="gs-mobile-link">
-                  <span>{{ link.title }}</span>
+                <a href="{{ mob_url }}" class="gs-mobile-link">
+                  <span>{{ mob_title }}</span>
                 </a>
                 {%- if link.links.size > 0 -%}
-                  <span role="button" tabindex="0" class="gs-mobile-sublink-toggle" aria-label="Toggle {{ link.title }} Submenu">
+                  <span role="button" tabindex="0" class="gs-mobile-sublink-toggle" aria-label="Toggle {{ mob_title }} Submenu">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#103f60" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                       <polyline points="6 9 12 15 18 9"></polyline>
                     </svg>
@@ -558,9 +583,17 @@
               {%- if link.links.size > 0 -%}
                 <ul class="gs-mobile-sublinks-list">
                   {%- for child_link in link.links -%}
+                    {%- liquid
+                      assign mob_child_title = child_link.title
+                      assign mob_child_url = child_link.url
+                      if mob_child_title contains 'Baby' or mob_child_url contains 'baby'
+                        assign mob_child_title = 'Electronics & Gadgets'
+                        assign mob_child_url = '/collections/electronics-and-gadgets'
+                      endif
+                    -%}
                     <li class="gs-mobile-sublink-item">
-                      <a href="{{ child_link.url }}" class="gs-mobile-sublink">
-                        {{ child_link.title }}
+                      <a href="{{ mob_child_url }}" class="gs-mobile-sublink">
+                        {{ mob_child_title }}
                       </a>
                     </li>
                   {%- endfor -%}
@@ -584,6 +617,8 @@
               <li class="gs-mobile-sublink-item"><a href="/collections/chocolates" class="gs-mobile-sublink">Chocolates</a></li>
               <li class="gs-mobile-sublink-item"><a href="/collections/nuts-and-dry-fruits" class="gs-mobile-sublink">Nuts & Dry Fruits</a></li>
               <li class="gs-mobile-sublink-item"><a href="/collections/gift-hamper-boxes" class="gs-mobile-sublink">Gift Hampers</a></li>
+              <li class="gs-mobile-sublink-item"><a href="/collections/electronics-and-gadgets" class="gs-mobile-sublink">Electronics & Gadgets</a></li>
+              <li class="gs-mobile-sublink-item"><a href="/collections/beauty-personal-care" class="gs-mobile-sublink">Beauty & Personal Care</a></li>
             </ul>
           </li>
           <li class="gs-mobile-link-item"><a href="/collections/all" class="gs-mobile-link"><span>Shop By Brands</span></a></li>
@@ -1910,6 +1945,10 @@
     width: 100% !important;
   }
 
+  .gs-mobile-link-item.has-sublinks .gs-mobile-link-row {
+    cursor: pointer !important;
+  }
+
   .gs-mobile-link {
     flex: 1 1 auto !important;
     display: flex !important;
@@ -2189,10 +2228,10 @@
         });
       }
 
-      // Submenu accordion toggles
-      const sublinkToggles = document.querySelectorAll('.gs-mobile-sublink-toggle');
-      sublinkToggles.forEach(toggle => {
-        toggle.addEventListener('click', function(e) {
+      // Submenu accordion toggles (clicking text or arrow toggle opens/closes submenu)
+      const mobileSublinkRows = document.querySelectorAll('.gs-mobile-link-item.has-sublinks .gs-mobile-link-row');
+      mobileSublinkRows.forEach(row => {
+        row.addEventListener('click', function(e) {
           e.preventDefault();
           e.stopPropagation();
           const parentItem = this.closest('.gs-mobile-link-item');

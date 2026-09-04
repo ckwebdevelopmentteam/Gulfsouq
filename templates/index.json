@@ -266,32 +266,7 @@
         "fix_zindex": 0
       }
     },
-    "section_featured_collection_homecoming": {
-      "type": "section-featured-collection",
-      "name": "Homecoming Combo Boxes",
-      "settings": {
-        "collection": "homecoming-boxes",
-        "layout": "grid",
-        "mobile_layout": "grid",
-        "limit": 4,
-        "number_of_items": 4,
-        "text_alignment": "left",
-        "width": "boxed",
-        "title": "<h2>Homecoming Combo Boxes</h2>",
-        "title_underline_style": "none",
-        "text": "<p>Special homecoming gift packages for loved ones</p>",
-        "show_link": true,
-        "link_text": "View All",
-        "button_style": "secondary plain",
-        "enable_quick_buy_desktop": true,
-        "enable_quick_buy_mobile": true,
-        "enable_quick_buy_drawer": false,
-        "enable_quick_buy_qty_selector": true,
-        "spacing_desktop": 30,
-        "spacing_mobile": 20,
-        "fix_zindex": 0
-      }
-    },
+
     "section_brand_stats": {
       "type": "section-brand-stats",
       "settings": {
@@ -820,6 +795,40 @@
         "view_all_link": "/collections"
       }
     },
+    "section_new_arrivals": {
+      "type": "section-featured-products",
+      "name": "New Arrivals",
+      "settings": {
+        "products": [
+          "sabr-watch-for-men",
+          "magnetic-wooden-doorbell",
+          "magic-induction-2-4g-r-c-rali-track-car",
+          "video-childrens-video-walkie-talkies-with-2-inch-hd-screen",
+          "geemey-3-in-1-trimmer-for-men"
+        ],
+        "layout": "slider",
+        "number_of_items": 5,
+        "text_alignment": "left",
+        "width": "boxed",
+        "title": "<h2>New Arrivals</h2>",
+        "title_underline_style": "none",
+        "text": "<p>Check out our latest arrivals and fresh stock</p>",
+        "show_link": true,
+        "link_text": "View All",
+        "link_url": "/collections/all",
+        "button_style": "secondary plain",
+        "enable_quick_buy_desktop": true,
+        "enable_quick_buy_mobile": true,
+        "enable_quick_buy_drawer": false,
+        "enable_quick_buy_qty_selector": true,
+        "enable_color_picker": false,
+        "enable_quick_buy_compact": false,
+        "mobile_layout": "slider",
+        "spacing_desktop": 30,
+        "spacing_mobile": 20,
+        "fix_zindex": 0
+      }
+    },
     "section_banner_dates": {
       "type": "section-category-banner",
       "settings": {
@@ -930,20 +939,20 @@
     "section_slideshow_KjVeaW",
     "section_hero_marquee",
     "section_explore_categories",
-    "section_banner_combos",
-    "section_featured_products_bDLXTh",
+    "section_new_arrivals",
     "section_banner_dates",
     "section_featured_collection_dates",
-    "section_featured_collection_chocolates",
+    "section_featured_products_bDLXTh",
+    "section_banner_combos",
+    "section_featured_collection_pravasi",
+    "section_featured_products_hEGAKr",
     "section_banner_perfumes",
     "section_featured_collection_perfumes",
-    "section_featured_collection_pravasi",
+    "section_featured_collection_chocolates",
     "section_brand_stats",
-    "section_featured_collection_homecoming",
     "section_middle_promo_banner",
     "section_custom_liquid_wUa8M4",
     "section_featured_products_TKk83n",
-    "section_featured_products_hEGAKr",
     "ugc_video_H9tHBQ",
     "176536168485f6182a",
     "17653676714a6f2fd7",

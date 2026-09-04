@@ -43,6 +43,9 @@
 
     <div class="all-collections-grid">
       {%- for collection in collections -%}
+        {%- if collection.handle == 'baby-products' or collection.handle == 'baby' or collection.title contains 'Baby' -%}
+          {%- continue -%}
+        {%- endif -%}
         {%- liquid
           capture current
             cycle 1, 2, 3, 4, 5, 6
@@ -81,7 +84,9 @@
 
 <style>
   .all-collections-container {
-    padding: 36px 0 48px 0;
+    padding: 36px 16px 48px 16px;
+    box-sizing: border-box;
+    max-width: 100%;
   }
 
   .all-collections-header {
@@ -117,7 +122,8 @@
 
   @media (max-width: 768px) {
     .all-collections-container {
-      padding: 24px 0 32px 0;
+      padding: 20px 16px 32px 16px !important;
+      box-sizing: border-box !important;
     }
     .all-collections-header {
       margin-bottom: 20px;
@@ -126,12 +132,16 @@
       font-size: 24px !important;
     }
     .all-collections-grid {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
     }
   }
 
   @media (max-width: 480px) {
+    .all-collections-container {
+      padding: 16px 16px 28px 16px !important;
+      box-sizing: border-box !important;
+    }
     .all-collections-grid {
       grid-template-columns: repeat(2, 1fr);
       gap: 12px;

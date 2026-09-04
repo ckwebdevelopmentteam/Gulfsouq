@@ -718,6 +718,13 @@ ul.l4cl:not(.slider)>li,
     padding: 6px 16px 16px 16px !important;
   }
 
+  .collection-wrapper #collection,
+  .template-collection .collection-wrapper #collection,
+  body[class*="template-collection"] .collection-wrapper #collection {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
   .deals-section-inner .gs-product-grid,
   .deals-product-grid-container .gs-product-grid {
     padding-left: 0 !important;
