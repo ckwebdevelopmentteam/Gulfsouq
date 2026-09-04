@@ -83,7 +83,18 @@
         {%- endif -%}
         {%- if share_whatsapp or share_facebook or share_twitter or share_pinterest or share_messenger or share_email -%}
             <li class="has-social">
-                <a href="./" class="toggle" aria-label="{{ 'social_share.share_this_product' | t }}"><i aria-hidden="true" class="icon-share"></i> <span class="mobile-hide">{{ 'social_share.share_this_product' | t }}</span></a>
+                <a href="./" class="toggle gs-share-btn" aria-label="{{ 'social_share.share_this_product' | t }}">
+                    <span class="gs-share-icon-wrap" aria-hidden="true">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="18" cy="5" r="3"></circle>
+                            <circle cx="6" cy="12" r="3"></circle>
+                            <circle cx="18" cy="19" r="3"></circle>
+                            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                        </svg>
+                    </span>
+                    <span class="mobile-hide">{{ 'social_share.share_this_product' | t }}</span>
+                </a>
                 <ul class="l4sc box">
                     {%- render 'social-share-buttons', share: sharing_product, share_whatsapp: share_whatsapp, share_facebook: share_facebook, share_twitter: share_twitter, share_pinterest: share_pinterest, share_messenger: share_messenger, share_email: share_email -%}
                 </ul>

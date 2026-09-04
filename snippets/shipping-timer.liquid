@@ -1,24 +1,25 @@
 {% doc %}
-  Renders a shipping timer with a live JS countdown to the daily same-day dispatch cutoff.
-
-  @example
-  {% render 'shipping-timer' %}
+  Renders an elevated shipping dispatch timer with live countdown for GulfSouq.
 {% enddoc %}
 
-<div class="gs-ship-timer" style="display:flex;align-items:center;gap:8px;background:#f0fdf6;border:1px solid #b8eece;border-radius:8px;padding:9px 12px;margin:8px 0;">
-  <svg width="16" height="16" fill="none" stroke="#3dbe6e" stroke-width="1.8"
-       viewBox="0 0 24 24" style="flex-shrink:0;">
-    <path d="M1 3h15v13H1zM16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
-  </svg>
-  <p style="font-size:12px;color:#333;margin:0;">
-    Order within <strong id="gs-countdown" style="color:#3dbe6e;font-weight:700;">--:--:--</strong>
-    for <strong style="color:#3dbe6e;">same-day dispatch</strong>
-  </p>
+<div class="gs-ship-timer-card">
+  <div class="gs-ship-timer-icon-wrap">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="1" y="3" width="15" height="13"></rect>
+      <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+      <circle cx="5.5" cy="18.5" r="2.5"></circle>
+      <circle cx="18.5" cy="18.5" r="2.5"></circle>
+    </svg>
+  </div>
+  <div class="gs-ship-timer-content">
+    <span class="gs-ship-timer-text">
+      Order within <strong id="gs-countdown" class="gs-ship-countdown">--:--:--</strong> for <span class="gs-ship-highlight">Same-Day&nbsp;Dispatch</span>
+    </span>
+  </div>
 </div>
 
 <script>
 (function(){
-  // Set your daily cutoff time in 24h (IST). Default: 17:00 = 5 PM
   var CUTOFF_HOUR = 17, CUTOFF_MIN = 0;
   function tick(){
     var now = new Date();
@@ -31,7 +32,7 @@
     var m = String(Math.floor((diff%3600)/60)).padStart(2,'0');
     var s = String(diff%60).padStart(2,'0');
     var el = document.getElementById('gs-countdown');
-    if(el) el.textContent = h+':'+m+':'+s;
+    if(el) el.textContent = h + ':' + m + ':' + s;
   }
   tick();
   setInterval(tick, 1000);

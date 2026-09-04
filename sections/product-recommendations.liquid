@@ -1,670 +1,245 @@
 {%- liquid
-  capture title_classes
-    echo 'w720 '
-    if section.settings.text_alignment == 'center'
-      echo ' text-center align-center'
-    endif
+  assign clean_title = section.settings.title | strip_html | strip
+  if clean_title == blank
+    assign clean_title = 'You may also like'
+  endif
+
+  assign display_limit = section.settings.products_to_show | default: section.settings.recommended_products_qty | default: 4
+
+  assign width_class = ''
+  if section.settings.number_of_items == 5
+    assign width_class = 'w20'
+  elsif section.settings.number_of_items == 6
+    assign width_class = 'w16'
+  elsif section.settings.number_of_items == 4
+    assign width_class = 'w25'
+  endif
+
+  capture image_sizes
+    echo '(min-width: 1000px) calc(100vw * 0.25), (min-width: 760px) 320px, 170px'
   endcapture
 -%}
 
 <style>
-/* ── GulfSouq Recommendations ─────────────────────────────── */
-.gs-rec-section {
-  padding: 28px 0;
-  border-top: 1px solid #e8e3d5;
-  font-family: inherit;
-}
-.gs-rec-header {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin-bottom: 16px;
-}
-.gs-rec-title {
-  font-size: 20px;
-  font-weight: 700;
-  color: #1a1a2e;
-  margin: 0;
-  font-family: inherit;
-}
-.gs-rec-view-all {
-  font-size: 12px;
-  color: #c9a840;
-  text-decoration: none;
-  flex-shrink: 0;
-  margin-left: 12px;
-}
+  #shopify-section-{{ section.id }} {
+    border-top: 1px solid #E5EAF0;
+    padding-top: 28px;
+    margin-bottom: {{ section.settings.spacing_desktop | default: 50 }}px;
+    position: relative;
+    z-index: {{ section.settings.fix_zindex | default: 0 }};
+  }
 
-/* Grid — 5 columns desktop */
-.gs-rec-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 12px;
-}
+  #shopify-section-{{ section.id }} .deals-section-inner {
+    max-width: 1420px;
+    margin: 0 auto;
+    padding: 0 24px;
+    box-sizing: border-box;
+    width: 100%;
+  }
 
-/* Card */
-.gs-rec-card {
-  background: #ffffff;
-  border: 1px solid #e8e3d5;
-  border-radius: 12px;
-  overflow: hidden;
-  cursor: pointer;
-  transition: border-color 0.2s, transform 0.2s;
-  display: flex;
-  flex-direction: column;
-}
-.gs-rec-card:hover {
-  border-color: #c9a840;
-  transform: translateY(-2px);
-}
+  #shopify-section-{{ section.id }} .deals-header-inner {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    margin-bottom: 20px !important;
+    gap: 16px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
 
-/* Image block */
-.gs-rec-img {
-  position: relative;
-  aspect-ratio: 1 / 1;
-  background: #faf9f5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-.gs-rec-img img {
-  width: 85%;
-  height: 85%;
-  object-fit: contain;
-  transition: transform 0.3s;
-  display: block;
-}
-.gs-rec-card:hover .gs-rec-img img {
-  transform: scale(1.05);
-}
+  #shopify-section-{{ section.id }} .deals-header-titles {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2px !important;
+    min-width: 0 !important;
+    flex: 1 1 auto !important;
+  }
 
-/* Badges */
-.gs-badge-sale {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  background: #e05252;
-  color: #fff;
-  font-size: 10px;
-  font-weight: 700;
-  padding: 3px 9px;
-  border-radius: 20px;
-  line-height: 1.2;
-  pointer-events: none;
-}
-.gs-badge-stock {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  background: #fff8ec;
-  color: #9a7a1a;
-  border: 1px solid #f5dea0;
-  font-size: 9px;
-  font-weight: 700;
-  padding: 3px 8px;
-  border-radius: 20px;
-  line-height: 1.2;
-  pointer-events: none;
-}
+  #shopify-section-{{ section.id }} .deals-title,
+  #shopify-section-{{ section.id }} .deals-title h2 {
+    font-family: var(--gs-font-heading, 'Outfit', sans-serif) !important;
+    font-size: 26px !important;
+    font-weight: 800 !important;
+    color: #0C3E61 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    letter-spacing: -0.3px !important;
+    line-height: 1.2 !important;
+    text-align: left !important;
+  }
 
-/* Wishlist button */
-.gs-wish {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  background: rgba(255, 255, 255, 0.85);
-  border: none;
-  border-radius: 50%;
-  width: 28px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: #ccc;
-  transition: color 0.15s;
-  padding: 0;
-}
-.gs-wish:hover { color: #e05252; }
+  #shopify-section-{{ section.id }} .deals-header-right {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    margin: 0 !important;
+  }
 
-/* Info block */
-.gs-rec-info {
-  padding: 10px 12px 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  flex: 1;
-}
-.gs-rec-name {
-  font-size: 12px;
-  color: #444;
-  line-height: 1.45;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  margin: 0 0 4px;
-}
-.gs-rec-stars {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 11px;
-  color: #c9a840;
-  line-height: 1;
-}
-.gs-rec-stars .gs-star-count {
-  font-size: 10px;
-  color: #aaa;
-}
-.gs-rec-price {
-  display: flex;
-  align-items: baseline;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-.gs-rec-price-sale {
-  font-size: 14px;
-  font-weight: 700;
-  color: #1a1a2e;
-}
-.gs-rec-price-compare {
-  font-size: 11px;
-  color: #aaa;
-  text-decoration: line-through;
-}
+  #shopify-section-{{ section.id }} .deals-view-all-link {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    color: #FFFFFF !important;
+    text-decoration: none !important;
+    letter-spacing: 0.3px !important;
+    text-transform: none !important;
+    white-space: nowrap !important;
+    padding: 8px 22px !important;
+    min-width: 100px !important;
+    border-radius: 8px !important;
+    background: #0C3E61 !important;
+    border: 1.5px solid #0C3E61 !important;
+    box-shadow: 0 2px 6px rgba(12, 62, 97, 0.12) !important;
+    transition: all 0.22s ease !important;
+    cursor: pointer !important;
+  }
 
-/* Quick Add button */
-.gs-quick-add {
-  margin-top: auto;
-  width: 100%;
-  padding: 7px 0;
-  background: transparent;
-  border: 1px solid #1a1a2e;
-  border-radius: 8px;
-  font-size: 12px;
-  font-weight: 600;
-  color: #1a1a2e;
-  font-family: inherit;
-  cursor: pointer;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  line-height: 1;
-}
-.gs-quick-add:hover {
-  background: #1a1a2e;
-  color: #fff;
-}
-.gs-quick-add.gs-added {
-  background: #3dbe6e;
-  border-color: #3dbe6e;
-  color: #fff;
-  cursor: default;
-}
+  #shopify-section-{{ section.id }} .deals-view-all-link:hover {
+    background: #082D47 !important;
+    border-color: #082D47 !important;
+    color: #FFFFFF !important;
+  }
 
-/* Skeleton loading cards */
-@keyframes gs-shimmer {
-  0%   { background-position: -400px 0; }
-  100% { background-position:  400px 0; }
-}
-.gs-rec-skel {
-  border-radius: 12px;
-  border: 1px solid #e8e3d5;
-  overflow: hidden;
-  background: #faf9f5;
-}
-.gs-rec-skel-img {
-  aspect-ratio: 1 / 1;
-  background: linear-gradient(90deg, #f0ede6 25%, #e8e3d5 50%, #f0ede6 75%);
-  background-size: 800px 100%;
-  animation: gs-shimmer 1.4s infinite linear;
-}
-.gs-rec-skel-body {
-  padding: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.gs-rec-skel-line {
-  height: 10px;
-  border-radius: 4px;
-  background: linear-gradient(90deg, #f0ede6 25%, #e8e3d5 50%, #f0ede6 75%);
-  background-size: 800px 100%;
-  animation: gs-shimmer 1.4s infinite linear;
-}
-.gs-rec-skel-line.gs-short { width: 55%; }
-.gs-rec-skel-btn {
-  height: 30px;
-  margin-top: 4px;
-  border-radius: 8px;
-  background: linear-gradient(90deg, #f0ede6 25%, #e8e3d5 50%, #f0ede6 75%);
-  background-size: 800px 100%;
-  animation: gs-shimmer 1.4s infinite linear;
-}
-
-/* Responsive */
-@media (max-width: 900px) {
-  .gs-rec-grid { grid-template-columns: repeat(3, 1fr); }
-}
-@media (max-width: 640px) {
-  .gs-rec-grid { grid-template-columns: repeat(2, 1fr); }
-  .gs-rec-title { font-size: 17px; }
-}
-
-/* ── Section-scoped overrides: beat the theme's global button{} rules ── */
-#shopify-section-{{ section.id }} .gs-quick-add {
-  appearance: none !important;
-  -webkit-appearance: none !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 6px !important;
-  width: 100% !important;
-  margin-top: auto !important;
-  padding: 7px 0 !important;
-  background: transparent !important;
-  border: 1px solid #1a1a2e !important;
-  border-radius: 8px !important;
-  font-size: 12px !important;
-  font-weight: 600 !important;
-  line-height: 1 !important;
-  color: #1a1a2e !important;
-  font-family: inherit !important;
-  cursor: pointer !important;
-  transition: background 0.15s, color 0.15s, border-color 0.15s !important;
-  text-transform: none !important;
-  letter-spacing: 0 !important;
-  box-shadow: none !important;
-}
-#shopify-section-{{ section.id }} .gs-quick-add:hover {
-  background: #1a1a2e !important;
-  color: #fff !important;
-  border-color: #1a1a2e !important;
-}
-#shopify-section-{{ section.id }} .gs-quick-add.gs-added {
-  background: #3dbe6e !important;
-  border-color: #3dbe6e !important;
-  color: #fff !important;
-  cursor: default !important;
-}
-#shopify-section-{{ section.id }} .gs-wish {
-  appearance: none !important;
-  -webkit-appearance: none !important;
-  position: absolute !important;
-  top: 8px !important;
-  right: 8px !important;
-  width: 28px !important;
-  height: 28px !important;
-  min-width: unset !important;
-  max-width: unset !important;
-  min-height: unset !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  background: rgba(255,255,255,0.85) !important;
-  border: none !important;
-  border-radius: 50% !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  color: #ccc !important;
-  cursor: pointer !important;
-  box-shadow: none !important;
-  text-transform: none !important;
-}
-#shopify-section-{{ section.id }} .gs-wish:hover {
-  color: #e05252 !important;
-  background: rgba(255,255,255,0.95) !important;
-}
-/* Kill the theme's pseudo-element background layer on all custom buttons */
-#shopify-section-{{ section.id }} .gs-quick-add:before,
-#shopify-section-{{ section.id }} .gs-quick-add:after,
-#shopify-section-{{ section.id }} .gs-wish:before,
-#shopify-section-{{ section.id }} .gs-wish:after {
-  display: none !important;
-  content: none !important;
-  background: none !important;
-}
+  @media only screen and (max-width: 768px) {
+    #shopify-section-{{ section.id }} {
+      padding-top: 20px;
+      margin-bottom: {{ section.settings.spacing_mobile | default: 24 }}px;
+    }
+    #shopify-section-{{ section.id }} .deals-section-inner {
+      padding: 0 16px !important;
+    }
+    #shopify-section-{{ section.id }} .deals-header-inner {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      margin-bottom: 12px !important;
+      padding: 0 !important;
+      gap: 10px !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    #shopify-section-{{ section.id }} .deals-title,
+    #shopify-section-{{ section.id }} .deals-title h2 {
+      font-size: 20px !important;
+      letter-spacing: -0.2px !important;
+      line-height: 1.25 !important;
+    }
+    #shopify-section-{{ section.id }} .deals-header-right {
+      display: flex !important;
+    }
+    #shopify-section-{{ section.id }} .deals-view-all-link {
+      padding: 6px 14px !important;
+      font-size: 12px !important;
+      min-width: auto !important;
+      border-radius: 6px !important;
+    }
+  }
 </style>
 
-<div class="m6tb static section-width-{{ section.settings.width }}">
-  <nav class="hidden">
-    <ul>
-      <li class="active">
-        <a href="#section-related">{{ section.settings.title | strip_html }}</a>
-      </li>
-    </ul>
-  </nav>
-  <div>
-    <div
-      id="section-related"
-      class="product-recommendations{% if section.settings.mobile_collapse %} tab-closed{% endif %}"
-      data-template="{{ section.id }}"
-      data-product-id="{{ product.id }}"
-      data-limit="{{ section.settings.recommended_products_qty | at_least: 5 }}"
-      data-intent="related"
-    >
-      <article class="gs-rec-section">
-
-        <div class="gs-rec-header">
-          {%- if section.settings.title != blank -%}
-            <h2 class="gs-rec-title">{{ section.settings.title | strip_html }}</h2>
-          {%- endif -%}
-          {%- if section.settings.show_view_all -%}
-            {%- assign view_all_href = section.settings.view_all_url | default: routes.collections_url -%}
-            <a href="{{ view_all_href }}" class="gs-rec-view-all">View all</a>
-          {%- endif -%}
+<div class="section-width-{{ section.settings.width }} gs-recommendations-wrapper">
+  <div
+    id="section-related"
+    class="product-recommendations"
+    data-template="{{ section.id }}"
+    data-product-id="{{ product.id }}"
+    data-limit="{{ display_limit }}"
+    data-intent="related"
+  >
+    <div class="deals-section-inner">
+      <div class="deals-header-inner">
+        <div class="deals-header-titles">
+          <h2 class="deals-title">{{ clean_title }}</h2>
         </div>
-
-        {%- assign display_limit = section.settings.products_to_show | default: section.settings.recommended_products_qty | at_least: 5 -%}
-
-        {%- if recommendations.performed and recommendations.products_count > 0 -%}
-
-          <div class="gs-rec-grid">
-            {%- for product in recommendations.products limit: display_limit -%}
-              {%- liquid
-                assign first_variant = product.first_available_variant | default: product.variants.first
-                assign qty = first_variant.inventory_quantity
-                assign on_sale = false
-                if product.compare_at_price > product.price
-                  assign on_sale = true
-                  assign savings_pct = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price
-                endif
-                assign show_stock_badge = false
-                if qty <= 5 and qty > 0 and product.available
-                  assign show_stock_badge = true
-                endif
-                assign is_single_variant = false
-                if product.variants.size == 1 and product.has_only_default_variant
-                  assign is_single_variant = true
-                endif
-              -%}
-
-              <div class="gs-rec-card" data-url="{{ product.url }}">
-
-                <div class="gs-rec-img">
-                  {%- if product.featured_image -%}
-                    <img
-                      src="{{ product.featured_image | image_url: width: 400 }}"
-                      alt="{{ product.featured_image.alt | default: product.title | escape }}"
-                      width="400"
-                      height="400"
-                      loading="lazy"
-                    >
-                  {%- else -%}
-                    {{ 'product-1' | placeholder_svg_tag }}
-                  {%- endif -%}
-
-                  {%- if on_sale -%}
-                    <span class="gs-badge-sale">−{{ savings_pct }}%</span>
-                  {%- endif -%}
-
-                  {%- if show_stock_badge -%}
-                    <span class="gs-badge-stock">Only {{ qty }} left</span>
-                  {%- else -%}
-                    <button class="gs-wish" aria-label="Add to wishlist" data-product-id="{{ product.id }}">
-                      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-                      </svg>
-                    </button>
-                  {%- endif -%}
-                </div>
-
-                <div class="gs-rec-info">
-                  <p class="gs-rec-name">{{ product.title | escape }}</p>
-
-                  {%- if product.metafields.reviews.rating.value != blank -%}
-                    {%- assign rating_val = product.metafields.reviews.rating.value | round -%}
-                    <div class="gs-rec-stars" aria-label="{{ rating_val }} out of 5 stars">
-                      {%- for i in (1..5) -%}
-                        {%- if i <= rating_val -%}★{%- else -%}☆{%- endif -%}
-                      {%- endfor -%}
-                      {%- if product.metafields.reviews.rating_count != blank -%}
-                        <span class="gs-star-count">({{ product.metafields.reviews.rating_count }})</span>
-                      {%- endif -%}
-                    </div>
-                  {%- endif -%}
-
-                  <div class="gs-rec-price">
-                    <span class="gs-rec-price-sale">{{ product.price | money }}</span>
-                    {%- if on_sale -%}
-                      <span class="gs-rec-price-compare">{{ product.compare_at_price | money }}</span>
-                    {%- endif -%}
-                  </div>
-
-                  {%- if section.settings.show_quick_add -%}
-                    {%- if is_single_variant -%}
-                      <button
-                        class="gs-quick-add"
-                        data-variant-id="{{ first_variant.id }}"
-                        data-product-url="{{ product.url }}"
-                        aria-label="Add {{ product.title | escape }} to cart"
-                      >
-                        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-                          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
-                          <line x1="3" y1="6" x2="21" y2="6"/>
-                          <path d="M16 10a4 4 0 0 1-8 0"/>
-                        </svg>
-                        Add to cart
-                      </button>
-                    {%- else -%}
-                      <button
-                        class="gs-quick-add"
-                        data-product-url="{{ product.url }}"
-                        aria-label="Choose options for {{ product.title | escape }}"
-                      >
-                        Choose options
-                      </button>
-                    {%- endif -%}
-                  {%- endif -%}
-                </div>
-
-              </div>
-            {%- endfor -%}
+        {%- if section.settings.show_view_all -%}
+          {%- assign view_all_href = section.settings.view_all_url | default: routes.all_products_collection_url | default: '/collections/all' -%}
+          <div class="deals-header-right">
+            <a href="{{ view_all_href }}" class="deals-view-all-link">
+              <strong>View all</strong>
+            </a>
           </div>
+        {%- endif -%}
+      </div>
 
-        {%- else -%}
-
-          {%- comment -%} Smart Category / Collection Fallback {%- endcomment -%}
-          {%- assign rec_collection = product.collections.first -%}
-          {%- if rec_collection == blank or rec_collection.handle == 'all' or rec_collection.handle == 'frontpage' -%}
-            {%- for col in product.collections -%}
-              {%- if col.handle != 'all' and col.handle != 'frontpage' -%}
-                {%- assign rec_collection = col -%}
-                {%- break -%}
-              {%- endif -%}
+      <div class="deals-product-grid-container">
+        <ul class="l4cl gs-product-grid with-quick-buy {{ width_class }}">
+          {%- if recommendations.performed and recommendations.products_count > 0 -%}
+            {%- for rec_product in recommendations.products limit: display_limit -%}
+              {%- capture placeholder_int -%}{% cycle 1, 2, 3, 4, 5, 6 %}{%- endcapture -%}
+              {%- render 'product-item',
+                product: rec_product,
+                placeholder_int: placeholder_int,
+                enable_quick_buy_desktop: section.settings.enable_quick_buy_desktop,
+                enable_quick_buy_mobile: section.settings.enable_quick_buy_mobile,
+                enable_quick_buy_qty_selector: section.settings.enable_quick_buy_qty_selector,
+                quick_buy_compact: section.settings.enable_quick_buy_compact,
+                enable_quick_buy_drawer: section.settings.enable_quick_buy_drawer,
+                sizes: image_sizes,
+                enable_color_picker: section.settings.enable_color_picker
+              -%}
             {%- endfor -%}
-          {%- endif -%}
-          {%- if rec_collection == blank or rec_collection.products_count <= 1 -%}
-            {%- assign rec_collection = collections['athar-and-perfume'] | default: collections['dates'] | default: collections['all'] -%}
-          {%- endif -%}
+          {%- else -%}
+            {%- assign rec_collection = product.collections.first -%}
+            {%- if rec_collection == blank or rec_collection.handle == 'all' or rec_collection.handle == 'frontpage' -%}
+              {%- for col in product.collections -%}
+                {%- if col.handle != 'all' and col.handle != 'frontpage' -%}
+                  {%- assign rec_collection = col -%}
+                  {%- break -%}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endif -%}
+            {%- if rec_collection == blank or rec_collection.products_count <= 1 -%}
+              {%- assign rec_collection = collections['athar-and-perfume'] | default: collections['dates'] | default: collections['all'] -%}
+            {%- endif -%}
 
-          {%- assign rendered_count = 0 -%}
-          <div class="gs-rec-grid">
+            {%- assign rendered_count = 0 -%}
             {%- for rel_product in rec_collection.products -%}
               {%- if rel_product.id != product.id and rel_product.available and rendered_count < display_limit -%}
                 {%- assign rendered_count = rendered_count | plus: 1 -%}
-                {%- liquid
-                  assign first_variant = rel_product.first_available_variant | default: rel_product.variants.first
-                  assign qty = first_variant.inventory_quantity
-                  assign on_sale = false
-                  if rel_product.compare_at_price > rel_product.price
-                    assign on_sale = true
-                    assign savings_pct = rel_product.compare_at_price | minus: rel_product.price | times: 100 | divided_by: rel_product.compare_at_price
-                  endif
-                  assign show_stock_badge = false
-                  if qty <= 5 and qty > 0 and rel_product.available
-                    assign show_stock_badge = true
-                  endif
-                  assign is_single_variant = false
-                  if rel_product.variants.size == 1 and rel_product.has_only_default_variant
-                    assign is_single_variant = true
-                  endif
+                {%- capture placeholder_int -%}{% cycle 1, 2, 3, 4, 5, 6 %}{%- endcapture -%}
+                {%- render 'product-item',
+                  product: rel_product,
+                  placeholder_int: placeholder_int,
+                  enable_quick_buy_desktop: section.settings.enable_quick_buy_desktop,
+                  enable_quick_buy_mobile: section.settings.enable_quick_buy_mobile,
+                  enable_quick_buy_qty_selector: section.settings.enable_quick_buy_qty_selector,
+                  quick_buy_compact: section.settings.enable_quick_buy_compact,
+                  enable_quick_buy_drawer: section.settings.enable_quick_buy_drawer,
+                  sizes: image_sizes,
+                  enable_color_picker: section.settings.enable_color_picker
                 -%}
-
-                <div class="gs-rec-card" data-url="{{ rel_product.url }}">
-                  <div class="gs-rec-img">
-                    {%- if rel_product.featured_image -%}
-                      <img
-                        src="{{ rel_product.featured_image | image_url: width: 400 }}"
-                        alt="{{ rel_product.featured_image.alt | default: rel_product.title | escape }}"
-                        width="400"
-                        height="400"
-                        loading="lazy"
-                      >
-                    {%- else -%}
-                      {{ 'product-1' | placeholder_svg_tag }}
-                    {%- endif -%}
-
-                    {%- if on_sale -%}
-                      <span class="gs-badge-sale">−{{ savings_pct }}%</span>
-                    {%- endif -%}
-
-                    {%- if show_stock_badge -%}
-                      <span class="gs-badge-stock">Only {{ qty }} left</span>
-                    {%- else -%}
-                      <button class="gs-wish" aria-label="Add to wishlist" data-product-id="{{ rel_product.id }}">
-                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
-                          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-                        </svg>
-                      </button>
-                    {%- endif -%}
-                  </div>
-
-                  <div class="gs-rec-info">
-                    <p class="gs-rec-name">{{ rel_product.title | escape }}</p>
-
-                    <div class="gs-rec-price">
-                      <span class="gs-rec-price-sale">{{ rel_product.price | money }}</span>
-                      {%- if on_sale -%}
-                        <span class="gs-rec-price-compare">{{ rel_product.compare_at_price | money }}</span>
-                      {%- endif -%}
-                    </div>
-
-                    {%- if section.settings.show_quick_add -%}
-                      {%- if is_single_variant -%}
-                        <button
-                          class="gs-quick-add"
-                          data-variant-id="{{ first_variant.id }}"
-                          data-product-url="{{ rel_product.url }}"
-                          aria-label="Add {{ rel_product.title | escape }} to cart"
-                        >
-                          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
-                            <line x1="3" y1="6" x2="21" y2="6"/>
-                            <path d="M16 10a4 4 0 0 1-8 0"/>
-                          </svg>
-                          Add to cart
-                        </button>
-                      {%- else -%}
-                        <button
-                          class="gs-quick-add"
-                          data-product-url="{{ rel_product.url }}"
-                          aria-label="Choose options for {{ rel_product.title | escape }}"
-                        >
-                          Choose options
-                        </button>
-                      {%- endif -%}
-                    {%- endif -%}
-                  </div>
-                </div>
               {%- endif -%}
             {%- endfor -%}
-          </div>
-
-        {%- endif -%}
-
-      </article>
+          {%- endif -%}
+        </ul>
+      </div>
     </div>
   </div>
 </div>
 
-<style>
-  @media only screen and (min-width: 47.5em) {
-    #shopify-section-{{ section.id }} .l4cl { margin-bottom: {{ section.settings.spacing_desktop | minus: 22 }}px; }
-  }
-  @media only screen and (max-width: 47.5em) {
-    #shopify-section-{{ section.id }} { margin-bottom: {{ section.settings.spacing_mobile | minus: -26 }}px; }
-  }
-</style>
-
 <script>
-(function () {
-  function initRec(root) {
-    if (!root) return;
-
-    root.addEventListener('click', function (e) {
-
-      // ── Quick Add ──────────────────────────────────────────
-      var btn = e.target.closest('.gs-quick-add');
-      if (btn) {
-        e.stopPropagation();
-        if (btn.disabled) return;
-
-        var variantId  = btn.dataset.variantId;
-        var productUrl = btn.dataset.productUrl;
-
-        if (!variantId) {
-          window.location.href = productUrl;
-          return;
-        }
-
-        var originalHTML = btn.innerHTML;
-        btn.disabled = true;
-
-        fetch('/cart/add.js', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id: parseInt(variantId, 10), quantity: 1 })
-        })
-        .then(function (r) {
-          if (!r.ok) throw new Error('add failed');
-          return r.json();
-        })
-        .then(function () {
-          btn.classList.add('gs-added');
-          btn.innerHTML = '✓ Added';
-          document.dispatchEvent(new CustomEvent('cart:refresh'));
-          setTimeout(function () {
-            btn.classList.remove('gs-added');
-            btn.innerHTML = originalHTML;
-            btn.disabled = false;
-          }, 1800);
-        })
-        .catch(function () {
-          btn.disabled = false;
-        });
-        return;
+  (function() {
+    function refreshWishlist() {
+      if (window.gsWishlist && typeof window.gsWishlist.updateAllButtons === 'function') {
+        window.gsWishlist.updateAllButtons();
       }
-
-      // ── Card navigation (skip if any button was clicked) ──
-      if (e.target.closest('button')) return;
-      var card = e.target.closest('.gs-rec-card');
-      if (card && card.dataset.url) {
-        window.location.href = card.dataset.url;
-      }
+    }
+    document.addEventListener('shopify:section:load', refreshWishlist);
+    window.addEventListener('recommendedProducts', function() {
+      setTimeout(refreshWishlist, 300);
+      setTimeout(refreshWishlist, 1000);
     });
-  }
-
-  // Init on first render
-  var container = document.getElementById('section-related');
-  initRec(container);
-
-  // Re-init after Shopify Ajax replaces recommendations HTML
-  document.addEventListener('shopify:section:load', function (e) {
-    var fresh = e.target && e.target.querySelector && e.target.querySelector('#section-related');
-    if (fresh) initRec(fresh);
-  });
-}());
+  })();
 </script>
 
 {% schema %}
 {
   "name": "t:static_sections.product_recommendations.name",
-  "class": "with-mobile-tab hidden",
+  "class": "shopify-section-recommendations",
   "settings": [
     {
       "type": "paragraph",

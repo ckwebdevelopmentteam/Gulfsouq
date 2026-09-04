@@ -226,6 +226,26 @@ document.addEventListener('DOMContentLoaded', function () {
         if (priceRowEl)  priceRowEl.innerText  = formatMoney(variant.price);
         if (priceSaleEl) priceSaleEl.innerText = formatMoney(variant.price);
         if (f8prEl)      f8prEl.innerText      = 'Rs.' + (variant.price / 100).toFixed(2);
+
+        var gsCompare = document.querySelector('.gs-pdp-price-compare');
+        var gsBadgeWrap = document.querySelector('.gs-pdp-badge-wrap');
+        var gsBadgeAmount = document.querySelector('.gs-pdp-badge-amount');
+        var gsBadgePct = document.querySelector('.gs-pdp-badge-pct');
+
+        if (variant.compare_at_price && variant.compare_at_price > variant.price) {
+          var savedPaise = variant.compare_at_price - variant.price;
+          var savedPct = Math.round((savedPaise * 100) / variant.compare_at_price);
+          if (gsCompare) {
+            gsCompare.innerText = formatMoney(variant.compare_at_price);
+            gsCompare.style.display = '';
+          }
+          if (gsBadgeAmount) gsBadgeAmount.innerText = formatMoney(savedPaise);
+          if (gsBadgePct) gsBadgePct.innerText = '(' + savedPct + '% OFF)';
+          if (gsBadgeWrap) gsBadgeWrap.style.display = '';
+        } else {
+          if (gsCompare) gsCompare.style.display = 'none';
+          if (gsBadgeWrap) gsBadgeWrap.style.display = 'none';
+        }
       });
   });
 
@@ -235,7 +255,54 @@ document.addEventListener('DOMContentLoaded', function () {
     qtyInput.addEventListener('change', renderPrice);
   }
 
-  // ── 6. Initial render ─────────────────────────────────────────────
+  // ── 6. Robust Quantity Stepper Event Delegation ───────────────────
+  document.addEventListener('click', function(e) {
+    var btn = e.target.closest('.gs-qty-btn');
+    if (!btn) return;
+    e.preventDefault();
+    e.stopPropagation();
+
+    var stepper = btn.closest('.gs-pdp-qty-stepper');
+    if (!stepper) return;
+
+    var input = stepper.querySelector('input[name="quantity"]');
+    if (!input) return;
+
+    var isDec = btn.classList.contains('gs-qty-minus') || btn.dataset.qtyAction === 'dec';
+    var isInc = btn.classList.contains('gs-qty-plus') || btn.dataset.qtyAction === 'inc';
+    if (!isDec && !isInc) return;
+
+    var min = parseInt(input.min) || 1;
+    var max = parseInt(input.max) || 99999;
+    var step = parseInt(input.step) || 1;
+    var val = parseInt(input.value) || min;
+
+    if (isDec) {
+      if (val > min) {
+        val = val - step;
+      }
+    } else if (isInc) {
+      if (val < max) {
+        val = val + step;
+      }
+    }
+
+    if (val < min) val = min;
+    if (val > max) val = max;
+
+    input.value = val;
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+
+    var sticky = document.querySelector('#product_qty_sticky');
+    if (sticky) {
+      sticky.value = val;
+      sticky.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+  });
+
+  // ── 7. Initial render ─────────────────────────────────────────────
   renderPrice();
 
 });
+

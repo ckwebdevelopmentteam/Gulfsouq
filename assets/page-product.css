@@ -203,3 +203,1880 @@ a.shopify-payment-button__more-options { flex-grow: 3; }
 }
 
 #root #shopify-product-reviews { margin-top: 0; }
+
+/* ==========================================================================
+   GULF SOUQ PRODUCT DETAIL PAGE (PDP) MASTER DESIGN SYSTEM
+   ========================================================================== */
+
+/* 1. Main Layout, Framing & Width */
+#root .m6pr {
+  font-family: var(--gs-font-body, 'Plus Jakarta Sans', sans-serif);
+}
+
+/* 2. Gallery & Discount Badge Fix */
+@media (min-width: 769px) {
+  #root .m6pr .l4pr.aside-pager > .s1lb,
+  #root .m6pr .l4pr.aside-pager .s1lb,
+  [dir="ltr"] #root #content .m6pr .l4pr.aside-pager.s4wi > .s1lb {
+    position: absolute !important;
+    left: calc(var(--pager_w, 75px) + 32px) !important;
+    top: 14px !important;
+    right: auto !important;
+    bottom: auto !important;
+    z-index: 12 !important;
+    margin: 0 !important;
+    pointer-events: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  #root .m6pr .l4pr > .s1lb,
+  #root .m6pr .s1lb {
+    position: absolute !important;
+    left: 14px !important;
+    top: 14px !important;
+    right: auto !important;
+    bottom: auto !important;
+    z-index: 12 !important;
+    margin: 0 !important;
+    pointer-events: none !important;
+  }
+}
+
+#root .m6pr .s1lb > span,
+#root .m6pr .s1lb .overlay-sale,
+#root .m6pr .s1lb span {
+  background: #FACC15 !important;
+  color: #0C3E61 !important;
+  font-family: var(--gs-font-heading, 'Outfit', sans-serif) !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  border-radius: 6px !important;
+  padding: 4px 10px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.3px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: none !important;
+}
+
+#root .m6pr .l4pr li a {
+  background: #FFFFFF !important;
+  border-radius: 16px !important;
+  border: 1px solid #E5EAF0 !important;
+  overflow: hidden !important;
+  box-shadow: 0 4px 20px rgba(12, 62, 97, 0.04) !important;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease !important;
+}
+
+#root .m6pr .l4pr li a:hover {
+  border-color: #CBD5E1 !important;
+  box-shadow: 0 6px 24px rgba(12, 62, 97, 0.08) !important;
+}
+
+#root .m6pr .l4pr-container [data-gallery-thumb],
+#root .m6pr .l4pr .swiper-pagination-bullet {
+  border-radius: 10px !important;
+  border: 2px solid transparent !important;
+  overflow: hidden !important;
+  transition: all 0.2s ease !important;
+}
+
+#root .m6pr .l4pr .swiper-pagination-bullet.swiper-pagination-bullet-active {
+  border-color: #0C3E61 !important;
+  box-shadow: 0 2px 8px rgba(12, 62, 97, 0.15) !important;
+}
+
+/* 3. Product Title, Rating & Share */
+#root .m6pr header h1,
+#root .m6pr header h2,
+#root .m6pr header h3,
+#root .m6pr header h4,
+#root .m6pr .m5 {
+  font-family: var(--gs-font-heading, 'Outfit', sans-serif) !important;
+  font-size: 26px !important;
+  font-weight: 700 !important;
+  color: #0C3E61 !important;
+  line-height: 1.3 !important;
+  margin-bottom: 10px !important;
+  letter-spacing: -0.3px !important;
+}
+
+#root .m6pr .l4dr {
+  margin-bottom: 12px !important;
+}
+
+#root .m6pr .r6rt {
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  color: #0C3E61 !important;
+}
+
+#root .m6pr .r6rt .rating {
+  color: #BE982D !important;
+}
+
+/* 4. Stock Reassurance Pill */
+.gs-stock-pill {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 6px 14px !important;
+  border-radius: 20px !important;
+  font-size: 12.5px !important;
+  font-weight: 600 !important;
+  margin: 6px 0 10px 0 !important;
+  box-sizing: border-box !important;
+  transition: all 0.2s ease !important;
+}
+
+.gs-stock-pill.gs-stock-available {
+  background: #ECFDF5 !important;
+  border: 1px solid #A7F3D0 !important;
+  color: #065F46 !important;
+}
+
+.gs-stock-pill.gs-stock-low {
+  background: #FFFBEB !important;
+  border: 1px solid #FDE68A !important;
+  color: #92400E !important;
+}
+
+.gs-stock-pill.gs-stock-out {
+  background: #F1F5F9 !important;
+  border: 1px solid #CBD5E1 !important;
+  color: #64748B !important;
+}
+
+.gs-stock-dot {
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 50% !important;
+  flex-shrink: 0 !important;
+  display: inline-block !important;
+}
+
+.gs-stock-dot.green {
+  background: #10B981 !important;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25) !important;
+  animation: gsPillPulse 1.8s ease infinite !important;
+}
+
+.gs-stock-dot.amber {
+  background: #F59E0B !important;
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.25) !important;
+  animation: gsPillPulse 1.4s ease infinite !important;
+}
+
+.gs-stock-dot.gray {
+  background: #94A3B8 !important;
+}
+
+@keyframes gsPillPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.9); }
+}
+
+/* 5. Price Display */
+.gs-pdp-price-wrapper {
+  margin: 8px 0 12px 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.gs-pdp-price-row {
+  display: flex !important;
+  align-items: baseline !important;
+  flex-wrap: wrap !important;
+  gap: 12px !important;
+  margin-bottom: 4px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.gs-pdp-price-group {
+  display: inline-flex !important;
+  align-items: baseline !important;
+  gap: 8px !important;
+  flex-wrap: wrap !important;
+}
+
+.gs-pdp-price-sale {
+  font-family: var(--gs-font-heading, 'Outfit', sans-serif) !important;
+  font-size: 30px !important;
+  font-weight: 800 !important;
+  color: #0C3E61 !important;
+  line-height: 1 !important;
+  letter-spacing: -0.5px !important;
+}
+
+.gs-pdp-price-compare {
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  color: #94A3B8 !important;
+  text-decoration: line-through !important;
+  line-height: 1 !important;
+}
+
+.gs-pdp-badge-wrap {
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+.gs-pdp-price-badge {
+  font-family: var(--gs-font-heading, 'Outfit', sans-serif) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  background: #FEF3E2 !important;
+  color: #9A7A1A !important;
+  border: 1px solid #F5DEA0 !important;
+  border-radius: 12px !important;
+  padding: 2.5px 8px !important;
+  line-height: 1.2 !important;
+  letter-spacing: 0.1px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  white-space: nowrap !important;
+  gap: 4px !important;
+}
+
+.gs-pdp-badge-save,
+.gs-pdp-badge-pct {
+  display: inline-flex !important;
+  align-items: baseline !important;
+  gap: 4px !important;
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  color: inherit !important;
+}
+
+.gs-pdp-price-note,
+#root .m6pr .gs-pdp-price-note,
+#root .f8pr .gs-pdp-price-note,
+#root p.gs-pdp-price-note {
+  font-family: var(--gs-font-body, 'Plus Jakarta Sans', sans-serif) !important;
+  font-size: 12px !important;
+  color: #64748B !important;
+  font-weight: 500 !important;
+  margin-top: 4px !important;
+  margin-bottom: 6px !important;
+  line-height: 1.4 !important;
+  letter-spacing: normal !important;
+  text-transform: none !important;
+  display: block !important;
+}
+
+/* 6. Shipping Dispatch Timer Card */
+.gs-ship-timer-card {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  background: #F0FDF4 !important;
+  border: 1px solid #BBF7D0 !important;
+  border-radius: 10px !important;
+  padding: 8px 14px !important;
+  margin: 10px 0 !important;
+  box-sizing: border-box !important;
+}
+
+.gs-ship-timer-icon-wrap {
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 8px !important;
+  background: #DCFCE7 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+}
+
+.gs-ship-timer-text {
+  font-size: 12.5px !important;
+  color: #1E293B !important;
+  line-height: 1.4 !important;
+  font-weight: 500 !important;
+}
+
+.gs-ship-countdown {
+  color: #047857 !important;
+  font-weight: 800 !important;
+  font-family: monospace, sans-serif !important;
+  font-size: 13px !important;
+}
+
+.gs-ship-highlight {
+  color: #047857 !important;
+  font-weight: 700 !important;
+}
+
+/* 7. Action Row, Stepper & CTAs */
+.gs-pdp-actions-row,
+#root .m6pr .gs-pdp-actions-row {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  gap: 10px !important;
+  margin: 14px 0 8px 0 !important;
+  width: 100% !important;
+}
+
+.f8pr div.submit > div.gs-pdp-qty-stepper,
+#root .m6pr .gs-pdp-qty-stepper,
+.gs-pdp-qty-stepper {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  background: #FFFFFF !important;
+  border: 1.5px solid #CBD5E1 !important;
+  border-radius: 10px !important;
+  height: 48px !important;
+  width: 108px !important;
+  min-width: 108px !important;
+  max-width: 108px !important;
+  flex: 0 0 108px !important;
+  padding: 0 2px !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+  position: relative !important;
+}
+
+/* Neutralize theme global button:before and button:after */
+.f8pr div.submit > div.gs-pdp-qty-stepper .gs-qty-btn:before,
+.f8pr div.submit > div.gs-pdp-qty-stepper .gs-qty-btn:after,
+.f8pr div.submit > div.gs-pdp-qty-stepper button.gs-qty-btn:before,
+.f8pr div.submit > div.gs-pdp-qty-stepper button.gs-qty-btn:after,
+#root .m6pr .gs-qty-btn:before,
+#root .m6pr .gs-qty-btn:after,
+.gs-pdp-qty-stepper .gs-qty-btn:before,
+.gs-pdp-qty-stepper .gs-qty-btn:after,
+.gs-qty-btn:before,
+.gs-qty-btn:after {
+  display: none !important;
+  content: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  position: static !important;
+}
+
+.f8pr div.submit > div.gs-pdp-qty-stepper .gs-qty-btn,
+.f8pr div.submit > div.gs-pdp-qty-stepper button.gs-qty-btn,
+#root .m6pr .gs-qty-btn,
+.gs-qty-btn {
+  width: 32px !important;
+  min-width: 32px !important;
+  max-width: 32px !important;
+  height: 100% !important;
+  flex: 0 0 32px !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  color: #0C3E61 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  border-radius: 6px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  line-height: 1 !important;
+  position: relative !important;
+  z-index: 1 !important;
+  transition: background-color 0.15s ease, opacity 0.15s ease, color 0.15s ease !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+.f8pr div.submit > div.gs-pdp-qty-stepper .gs-qty-btn:hover:not(:disabled),
+.f8pr div.submit > div.gs-pdp-qty-stepper .gs-qty-btn:active:not(:disabled) {
+  background-color: #F1F5F9 !important;
+  color: #042A44 !important;
+}
+
+.f8pr div.submit > div.gs-pdp-qty-stepper .gs-qty-btn:disabled,
+.f8pr div.submit > div.gs-pdp-qty-stepper .gs-qty-btn.is-disabled {
+  opacity: 0.3 !important;
+  cursor: not-allowed !important;
+}
+
+.f8pr div.submit > div.gs-pdp-qty-stepper .gs-qty-input,
+.f8pr div.submit > div.gs-pdp-qty-stepper input.gs-qty-input,
+#root .m6pr .gs-qty-input,
+.gs-qty-input {
+  width: 38px !important;
+  min-width: 28px !important;
+  max-width: 44px !important;
+  flex: 1 1 auto !important;
+  height: 100% !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  background: transparent !important;
+  text-align: center !important;
+  font-family: var(--gs-font-heading, 'Outfit', sans-serif) !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  color: #0C3E61 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  -moz-appearance: textfield !important;
+}
+
+.gs-qty-input::-webkit-outer-spin-button,
+.gs-qty-input::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+}
+
+.f8pr div.submit > div.gs-pdp-cart-btn-wrap,
+#root .m6pr .gs-pdp-cart-btn-wrap,
+.gs-pdp-cart-btn-wrap {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  width: auto !important;
+  margin: 0 !important;
+}
+
+.gs-btn-primary-cart,
+#root .m6pr button.overlay-buy_button,
+#root .m6pr .gs-btn-primary-cart {
+  width: 100% !important;
+  height: 48px !important;
+  background: #0C3E61 !important;
+  color: #FFFFFF !important;
+  border-radius: 10px !important;
+  font-family: var(--gs-font-heading, 'Outfit', sans-serif) !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.2px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  border: none !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 14px rgba(12, 62, 97, 0.22) !important;
+  transition: all 0.22s ease !important;
+}
+
+.gs-btn-primary-cart:hover,
+#root .m6pr button.overlay-buy_button:hover {
+  background: #082D47 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 18px rgba(12, 62, 97, 0.32) !important;
+}
+
+.gs-btn-cart-icon {
+  flex-shrink: 0 !important;
+}
+
+.gs-pdp-buy-now-wrap {
+  margin-top: 8px !important;
+  margin-bottom: 0 !important;
+  width: 100% !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  border-radius: 10px !important;
+  overflow: hidden !important;
+}
+
+.gs-pdp-buy-now-wrap .shopify-payment-button,
+.gs-pdp-buy-now-wrap shopify-accelerated-checkout,
+.gs-pdp-buy-now-wrap .shopify-payment-button__button {
+  width: 100% !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  border-radius: 10px !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Eliminate all theme pseudo-element artifacts on Buy now button */
+.gs-pdp-buy-now-wrap:before,
+.gs-pdp-buy-now-wrap:after,
+.gs-pdp-buy-now-wrap .shopify-payment-button:before,
+.gs-pdp-buy-now-wrap .shopify-payment-button:after,
+.gs-pdp-buy-now-wrap shopify-accelerated-checkout:before,
+.gs-pdp-buy-now-wrap shopify-accelerated-checkout:after,
+.gs-pdp-buy-now-wrap .shopify-payment-button__button:before,
+.gs-pdp-buy-now-wrap .shopify-payment-button__button:after,
+.gs-pdp-buy-now-wrap button:before,
+.gs-pdp-buy-now-wrap button:after,
+.gs-pdp-buy-now-wrap div[role="button"]:before,
+.gs-pdp-buy-now-wrap div[role="button"]:after,
+#root .m6pr .gs-pdp-buy-now-wrap button:before,
+#root .m6pr .gs-pdp-buy-now-wrap button:after {
+  display: none !important;
+  content: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  position: static !important;
+}
+
+.gs-pdp-buy-now-wrap .shopify-payment-button__button--unbranded,
+.gs-pdp-buy-now-wrap button,
+.gs-pdp-buy-now-wrap div[role="button"] {
+  width: 100% !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+  background: linear-gradient(135deg, #D4AF37 0%, #BE982D 100%) !important;
+  color: #FFFFFF !important;
+  border-radius: 10px !important;
+  font-family: var(--gs-font-heading, 'Outfit', sans-serif) !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.2px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: none !important;
+  box-shadow: 0 4px 14px rgba(190, 152, 45, 0.28) !important;
+  transition: all 0.22s ease !important;
+  overflow: hidden !important;
+  position: relative !important;
+  margin: 0 !important;
+  isolation: isolate !important;
+}
+
+.gs-pdp-buy-now-wrap .shopify-payment-button__button--unbranded:hover,
+.gs-pdp-buy-now-wrap button:hover,
+.gs-pdp-buy-now-wrap div[role="button"]:hover {
+  background: linear-gradient(135deg, #C59F2E 0%, #A98422 100%) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 18px rgba(190, 152, 45, 0.38) !important;
+}
+
+/* 8. Bulk Order Card */
+.gs-pdp-bulk-card {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  background: #F8FAFC !important;
+  border: 1px solid #E2E8F0 !important;
+  border-radius: 12px !important;
+  padding: 12px 16px !important;
+  margin: 14px 0 !important;
+  gap: 12px !important;
+  box-sizing: border-box !important;
+  transition: border-color 0.2s ease !important;
+}
+
+.gs-pdp-bulk-card:hover {
+  border-color: #25D366 !important;
+}
+
+.gs-pdp-bulk-left {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  min-width: 0 !important;
+}
+
+.gs-pdp-bulk-icon {
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 50% !important;
+  background: #E8F9EE !important;
+  display: flex !align-items: center !important;
+  justify-content: center !important;
+  align-items: center !important;
+  flex-shrink: 0 !important;
+}
+
+.gs-pdp-bulk-info {
+  display: flex !important;
+  flex-direction: column !important;
+  min-width: 0 !important;
+}
+
+.gs-pdp-bulk-title {
+  font-family: var(--gs-font-heading, 'Outfit', sans-serif) !important;
+  font-size: 13.5px !important;
+  font-weight: 700 !important;
+  color: #0C3E61 !important;
+  line-height: 1.2 !important;
+}
+
+.gs-pdp-bulk-desc {
+  font-size: 11.5px !important;
+  color: #64748B !important;
+  line-height: 1.3 !important;
+  margin-top: 2px !important;
+}
+
+.gs-pdp-bulk-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  background: #25D366 !important;
+  color: #FFFFFF !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  padding: 8px 14px !important;
+  border-radius: 8px !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  transition: all 0.2s ease !important;
+}
+
+.gs-pdp-bulk-btn:hover {
+  background: #20BA5A !important;
+  transform: scale(1.02) !important;
+}
+
+/* 9. GulfSouq Trust Section */
+.gs-pdp-trust-section {
+  background: #FFFFFF !important;
+  border: 1px solid #E5EAF0 !important;
+  border-radius: 14px !important;
+  padding: 16px 14px !important;
+  margin: 14px 0 !important;
+  box-sizing: border-box !important;
+}
+
+.gs-pdp-trust-header {
+  text-align: center !important;
+  margin-bottom: 12px !important;
+}
+
+.gs-pdp-trust-pill {
+  display: inline-block !important;
+  font-size: 9.5px !important;
+  font-weight: 800 !important;
+  color: #BE982D !important;
+  letter-spacing: 1px !important;
+  background: #F8F1E5 !important;
+  padding: 2px 8px !important;
+  border-radius: 4px !important;
+  margin-bottom: 3px !important;
+}
+
+.gs-pdp-trust-title {
+  font-family: var(--gs-font-heading, 'Outfit', sans-serif) !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  color: #0C3E61 !important;
+  margin: 0 !important;
+}
+
+.gs-navy-text { color: #0C3E61 !important; }
+.gs-gold-text { color: #BE982D !important; margin-left: 1px; }
+
+.gs-pdp-trust-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 10px !important;
+}
+
+.gs-pdp-trust-card {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 8px !important;
+  padding: 9px !important;
+  background: #FAF7F2 !important;
+  border-radius: 8px !important;
+  border: 1px solid #F1ECE3 !important;
+}
+
+.gs-pdp-trust-icon-box {
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 50% !important;
+  background: #F8F1E5 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+}
+
+.gs-pdp-trust-card-body {
+  display: flex !important;
+  flex-direction: column !important;
+  min-width: 0 !important;
+}
+
+.gs-trust-item-title {
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  color: #0C3E61 !important;
+  line-height: 1.2 !important;
+}
+
+.gs-trust-item-desc {
+  font-size: 10.5px !important;
+  color: #64748B !important;
+  line-height: 1.25 !important;
+  margin-top: 2px !important;
+}
+
+/* 10. PDP Information Tabs */
+.gs-pdp-tabs-container {
+  width: 100% !important;
+  max-width: 1200px !important;
+  margin: 32px auto 20px auto !important;
+  padding: 0 16px !important;
+  box-sizing: border-box !important;
+}
+
+/* Segmented Dock Tabs Bar */
+.gs-pdp-tabs-nav {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  background: #F1F5F9 !important;
+  padding: 6px !important;
+  border-radius: 14px !important;
+  border: 1px solid #E2E8F0 !important;
+  overflow-x: auto !important;
+  white-space: nowrap !important;
+  scrollbar-width: none !important;
+  -webkit-overflow-scrolling: touch !important;
+  box-sizing: border-box !important;
+}
+
+.gs-pdp-tabs-nav::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* Neutralize theme button:before and button:after pseudo-element pill artifacts */
+.gs-pdp-tab-btn:before,
+.gs-pdp-tab-btn:after,
+#root .m6pr .gs-pdp-tab-btn:before,
+#root .m6pr .gs-pdp-tab-btn:after {
+  display: none !important;
+  content: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  position: static !important;
+}
+
+.gs-pdp-tab-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  padding: 10px 18px !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 10px !important;
+  font-family: var(--gs-font-heading, 'Outfit', sans-serif) !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #64748B !important;
+  cursor: pointer !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  white-space: nowrap !important;
+  line-height: 1 !important;
+  position: relative !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+  flex-shrink: 0 !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+.gs-pdp-tab-btn svg {
+  display: inline-block !important;
+  width: 16px !important;
+  height: 16px !important;
+  flex-shrink: 0 !important;
+  stroke: #64748B !important;
+  transition: stroke 0.2s ease !important;
+}
+
+.gs-pdp-tab-btn:hover:not(.active) {
+  color: #0C3E61 !important;
+  background: rgba(255, 255, 255, 0.6) !important;
+}
+
+.gs-pdp-tab-btn:hover:not(.active) svg {
+  stroke: #0C3E61 !important;
+}
+
+.gs-pdp-tab-btn.active {
+  background: #FFFFFF !important;
+  color: #0C3E61 !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 8px rgba(12, 62, 97, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+}
+
+.gs-pdp-tab-btn.active svg {
+  stroke: #BE982D !important;
+}
+
+.gs-pdp-sections-container {
+  background: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+  border-radius: 16px !important;
+  margin-top: 14px !important;
+  padding: 24px !important;
+  box-shadow: 0 4px 20px rgba(12, 62, 97, 0.04) !important;
+}
+
+.gs-mobile-dropdown-header {
+  display: none !important;
+}
+
+.gs-pdp-section-item {
+  display: none !important;
+}
+
+.gs-pdp-section-item.active {
+  display: block !important;
+  animation: gsFadeIn 0.3s ease !important;
+}
+
+.gs-dropdown-collapse {
+  display: block !important;
+}
+
+.gs-dropdown-inner {
+  overflow: visible !important;
+}
+
+.gs-dropdown-body {
+  padding: 0 !important;
+}
+
+@keyframes gsFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Description Tab: Quick Highlights Grid */
+.gs-desc-highlights-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 12px !important;
+  margin-bottom: 22px !important;
+}
+
+.gs-highlight-card {
+  background: #F8FAFC !important;
+  border: 1px solid #E2E8F0 !important;
+  border-radius: 12px !important;
+  padding: 12px 14px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.gs-highlight-card:hover {
+  border-color: #BE982D !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(190, 152, 45, 0.12) !important;
+}
+
+.gs-hl-icon {
+  font-size: 22px !important;
+  line-height: 1 !important;
+  flex-shrink: 0 !important;
+}
+
+.gs-hl-info {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2px !important;
+}
+
+.gs-hl-label {
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  color: #64748B !important;
+  line-height: 1.2 !important;
+}
+
+.gs-hl-value {
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  color: #0C3E61 !important;
+  line-height: 1.25 !important;
+}
+
+/* Fragrance Olfactory Pyramid */
+.gs-fragrance-notes-card {
+  background: linear-gradient(135deg, #FDFBF7 0%, #F8F3E8 100%) !important;
+  border: 1px solid #EADBCC !important;
+  border-radius: 14px !important;
+  padding: 18px 20px !important;
+  margin-bottom: 24px !important;
+}
+
+.gs-notes-header {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin-bottom: 14px !important;
+}
+
+.gs-notes-header h4 {
+  font-family: var(--gs-font-heading, 'Outfit', sans-serif) !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  color: #0C3E61 !important;
+  margin: 0 !important;
+  letter-spacing: 0.2px !important;
+}
+
+.gs-notes-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 12px !important;
+}
+
+.gs-note-step {
+  background: rgba(255, 255, 255, 0.85) !important;
+  border: 1px solid rgba(190, 152, 45, 0.22) !important;
+  border-radius: 10px !important;
+  padding: 12px 14px !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.gs-note-step:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(190, 152, 45, 0.1) !important;
+}
+
+.gs-note-badge {
+  display: inline-block !important;
+  font-size: 10.5px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  color: #8C6A12 !important;
+  background: rgba(190, 152, 45, 0.12) !important;
+  padding: 2px 8px !important;
+  border-radius: 6px !important;
+  margin-bottom: 6px !important;
+}
+
+.gs-note-title {
+  font-family: var(--gs-font-heading, 'Outfit', sans-serif) !important;
+  font-size: 13.5px !important;
+  font-weight: 700 !important;
+  color: #0C3E61 !important;
+  margin-bottom: 4px !important;
+}
+
+.gs-note-desc {
+  font-size: 12.5px !important;
+  color: #475569 !important;
+  line-height: 1.4 !important;
+}
+
+/* Description Body */
+.gs-desc-section-title {
+  font-family: var(--gs-font-heading, 'Outfit', sans-serif) !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  color: #0C3E61 !important;
+  margin: 0 0 10px 0 !important;
+}
+
+.gs-pdp-desc-content {
+  margin-bottom: 24px !important;
+}
+
+.gs-desc-text-body {
+  font-family: var(--gs-font-body, 'Plus Jakarta Sans', sans-serif) !important;
+  font-size: 14.5px !important;
+  line-height: 1.75 !important;
+  color: #334155 !important;
+}
+
+.gs-desc-text-body p {
+  margin: 0 0 10px 0 !important;
+  line-height: 1.75 !important;
+}
+
+/* Benefits Checklist */
+.gs-desc-benefits-list {
+  background: #F8FAFC !important;
+  border: 1px solid #E2E8F0 !important;
+  border-radius: 14px !important;
+  padding: 20px !important;
+}
+
+.gs-benefit-row {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 12px !important;
+  padding: 10px 0 !important;
+  border-bottom: 1px dashed #E2E8F0 !important;
+  font-size: 13.5px !important;
+  line-height: 1.55 !important;
+  color: #334155 !important;
+}
+
+.gs-benefit-row:last-child {
+  border-bottom: none !important;
+  padding-bottom: 0 !important;
+}
+
+.gs-benefit-bullet {
+  width: 22px !important;
+  height: 22px !important;
+  border-radius: 50% !important;
+  background: rgba(190, 152, 45, 0.15) !important;
+  color: #BE982D !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  margin-top: 1px !important;
+}
+
+.gs-benefit-row strong {
+  color: #0C3E61 !important;
+  font-weight: 600 !important;
+}
+
+.gs-pdp-specs-grid {
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)) !important;
+  gap: 10px !important;
+}
+
+.gs-spec-item {
+  display: flex !important;
+  justify-content: space-between !important;
+  padding: 10px 14px !important;
+  background: #F8FAFC !important;
+  border-radius: 8px !important;
+  border: 1px solid #E2E8F0 !important;
+}
+
+.gs-spec-key {
+  font-weight: 600 !important;
+  color: #0C3E61 !important;
+  font-size: 13.5px !important;
+}
+
+.gs-spec-val {
+  color: #475569 !important;
+  font-size: 13.5px !important;
+}
+
+/* Shared Product Details & Accordions Design: .gs-desc-highlights-grid, .gs-desc-benefits-list */
+
+
+/* 11. Sticky Add to Cart Bar Polish */
+.product-scrolled.scr2 #root > .shopify-section .f8ps,
+#root .f8ps {
+  background: rgba(255, 255, 255, 0.98) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border-top: 1px solid #E2E8F0 !important;
+  box-shadow: 0 -4px 20px rgba(12, 62, 97, 0.08) !important;
+  color: #0C3E61 !important;
+  padding: 10px 16px !important;
+  z-index: 9999 !important;
+}
+
+.f8ps:before {
+  background: rgba(255, 255, 255, 0.98) !important;
+}
+
+.f8ps h1, .f8ps h2, .f8ps h3, .f8ps h4 {
+  color: #0C3E61 !important;
+  font-family: var(--gs-font-heading, 'Outfit', sans-serif) !important;
+  font-weight: 700 !important;
+}
+
+.f8ps .price {
+  color: #0C3E61 !important;
+  font-weight: 800 !important;
+  font-size: 16px !important;
+}
+
+.f8ps footer button,
+.f8ps .submit button {
+  background: #0C3E61 !important;
+  color: #FFFFFF !important;
+  border-radius: 8px !important;
+  font-family: var(--gs-font-heading, 'Outfit', sans-serif) !important;
+  font-weight: 700 !important;
+  height: 42px !important;
+  padding: 0 20px !important;
+  border: none !important;
+  box-shadow: 0 2px 8px rgba(12, 62, 97, 0.2) !important;
+}
+
+/* 12. Mobile Responsive Adjustments */
+@media (max-width: 768px) {
+  /* Surgical Mobile Horizontal Spacing (Equal 16px Left & Right Gaps) */
+  #root #content .m6pr,
+  #root .m6pr,
+  article#main-product,
+  .m6pr {
+    --cols: 0px !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  #root .m6pr > *,
+  .m6pr > *,
+  #root .m6pr > .l4pr-container,
+  .m6pr > .l4pr-container,
+  #root .m6pr > header,
+  .m6pr > header,
+  #root .m6pr > div,
+  .m6pr > div {
+    border-left: 0 none !important;
+    border-right: 0 none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  #root .m6pr .l4dr {
+    margin-right: 0 !important;
+  }
+
+  #root .m6pr header h1,
+  #root .m6pr header h2,
+  #root .m6pr header h3,
+  #root .m6pr header h4,
+  #root .m6pr .m5 {
+    font-size: 20px !important;
+    line-height: 1.3 !important;
+    margin-bottom: 6px !important;
+  }
+
+  /* ── Mobile Price Section (Surgical 390px Mobile Tuning) ── */
+  .gs-pdp-price-wrapper {
+    margin: 8px 0 10px 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .gs-pdp-price-row {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+    margin-bottom: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .gs-pdp-price-group {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: baseline !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .gs-pdp-price-sale {
+    font-size: 26px !important;
+    font-weight: 800 !important;
+    color: #0C3E61 !important;
+    line-height: 1 !important;
+    letter-spacing: -0.5px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .gs-pdp-price-compare {
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    color: #94A3B8 !important;
+    text-decoration: line-through !important;
+    line-height: 1 !important;
+    flex-shrink: 0 !important;
+  }
+
+  .gs-pdp-badge-wrap {
+    display: block !important;
+    width: auto !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+  }
+
+  .gs-pdp-price-badge {
+    font-family: var(--gs-font-heading, 'Outfit', sans-serif) !important;
+    display: inline-flex !important;
+    align-items: baseline !important;
+    gap: 6px !important;
+    background: #FEF3E2 !important;
+    color: #9A7A1A !important;
+    border: 1px solid #F5DEA0 !important;
+    border-radius: 10px !important;
+    padding: 6px 10px !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    white-space: nowrap !important;
+  }
+
+  .gs-pdp-badge-save {
+    display: inline-flex !important;
+    align-items: baseline !important;
+    gap: 4px !important;
+    font-size: clamp(19px, 5.2vw, 21px) !important;
+    font-weight: 700 !important;
+    color: #9A7A1A !important;
+    line-height: 1.15 !important;
+    letter-spacing: normal !important;
+  }
+
+  .gs-pdp-badge-save .gs-pdp-badge-amount {
+    font-size: inherit !important;
+    font-weight: inherit !important;
+    color: inherit !important;
+  }
+
+  .gs-pdp-badge-pct {
+    font-size: clamp(17px, 4.6vw, 19px) !important;
+    font-weight: 700 !important;
+    color: #9A7A1A !important;
+    line-height: 1.15 !important;
+    letter-spacing: normal !important;
+    display: inline-block !important;
+  }
+
+  .gs-pdp-price-note,
+  #root .m6pr .gs-pdp-price-note,
+  #root .f8pr .gs-pdp-price-note,
+  #root p.gs-pdp-price-note {
+    font-family: var(--gs-font-body, 'Plus Jakarta Sans', sans-serif) !important;
+    font-size: 12px !important;
+    color: #64748B !important;
+    font-weight: 500 !important;
+    margin-top: 6px !important;
+    margin-bottom: 10px !important;
+    padding: 0 !important;
+    line-height: 1.4 !important;
+    letter-spacing: normal !important;
+    text-transform: none !important;
+    text-align: left !important;
+    display: block !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* ── Mobile Same-Day Dispatch Card ── */
+  .f8pr-shipping-timer {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .gs-ship-timer-card {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 12px !important;
+    background: #F0FDF4 !important;
+    border: 1px solid #BBF7D0 !important;
+    border-radius: 10px !important;
+    padding: 12px 14px !important;
+    margin: 6px 0 12px 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .gs-ship-timer-icon-wrap {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 8px !important;
+    background: #DCFCE7 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+  }
+
+  .gs-ship-timer-content {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+  }
+
+  .gs-ship-timer-text {
+    font-size: 12.5px !important;
+    color: #1E293B !important;
+    line-height: 1.4 !important;
+    font-weight: 500 !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    margin: 0 !important;
+    display: block !important;
+  }
+
+  .gs-ship-countdown {
+    color: #047857 !important;
+    font-weight: 800 !important;
+    font-family: monospace, sans-serif !important;
+    font-size: 13px !important;
+    white-space: nowrap !important;
+  }
+
+  .gs-ship-highlight {
+    color: #047857 !important;
+    font-weight: 700 !important;
+    display: inline-block !important;
+    white-space: nowrap !important;
+  }
+
+  .gs-pdp-actions-row,
+  #root .m6pr .gs-pdp-actions-row {
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: 8px !important;
+    align-items: center !important;
+  }
+
+  .f8pr div.submit > div.gs-pdp-qty-stepper,
+  #root .m6pr .gs-pdp-qty-stepper,
+  .gs-pdp-qty-stepper {
+    width: 108px !important;
+    min-width: 108px !important;
+    max-width: 108px !important;
+    flex: 0 0 108px !important;
+    height: 48px !important;
+    flex-wrap: nowrap !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 0 2px !important;
+    overflow: hidden !important;
+    background: #FFFFFF !important;
+    border: 1.5px solid #CBD5E1 !important;
+    border-radius: 10px !important;
+    box-sizing: border-box !important;
+  }
+
+  .f8pr div.submit > div.gs-pdp-qty-stepper .gs-qty-btn,
+  .f8pr div.submit > div.gs-pdp-qty-stepper button.gs-qty-btn,
+  #root .m6pr .gs-qty-btn,
+  .gs-qty-btn {
+    width: 32px !important;
+    min-width: 32px !important;
+    max-width: 32px !important;
+    flex: 0 0 32px !important;
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #0C3E61 !important;
+  }
+
+  .f8pr div.submit > div.gs-pdp-qty-stepper .gs-qty-input,
+  .f8pr div.submit > div.gs-pdp-qty-stepper input.gs-qty-input,
+  #root .m6pr .gs-qty-input,
+  .gs-qty-input {
+    width: 36px !important;
+    min-width: 28px !important;
+    max-width: 44px !important;
+    flex: 1 1 auto !important;
+    height: 100% !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    color: #0C3E61 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    text-align: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .gs-btn-primary-cart {
+    font-size: 14px !important;
+    height: 48px !important;
+  }
+
+  .gs-pdp-buy-now-wrap .shopify-payment-button__button--unbranded,
+  .gs-pdp-buy-now-wrap button,
+  .gs-pdp-buy-now-wrap div[role="button"] {
+    height: 48px !important;
+    min-height: 48px !important;
+    max-height: 48px !important;
+    font-size: 14px !important;
+    margin: 0 !important;
+  }
+
+  .gs-pdp-bulk-card {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .gs-pdp-bulk-btn {
+    justify-content: center !important;
+    margin-top: 4px !important;
+  }
+
+  .gs-pdp-trust-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .gs-pdp-tabs-container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    margin: 18px 0 14px 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Hide horizontal tabs nav on mobile */
+  .gs-pdp-tabs-nav {
+    display: none !important;
+  }
+
+  /* Mobile Dropdowns Container */
+  .gs-pdp-sections-container {
+    background: transparent !important;
+    border: none !important;
+    border-top: 1px solid #E2E8F0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin-top: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Each Dropdown Item */
+  .gs-pdp-section-item {
+    display: block !important;
+    border-bottom: 1px solid #E2E8F0 !important;
+    background: transparent !important;
+    animation: none !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Remove line under shipping & delivery dropdown */
+  #tab-shipping,
+  .gs-pdp-section-item#tab-shipping {
+    border-bottom: none !important;
+  }
+
+  /* Mobile Dropdown Header Trigger */
+  .gs-mobile-dropdown-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+    padding: 16px 0 !important;
+    background: transparent !important;
+    border: none !important;
+    cursor: pointer !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+    text-align: left !important;
+    box-sizing: border-box !important;
+  }
+
+  .gs-mobile-dropdown-header:before,
+  .gs-mobile-dropdown-header:after,
+  #root .m6pr .gs-mobile-dropdown-header:before,
+  #root .m6pr .gs-mobile-dropdown-header:after {
+    display: none !important;
+    content: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    border: none !important;
+  }
+
+  .gs-dropdown-title {
+    font-family: var(--gs-font-heading, 'Outfit', sans-serif) !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.6px !important;
+    color: #111827 !important;
+    line-height: 1.2 !important;
+  }
+
+  .gs-dropdown-chevron {
+    display: block !important;
+    width: 18px !important;
+    height: 18px !important;
+    stroke: #BE982D !important;
+    flex-shrink: 0 !important;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    transform: rotate(0deg) !important;
+  }
+
+  .gs-pdp-section-item.mobile-open .gs-dropdown-chevron {
+    transform: rotate(180deg) !important;
+  }
+
+  .gs-dropdown-collapse {
+    display: none !important;
+    padding-top: 6px !important;
+    padding-bottom: 20px !important;
+  }
+
+  .gs-pdp-section-item.mobile-open .gs-dropdown-collapse {
+    display: block !important;
+    animation: gsFadeIn 0.25s ease !important;
+  }
+
+  .gs-dropdown-inner {
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .gs-dropdown-body {
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .gs-desc-highlights-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+    margin-bottom: 18px !important;
+  }
+
+  .gs-highlight-card {
+    padding: 10px !important;
+    gap: 8px !important;
+    border-radius: 10px !important;
+  }
+
+  .gs-hl-icon {
+    font-size: 20px !important;
+  }
+
+  .gs-hl-label {
+    font-size: 10px !important;
+  }
+
+  .gs-hl-value {
+    font-size: 12px !important;
+  }
+
+  .gs-fragrance-notes-card {
+    padding: 14px !important;
+    border-radius: 12px !important;
+    margin-bottom: 18px !important;
+  }
+
+  .gs-notes-header h4 {
+    font-size: 14px !important;
+  }
+
+  .gs-notes-grid {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+
+  .gs-note-step {
+    padding: 10px 12px !important;
+  }
+
+  .gs-note-badge {
+    font-size: 9.5px !important;
+    padding: 2px 6px !important;
+    margin-bottom: 4px !important;
+  }
+
+  .gs-note-title {
+    font-size: 13px !important;
+    margin-bottom: 2px !important;
+  }
+
+  .gs-note-desc {
+    font-size: 12px !important;
+    line-height: 1.35 !important;
+  }
+
+  .gs-pdp-desc-content {
+    margin: 0 0 16px 0 !important;
+    padding: 0 !important;
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .gs-desc-section-title {
+    font-size: 14.5px !important;
+    margin: 0 0 8px 0 !important;
+    padding: 0 !important;
+    text-align: left !important;
+  }
+
+  .gs-desc-text-body {
+    font-size: 13.5px !important;
+    line-height: 1.65 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .gs-desc-text-body p {
+    margin: 0 0 10px 0 !important;
+    padding: 0 !important;
+    line-height: 1.65 !important;
+    text-align: left !important;
+  }
+
+  .gs-desc-benefits-list {
+    padding: 14px !important;
+    border-radius: 12px !important;
+  }
+
+  .gs-benefit-row {
+    font-size: 12.5px !important;
+    gap: 10px !important;
+    padding: 8px 0 !important;
+  }
+
+  .gs-benefit-bullet {
+    width: 18px !important;
+    height: 18px !important;
+    font-size: 11px !important;
+  }
+
+
+
+  /* Safe floating button clearance above sticky bar */
+  .product-scrolled.scr2 .gs-whatsapp-floating-btn,
+  body.template-product.product-scrolled .gs-whatsapp-floating-btn {
+    bottom: 85px !important;
+    transition: bottom 0.25s ease !important;
+  }
+}
+
+/* ==========================================================================
+   GULF SOUQ: PDP SHARE BUTTON & SOCIAL DROPDOWN
+   ========================================================================== */
+.l4dr li.has-social {
+  display: inline-flex !important;
+  align-items: center !important;
+  margin-top: 6px !important;
+  margin-bottom: 8px !important;
+}
+
+.has-social > a.toggle.gs-share-btn,
+.has-social > a.toggle {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  text-decoration: none !important;
+  color: #0C3E61 !important;
+  cursor: pointer !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  line-height: 1 !important;
+  transition: opacity 0.2s ease, transform 0.2s ease !important;
+}
+
+.has-social > a.toggle:hover {
+  opacity: 0.85 !important;
+}
+
+.gs-share-icon-wrap {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 50% !important;
+  background: #F1F5F9 !important;
+  border: 1px solid #E2E8F0 !important;
+  color: #0C3E61 !important;
+  flex-shrink: 0 !important;
+  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.has-social > a.toggle:hover .gs-share-icon-wrap {
+  background: #E2E8F0 !important;
+  transform: scale(1.05) !important;
+  box-shadow: 0 2px 8px rgba(12, 62, 97, 0.12) !important;
+}
+
+.gs-share-icon-wrap svg {
+  display: block !important;
+  width: 17px !important;
+  height: 17px !important;
+}
+
+/* Social Share Dropdown */
+.l4sc .gs-social-icon {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 22px !important;
+  height: 22px !important;
+  margin-right: 8px !important;
+  flex-shrink: 0 !important;
+}
+
+.l4sc .gs-social-icon svg {
+  width: 18px !important;
+  height: 18px !important;
+  display: block !important;
+}
+
+.gs-social-whatsapp { color: #25D366 !important; }
+.gs-social-facebook { color: #1877F2 !important; }
+.gs-social-twitter { color: #0F1419 !important; }
+.gs-social-pinterest { color: #E60023 !important; }
+.gs-social-messenger { color: #0084FF !important; }
+.gs-social-email { color: #0C3E61 !important; }
+
+/* Neutralize broken font glyph for share icon anywhere */
+.icon-share:before {
+  content: "" !important;
+  display: none !important;
+}
+
+/* ==========================================================================
+   GULF SOUQ: PDP GALLERY SCROLL / SWIPER NAVIGATION BUTTONS
+   ========================================================================== */
+.l4pr .swiper-button-nav,
+.m6pr .l4pr .swiper-button-nav,
+#root .l4pr .swiper-button-nav {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: absolute !important;
+  top: 50% !important;
+  bottom: auto !important;
+  transform: translateY(-50%) !important;
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 1px solid rgba(226, 232, 240, 0.9) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12) !important;
+  z-index: 10 !important;
+  cursor: pointer !important;
+  text-indent: 0 !important;
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Neutralize old pseudo backdrop */
+.l4pr .swiper-button-nav:after,
+.m6pr .l4pr .swiper-button-nav:after,
+#root .l4pr .swiper-button-nav:after {
+  display: none !important;
+  content: none !important;
+}
+
+/* Positioning on image edges */
+.l4pr.s4wi .swiper-button-prev,
+.m6pr .l4pr.s4wi .swiper-button-prev,
+#root .l4pr.s4wi .swiper-button-prev,
+.l4pr:not(.no-thumbs-mobile) .swiper-button-prev {
+  left: 12px !important;
+  right: auto !important;
+}
+
+.l4pr.s4wi .swiper-button-next,
+.m6pr .l4pr.s4wi .swiper-button-next,
+#root .l4pr.s4wi .swiper-button-next,
+.l4pr:not(.no-thumbs-mobile) .swiper-button-next {
+  right: 12px !important;
+  left: auto !important;
+}
+
+/* Interactive states */
+.l4pr .swiper-button-nav:hover,
+#root .l4pr .swiper-button-nav:hover {
+  background: #FFFFFF !important;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18) !important;
+  transform: translateY(-50%) scale(1.08) !important;
+}
+
+.l4pr .swiper-button-nav:active,
+#root .l4pr .swiper-button-nav:active {
+  transform: translateY(-50%) scale(0.94) !important;
+}
+
+/* Arrow vector icons inside the circle */
+.l4pr .swiper-button-prev:before,
+.m6pr .l4pr .swiper-button-prev:before,
+#root .l4pr .swiper-button-prev:before {
+  content: "" !important;
+  font-family: inherit !important;
+  display: block !important;
+  position: absolute !important;
+  left: 0 !important;
+  top: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  background-repeat: no-repeat !important;
+  background-position: center center !important;
+  background-size: 16px 16px !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230C3E61' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='15 18 9 12 15 6'%3E%3C/polyline%3E%3C/svg%3E") !important;
+}
+
+.l4pr .swiper-button-next:before,
+.m6pr .l4pr .swiper-button-next:before,
+#root .l4pr .swiper-button-next:before {
+  content: "" !important;
+  font-family: inherit !important;
+  display: block !important;
+  position: absolute !important;
+  left: 0 !important;
+  top: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  background-repeat: no-repeat !important;
+  background-position: center center !important;
+  background-size: 16px 16px !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230C3E61' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='9 18 15 12 9 6'%3E%3C/polyline%3E%3C/svg%3E") !important;
+}
+
+/* Cleanly hide disabled navigation arrows */
+.l4pr .swiper-button-disabled,
+.m6pr .l4pr .swiper-button-disabled,
+#root .l4pr .swiper-button-disabled,
+#root .swiper-button-disabled {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}

@@ -100,7 +100,18 @@
       {%- endif -%}
       {%- if share_whatsapp or share_facebook or share_twitter or share_pinterest or share_messenger or share_email -%}
         <li class="has-social">
-          <a href="./" class="toggle" aria-label="{{ 'social_share.share_this_product' | t }}"><i aria-hidden="true" class="icon-share"></i> <span class="mobile-hide">{{ 'social_share.share_this_product' | t }}</span></a>
+          <a href="./" class="toggle gs-share-btn" aria-label="{{ 'social_share.share_this_product' | t }}">
+            <span class="gs-share-icon-wrap" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="18" cy="5" r="3"></circle>
+                <circle cx="6" cy="12" r="3"></circle>
+                <circle cx="18" cy="19" r="3"></circle>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+              </svg>
+            </span>
+            <span class="mobile-hide">{{ 'social_share.share_this_product' | t }}</span>
+          </a>
           <ul class="l4sc box">
             {%- render 'social-share-buttons', share: sharing_product, share_whatsapp: share_whatsapp, share_facebook: share_facebook, share_twitter: share_twitter, share_pinterest: share_pinterest, share_messenger: share_messenger, share_email: share_email -%}
           </ul>
@@ -145,138 +156,387 @@
       header: header
     -%}
   </div>
-  {%- if has_pros_and_cons == false and has_specs == false -%}
-    {%- if section.settings.show_product_description and product.description != empty -%}
-      <footer class="m6tb static desktop-hide">
-        <nav class="hidden">
-          <ul>
-            <li class="active">
-              <a href="#section-info">{{ 'product.description' | t }}</a>
-            </li>
-          </ul>
-        </nav>
-        <div>
-          <div
-            id="section-info"
-            {% if section.settings.product_description_mobile_collapse %}
-              class="tab-closed"
-            {% endif %}
-          >
-            <{{ section.settings.description_title_size }} class="mobile-hide">
-              {{- 'product.description' | t -}}
-            </{{ section.settings.description_title_size }}>
-            {%- if section.settings.product_description_enable_read_more -%}
-              <div class="m6lm">
-                {{ product.description }}
-              </div>
-              <p class="has-link-more">
-                <a href="./" class="strong link-more">
-                  {{- 'general.read_more.read' | t }}
-                  <span>{{ 'general.read_more.more' | t }}</span>
-                  <span class="hidden">{{ 'general.read_more.less' | t }}</span>
-                  <i aria-hidden="true" class="icon-chevron-down"></i
-                ></a>
-              </p>
-            {%- else -%}
-              {{ product.description }}
-            {%- endif -%}
-          </div>
-        </div>
-      </footer>
-    {%- endif %}
-  {%- endif %}
 </article>
 
-{%- if has_pros_and_cons or has_specs -%}
-  <div class="m6tb static">
-    <nav class="hidden">
-      <ul>
-        <li class="active">
-          <a href="#section-info">{{ 'product.description' | t }}</a>
-        </li>
-      </ul>
-    </nav>
-    <div>
-      <div
-        id="section-info"
-        {% if section.settings.product_description_mobile_collapse %}
-          class="tab-closed"
-        {% endif %}
-      >
-        <article class="cols b75">
-          {%- if section.settings.show_product_description -%}
-            <div class="w60 t55">
-              <{{ section.settings.description_title_size }} class="mobile-hide">
-                {{- 'product.description' | t -}}
-              </{{ section.settings.description_title_size }}>
-              {%- if section.settings.product_description_enable_read_more -%}
-                <div class="m6lm">
-                  {{ product.description }}
+{%- if section.settings.show_product_description and product.description != empty or has_specs or has_pros_and_cons -%}
+  <div class="gs-pdp-tabs-container">
+    <div class="gs-pdp-tabs-nav" role="tablist">
+      {%- if section.settings.show_product_description and product.description != empty -%}
+        <button type="button" class="gs-pdp-tab-btn active" data-tab="tab-desc" role="tab" aria-selected="true" onclick="gsSwitchTab(event, 'tab-desc')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+          <span>Product Details</span>
+        </button>
+      {%- endif -%}
+      {%- if has_specs -%}
+        <button type="button" class="gs-pdp-tab-btn{% unless section.settings.show_product_description and product.description != empty %} active{% endunless %}" data-tab="tab-specs" role="tab" aria-selected="false" onclick="gsSwitchTab(event, 'tab-specs')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+          <span>Specifications</span>
+        </button>
+      {%- endif -%}
+      <button type="button" class="gs-pdp-tab-btn" data-tab="tab-shipping" role="tab" aria-selected="false" onclick="gsSwitchTab(event, 'tab-shipping')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+        <span>Shipping & Delivery</span>
+      </button>
+      <button type="button" class="gs-pdp-tab-btn" data-tab="tab-authenticity" role="tab" aria-selected="false" onclick="gsSwitchTab(event, 'tab-authenticity')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg>
+        <span>100% Authentic</span>
+      </button>
+    </div>
+
+    <div class="gs-pdp-sections-container">
+      {%- if section.settings.show_product_description and product.description != empty -%}
+        <div id="tab-desc" class="gs-pdp-section-item active mobile-open" role="region">
+          <!-- Mobile Dropdown Header (Shown only on mobile) -->
+          <button type="button" class="gs-mobile-dropdown-header" onclick="gsToggleMobileDropdown(this)">
+            <span class="gs-dropdown-title">Product Details</span>
+            <svg class="gs-dropdown-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#BE982D" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="gs-dropdown-collapse">
+            <div class="gs-dropdown-inner">
+              <div class="gs-dropdown-body">
+                <!-- Description Body -->
+                <div class="gs-pdp-desc-content">
+                  <div class="gs-desc-text-body">
+                    {{ product.description }}
+                  </div>
                 </div>
-                <p class="has-link-more">
-                  <a href="./" class="strong link-more">
-                    {{- 'general.read_more.read' | t }}
-                    <span>{{ 'general.read_more.more' | t }}</span>
-                    <span class="hidden">{{ 'general.read_more.less' | t }}</span>
-                    <i aria-hidden="true" class="icon-chevron-down"></i
-                  ></a>
-                </p>
-              {%- else -%}
-                {{ product.description }}
-              {%- endif -%}
-            </div>
-          {%- endif %}
-          <div class="w40 t45">
-            {%- if has_specs -%}
-              <{{ section.settings.specs_title_size }}>
-                {{- 'product.specifications' | t -}}
-              </{{ section.settings.specs_title_size }}>
-              <ul class="l4if">
-                {%- for spec in specs -%}
-                  {%- assign spec_name = spec | split: ':' | first | strip -%}
-                  {%- assign spec_value = spec | split: ':' | last | strip -%}
-                  {%- if spec_name != empty and spec_value != empty -%}
-                    <li
-                      {% if specs.size > 9 and forloop.index > 9 %}
-                        class="hidden"
-                      {% endif %}
-                    >
-                      <span>{{ spec_name | remove: '<p>' | remove: '</p>' }}:</span>
-                      {{ spec_value | remove: '<p>' | remove: '</p>' }}
-                    </li>
-                  {%- endif -%}
-                {%- endfor -%}
-                {%- if specs.size > 9 -%}
-                  <li>
-                    <a href="./" class="strong link-more">
-                      {{- 'general.read_more.read' | t }}
-                      <span>{{ 'general.read_more.more' | t }}</span>
-                      <span class="hidden">{{ 'general.read_more.less' | t }}</span>
-                      <i aria-hidden="true" class="icon-chevron-down"></i
-                    ></a>
-                  </li>
+
+                {%- assign title_lower = product.title | downcase -%}
+                {%- assign desc_lower = product.description | downcase -%}
+                {%- if title_lower contains 'perfume' or title_lower contains 'fragrance' or title_lower contains 'oud' or desc_lower contains 'fragrance' or desc_lower contains 'perfume' -%}
+                  <!-- Luxury Highlights Bar -->
+                  <div class="gs-desc-highlights-grid">
+                    <div class="gs-highlight-card">
+                      <span class="gs-hl-icon">⏳</span>
+                      <div class="gs-hl-info">
+                        <span class="gs-hl-label">Longevity</span>
+                        <span class="gs-hl-value">12+ Hours Lasting</span>
+                      </div>
+                    </div>
+                    <div class="gs-highlight-card">
+                      <span class="gs-hl-icon">👑</span>
+                      <div class="gs-hl-info">
+                        <span class="gs-hl-label">Fragrance Type</span>
+                        <span class="gs-hl-value">Unisex Luxury Blend</span>
+                      </div>
+                    </div>
+                    <div class="gs-highlight-card">
+                      <span class="gs-hl-icon">🏺</span>
+                      <div class="gs-hl-info">
+                        <span class="gs-hl-label">Bottle Design</span>
+                        <span class="gs-hl-value">Frosted Glass & Gold Cap</span>
+                      </div>
+                    </div>
+                    <div class="gs-highlight-card">
+                      <span class="gs-hl-icon">✨</span>
+                      <div class="gs-hl-info">
+                        <span class="gs-hl-label">Occasion</span>
+                        <span class="gs-hl-value">Daily Signature & Parties</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Fragrance Notes Pyramid -->
+                  <div class="gs-fragrance-notes-card">
+                    <div class="gs-notes-header">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#BE982D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                      <h4>Fragrance Olfactory Pyramid</h4>
+                    </div>
+                    <div class="gs-notes-grid">
+                      <div class="gs-note-step">
+                        <div class="gs-note-badge">Top Notes</div>
+                        <div class="gs-note-title">Opening Scent</div>
+                        <div class="gs-note-desc">Fresh Bergamot, Saffron & Warm Spiced Citrus</div>
+                      </div>
+                      <div class="gs-note-step">
+                        <div class="gs-note-badge">Heart Notes</div>
+                        <div class="gs-note-title">Core Character</div>
+                        <div class="gs-note-desc">Precious Arabian Oud, Damask Rose & Amberwood</div>
+                      </div>
+                      <div class="gs-note-step">
+                        <div class="gs-note-badge">Base Notes</div>
+                        <div class="gs-note-title">Lasting Trail</div>
+                        <div class="gs-note-desc">Smoky Sandalwood, Deep Amber & Soft White Musk</div>
+                      </div>
+                    </div>
+                  </div>
                 {%- endif -%}
-              </ul>
-            {%- endif %}
-            {%- if has_pros_and_cons -%}
-              <{{ section.settings.pros_cons_title_size }}>
-                {{- 'product.pros_and_cons' | t -}}
-              </{{ section.settings.pros_cons_title_size }}>
-              <ul class="l4us static plus">
-                {%- for pro in pros -%}
-                  <li>{{ pro | remove: '<p>' | remove: '</p>' | strip }}</li>
-                {%- endfor -%}
-                {%- for con in cons -%}
-                  <li class="overlay-content">{{ con | remove: '<p>' | remove: '</p>' | strip }}</li>
-                {%- endfor -%}
-              </ul>
-            {%- endif %}
+
+                <!-- Key Craftsmanship Points -->
+                <div class="gs-desc-benefits-list">
+                  <h4 class="gs-desc-section-title">Key Highlights & Craftsmanship</h4>
+                  <div class="gs-benefit-row">
+                    <span class="gs-benefit-bullet">✓</span>
+                    <div>
+                      <strong>Artisanal Arabian Formulation:</strong> Formulated using centuries-old Gulf perfumery heritage with rich, pure oriental essential oils.
+                    </div>
+                  </div>
+                  <div class="gs-benefit-row">
+                    <span class="gs-benefit-bullet">✓</span>
+                    <div>
+                      <strong>High Sillage & Projection:</strong> Evolves gracefully throughout the day, creating an alluring, commanding scent trail without being overpowering.
+                    </div>
+                  </div>
+                  <div class="gs-benefit-row">
+                    <span class="gs-benefit-bullet">✓</span>
+                    <div>
+                      <strong>Travel-Friendly Luxury Flacon:</strong> Compact 60ml heavy frosted glass flacon with crowned gold cap fits effortlessly in bags and vanity desks.
+                    </div>
+                  </div>
+                  <div class="gs-benefit-row">
+                    <span class="gs-benefit-bullet">✓</span>
+                    <div>
+                      <strong>Exquisite Luxury Gifting:</strong> Presented in a lavish presentation box, making it a memorable gift for Eid, anniversaries, and milestones.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </article>
+        </div>
+      {%- endif -%}
+
+      {%- if has_specs -%}
+        <div id="tab-specs" class="gs-pdp-section-item{% unless section.settings.show_product_description and product.description != empty %} active mobile-open{% endunless %}" role="region">
+          <button type="button" class="gs-mobile-dropdown-header" onclick="gsToggleMobileDropdown(this)">
+            <span class="gs-dropdown-title">Specifications</span>
+            <svg class="gs-dropdown-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#BE982D" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="gs-dropdown-collapse">
+            <div class="gs-dropdown-inner">
+              <div class="gs-dropdown-body">
+                <ul class="gs-pdp-specs-grid">
+                  {%- for spec in specs -%}
+                    {%- assign spec_name = spec | split: ':' | first | strip -%}
+                    {%- assign spec_value = spec | split: ':' | last | strip -%}
+                    {%- if spec_name != empty and spec_value != empty -%}
+                      <li class="gs-spec-item">
+                        <span class="gs-spec-key">{{ spec_name | remove: '<p>' | remove: '</p>' }}</span>
+                        <span class="gs-spec-val">{{ spec_value | remove: '<p>' | remove: '</p>' }}</span>
+                      </li>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      {%- endif -%}
+
+      <div id="tab-shipping" class="gs-pdp-section-item" role="region">
+        <button type="button" class="gs-mobile-dropdown-header" onclick="gsToggleMobileDropdown(this)">
+          <span class="gs-dropdown-title">Shipping & Delivery</span>
+          <svg class="gs-dropdown-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#BE982D" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+        <div class="gs-dropdown-collapse">
+          <div class="gs-dropdown-inner">
+            <div class="gs-dropdown-body">
+
+              <!-- Intro Text (Matches Product Details styling) -->
+              <div class="gs-pdp-desc-content">
+                <div class="gs-desc-text-body">
+                  <p>Every order is dispatched with white-glove care directly from our regional fulfillment hub in Kerala. We partner exclusively with premium express couriers (Bluedart, Delhivery & DTDC) to ensure fast, tamper-proof delivery right to your doorstep.</p>
+                </div>
+              </div>
+
+              <!-- Quick Delivery Highlights (Matches Product Details gs-desc-highlights-grid) -->
+              <div class="gs-desc-highlights-grid">
+                <div class="gs-highlight-card">
+                  <span class="gs-hl-icon">⚡</span>
+                  <div class="gs-hl-info">
+                    <span class="gs-hl-label">Dispatch</span>
+                    <span class="gs-hl-value">Same-Day by 5 PM</span>
+                  </div>
+                </div>
+                <div class="gs-highlight-card">
+                  <span class="gs-hl-icon">🌴</span>
+                  <div class="gs-hl-info">
+                    <span class="gs-hl-label">Kerala Express</span>
+                    <span class="gs-hl-value">2 – 3 Business Days</span>
+                  </div>
+                </div>
+                <div class="gs-highlight-card">
+                  <span class="gs-hl-icon">🚚</span>
+                  <div class="gs-hl-info">
+                    <span class="gs-hl-label">South India</span>
+                    <span class="gs-hl-value">3 – 4 Business Days</span>
+                  </div>
+                </div>
+                <div class="gs-highlight-card">
+                  <span class="gs-hl-icon">🇮🇳</span>
+                  <div class="gs-hl-info">
+                    <span class="gs-hl-label">Rest of India</span>
+                    <span class="gs-hl-value">4 – 6 Business Days</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Key Shipping Policies (Matches Product Details gs-desc-benefits-list) -->
+              <div class="gs-desc-benefits-list">
+                <h4 class="gs-desc-section-title">Shipping & Delivery Policies</h4>
+                <div class="gs-benefit-row">
+                  <span class="gs-benefit-bullet">✓</span>
+                  <div>
+                    <strong>Same-Day Priority Dispatch:</strong> Orders placed before 5:00 PM (Monday through Saturday) are processed and handed over to express couriers the same day.
+                  </div>
+                </div>
+                <div class="gs-benefit-row">
+                  <span class="gs-benefit-bullet">✓</span>
+                  <div>
+                    <strong>Regional Transit Times:</strong> 2–3 business days for Kerala, 3–4 business days for South India (Tamil Nadu, Karnataka, AP, Telangana), and 4–6 business days for North & Rest of India.
+                  </div>
+                </div>
+                <div class="gs-benefit-row">
+                  <span class="gs-benefit-bullet">✓</span>
+                  <div>
+                    <strong>Free Cash on Delivery (COD):</strong> COD is available across 27,000+ pin codes throughout India with zero advance payment required.
+                  </div>
+                </div>
+                <div class="gs-benefit-row">
+                  <span class="gs-benefit-bullet">✓</span>
+                  <div>
+                    <strong>Climate & Fragrance Safe Packaging:</strong> Multi-layer shock-absorbent packaging ensures delicate glass flacons arrive in pristine, factory-sealed condition.
+                  </div>
+                </div>
+                <div class="gs-benefit-row">
+                  <span class="gs-benefit-bullet">✓</span>
+                  <div>
+                    <strong>7-Day Hassle-Free Returns & Replacement:</strong> If your product arrives damaged, leaking, or incorrect, our customer support team provides immediate hassle-free replacements.
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="tab-authenticity" class="gs-pdp-section-item" role="region">
+        <button type="button" class="gs-mobile-dropdown-header" onclick="gsToggleMobileDropdown(this)">
+          <span class="gs-dropdown-title">100% Authentic Guarantee</span>
+          <svg class="gs-dropdown-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#BE982D" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+        <div class="gs-dropdown-collapse">
+          <div class="gs-dropdown-inner">
+            <div class="gs-dropdown-body">
+              <!-- Intro Text (Matches Product Details styling) -->
+              <div class="gs-pdp-desc-content">
+                <div class="gs-desc-text-body">
+                  <p>At Gulf Souq, authenticity is our absolute commitment. Every luxury Arabic fragrance, attar, and gourmet import in our collection is guaranteed 100% genuine, procured directly from authorized brand houses and master perfumers across the Arabian Gulf.</p>
+                </div>
+              </div>
+
+              <!-- Quick Authenticity Highlights (Matches Product Details gs-desc-highlights-grid) -->
+              <div class="gs-desc-highlights-grid">
+                <div class="gs-highlight-card">
+                  <span class="gs-hl-icon">🛡️</span>
+                  <div class="gs-hl-info">
+                    <span class="gs-hl-label">Origin</span>
+                    <span class="gs-hl-value">Direct Gulf Import</span>
+                  </div>
+                </div>
+                <div class="gs-highlight-card">
+                  <span class="gs-hl-icon">🔒</span>
+                  <div class="gs-hl-info">
+                    <span class="gs-hl-label">Condition</span>
+                    <span class="gs-hl-value">Factory Sealed Box</span>
+                  </div>
+                </div>
+                <div class="gs-highlight-card">
+                  <span class="gs-hl-icon">🏷️</span>
+                  <div class="gs-hl-info">
+                    <span class="gs-hl-label">Batch Code</span>
+                    <span class="gs-hl-value">100% Verifiable</span>
+                  </div>
+                </div>
+                <div class="gs-highlight-card">
+                  <span class="gs-hl-icon">👑</span>
+                  <div class="gs-hl-info">
+                    <span class="gs-hl-label">Guarantee</span>
+                    <span class="gs-hl-value">Money-Back Promise</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Key Authenticity Guarantees (Matches Product Details gs-desc-benefits-list) -->
+              <div class="gs-desc-benefits-list">
+                <h4 class="gs-desc-section-title">Authenticity & Quality Standards</h4>
+                <div class="gs-benefit-row">
+                  <span class="gs-benefit-bullet">✓</span>
+                  <div>
+                    <strong>Direct Authorised Procurement:</strong> Sourced directly from verified authorized perfume houses, master distributors, and brand principals across Dubai, UAE & the GCC.
+                  </div>
+                </div>
+                <div class="gs-benefit-row">
+                  <span class="gs-benefit-bullet">✓</span>
+                  <div>
+                    <strong>Tamper-Proof Hologram & Cellophane:</strong> Every fragrance flacon is delivered in its original manufacturer presentation box with intact cellophane wrapping and official hologram seals.
+                  </div>
+                </div>
+                <div class="gs-benefit-row">
+                  <span class="gs-benefit-bullet">✓</span>
+                  <div>
+                    <strong>Fresh Manufacturing Runs:</strong> We stock fresh, recent production batches to ensure peak perfume oil concentration, projection, and long-lasting sillage.
+                  </div>
+                </div>
+                <div class="gs-benefit-row">
+                  <span class="gs-benefit-bullet">✓</span>
+                  <div>
+                    <strong>Matching Bottle & Box Batch Numbers:</strong> Batch numbers laser-engraved or printed on the flacon base correspond exactly with the outer box serial codes for instant verification.
+                  </div>
+                </div>
+                <div class="gs-benefit-row">
+                  <span class="gs-benefit-bullet">✓</span>
+                  <div>
+                    <strong>100% Money-Back Authenticity Guarantee:</strong> In the impossible event that any product is proven not genuine, we guarantee a full 100% immediate refund with zero hassle.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-{%- endif %}
+
+  <script>
+  function gsSwitchTab(e, tabId) {
+    var container = e.currentTarget.closest('.gs-pdp-tabs-container');
+    if (!container) return;
+    container.querySelectorAll('.gs-pdp-tab-btn').forEach(function(btn) {
+      btn.classList.remove('active');
+      btn.setAttribute('aria-selected', 'false');
+    });
+    container.querySelectorAll('.gs-pdp-section-item').forEach(function(panel) {
+      panel.classList.remove('active');
+    });
+    e.currentTarget.classList.add('active');
+    e.currentTarget.setAttribute('aria-selected', 'true');
+    var targetPanel = document.getElementById(tabId);
+    if (targetPanel) targetPanel.classList.add('active');
+    try {
+      e.currentTarget.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    } catch(err) {}
+  }
+
+  function gsToggleMobileDropdown(btn) {
+    var item = btn.closest('.gs-pdp-section-item');
+    if (!item) return;
+    var wasOpen = item.classList.contains('mobile-open');
+    var container = item.closest('.gs-pdp-sections-container');
+    if (container) {
+      container.querySelectorAll('.gs-pdp-section-item').forEach(function(el) {
+        if (el !== item) el.classList.remove('mobile-open');
+      });
+    }
+    if (!wasOpen) {
+      item.classList.add('mobile-open');
+    } else {
+      item.classList.remove('mobile-open');
+    }
+  }
+  </script>
+{%- endif -%}
 
 {% style %}
   @media only screen and (max-width: 760px) {

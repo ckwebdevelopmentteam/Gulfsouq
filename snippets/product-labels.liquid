@@ -59,11 +59,12 @@
 <span class="s1lb label{% if settings.button_style != 'solid' %} plain{% endif %}">
   {%- if show_sale_label -%}
     <span class="overlay-sale">
-      {{- 'product.sale_tag' | t -}}
       {%- if settings.sale_label_price == 'percentage' -%}
-        &nbsp;-{{ discount }}%
+        {{ discount }}% OFF
       {%- elsif settings.sale_label_price == 'amount' -%}
-        &nbsp;-{{ discount -}}
+        {{ discount }} OFF
+      {%- else -%}
+        {{ 'product.sale_tag' | t }}
       {%- endif -%}
     </span>
   {%- endif -%}

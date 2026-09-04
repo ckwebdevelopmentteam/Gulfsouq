@@ -1,109 +1,30 @@
+{% comment %}
+  GulfSouq Bulk & Corporate Orders Inquiry Card
+  Replaces marquee with a clean, high-converting luxury card.
+{% endcomment %}
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        .bulk-order-marquee {
-            background: #25D366;
-            padding: 1px 0;
-            overflow: hidden;
-            border-radius: 8px;
-        }
-        
-        .marquee-inner {
-            display: flex;
-            width: max-content;
-            animation: marquee-scroll 20s linear infinite;
-        }
-        
-        .marquee-item {
-            display: flex;
-            align-items: center;
-            padding: 0 30px;
-            white-space: nowrap;
-        }
-        
-        .whatsapp-icon {
-            background: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 12px;
-            color: #25D366;
-            font-size: 1.3rem;
-        }
-        
-        .marquee-text {
-            color: white;
-            font-weight: 600;
-            font-size: 1.5rem;
-            letter-spacing: 0.3px;
-        }
-        
-        .marquee-text a {
-            color: white;
-            text-decoration: none;
-            border-bottom: 2px dotted rgba(255,255,255,0.5);
-            transition: all 0.3s ease;
-        }
-        
-        .marquee-text a:hover {
-            color: #075e54;
-            border-bottom-color: #075e54;
-        }
-        
-        @keyframes marquee-scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-100%); }
-        }
-        
-        @media (max-width: 768px) {
-            .marquee-text {
-                font-size: 1rem;
-            }
-            
-            .marquee-item {
-                padding: 0 20px;
-            }
-        }
-
-       
-        .demo-container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-        }
-    </style>
-     
-        
-        
-        <div class="bulk-order-marquee">
-            <div class="marquee-inner">
-                <div class="marquee-item">
-                    <div class="whatsapp-icon"><i class="fab fa-whatsapp"></i></div>
-                    <div class="marquee-text">
-                        <strong>For Bulk Orders:</strong> 
-                        <a href="https://wa.me/+917025545444" target="_blank">Click to WhatsApp us on 7025545444</a>
-                    </div>
-                </div>
-                <div class="marquee-item">
-                    <div class="whatsapp-icon"><i class="fab fa-whatsapp"></i></div>
-                    <div class="marquee-text">
-                        <strong>For Bulk Orders:</strong> 
-                        <a href="https://wa.me/+917025545444" target="_blank">Click to WhatsApp us on 7025545444</a>
-                    </div>
-                </div>
-                <div class="marquee-item">
-                    <div class="whatsapp-icon"><i class="fab fa-whatsapp"></i></div>
-                    <div class="marquee-text">
-                        <strong>For Bulk Orders:</strong> 
-                        <a href="https://wa.me/+917025545444" target="_blank">Click to WhatsApp us on 7025545444</a>
-                    </div>
-                </div>
-            </div>
-         
-         
+<div class="gs-pdp-bulk-card">
+  <div class="gs-pdp-bulk-left">
+    <div class="gs-pdp-bulk-icon">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="#25D366">
+        <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0012.04 2z"/>
+      </svg>
     </div>
+    <div class="gs-pdp-bulk-info">
+      <span class="gs-pdp-bulk-title">Bulk & Corporate Gifting</span>
+      <span class="gs-pdp-bulk-desc">Special wholesale pricing & custom gift hampers available</span>
+    </div>
+  </div>
+  <a
+    href="https://wa.me/917025545444?text={{ 'Hi GulfSouq Team, I am interested in bulk/wholesale order for: ' | append: product.title | url_encode }}"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="gs-pdp-bulk-btn"
+  >
+    <span>Chat on WhatsApp</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+      <polyline points="12 5 19 12 12 19"></polyline>
+    </svg>
+  </a>
+</div>

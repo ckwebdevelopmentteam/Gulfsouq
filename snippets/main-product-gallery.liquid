@@ -146,41 +146,6 @@
     </li>
   {%- endfor -%}
 </ul>
-{%- if has_pros_and_cons == false and has_specs == false -%}
-  {%- if section.settings.show_product_description and product.description != empty -%}
-    <footer class="m6tb static desktop-only base-font">
-      <nav class="hidden">
-        <ul>
-          <li class="active">
-            <a href="#section-info">{{ 'product.description' | t }}</a>
-          </li>
-        </ul>
-      </nav>
-      <div>
-        <div id="section-info">
-          <{{ section.settings.description_title_size }} class="mobile-hide">
-            {{- 'product.description' | t -}}
-          </{{ section.settings.description_title_size }}>
-          {%- if section.settings.product_description_enable_read_more -%}
-            <div class="m6lm">
-              {{ product.description }}
-            </div>
-            <p class="has-link-more">
-              <a href="./" class="strong link-more">
-                {{- 'general.read_more.read' | t }}
-                <span>{{ 'general.read_more.more' | t }}</span>
-                <span class="hidden">{{ 'general.read_more.less' | t }}</span>
-                <i aria-hidden="true" class="icon-chevron-down"></i
-              ></a>
-            </p>
-          {%- else -%}
-            {{ product.description }}
-          {%- endif -%}
-        </div>
-      </div>
-    </footer>
-  {%- endif %}
-{%- endif %}
 {%- assign has_model = product.media | where: 'media_type', 'model' | first -%}
 {%- if has_model -%}
   <script type="application/json" id="ProductJSON-{{ product.id }}">

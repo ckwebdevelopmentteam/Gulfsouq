@@ -127,5 +127,12 @@
     .gs-whatsapp-tooltip {
       display: none !important;
     }
+
+    /* Elevate button when product sticky bar is active to avoid blocking CTA */
+    body.product-scrolled .gs-whatsapp-floating-btn,
+    .product-scrolled.scr2 .gs-whatsapp-floating-btn,
+    .has-f8ps .gs-whatsapp-floating-btn {
+      bottom: 85px !important;
+    }
   }
 </style>
