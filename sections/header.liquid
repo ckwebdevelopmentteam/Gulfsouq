@@ -761,7 +761,10 @@
      2. MAIN NAVY NAVIGATION HEADER (#103f60)
      ═══════════════════════════════════════════════════════ */
   .shopify-section-header,
-  .shopify-section-group-header-group {
+  .shopify-section-group-header-group,
+  #shopify-section-header,
+  header-group,
+  .header-group {
     background-color: #103f60 !important;
     background: #103f60 !important;
     position: relative !important;
@@ -769,12 +772,25 @@
     margin: 0 !important;
     padding: 0 !important;
     box-sizing: border-box !important;
+    z-index: 9999999 !important;
   }
 
   .gs-header-wrapper {
     width: 100%;
-    position: relative;
-    z-index: 1000;
+    position: relative !important;
+    z-index: 9999999 !important;
+  }
+
+  /* Prevent theme touch-moving and ancestors from creating a containing block on header */
+  html.touch-moving .shopify-section-header,
+  html.touch-moving .shopify-section-group-header-group,
+  html.touch-moving .shopify-section,
+  .shopify-section-header,
+  .shopify-section-group-header-group {
+    transform: none !important;
+    will-change: auto !important;
+    backface-visibility: visible !important;
+    contain: none !important;
   }
 
   .gs-header-section {
@@ -782,13 +798,15 @@
     background-color: #103f60 !important;
     background: #103f60 !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    position: sticky !important;
+    position: relative !important;
     top: 0 !important;
     left: 0 !important;
     right: 0 !important;
-    z-index: 9999 !important;
+    z-index: 9999999 !important;
+    pointer-events: auto !important;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18) !important;
     font-family: 'Outfit', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease !important;
   }
 
   /* Fixed state triggered on scroll past announcement bar */
@@ -798,8 +816,21 @@
     left: 0 !important;
     right: 0 !important;
     width: 100% !important;
-    z-index: 99999 !important;
+    z-index: 9999999 !important;
+    pointer-events: auto !important;
     box-shadow: 0 4px 25px rgba(0, 0, 0, 0.25) !important;
+  }
+
+  /* When scrolling down: navbar slides up out of the way */
+  .gs-header-section.is-fixed.header-hidden {
+    transform: translateY(-100%) !important;
+    pointer-events: none !important;
+  }
+
+  /* When scrolling up: navbar is there! */
+  .gs-header-section.is-fixed.header-shown {
+    transform: translateY(0) !important;
+    pointer-events: auto !important;
   }
 
   .gs-header-container {
@@ -1383,9 +1414,11 @@
     line-height: 1;
   }
 
-  html body #root .gs-mobile-toggle-btn,
-  .gs-mobile-toggle-btn {
-    display: none !important;
+  @media only screen and (min-width: 1025px) {
+    html body #root .gs-mobile-toggle-btn,
+    .gs-mobile-toggle-btn {
+      display: none !important;
+    }
   }
 
   /* ── 3. Centered Search Modal (Exact UI Match) ── */
@@ -1395,19 +1428,21 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 999999;
+    z-index: 99999999;
     display: flex;
     align-items: flex-start;
     justify-content: center;
     padding-top: 80px;
     box-sizing: border-box;
     visibility: hidden;
+    pointer-events: none;
     opacity: 0;
     transition: visibility 0.2s ease, opacity 0.2s ease;
   }
 
   .gs-search-modal.active {
     visibility: visible;
+    pointer-events: auto;
     opacity: 1;
   }
 
@@ -1710,6 +1745,9 @@
       height: 100% !important;
       margin: 0 !important;
       padding: 0 !important;
+      position: relative !important;
+      z-index: 100 !important;
+      pointer-events: auto !important;
     }
 
     html body #root .gs-mobile-toggle-btn,
@@ -1717,8 +1755,10 @@
       display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
-      width: 36px !important;
-      height: 36px !important;
+      width: 40px !important;
+      height: 40px !important;
+      min-width: 40px !important;
+      min-height: 40px !important;
       color: #FFFFFF !important;
       margin: 0 !important;
       padding: 0 !important;
@@ -1726,6 +1766,12 @@
       vertical-align: middle !important;
       border-radius: 50% !important;
       cursor: pointer !important;
+      position: relative !important;
+      z-index: 200 !important;
+      pointer-events: auto !important;
+      touch-action: manipulation !important;
+      -webkit-tap-highlight-color: transparent !important;
+      user-select: none !important;
     }
 
     .gs-mobile-search-btn,
@@ -1735,8 +1781,10 @@
       visibility: visible !important;
       align-items: center !important;
       justify-content: center !important;
-      width: 36px !important;
-      height: 36px !important;
+      width: 40px !important;
+      height: 40px !important;
+      min-width: 40px !important;
+      min-height: 40px !important;
       color: #FFFFFF !important;
       margin: 0 !important;
       padding: 0 !important;
@@ -1746,7 +1794,10 @@
       cursor: pointer !important;
       overflow: visible !important;
       opacity: 1 !important;
+      position: relative !important;
+      z-index: 200 !important;
       pointer-events: auto !important;
+      touch-action: manipulation !important;
     }
 
     /* CENTER ZONE: Centered Gulf Souq Logo */
@@ -1841,31 +1892,44 @@
     }
   }
 
-  /* ── Mobile Drawer ── */
+  /* ── Mobile Drawer (Viewport-relative) ── */
+  body > .gs-mobile-drawer,
   .gs-mobile-drawer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 99999;
-    visibility: hidden;
-    transition: visibility 0.3s ease;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    z-index: 2147483647 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transition: visibility 0.25s ease;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
+  body > .gs-mobile-drawer.active,
   .gs-mobile-drawer.active {
-    visibility: visible;
+    visibility: visible !important;
+    pointer-events: auto !important;
   }
 
   .gs-mobile-drawer-backdrop {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: rgba(0, 0, 0, 0.55) !important;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.25s ease;
+    z-index: 1 !important;
+    touch-action: none !important;
   }
 
   .gs-mobile-drawer.active .gs-mobile-drawer-backdrop {
@@ -1873,23 +1937,35 @@
   }
 
   .gs-mobile-drawer-content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 82%;
-    max-width: 340px;
-    height: 100%;
-    background: #FFFFFF;
-    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
-    display: flex;
-    flex-direction: column;
-    transform: translateX(-100%);
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    z-index: 2;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    width: 82% !important;
+    max-width: 340px !important;
+    height: 100% !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    background: #FFFFFF !important;
+    box-shadow: 6px 0 25px rgba(0, 0, 0, 0.25) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    transform: translateX(-100%) !important;
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    z-index: 2 !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-y !important;
   }
 
   .gs-mobile-drawer.active .gs-mobile-drawer-content {
-    transform: translateX(0);
+    transform: translateX(0) !important;
+  }
+
+  html.gs-drawer-open,
+  body.gs-drawer-open {
+    overflow: hidden !important;
+    touch-action: none !important;
   }
 
   .gs-mobile-drawer-header {
@@ -2079,8 +2155,12 @@
 
       function openSearchModal() {
         if (!searchModal) return;
+        if (searchModal.parentElement !== document.body) {
+          document.body.appendChild(searchModal);
+        }
         searchModal.classList.add('active');
-        document.body.style.overflow = 'hidden';
+        document.documentElement.classList.add('gs-drawer-open');
+        document.body.classList.add('gs-drawer-open');
         if (searchModalInput) {
           setTimeout(() => {
             searchModalInput.focus();
@@ -2092,7 +2172,8 @@
       function closeSearchModal() {
         if (!searchModal) return;
         searchModal.classList.remove('active');
-        document.body.style.overflow = '';
+        document.documentElement.classList.remove('gs-drawer-open');
+        document.body.classList.remove('gs-drawer-open');
       }
 
       searchTriggers.forEach(btn => {
@@ -2197,21 +2278,46 @@
       const drawerClose = document.querySelector('.gs-mobile-drawer-close');
       const drawerBackdrop = document.querySelector('.gs-mobile-drawer-backdrop');
 
+      // Ensure drawer is a direct child of document.body so position:fixed binds to viewport
+      if (mobileDrawer && mobileDrawer.parentElement !== document.body) {
+        document.body.appendChild(mobileDrawer);
+      }
+
+      let savedScrollPosition = 0;
+
       function openDrawer() {
-        if (mobileDrawer) mobileDrawer.classList.add('active');
-        document.body.style.overflow = 'hidden';
+        savedScrollPosition = window.scrollY || window.pageYOffset || 0;
+        if (mobileDrawer) {
+          if (mobileDrawer.parentElement !== document.body) {
+            document.body.appendChild(mobileDrawer);
+          }
+          mobileDrawer.classList.add('active');
+        }
+        if (headerSection && headerSection.classList.contains('is-fixed')) {
+          headerSection.classList.remove('header-hidden');
+          headerSection.classList.add('header-shown');
+        }
+        document.documentElement.classList.add('gs-drawer-open');
+        document.body.classList.add('gs-drawer-open');
       }
 
       function closeDrawer() {
         if (mobileDrawer) mobileDrawer.classList.remove('active');
-        document.body.style.overflow = '';
+        document.documentElement.classList.remove('gs-drawer-open');
+        document.body.classList.remove('gs-drawer-open');
       }
 
       if (mobileToggle) {
-        mobileToggle.addEventListener('click', function(e) {
-          e.preventDefault();
+        function handleMobileToggle(e) {
+          if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
+          }
           openDrawer();
-        });
+        }
+        mobileToggle.addEventListener('click', handleMobileToggle);
+        mobileToggle.addEventListener('touchend', handleMobileToggle, { passive: false });
       }
 
       if (drawerClose) {
@@ -2338,31 +2444,50 @@
         });
       });
 
-      // 4. Scroll Listener to Lock Header to Top (Leaves Announcement Bar to scroll away naturally)
+      // 4. Scroll Listener: Sticky on Scroll Up
       const headerSection = document.querySelector('.gs-header-section');
       const headerWrapper = document.querySelector('.gs-header-wrapper');
       const annBar = document.querySelector('.gs-announcement-bar');
+      let lastScrollY = window.scrollY || window.pageYOffset || 0;
 
       function handleHeaderScroll() {
         if (!headerSection || !headerWrapper) return;
-        const scrollTop = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        const currentScrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
         const triggerPoint = (annBar && annBar.offsetHeight > 0) ? annBar.offsetHeight : 34;
 
-        if (scrollTop > triggerPoint) {
-          if (!headerSection.classList.contains('is-fixed')) {
-            headerWrapper.style.minHeight = headerWrapper.offsetHeight + 'px';
-            headerSection.classList.add('is-fixed');
-          }
+        if (currentScrollY <= triggerPoint) {
+          // At top of page: reset to normal in-flow position
+          headerSection.classList.remove('is-fixed', 'header-hidden', 'header-shown');
+          headerWrapper.style.minHeight = '';
         } else {
-          if (headerSection.classList.contains('is-fixed')) {
-            headerSection.classList.remove('is-fixed');
-            headerWrapper.style.minHeight = '';
+          // Scrolled down past announcement bar
+          headerWrapper.style.minHeight = headerWrapper.offsetHeight + 'px';
+          headerSection.classList.add('is-fixed');
+
+          // If mobile drawer or search is open, keep navbar visible
+          const isModalOrDrawerOpen = document.body.classList.contains('gs-drawer-open') || 
+                                     (mobileDrawer && mobileDrawer.classList.contains('active')) ||
+                                     (searchModal && searchModal.classList.contains('active'));
+
+          if (isModalOrDrawerOpen) {
+            headerSection.classList.remove('header-hidden');
+            headerSection.classList.add('header-shown');
+          } else if (currentScrollY < lastScrollY - 3) {
+            // Scrolling UP: reveal navbar immediately!
+            headerSection.classList.remove('header-hidden');
+            headerSection.classList.add('header-shown');
+          } else if (currentScrollY > lastScrollY + 3 && currentScrollY > 120) {
+            // Scrolling DOWN: hide navbar smoothly
+            headerSection.classList.remove('header-shown');
+            headerSection.classList.add('header-hidden');
           }
         }
+        lastScrollY = currentScrollY <= 0 ? 0 : currentScrollY;
       }
 
       window.addEventListener('scroll', handleHeaderScroll, { passive: true });
       document.addEventListener('scroll', handleHeaderScroll, { passive: true });
+      window.addEventListener('touchmove', handleHeaderScroll, { passive: true });
       window.addEventListener('resize', handleHeaderScroll, { passive: true });
       handleHeaderScroll();
 

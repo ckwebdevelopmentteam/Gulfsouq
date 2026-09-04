@@ -10,8 +10,11 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>
-      {{ page_title }}
-      {% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
+      {%- if template.name == 'blog' and page_title == 'News' -%}
+        Blog &ndash; {{ shop.name }}
+      {%- else -%}
+        {{ page_title }}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
+      {%- endif -%}
     </title>
     {%- if page_description -%}<meta name="description" content="{{ page_description | escape }}">{%- endif -%}
     <meta name="theme-color" content="{{ settings.accent_color }}">
@@ -224,7 +227,7 @@
 
     {% endstyle %}
   </head>
-  <body class="template-{{ template.name | handle }}">
+  <body class="template-{{ template.name | handle }}{% if page.handle %} page-{{ page.handle }}{% endif %}">
     <div id="root">
       {%- render 'accessible-nav' -%}
       {%- sections 'header-group' -%}

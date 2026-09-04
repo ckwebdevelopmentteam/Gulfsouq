@@ -1,151 +1,260 @@
-{% doc %}
-  @prompt
-    <section class="gs-testimonials">
-      <div class="gs-testimonials-inner">
-        <p class="gs-testimonials-label">TESTIMONIALS</p>
-    
-        <h2 class="gs-testimonials-heading">Loved by Gulf Returnees</h2>
-        <div class="gs-testimonials-underline"></div>
-    
-        <p class="gs-testimonials-sub">
-          Join thousands of satisfied customers who trust Gulf Souq for authentic imported products
-        </p>
-    
-        <div class="gs-testimonials-grid">
-    
-          <!-- Card 1 -->
-          <article class="gs-test-card">
-            <div class="gs-test-quote-icon">❝❞</div>
-            <div class="gs-test-stars">
-              ★★★★★
-            </div>
-            <p class="gs-test-text">
-              "The Pravasi Box was the perfect gift for my family. They loved every item –
-              especially the Ajwa dates. The packaging was absolutely premium!"
-            </p>
-            <div class="gs-test-footer">
-              <div class="gs-test-avatar">RA</div>
-              <div>
-                <p class="gs-test-name">Rashid Ahmed</p>
-                <p class="gs-test-location">Dubai → Kerala</p>
-              </div>
-            </div>
-          </article>
-    
-          <!-- Card 2 -->
-          <article class="gs-test-card">
-            <div class="gs-test-quote-icon">❝❞</div>
-            <div class="gs-test-stars">
-              ★★★★★
-            </div>
-            <p class="gs-test-text">
-              "Finally found authentic Arabic perfumes in India! The quality matches what I used
-              to buy in UAE. Gulf Souq is now my go-to store."
-            </p>
-            <div class="gs-test-footer">
-              <div class="gs-test-avatar">FK</div>
-              <div>
-                <p class="gs-test-name">Fatima Khan</p>
-                <p class="gs-test-location">Abu Dhabi → Mumbai</p>
-              </div>
-            </div>
-          </article>
-    
-          <!-- Card 3 -->
-          <article class="gs-test-card">
-            <div class="gs-test-quote-icon">❝❞</div>
-            <div class="gs-test-stars">
-              ★★★★★
-            </div>
-            <p class="gs-test-text">
-              "The chocolates and dates I ordered arrived in perfect condition. Pre
-{% enddoc %}
 {% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
 
+{% capture cards_html %}
+  {% for i in (1..6) %}
+    {% liquid
+      assign testimonial_enabled_key = 'testimonial_' | append: i | append: '_enabled'
+      assign testimonial_text_key = 'testimonial_' | append: i | append: '_text'
+      assign testimonial_name_key = 'testimonial_' | append: i | append: '_name'
+      assign testimonial_location_key = 'testimonial_' | append: i | append: '_location'
+      assign testimonial_avatar_key = 'testimonial_' | append: i | append: '_avatar'
+      assign testimonial_rating_key = 'testimonial_' | append: i | append: '_rating'
+      assign testimonial_verified_key = 'testimonial_' | append: i | append: '_verified'
+
+      assign testimonial_enabled = block.settings[testimonial_enabled_key]
+      assign testimonial_text = block.settings[testimonial_text_key]
+      assign testimonial_name = block.settings[testimonial_name_key]
+      assign testimonial_location = block.settings[testimonial_location_key]
+      assign testimonial_avatar = block.settings[testimonial_avatar_key]
+      assign testimonial_rating = block.settings[testimonial_rating_key]
+      assign testimonial_verified = block.settings[testimonial_verified_key]
+    %}
+
+    {% if testimonial_enabled and testimonial_text != blank %}
+      <article class="gs-test-card-{{ ai_gen_id }}">
+        <div class="gs-test-quote-icon-{{ ai_gen_id }}">
+          <svg width="30" height="24" viewBox="0 0 32 26" fill="currentColor">
+            <path d="M9.8 0C4.4 0 0 4.4 0 9.8C0 14.5 3.3 18.5 7.8 19.3C6.9 23.5 3.4 26.5 0.6 27.4L2.3 30.5C7 29 12.8 24 13.9 17.9C14.4 15.4 14.6 12.5 14.6 9.8C14.6 4.4 11 0 9.8 0ZM27.2 0C21.8 0 17.4 4.4 17.4 9.8C17.4 14.5 20.7 18.5 25.2 19.3C24.3 23.5 20.8 26.5 18 27.4L19.7 30.5C24.4 29 30.2 24 31.3 17.9C31.8 15.4 32 12.5 32 9.8C32 4.4 28.4 0 27.2 0Z"/>
+          </svg>
+        </div>
+
+        <div class="gs-rating-row-{{ ai_gen_id }}">
+          <div class="gs-test-stars-{{ ai_gen_id }}">
+            {% if testimonial_rating == 5 %}
+              ★★★★★
+            {% elsif testimonial_rating == 4 %}
+              ★★★★☆
+            {% elsif testimonial_rating == 3 %}
+              ★★★☆☆
+            {% elsif testimonial_rating == 2 %}
+              ★★☆☆☆
+            {% else %}
+              ★☆☆☆☆
+            {% endif %}
+          </div>
+          <span class="gs-rating-score-{{ ai_gen_id }}">5.0</span>
+        </div>
+
+        <p class="gs-test-text-{{ ai_gen_id }}">{{ testimonial_text }}</p>
+
+        <div class="gs-test-divider-{{ ai_gen_id }}"></div>
+
+        <div class="gs-test-footer-{{ ai_gen_id }}">
+          {% if testimonial_avatar != blank %}
+            <div class="gs-test-avatar-{{ ai_gen_id }}">{{ testimonial_avatar }}</div>
+          {% endif %}
+          <div class="gs-test-info-{{ ai_gen_id }}">
+            {% if testimonial_name != blank %}
+              <p class="gs-test-name-{{ ai_gen_id }}">{{ testimonial_name }}</p>
+            {% endif %}
+            {% if testimonial_location != blank %}
+              <p class="gs-test-location-{{ ai_gen_id }}">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                </svg>
+                <span>{{ testimonial_location }}</span>
+              </p>
+            {% endif %}
+            {% if testimonial_verified != false %}
+              <p class="gs-test-verified-{{ ai_gen_id }}">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                <span>Verified Customer</span>
+              </p>
+            {% endif %}
+          </div>
+        </div>
+      </article>
+    {% endif %}
+  {% endfor %}
+{% endcapture %}
+
 {% style %}
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap');
+
   .gs-testimonials-{{ ai_gen_id }} {
-    padding: {{ block.settings.section_padding_top }}px {{ block.settings.section_padding_horizontal }}px {{ block.settings.section_padding_bottom }}px;
+    padding: {{ block.settings.section_padding_top }}px 0 {{ block.settings.section_padding_bottom }}px;
     background-color: {{ block.settings.background_color }};
-    text-align: center;
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    overflow: hidden;
   }
 
   .gs-testimonials-inner-{{ ai_gen_id }} {
     max-width: {{ block.settings.max_width }}px;
     margin: 0 auto;
+    position: relative;
+    padding: 0 {{ block.settings.section_padding_horizontal }}px;
+    box-sizing: border-box;
+  }
+
+  /* Header Styles */
+  .gs-testimonials-header-{{ ai_gen_id }} {
+    text-align: center;
+    margin-bottom: 36px;
+    padding: 0 16px;
   }
 
   .gs-testimonials-label-{{ ai_gen_id }} {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     font-size: {{ block.settings.label_font_size }}px;
     color: {{ block.settings.label_color }};
-    letter-spacing: 2px;
-    font-weight: 600;
-    margin: 0 0 16px;
+    letter-spacing: 2.5px;
+    font-weight: 700;
+    margin: 0 0 12px;
     text-transform: uppercase;
   }
 
+  .gs-label-dash-{{ ai_gen_id }} {
+    display: inline-block;
+    width: 24px;
+    height: 2px;
+    background-color: {{ block.settings.label_color }};
+    vertical-align: middle;
+  }
+
   .gs-testimonials-heading-{{ ai_gen_id }} {
+    font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
     font-size: {{ block.settings.heading_font_size }}px;
     color: {{ block.settings.heading_color }};
-    margin: 0 0 12px;
+    margin: 0 0 14px;
     font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
   }
 
   .gs-testimonials-underline-{{ ai_gen_id }} {
     width: {{ block.settings.underline_width }}px;
     height: {{ block.settings.underline_height }}px;
     background-color: {{ block.settings.underline_color }};
-    margin: 0 auto 20px;
+    margin: 0 auto 18px;
+    border-radius: 2px;
   }
 
   .gs-testimonials-sub-{{ ai_gen_id }} {
     font-size: {{ block.settings.subtext_font_size }}px;
     color: {{ block.settings.subtext_color }};
-    margin: 0 0 40px;
-    max-width: 700px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0 auto;
+    max-width: 680px;
+    line-height: 1.5;
   }
 
-  .gs-testimonials-grid-{{ ai_gen_id }} {
-    display: grid;
-    grid-template-columns: repeat({{ block.settings.columns_desktop }}, 1fr);
+  /* Infinite Seamless Circular Carousel */
+  .gs-infinite-carousel-{{ ai_gen_id }} {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    padding: 10px 0 10px;
+  }
+
+  .gs-marquee-track-{{ ai_gen_id }} {
+    display: flex;
+    width: max-content;
+    will-change: transform;
+    animation: gs-infinite-scroll-{{ ai_gen_id }} {{ block.settings.marquee_speed | default: 18 }}s linear infinite;
+  }
+
+  .gs-marquee-track-{{ ai_gen_id }}:hover,
+  .gs-marquee-track-{{ ai_gen_id }}.paused {
+    animation-play-state: paused;
+  }
+
+  .gs-marquee-group-{{ ai_gen_id }} {
+    display: flex;
     gap: {{ block.settings.grid_gap }}px;
-    margin-top: 40px;
+    padding-right: {{ block.settings.grid_gap }}px;
+    flex-shrink: 0;
   }
 
+  @keyframes gs-infinite-scroll-{{ ai_gen_id }} {
+    0% {
+      transform: translate3d(0, 0, 0);
+    }
+    100% {
+      transform: translate3d(-25%, 0, 0);
+    }
+  }
+
+  /* Card Styles */
   .gs-test-card-{{ ai_gen_id }} {
     background-color: {{ block.settings.card_background }};
     border-radius: {{ block.settings.card_border_radius }}px;
     padding: {{ block.settings.card_padding }}px;
     text-align: left;
     box-shadow: {{ block.settings.card_shadow }};
+    border: 1px solid #f0f2f5;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 305px;
+    flex: 0 0 305px;
+    user-select: none;
   }
 
   .gs-test-card-{{ ai_gen_id }}:hover {
     transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.09);
   }
 
   .gs-test-quote-icon-{{ ai_gen_id }} {
-    font-size: {{ block.settings.quote_icon_size }}px;
     color: {{ block.settings.quote_icon_color }};
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     line-height: 1;
+    display: inline-block;
+  }
+
+  .gs-rating-row-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
   }
 
   .gs-test-stars-{{ ai_gen_id }} {
     color: {{ block.settings.star_color }};
     font-size: {{ block.settings.star_size }}px;
-    margin-bottom: 16px;
-    letter-spacing: 2px;
+    letter-spacing: 1.5px;
+    line-height: 1;
+  }
+
+  .gs-rating-score-{{ ai_gen_id }} {
+    font-size: 14px;
+    font-weight: 700;
+    color: #0a2540;
+    line-height: 1;
   }
 
   .gs-test-text-{{ ai_gen_id }} {
     font-size: {{ block.settings.testimonial_text_size }}px;
     color: {{ block.settings.testimonial_text_color }};
-    line-height: 1.6;
-    margin: 0 0 24px;
+    line-height: 1.55;
+    margin: 0 0 18px;
+    flex-grow: 1;
+  }
+
+  .gs-test-divider-{{ ai_gen_id }} {
+    width: 100%;
+    height: 1px;
+    background-color: #f1f5f9;
+    margin-bottom: 16px;
   }
 
   .gs-test-footer-{{ ai_gen_id }} {
@@ -163,31 +272,62 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 600;
+    font-weight: 700;
     font-size: {{ block.settings.avatar_text_size }}px;
     flex-shrink: 0;
+    letter-spacing: 0.5px;
+  }
+
+  .gs-test-info-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
   }
 
   .gs-test-name-{{ ai_gen_id }} {
     font-size: {{ block.settings.name_font_size }}px;
     color: {{ block.settings.name_color }};
-    font-weight: 600;
-    margin: 0 0 4px;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.2;
   }
 
   .gs-test-location-{{ ai_gen_id }} {
     font-size: {{ block.settings.location_font_size }}px;
     color: {{ block.settings.location_color }};
     margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    line-height: 1.3;
   }
 
-  @media screen and (max-width: 989px) {
-    .gs-testimonials-grid-{{ ai_gen_id }} {
-      grid-template-columns: repeat({{ block.settings.columns_tablet }}, 1fr);
-    }
+  .gs-test-location-{{ ai_gen_id }} svg {
+    color: #ff7a00;
+    flex-shrink: 0;
+  }
 
-    .gs-testimonials-heading-{{ ai_gen_id }} {
-      font-size: calc({{ block.settings.heading_font_size }}px * 0.8);
+  .gs-test-verified-{{ ai_gen_id }} {
+    font-size: 12px;
+    color: #10b981;
+    font-weight: 600;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    line-height: 1.3;
+  }
+
+  .gs-test-verified-{{ ai_gen_id }} svg {
+    color: #10b981;
+    flex-shrink: 0;
+  }
+
+  /* Responsive Rules */
+  @media screen and (max-width: 1024px) {
+    .gs-test-card-{{ ai_gen_id }} {
+      width: 285px;
+      flex: 0 0 285px;
     }
   }
 
@@ -201,19 +341,31 @@
     }
 
     .gs-testimonials-heading-{{ ai_gen_id }} {
-      font-size: calc({{ block.settings.heading_font_size }}px * 0.6);
+      font-size: calc({{ block.settings.heading_font_size }}px * 0.7);
     }
 
     .gs-testimonials-sub-{{ ai_gen_id }} {
       font-size: calc({{ block.settings.subtext_font_size }}px * 0.9);
+      padding: 0 10px;
+    }
+
+    .gs-test-card-{{ ai_gen_id }} {
+      width: 270px;
+      flex: 0 0 270px;
+      padding: 20px 18px;
     }
   }
 {% endstyle %}
 
 <section class="gs-testimonials-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
-  <div class="gs-testimonials-inner-{{ ai_gen_id }}">
+  <!-- Section Header -->
+  <div class="gs-testimonials-header-{{ ai_gen_id }}">
     {% if block.settings.label != blank %}
-      <p class="gs-testimonials-label-{{ ai_gen_id }}">{{ block.settings.label }}</p>
+      <p class="gs-testimonials-label-{{ ai_gen_id }}">
+        <span class="gs-label-dash-{{ ai_gen_id }}"></span>
+        <span>{{ block.settings.label }}</span>
+        <span class="gs-label-dash-{{ ai_gen_id }}"></span>
+      </p>
     {% endif %}
 
     {% if block.settings.heading != blank %}
@@ -227,80 +379,65 @@
     {% if block.settings.subtext != blank %}
       <p class="gs-testimonials-sub-{{ ai_gen_id }}">{{ block.settings.subtext }}</p>
     {% endif %}
+  </div>
 
-    <div class="gs-testimonials-grid-{{ ai_gen_id }}">
-      {% for i in (1..3) %}
-        {% liquid
-          assign testimonial_enabled_key = 'testimonial_' | append: i | append: '_enabled'
-          assign testimonial_text_key = 'testimonial_' | append: i | append: '_text'
-          assign testimonial_name_key = 'testimonial_' | append: i | append: '_name'
-          assign testimonial_location_key = 'testimonial_' | append: i | append: '_location'
-          assign testimonial_avatar_key = 'testimonial_' | append: i | append: '_avatar'
-          assign testimonial_rating_key = 'testimonial_' | append: i | append: '_rating'
-
-          assign testimonial_enabled = block.settings[testimonial_enabled_key]
-          assign testimonial_text = block.settings[testimonial_text_key]
-          assign testimonial_name = block.settings[testimonial_name_key]
-          assign testimonial_location = block.settings[testimonial_location_key]
-          assign testimonial_avatar = block.settings[testimonial_avatar_key]
-          assign testimonial_rating = block.settings[testimonial_rating_key]
-        %}
-
-        {% if testimonial_enabled %}
-          <article class="gs-test-card-{{ ai_gen_id }}">
-            <div class="gs-test-quote-icon-{{ ai_gen_id }}">❝❞</div>
-            
-            <div class="gs-test-stars-{{ ai_gen_id }}">
-              {% if testimonial_rating == 5 %}
-                ★★★★★
-              {% elsif testimonial_rating == 4 %}
-                ★★★★☆
-              {% elsif testimonial_rating == 3 %}
-                ★★★☆☆
-              {% elsif testimonial_rating == 2 %}
-                ★★☆☆☆
-              {% else %}
-                ★☆☆☆☆
-              {% endif %}
-            </div>
-
-            {% if testimonial_text != blank %}
-              <p class="gs-test-text-{{ ai_gen_id }}">{{ testimonial_text }}</p>
-            {% endif %}
-
-            <div class="gs-test-footer-{{ ai_gen_id }}">
-              {% if testimonial_avatar != blank %}
-                <div class="gs-test-avatar-{{ ai_gen_id }}">{{ testimonial_avatar }}</div>
-              {% endif %}
-              <div>
-                {% if testimonial_name != blank %}
-                  <p class="gs-test-name-{{ ai_gen_id }}">{{ testimonial_name }}</p>
-                {% endif %}
-                {% if testimonial_location != blank %}
-                  <p class="gs-test-location-{{ ai_gen_id }}">{{ testimonial_location }}</p>
-                {% endif %}
-              </div>
-            </div>
-          </article>
-        {% endif %}
-      {% endfor %}
+  <!-- Infinite Circular Continuous Carousel (Zero-Gap Multi-Group Stream) -->
+  <div class="gs-infinite-carousel-{{ ai_gen_id }}" id="gs-carousel-{{ ai_gen_id }}">
+    <div class="gs-marquee-track-{{ ai_gen_id }}" id="gs-track-{{ ai_gen_id }}">
+      <div class="gs-marquee-group-{{ ai_gen_id }}">
+        {{ cards_html }}
+      </div>
+      <div class="gs-marquee-group-{{ ai_gen_id }}" aria-hidden="true">
+        {{ cards_html }}
+      </div>
+      <div class="gs-marquee-group-{{ ai_gen_id }}" aria-hidden="true">
+        {{ cards_html }}
+      </div>
+      <div class="gs-marquee-group-{{ ai_gen_id }}" aria-hidden="true">
+        {{ cards_html }}
+      </div>
     </div>
   </div>
 </section>
 
+<script>
+  (function() {
+    function initMarqueeTouch() {
+      const track = document.getElementById('gs-track-{{ ai_gen_id }}');
+      if (!track) return;
+
+      track.addEventListener('touchstart', function() {
+        track.classList.add('paused');
+      }, { passive: true });
+
+      track.addEventListener('touchend', function() {
+        setTimeout(function() {
+          track.classList.remove('paused');
+        }, 1200);
+      }, { passive: true });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initMarqueeTouch);
+    } else {
+      initMarqueeTouch();
+    }
+  })();
+</script>
+
 {% schema %}
 {
-  "name": "Testimonials",
+  "name": "Testimonials Listing",
   "tag": null,
   "settings": [
     {
       "type": "header",
-      "content": "Section header"
+      "content": "Section Header"
     },
     {
       "type": "text",
       "id": "label",
-      "label": "Label",
+      "label": "Eyebrow Label",
       "default": "TESTIMONIALS"
     },
     {
@@ -311,19 +448,19 @@
       "step": 1,
       "unit": "px",
       "label": "Label font size",
-      "default": 12
+      "default": 13
     },
     {
       "type": "color",
       "id": "label_color",
       "label": "Label color",
-      "default": "#666666"
+      "default": "#FF7A00"
     },
     {
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "Loved by Gulf Returnees"
+      "default": "What Gulf Returnees Say"
     },
     {
       "type": "range",
@@ -333,18 +470,18 @@
       "step": 2,
       "unit": "px",
       "label": "Heading font size",
-      "default": 36
+      "default": 40
     },
     {
       "type": "color",
       "id": "heading_color",
       "label": "Heading color",
-      "default": "#000000"
+      "default": "#0A2540"
     },
     {
       "type": "checkbox",
       "id": "show_underline",
-      "label": "Show underline",
+      "label": "Show underline bar",
       "default": true
     },
     {
@@ -352,10 +489,10 @@
       "id": "underline_width",
       "min": 20,
       "max": 200,
-      "step": 10,
+      "step": 5,
       "unit": "px",
       "label": "Underline width",
-      "default": 60
+      "default": 50
     },
     {
       "type": "range",
@@ -365,19 +502,19 @@
       "step": 1,
       "unit": "px",
       "label": "Underline height",
-      "default": 3
+      "default": 4
     },
     {
       "type": "color",
       "id": "underline_color",
       "label": "Underline color",
-      "default": "#FF6602"
+      "default": "#FF7A00"
     },
     {
       "type": "textarea",
       "id": "subtext",
       "label": "Subtext",
-      "default": "Join thousands of satisfied customers who trust Gulf Souq for authentic imported products"
+      "default": "Real experiences from customers who shop authentic Gulf products with Gulf Souq."
     },
     {
       "type": "range",
@@ -393,11 +530,11 @@
       "type": "color",
       "id": "subtext_color",
       "label": "Subtext color",
-      "default": "#666666"
+      "default": "#4B5563"
     },
     {
       "type": "header",
-      "content": "Section style"
+      "content": "Section Layout"
     },
     {
       "type": "color",
@@ -409,7 +546,7 @@
       "type": "range",
       "id": "section_padding_top",
       "min": 0,
-      "max": 100,
+      "max": 120,
       "step": 5,
       "unit": "px",
       "label": "Padding top",
@@ -419,7 +556,7 @@
       "type": "range",
       "id": "section_padding_bottom",
       "min": 0,
-      "max": 100,
+      "max": 120,
       "step": 5,
       "unit": "px",
       "label": "Padding bottom",
@@ -440,56 +577,34 @@
       "id": "max_width",
       "min": 800,
       "max": 1600,
-      "step": 50,
+      "step": 20,
       "unit": "px",
       "label": "Max width",
-      "default": 1200
-    },
-    {
-      "type": "header",
-      "content": "Grid layout"
-    },
-    {
-      "type": "range",
-      "id": "columns_desktop",
-      "min": 1,
-      "max": 4,
-      "step": 1,
-      "label": "Columns on desktop",
-      "default": 3
-    },
-    {
-      "type": "range",
-      "id": "columns_tablet",
-      "min": 1,
-      "max": 3,
-      "step": 1,
-      "label": "Columns on tablet",
-      "default": 2
-    },
-    {
-      "type": "select",
-      "id": "columns_mobile",
-      "label": "Columns on mobile",
-      "options": [
-        { "value": "1", "label": "1" },
-        { "value": "2", "label": "2" }
-      ],
-      "default": "1"
+      "default": 1240
     },
     {
       "type": "range",
       "id": "grid_gap",
       "min": 10,
-      "max": 50,
-      "step": 5,
+      "max": 40,
+      "step": 2,
       "unit": "px",
-      "label": "Grid gap",
-      "default": 25
+      "label": "Card gap",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "marquee_speed",
+      "min": 10,
+      "max": 45,
+      "step": 1,
+      "unit": "s",
+      "label": "Continuous loop speed (lower = faster)",
+      "default": 18
     },
     {
       "type": "header",
-      "content": "Card style"
+      "content": "Card Styling"
     },
     {
       "type": "color",
@@ -505,17 +620,17 @@
       "step": 2,
       "unit": "px",
       "label": "Card border radius",
-      "default": 12
+      "default": 18
     },
     {
       "type": "range",
       "id": "card_padding",
       "min": 10,
-      "max": 50,
-      "step": 5,
+      "max": 40,
+      "step": 2,
       "unit": "px",
       "label": "Card padding",
-      "default": 30
+      "default": 24
     },
     {
       "type": "select",
@@ -523,79 +638,69 @@
       "label": "Card shadow",
       "options": [
         { "value": "none", "label": "None" },
-        { "value": "0 2px 8px rgba(0, 0, 0, 0.08)", "label": "Light" },
-        { "value": "0 4px 12px rgba(0, 0, 0, 0.1)", "label": "Medium" },
-        { "value": "0 8px 20px rgba(0, 0, 0, 0.12)", "label": "Strong" }
+        { "value": "0 2px 8px rgba(0, 0, 0, 0.04)", "label": "Light" },
+        { "value": "0 4px 18px rgba(0, 0, 0, 0.06)", "label": "Medium" },
+        { "value": "0 8px 26px rgba(0, 0, 0, 0.08)", "label": "Strong" }
       ],
-      "default": "0 4px 12px rgba(0, 0, 0, 0.1)"
-    },
-    {
-      "type": "range",
-      "id": "quote_icon_size",
-      "min": 20,
-      "max": 60,
-      "step": 2,
-      "unit": "px",
-      "label": "Quote icon size",
-      "default": 32
+      "default": "0 4px 18px rgba(0, 0, 0, 0.06)"
     },
     {
       "type": "color",
       "id": "quote_icon_color",
       "label": "Quote icon color",
-      "default": "#FF6602"
+      "default": "#FF7A00"
     },
     {
       "type": "range",
       "id": "star_size",
       "min": 12,
-      "max": 28,
-      "step": 2,
+      "max": 24,
+      "step": 1,
       "unit": "px",
       "label": "Star size",
-      "default": 16
+      "default": 15
     },
     {
       "type": "color",
       "id": "star_color",
       "label": "Star color",
-      "default": "#FFD700"
+      "default": "#FF7A00"
     },
     {
       "type": "range",
       "id": "testimonial_text_size",
       "min": 12,
-      "max": 22,
+      "max": 20,
       "step": 1,
       "unit": "px",
       "label": "Testimonial text size",
-      "default": 15
+      "default": 14
     },
     {
       "type": "color",
       "id": "testimonial_text_color",
       "label": "Testimonial text color",
-      "default": "#333333"
+      "default": "#374151"
     },
     {
       "type": "header",
-      "content": "Author style"
+      "content": "Author Styling"
     },
     {
       "type": "range",
       "id": "avatar_size",
       "min": 30,
-      "max": 70,
-      "step": 5,
+      "max": 60,
+      "step": 2,
       "unit": "px",
       "label": "Avatar size",
-      "default": 50
+      "default": 40
     },
     {
       "type": "color",
       "id": "avatar_background",
       "label": "Avatar background",
-      "default": "#FF6602"
+      "default": "#0A2540"
     },
     {
       "type": "color",
@@ -607,43 +712,43 @@
       "type": "range",
       "id": "avatar_text_size",
       "min": 12,
-      "max": 24,
+      "max": 20,
       "step": 1,
       "unit": "px",
       "label": "Avatar text size",
-      "default": 16
+      "default": 14
     },
     {
       "type": "range",
       "id": "name_font_size",
       "min": 12,
-      "max": 22,
+      "max": 20,
       "step": 1,
       "unit": "px",
       "label": "Name font size",
-      "default": 16
+      "default": 14
     },
     {
       "type": "color",
       "id": "name_color",
       "label": "Name color",
-      "default": "#000000"
+      "default": "#0A2540"
     },
     {
       "type": "range",
       "id": "location_font_size",
       "min": 10,
-      "max": 18,
+      "max": 16,
       "step": 1,
       "unit": "px",
       "label": "Location font size",
-      "default": 13
+      "default": 12
     },
     {
       "type": "color",
       "id": "location_color",
       "label": "Location color",
-      "default": "#666666"
+      "default": "#6B7280"
     },
     {
       "type": "header",
@@ -658,25 +763,25 @@
     {
       "type": "textarea",
       "id": "testimonial_1_text",
-      "label": "Text",
+      "label": "Review Text",
       "default": "The Pravasi Box was the perfect gift for my family. They loved every item – especially the Ajwa dates. The packaging was absolutely premium!"
     },
     {
       "type": "text",
       "id": "testimonial_1_name",
-      "label": "Name",
+      "label": "Author Name",
       "default": "Rashid Ahmed"
     },
     {
       "type": "text",
       "id": "testimonial_1_location",
-      "label": "Location",
-      "default": "Dubai → Kerala"
+      "label": "Author Location",
+      "default": "Bengaluru, Karnataka"
     },
     {
       "type": "text",
       "id": "testimonial_1_avatar",
-      "label": "Avatar initials",
+      "label": "Avatar Initials",
       "default": "RA"
     },
     {
@@ -687,6 +792,12 @@
       "step": 1,
       "label": "Rating",
       "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "testimonial_1_verified",
+      "label": "Verified Customer badge",
+      "default": true
     },
     {
       "type": "header",
@@ -701,25 +812,25 @@
     {
       "type": "textarea",
       "id": "testimonial_2_text",
-      "label": "Text",
+      "label": "Review Text",
       "default": "Finally found authentic Arabic perfumes in India! The quality matches what I used to buy in UAE. Gulf Souq is now my go-to store."
     },
     {
       "type": "text",
       "id": "testimonial_2_name",
-      "label": "Name",
+      "label": "Author Name",
       "default": "Fatima Khan"
     },
     {
       "type": "text",
       "id": "testimonial_2_location",
-      "label": "Location",
-      "default": "Abu Dhabi → Mumbai"
+      "label": "Author Location",
+      "default": "Hyderabad, Telangana"
     },
     {
       "type": "text",
       "id": "testimonial_2_avatar",
-      "label": "Avatar initials",
+      "label": "Avatar Initials",
       "default": "FK"
     },
     {
@@ -730,6 +841,12 @@
       "step": 1,
       "label": "Rating",
       "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "testimonial_2_verified",
+      "label": "Verified Customer badge",
+      "default": true
     },
     {
       "type": "header",
@@ -744,25 +861,25 @@
     {
       "type": "textarea",
       "id": "testimonial_3_text",
-      "label": "Text",
-      "default": "The chocolates and dates I ordered arrived in perfect condition. Premium quality products with fast delivery. Highly recommended!"
+      "label": "Review Text",
+      "default": "The chocolates and dates I ordered arrived in perfect condition. Premium quality products with fast delivery, Highly recommended!"
     },
     {
       "type": "text",
       "id": "testimonial_3_name",
-      "label": "Name",
+      "label": "Author Name",
       "default": "Mohammed Ali"
     },
     {
       "type": "text",
       "id": "testimonial_3_location",
-      "label": "Location",
-      "default": "Riyadh → Delhi"
+      "label": "Author Location",
+      "default": "Kochi, Kerala"
     },
     {
       "type": "text",
       "id": "testimonial_3_avatar",
-      "label": "Avatar initials",
+      "label": "Avatar Initials",
       "default": "MA"
     },
     {
@@ -773,11 +890,164 @@
       "step": 1,
       "label": "Rating",
       "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "testimonial_3_verified",
+      "label": "Verified Customer badge",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Testimonial 4"
+    },
+    {
+      "type": "checkbox",
+      "id": "testimonial_4_enabled",
+      "label": "Enable testimonial 4",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "testimonial_4_text",
+      "label": "Review Text",
+      "default": "The quality of dates and luxury attar surpassed my expectations. Seamless ordering and timely delivery right to our doorstep in Calicut!"
+    },
+    {
+      "type": "text",
+      "id": "testimonial_4_name",
+      "label": "Author Name",
+      "default": "Aisha Noor"
+    },
+    {
+      "type": "text",
+      "id": "testimonial_4_location",
+      "label": "Author Location",
+      "default": "Calicut, Kerala"
+    },
+    {
+      "type": "text",
+      "id": "testimonial_4_avatar",
+      "label": "Avatar Initials",
+      "default": "AN"
+    },
+    {
+      "type": "range",
+      "id": "testimonial_4_rating",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "label": "Rating",
+      "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "testimonial_4_verified",
+      "label": "Verified Customer badge",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Testimonial 5"
+    },
+    {
+      "type": "checkbox",
+      "id": "testimonial_5_enabled",
+      "label": "Enable testimonial 5",
+      "default": false
+    },
+    {
+      "type": "textarea",
+      "id": "testimonial_5_text",
+      "label": "Review Text",
+      "default": "Remarkable experience! The saffron and honey are of exceptional purity and taste. Gulf Souq has become my favorite store."
+    },
+    {
+      "type": "text",
+      "id": "testimonial_5_name",
+      "label": "Author Name",
+      "default": "Zainab Begum"
+    },
+    {
+      "type": "text",
+      "id": "testimonial_5_location",
+      "label": "Author Location",
+      "default": "Chennai, Tamil Nadu"
+    },
+    {
+      "type": "text",
+      "id": "testimonial_5_avatar",
+      "label": "Avatar Initials",
+      "default": "ZB"
+    },
+    {
+      "type": "range",
+      "id": "testimonial_5_rating",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "label": "Rating",
+      "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "testimonial_5_verified",
+      "label": "Verified Customer badge",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Testimonial 6"
+    },
+    {
+      "type": "checkbox",
+      "id": "testimonial_6_enabled",
+      "label": "Enable testimonial 6",
+      "default": false
+    },
+    {
+      "type": "textarea",
+      "id": "testimonial_6_text",
+      "label": "Review Text",
+      "default": "Fast delivery and genuine imported items. The packaging protected everything in transit. Truly premium quality!"
+    },
+    {
+      "type": "text",
+      "id": "testimonial_6_name",
+      "label": "Author Name",
+      "default": "Imran Sheikh"
+    },
+    {
+      "type": "text",
+      "id": "testimonial_6_location",
+      "label": "Author Location",
+      "default": "Mumbai, Maharashtra"
+    },
+    {
+      "type": "text",
+      "id": "testimonial_6_avatar",
+      "label": "Avatar Initials",
+      "default": "IS"
+    },
+    {
+      "type": "range",
+      "id": "testimonial_6_rating",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "label": "Rating",
+      "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "testimonial_6_verified",
+      "label": "Verified Customer badge",
+      "default": true
     }
   ],
   "presets": [
     {
-      "name": "Testimonials"
+      "name": "Testimonials Listing"
     }
   ]
 }
