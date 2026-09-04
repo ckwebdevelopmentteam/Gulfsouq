@@ -557,8 +557,7 @@
       slidesPerView: 2,
       spaceBetween: 10,
       grabCursor: true,
-      loop: true,
-      loopAdditionalSlides: 4,
+      loop: false,
       breakpoints: {
         768: {
           slidesPerView: 4,
@@ -578,10 +577,20 @@
         delay: autoplayDelay,
         disableOnInteraction: false,
         pauseOnMouseEnter: true,
+        reverseDirection: false,
       };
     }
 
-    new Swiper(el, swiperConfig);
+    var swiperInstance = new Swiper(el, swiperConfig);
+
+    if (autoplayEnabled && swiperInstance.autoplay) {
+      swiperInstance.on('reachEnd', function () {
+        swiperInstance.params.autoplay.reverseDirection = true;
+      });
+      swiperInstance.on('reachBeginning', function () {
+        swiperInstance.params.autoplay.reverseDirection = false;
+      });
+    }
 
     /* Play every visible video; pause when scrolled out */
     setupVideoObserver(el);

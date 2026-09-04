@@ -425,6 +425,421 @@
   </form>
 
 {%- elsif display == 'sorting' -%}
+  <style>
+    /* Reset & Override Theme Pseudo-Elements for Mobile Filter Button */
+    a.gs-mobile-filter-btn,
+    button.gs-mobile-filter-btn,
+    .gs-mobile-filter-btn,
+    #root .gs-mobile-filter-btn,
+    .f8sr .gs-mobile-filter-btn,
+    .link-btn .gs-mobile-filter-btn,
+    p.link-btn a.gs-mobile-filter-btn {
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 8px !important;
+      background-color: #FFFFFF !important;
+      background: #FFFFFF !important;
+      color: #000000 !important;
+      border: 1px solid #FFFFFF !important;
+      border-radius: 8px !important;
+      padding: 6px 14px !important;
+      font-size: 14px !important;
+      font-weight: 500 !important;
+      letter-spacing: 0.2px !important;
+      cursor: pointer !important;
+      box-shadow: none !important;
+      -webkit-box-shadow: none !important;
+      filter: none !important;
+      -webkit-filter: none !important;
+      transition: all 0.2s ease !important;
+      line-height: 1.2 !important;
+      text-decoration: none !important;
+      outline: none !important;
+      position: relative !important;
+      overflow: visible !important;
+      height: auto !important;
+      min-height: 34px !important;
+      box-sizing: border-box !important;
+      appearance: none !important;
+      -webkit-appearance: none !important;
+      margin: 0 !important;
+    }
+
+    a.gs-mobile-filter-btn:before,
+    a.gs-mobile-filter-btn:after,
+    button.gs-mobile-filter-btn:before,
+    button.gs-mobile-filter-btn:after,
+    .gs-mobile-filter-btn:before,
+    .gs-mobile-filter-btn:after,
+    .f8sr .gs-mobile-filter-btn:before,
+    .f8sr .gs-mobile-filter-btn:after,
+    .link-btn a.gs-mobile-filter-btn:before,
+    .link-btn a.gs-mobile-filter-btn:after,
+    p.link-btn a.gs-mobile-filter-btn:before,
+    p.link-btn a.gs-mobile-filter-btn:after {
+      display: none !important;
+      content: none !important;
+      border: none !important;
+      background: none !important;
+      box-shadow: none !important;
+      -webkit-box-shadow: none !important;
+      width: 0 !important;
+      height: 0 !important;
+      opacity: 0 !important;
+    }
+
+    a.gs-mobile-filter-btn span,
+    button.gs-mobile-filter-btn span,
+    .gs-mobile-filter-btn span {
+      color: #000000 !important;
+      font-size: 14px !important;
+      font-weight: 500 !important;
+      line-height: 1 !important;
+      display: inline-block !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      position: relative !important;
+      z-index: 2 !important;
+    }
+
+    a.gs-mobile-filter-btn:hover,
+    button.gs-mobile-filter-btn:hover,
+    .gs-mobile-filter-btn:hover,
+    a.gs-mobile-filter-btn:focus,
+    button.gs-mobile-filter-btn:focus,
+    .gs-mobile-filter-btn:focus,
+    a.gs-mobile-filter-btn:active,
+    button.gs-mobile-filter-btn:active,
+    .gs-mobile-filter-btn:active {
+      background-color: #F9FAFB !important;
+      background: #F9FAFB !important;
+      color: #000000 !important;
+      border-color: #FFFFFF !important;
+      box-shadow: none !important;
+      -webkit-box-shadow: none !important;
+      filter: none !important;
+    }
+
+    .gs-mobile-filter-btn svg {
+      width: 16px !important;
+      height: 16px !important;
+      display: inline-block !important;
+      vertical-align: middle !important;
+      flex-shrink: 0 !important;
+      stroke: #000000 !important;
+      color: #000000 !important;
+      position: relative !important;
+      z-index: 2 !important;
+    }
+
+    @media (max-width: 768px) {
+      .offers-left-filters,
+      .offers-grid-toggles,
+      .desktop-only-sort,
+      #root .desktop-only-sort {
+        display: none !important;
+      }
+      .mobile-only-filter,
+      a.gs-mobile-filter-btn,
+      button.gs-mobile-filter-btn,
+      .gs-mobile-filter-btn,
+      #root .gs-mobile-filter-btn,
+      .f8sr .gs-mobile-filter-btn {
+        display: inline-flex !important;
+      }
+      .offers-top-toolbar {
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        padding: 10px 0 !important;
+        margin: 10px 0 16px 0 !important;
+      }
+      .offers-right-controls {
+        width: 100% !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+      }
+    }
+
+    @media (min-width: 769px) {
+      .mobile-only-filter,
+      a.gs-mobile-filter-btn,
+      button.gs-mobile-filter-btn,
+      .gs-mobile-filter-btn,
+      #root .gs-mobile-filter-btn,
+      .f8sr .gs-mobile-filter-btn {
+        display: none !important;
+      }
+      .desktop-only-sort,
+      #root .desktop-only-sort {
+        display: inline-flex !important;
+      }
+    }
+
+    /* Mobile Full Screen Filter & Sort Modal */
+    #gs-mobile-filter-modal,
+    .gs-mobile-filter-modal {
+      display: none;
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      bottom: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      height: 100dvh !important;
+      background: #ffffff !important;
+      z-index: 2147483647 !important;
+      flex-direction: column !important;
+      box-sizing: border-box !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      font-family: inherit !important;
+      overflow: hidden !important;
+    }
+    #gs-mobile-filter-modal.open,
+    .gs-mobile-filter-modal.open {
+      display: flex !important;
+    }
+
+    body.gs-modal-open {
+      overflow: hidden !important;
+      touch-action: none !important;
+    }
+
+    /* Lower site navigation z-index when modal is open so modal header is 100% visible */
+    body.gs-modal-open #header-outer,
+    body.gs-modal-open #header,
+    body.gs-modal-open header,
+    body.gs-modal-open .sticky-header,
+    body.gs-modal-open [id*="header"],
+    body.gs-modal-open [class*="header-bar"] {
+      z-index: 1 !important;
+    }
+
+    /* Hide floating chat/sticker/badge icons when modal is open */
+    body.gs-modal-open [class*="chat"],
+    body.gs-modal-open [class*="whatsapp"],
+    body.gs-modal-open [class*="sticker"],
+    body.gs-modal-open [class*="badge"],
+    body.gs-modal-open iframe,
+    body.gs-modal-open #hubspot-messages-iframe-container,
+    body.gs-modal-open .gorgias-chat-key {
+      display: none !important;
+      visibility: hidden !important;
+    }
+
+    .gs-mobile-modal-header {
+      display: flex !important;
+      align-items: center !important;
+      height: 56px !important;
+      min-height: 56px !important;
+      padding: 0 20px !important;
+      background: #ffffff !important;
+      border-bottom: 1px solid #e5e7eb !important;
+      position: sticky !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      z-index: 100 !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    .gs-mobile-modal-header h2 {
+      font-size: 16px !important;
+      font-weight: 700 !important;
+      color: #111827 !important;
+      margin: 0 !important;
+      letter-spacing: 0.05em !important;
+      font-family: inherit !important;
+      text-transform: uppercase !important;
+    }
+    .gs-mobile-modal-close,
+    #gs-mobile-filter-modal .gs-mobile-modal-close {
+      position: absolute !important;
+      right: 20px !important;
+      top: 50% !important;
+      transform: translateY(-50%) !important;
+      background: transparent !important;
+      border: none !important;
+      outline: none !important;
+      box-shadow: none !important;
+      cursor: pointer !important;
+      color: #111827 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      width: 24px !important;
+      height: 24px !important;
+      min-width: 0 !important;
+      min-height: 0 !important;
+      max-width: 24px !important;
+      max-height: 24px !important;
+      flex: none !important;
+    }
+
+    .gs-mobile-modal-close::before,
+    .gs-mobile-modal-close::after,
+    #gs-mobile-filter-modal .gs-mobile-modal-close::before,
+    #gs-mobile-filter-modal .gs-mobile-modal-close::after {
+      display: none !important;
+      content: none !important;
+    }
+
+    .gs-mobile-modal-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      background: #ffffff;
+    }
+
+    .gs-filter-group {
+      margin-bottom: 4px;
+    }
+    .gs-filter-heading {
+      font-size: 12px;
+      font-weight: 600;
+      color: #4b5563;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin: 0 0 16px 0;
+      font-family: inherit;
+    }
+    .gs-filter-divider {
+      height: 1px;
+      background: #e5e7eb;
+      margin: 20px 0;
+    }
+
+    .gs-filter-options {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .gs-checkbox-label,
+    .gs-radio-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+      color: #1f2937;
+      cursor: pointer;
+      user-select: none;
+    }
+    .gs-checkbox-label input[type="checkbox"],
+    .gs-radio-label input[type="radio"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #d9b268;
+      cursor: pointer;
+      margin: 0;
+    }
+
+    .gs-price-range-display {
+      font-size: 14px;
+      color: #374151;
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+    .gs-price-inputs-flex {
+      display: flex;
+      gap: 12px;
+    }
+    .gs-price-input-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .gs-price-input-col label {
+      font-size: 11px;
+      color: #6b7280;
+      font-weight: 500;
+    }
+    .gs-price-input-col input {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 14px;
+      color: #111827;
+      background: #ffffff;
+      box-sizing: border-box;
+    }
+
+    .gs-mobile-modal-footer {
+      padding: 14px 20px;
+      background: #ffffff;
+      border-top: 1px solid #e5e7eb;
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      position: sticky;
+      bottom: 0;
+      z-index: 10;
+    }
+    #gs-mobile-filter-modal .gs-btn-clear,
+    #gs-mobile-filter-modal .gs-btn-apply,
+    .gs-btn-clear,
+    .gs-btn-apply {
+      appearance: none !important;
+      -webkit-appearance: none !important;
+      position: relative !important;
+      overflow: hidden !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      height: 48px !important;
+      line-height: 48px !important;
+      padding: 0 20px !important;
+      border-radius: 6px !important;
+      border: none !important;
+      outline: none !important;
+      box-shadow: none !important;
+      font-size: 15px !important;
+      font-weight: 600 !important;
+      letter-spacing: 0 !important;
+      text-transform: none !important;
+      text-decoration: none !important;
+      color: #ffffff !important;
+      cursor: pointer !important;
+      width: 100% !important;
+      flex: 1 !important;
+      box-sizing: border-box !important;
+    }
+    #gs-mobile-filter-modal .gs-btn-clear,
+    .gs-btn-clear {
+      background-color: #2d3748 !important;
+      background: #2d3748 !important;
+      color: #ffffff !important;
+    }
+    #gs-mobile-filter-modal .gs-btn-apply,
+    .gs-btn-apply {
+      background-color: #d9b268 !important;
+      background: #d9b268 !important;
+      color: #ffffff !important;
+    }
+    #gs-mobile-filter-modal .gs-btn-clear::before,
+    #gs-mobile-filter-modal .gs-btn-clear::after,
+    #gs-mobile-filter-modal .gs-btn-apply::before,
+    #gs-mobile-filter-modal .gs-btn-apply::after,
+    .gs-btn-clear::before,
+    .gs-btn-clear::after,
+    .gs-btn-apply::before,
+    .gs-btn-apply::after {
+      display: none !important;
+      content: none !important;
+      border: none !important;
+      background: none !important;
+      opacity: 0 !important;
+      width: 0 !important;
+      height: 0 !important;
+    }
+  </style>
+
   {%- assign sort_by = object.sort_by | default: object.default_sort_by -%}
   {%- assign amount_of_products = collection.products_count | default: 0 -%}
   <div class="offers-top-toolbar">
@@ -492,8 +907,8 @@
     <div class="offers-right-controls">
       <span class="offers-items-count">{{ amount_of_products }} items</span>
 
-      <!-- Sort Dropdown -->
-      <div class="offers-dropdown-container" id="offers-sort-container">
+      <!-- Sort Dropdown (Desktop Only) -->
+      <div class="offers-dropdown-container desktop-only-sort" id="offers-sort-container">
         <button type="button" class="offers-dropdown-btn" onclick="toggleOffersDropdown('offers-sort-menu', event)">
           <span>Sort</span>
           <svg class="offers-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1L5 5L9 1"/></svg>
@@ -513,6 +928,17 @@
           </ul>
         </div>
       </div>
+
+      <!-- Mobile Filter Button (Mobile Only) -->
+      <button type="button" class="gs-mobile-filter-btn mobile-only-filter" onclick="openGsMobileFilterModal()" aria-label="Filter">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="4" y1="8" x2="20" y2="8" stroke="#000000" stroke-width="1.5"></line>
+          <line x1="4" y1="16" x2="20" y2="16" stroke="#000000" stroke-width="1.5"></line>
+          <circle cx="9" cy="8" r="2.5" fill="#FFFFFF" stroke="#000000" stroke-width="1.5"></circle>
+          <circle cx="15" cy="16" r="2.5" fill="#FFFFFF" stroke="#000000" stroke-width="1.5"></circle>
+        </svg>
+        <span>Filter</span>
+      </button>
 
       <!-- Grid View Toggles -->
       <div class="offers-grid-toggles">
@@ -541,6 +967,131 @@
     </div>
   </div>
 
+  <!-- MOBILE FULL SCREEN FILTER & SORT MODAL -->
+  <div id="gs-mobile-filter-modal" class="gs-mobile-filter-modal">
+    <div class="gs-mobile-modal-header">
+      <h2>FILTER</h2>
+      <button type="button" class="gs-mobile-modal-close" onclick="closeGsMobileFilterModal()" aria-label="Close Filter Modal">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    
+    <form id="gs-mobile-filter-form" class="gs-mobile-modal-body">
+      <input type="hidden" name="sort_by" id="gs-mobile-sort-by-input" value="{{ sort_by }}">
+
+      <!-- 1. AVAILABILITY -->
+      {%- assign avail_filter = object.filters | where: "param_name", "filter.v.availability" | first -%}
+      {%- if avail_filter == nil -%}
+        {%- assign avail_filter = object.filters | where: "label", "Availability" | first -%}
+      {%- endif -%}
+      <div class="gs-filter-group">
+        <h3 class="gs-filter-heading">AVAILABILITY</h3>
+        <div class="gs-filter-options">
+          {%- if avail_filter and avail_filter.values.size > 0 -%}
+            {%- for val in avail_filter.values -%}
+              <label class="gs-checkbox-label">
+                <input type="checkbox" name="{{ val.param_name }}" value="{{ val.value }}" {% if val.active %}checked{% endif %}>
+                <span>{{ val.label }} ({% if val.count != nil %}{{ val.count }}{% else %}0{% endif %})</span>
+              </label>
+            {%- endfor -%}
+          {%- else -%}
+            {%- liquid
+              assign in_stock_active = false
+              assign out_stock_active = false
+              for f in object.filters
+                for v in f.active_values
+                  if v.param_name == 'filter.v.availability' or f.label == 'Availability'
+                    if v.value == '1'
+                      assign in_stock_active = true
+                    elsif v.value == '0'
+                      assign out_stock_active = true
+                    endif
+                  endif
+                endfor
+              endfor
+            -%}
+            <label class="gs-checkbox-label">
+              <input type="checkbox" name="filter.v.availability" value="1" {% if in_stock_active %}checked{% endif %}>
+              <span>In stock</span>
+            </label>
+            <label class="gs-checkbox-label">
+              <input type="checkbox" name="filter.v.availability" value="0" {% if out_stock_active %}checked{% endif %}>
+              <span>Out of stock</span>
+            </label>
+          {%- endif -%}
+        </div>
+      </div>
+
+      <div class="gs-filter-divider"></div>
+
+      <!-- 2. PRICE -->
+      {%- assign price_filter = object.filters | where: "type", "price_range" | first -%}
+      <div class="gs-filter-group">
+        <h3 class="gs-filter-heading">PRICE</h3>
+        {%- assign current_min = price_filter.min_value.value | ceil | divided_by: 100 | default: 0 -%}
+        {%- assign current_max = price_filter.max_value.value | ceil | divided_by: 100 | default: price_filter.range_max | ceil | divided_by: 100 | default: 2090 -%}
+        {%- assign max_range = price_filter.range_max | ceil | divided_by: 100 | default: 2090 -%}
+        
+        <div class="gs-price-wrapper">
+          <div class="gs-price-range-display">
+            Price: {{ cart.currency.symbol }} <span id="gs-m-price-min-text">{{ current_min }}</span> - {{ cart.currency.symbol }} <span id="gs-m-price-max-text">{% if price_filter.max_value.value %}{{ current_max }}{% else %}{{ max_range }}{% endif %}</span>
+          </div>
+          
+          <div class="gs-price-inputs-flex">
+            <div class="gs-price-input-col">
+              <label>Min ({{ cart.currency.symbol }})</label>
+              <input type="number" name="filter.v.price.gte" min="0" max="{{ max_range }}" placeholder="0" value="{% if price_filter.min_value.value %}{{ current_min }}{% endif %}" oninput="document.getElementById('gs-m-price-min-text').textContent = this.value || 0">
+            </div>
+            <div class="gs-price-input-col">
+              <label>Max ({{ cart.currency.symbol }})</label>
+              <input type="number" name="filter.v.price.lte" min="0" max="{{ max_range }}" placeholder="{{ max_range }}" value="{% if price_filter.max_value.value %}{{ current_max }}{% endif %}" oninput="document.getElementById('gs-m-price-max-text').textContent = this.value || {{ max_range }}">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. SORT BY -->
+      <div class="gs-filter-divider"></div>
+      <div class="gs-filter-group">
+        <h3 class="gs-filter-heading">SORT BY</h3>
+        <div class="gs-filter-options">
+          {%- for option in object.sort_options -%}
+            <label class="gs-radio-label">
+              <input type="radio" name="gs_mobile_sort_radio" value="{{ option.value }}" {% if option.value == sort_by %}checked{% endif %} onchange="document.getElementById('gs-mobile-sort-by-input').value = this.value">
+              <span>{{ option.name }}</span>
+            </label>
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <!-- 4. OTHER FILTERS -->
+      {%- for filter in object.filters -%}
+        {%- unless filter.type == 'price_range' or filter.param_name == 'filter.v.availability' or filter.label == 'Availability' -%}
+          <div class="gs-filter-divider"></div>
+          <div class="gs-filter-group">
+            <h3 class="gs-filter-heading">{{ filter.label | upcase }}</h3>
+            <div class="gs-filter-options">
+              {%- for val in filter.values -%}
+                <label class="gs-checkbox-label">
+                  <input type="checkbox" name="{{ val.param_name }}" value="{{ val.value }}" {% if val.active %}checked{% endif %}>
+                  <span>{{ val.label }} ({{ val.count }})</span>
+                </label>
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endunless -%}
+      {%- endfor -%}
+    </form>
+
+    <div class="gs-mobile-modal-footer">
+      <button type="button" class="gs-btn-clear" onclick="clearGsMobileFilters()">Clear all</button>
+      <button type="button" class="gs-btn-apply" onclick="applyGsMobileFilters()">Apply</button>
+    </div>
+  </div>
+
   <!-- Hidden form so Shopify sort_by JS doesn't break -->
   <form action="./" method="post" class="f8sr hidden" style="display:none;">
     <select id="sort_by" name="sort_by">
@@ -552,6 +1103,10 @@
 
   <script>
     function toggleOffersDropdown(menuId, event) {
+      if (window.innerWidth <= 768) {
+        openGsMobileFilterModal();
+        return;
+      }
       event.stopPropagation();
       const btn = event.currentTarget;
       const container = btn.closest('.offers-dropdown-container');
@@ -560,6 +1115,52 @@
       if (!isOpen) {
         container.classList.add('open');
       }
+    }
+
+    function openGsMobileFilterModal() {
+      const modal = document.getElementById('gs-mobile-filter-modal');
+      if (modal) {
+        if (modal.parentNode !== document.body) {
+          document.body.appendChild(modal);
+        }
+        modal.classList.add('open');
+        document.body.classList.add('gs-modal-open');
+      }
+    }
+
+    function closeGsMobileFilterModal() {
+      const modal = document.getElementById('gs-mobile-filter-modal');
+      if (modal) {
+        modal.classList.remove('open');
+        document.body.classList.remove('gs-modal-open');
+      }
+    }
+
+    function clearGsMobileFilters() {
+      window.location.href = window.location.pathname;
+    }
+
+    function applyGsMobileFilters() {
+      const form = document.getElementById('gs-mobile-filter-form');
+      if (!form) return;
+      const formData = new FormData(form);
+      const params = new URLSearchParams(window.location.search);
+      
+      const keysToDelete = [];
+      for (const key of params.keys()) {
+        if (key.startsWith('filter.') || key === 'sort_by') {
+          keysToDelete.push(key);
+        }
+      }
+      keysToDelete.forEach(k => params.delete(k));
+
+      for (const [key, value] of formData.entries()) {
+        if (value !== '' && key !== 'gs_mobile_sort_radio') {
+          params.append(key, value);
+        }
+      }
+
+      window.location.search = params.toString();
     }
 
     document.addEventListener('click', function(e) {
@@ -638,17 +1239,21 @@
       } catch(e){}
     });
   </script>
-
 {%- elsif display == 'mobile-filter-button' and show_filters -%}
   <form action="./" method="post" class="f8sr desktop-hide{% if sticky %} mobile-sticky mobile-compact{% endif %}">
     <fieldset>
       <p class="link-btn desktop-hide">
         <a
-          href="#filter"
-          {% if settings.button_style == 'inv' %}
-            class="inv"
-          {% endif %}
-          ><i aria-hidden="true" class="icon-filter"></i> {{ 'collection.filters.filter' | t -}}
+          href="javascript:void(0)"
+          onclick="openGsMobileFilterModal()"
+          class="gs-mobile-filter-btn"
+          ><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="4" y1="8" x2="20" y2="8" stroke="#000000" stroke-width="1.5"></line>
+            <line x1="4" y1="16" x2="20" y2="16" stroke="#000000" stroke-width="1.5"></line>
+            <circle cx="9" cy="8" r="2.5" fill="#FFFFFF" stroke="#000000" stroke-width="1.5"></circle>
+            <circle cx="15" cy="16" r="2.5" fill="#FFFFFF" stroke="#000000" stroke-width="1.5"></circle>
+          </svg>
+          <span>Filter</span>
         </a>
       </p>
     </fieldset>

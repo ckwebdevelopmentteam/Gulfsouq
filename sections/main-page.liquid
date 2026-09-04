@@ -9,6 +9,12 @@
     assign title_size = title_block.settings.title_size
   endif
 -%}
+{%- if page.handle == 'about-us' or page.handle == 'our-story' -%}
+  <div class="gs-about-us-full-page">
+    {% render 'about-story' %}
+    {% render 'about-social-proof' %}
+  </div>
+{%- else -%}
 <div
   class="{% if section.settings.text_alignment == 'center' %}text-center{% endif %}{% if section.settings.content_alignment == 'center' %} align-center{% endif %}{% if title_block.settings.title_size == 'size-50' %} size-16 mobile-size-14{% endif %}"
   {% unless settings.width < 2000 and section.settings.max_width == 1280 %}
@@ -43,6 +49,7 @@
     #shopify-section-{{ section.id }} > div { margin-bottom: {{ section.settings.spacing_mobile }}px; }
   }
 </style>
+{%- endif -%}
 
 {% schema %}
 {

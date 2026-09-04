@@ -2497,8 +2497,8 @@ window.addEventListener('listProductSlider', event => {
 window.dispatchEvent(listProductSliderEvt);
 
 
-// DROPPED: [data-sal] - initializes scroll animations by asynchronously loading the JS and CSS,
-/*const dataSalEvent = new CustomEvent('dataSal');
+// [data-sal] - initializes scroll animations by asynchronously loading the JS and CSS
+const dataSalEvent = new CustomEvent('dataSal');
 window.addEventListener('dataSal', () => {
 	const data_sal = document.querySelectorAll('[data-sal]');
 	if (!data_sal.length) return;
@@ -2512,12 +2512,14 @@ window.addEventListener('dataSal', () => {
 		if (typeof sal !== 'function') return;
 
 		sal({
-			threshold: 1,
-			once: true
+			threshold: 0.15,
+			once: false
 		});
 	});
 });
-window.dispatchEvent(dataSalEvent);*/
+window.dispatchEvent(dataSalEvent);
+
+// Scroll animations disabled to eliminate scroll lag - all elements visible immediately
 
 
 // select - adds styling and change tracking to all <select> elements, marks their parent/closest paragraph with 'has-select'.

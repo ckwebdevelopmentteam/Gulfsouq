@@ -293,7 +293,7 @@
 
   .category-card-title {
     font-size: 14px;
-    font-weight: 700;
+    font-weight: 600 !important;
     color: #0C3E61;
     text-align: center;
     line-height: 1.25;
@@ -421,24 +421,25 @@
     }
 
     .explore-category-card {
-      flex: 0 0 130px !important;
-      min-width: 130px !important;
-      max-width: 130px !important;
-      min-height: 175px !important;
+      flex: 0 0 calc((100vw - 44px) / 2.25) !important;
+      width: calc((100vw - 44px) / 2.25) !important;
+      min-width: 148px !important;
+      max-width: 170px !important;
+      min-height: 185px !important;
       scroll-snap-align: start !important;
       border-radius: 16px !important;
-      padding: 15px 8px 12px 8px !important;
+      padding: 15px 10px 14px 10px !important;
       background: #FFFFFF !important;
       border: 1.5px solid #F1F5F9 !important;
       box-shadow: 0 2px 8px rgba(12, 62, 97, 0.04) !important;
     }
 
     .category-card-image-box {
-      height: 82px !important;
+      height: 90px !important;
     }
 
     .category-card-img {
-      max-height: 78px !important;
+      max-height: 85px !important;
     }
 
     .category-card-content {
@@ -446,8 +447,9 @@
     }
 
     .category-card-title {
-      font-size: 12px !important;
-      height: 30px !important;
+      font-size: 13px !important;
+      font-weight: 600 !important;
+      height: 32px !important;
       line-height: 1.25 !important;
     }
 
@@ -458,24 +460,26 @@
 
   @media (max-width: 420px) {
     .explore-category-card {
-      flex: 0 0 118px !important;
-      min-width: 118px !important;
-      max-width: 118px !important;
-      min-height: 165px !important;
-      padding: 12px 6px 10px 6px !important;
+      flex: 0 0 calc((100vw - 36px) / 2.25) !important;
+      width: calc((100vw - 36px) / 2.25) !important;
+      min-width: 142px !important;
+      max-width: 162px !important;
+      min-height: 180px !important;
+      padding: 14px 8px 12px 8px !important;
     }
 
     .category-card-image-box {
-      height: 75px !important;
+      height: 85px !important;
     }
 
     .category-card-img {
-      max-height: 70px !important;
+      max-height: 80px !important;
     }
 
     .category-card-title {
-      font-size: 11.5px !important;
-      height: 28px !important;
+      font-size: 12px !important;
+      font-weight: 600 !important;
+      height: 30px !important;
     }
 
     .explore-title {

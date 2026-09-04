@@ -131,6 +131,34 @@ body.template-index #content > [class*="shopify-section"]:first-child {
 }
 
 /* ==========================================================================
+   ABOUT US / OUR STORY FULL-WIDTH LAYOUT (NO LARGE SIDE GAPS)
+   ========================================================================== */
+body.page-about-us #content,
+body.page-our-story #content,
+body.template-page:has(.gs-about-page-wrap) #content,
+body:has(.gs-about-page-wrap) #content,
+#content:has(.gs-about-page-wrap),
+#content:has(.gs-about-us-full-page) {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+body.page-about-us .shopify-section-breadcrumbs,
+body.page-our-story .shopify-section-breadcrumbs,
+body:has(.gs-about-page-wrap) .shopify-section-breadcrumbs {
+  width: 100% !important;
+  max-width: 1600px !important;
+  margin: 0 auto !important;
+  padding: 12px 32px 0 !important;
+  box-sizing: border-box !important;
+}
+
+
+/* ==========================================================================
    HEADER LOGO FULL VISIBILITY & UN-CROPPED SIZING FIX
    ========================================================================== */
 #logo,
@@ -716,6 +744,19 @@ ul.l4cl:not(.slider)>li,
   body[class*="template-search"] #collection {
     gap: 10px !important;
     padding: 6px 16px 16px 16px !important;
+  }
+
+  .collection-wrapper #collection,
+  .template-collection .collection-wrapper #collection,
+  body[class*="template-collection"] .collection-wrapper #collection {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .deals-section-inner .gs-product-grid,
+  .deals-product-grid-container .gs-product-grid {
+    padding-left: 0 !important;
+    padding-right: 16px !important;
   }
 
   #collection>li,
@@ -2203,16 +2244,21 @@ html.gs-search-active #gs-search-overlay {
 .gs-card .gs-add-cart-btn:hover,
 .product-card .gs-add-cart-btn:hover,
 #collection .gs-add-cart-btn:hover,
-.gs-add-cart-btn:hover {
-  background-color: #BE982D !important;
-  color: #082D47 !important;
+.gs-add-cart-btn:hover,
+.gs-select-options-btn:hover,
+a.gs-select-options-btn:hover {
+  background-color: #082D47 !important;
+  border-color: #082D47 !important;
+  color: #FFFFFF !important;
 }
 
 .gs-card .gs-add-cart-btn:hover span,
 .product-card .gs-add-cart-btn:hover span,
 #collection .gs-add-cart-btn:hover span,
-.gs-card .gs-add-cart-btn:hover span {
-  color: #082D47 !important;
+.gs-add-cart-btn:hover span,
+.gs-select-options-btn:hover span,
+a.gs-select-options-btn:hover span {
+  color: #FFFFFF !important;
 }
 
 .gs-card .gs-add-cart-btn.added,
@@ -2627,9 +2673,23 @@ a.gs-select-options-btn,
 #collection .gs-add-cart-btn:hover,
 .gs-rec-card .gs-quick-add:hover,
 a.gs-add-cart-btn:hover,
-a.gs-select-options-btn:hover {
+a.gs-select-options-btn:hover,
+.gs-select-options-btn:hover,
+.gs-add-cart-btn:hover {
   background-color: #082D47 !important;
   border-color: #082D47 !important;
+  color: #FFFFFF !important;
+  text-decoration: none !important;
+}
+
+.gs-card .gs-add-cart-btn:hover *,
+.product-card .gs-add-cart-btn:hover *,
+#collection .gs-add-cart-btn:hover *,
+.gs-rec-card .gs-quick-add:hover *,
+a.gs-add-cart-btn:hover *,
+a.gs-select-options-btn:hover *,
+.gs-select-options-btn:hover *,
+.gs-add-cart-btn:hover * {
   color: #FFFFFF !important;
   text-decoration: none !important;
 }
@@ -2686,6 +2746,18 @@ a.gs-select-options-btn:active {
     display: none !important;
   }
 
+  html body #root .shopify-section-group-header-group,
+  html body #root .shopify-section-header,
+  html body #root .gs-header-wrapper,
+  html body #root .gs-header-section,
+  .shopify-section-group-header-group,
+  .shopify-section-header,
+  .gs-header-wrapper,
+  .gs-header-section {
+    z-index: 9999999 !important;
+    pointer-events: auto !important;
+  }
+
   html body #root .gs-mobile-only,
   html body #root .gs-mobile-toggle-btn,
   html body #root .gs-mobile-search-btn,
@@ -2694,6 +2766,11 @@ a.gs-select-options-btn:active {
   .gs-mobile-search-btn {
     display: inline-flex !important;
     visibility: visible !important;
+    position: relative !important;
+    z-index: 99999999 !important;
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
+    cursor: pointer !important;
   }
 
   html body #root .gs-mobile-center-logo,

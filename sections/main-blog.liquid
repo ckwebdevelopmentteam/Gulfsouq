@@ -1,53 +1,509 @@
 {%- paginate blog.articles by section.settings.pagination_qty -%}
-  <article class="m0 section-width-{{ section.settings.width }}">
-    <header class="cols">
-      <{{ section.settings.title_size }}>
-        {%- if section.settings.title != empty -%}
-          {{ section.settings.title }}
+
+{% style %}
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap');
+
+  /* Container */
+  .gs-blog-page-wrap {
+    width: 100%;
+    max-width: 1480px;
+    margin: 0 auto;
+    padding: 20px 24px 80px;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  /* Header Section */
+  .gs-blog-page-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 10px 16px 0;
+  }
+
+  .gs-blog-eyebrow-box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .gs-blog-eyebrow-line {
+    display: inline-block;
+    width: 36px;
+    height: 1.5px;
+    background-color: #ff7a00;
+  }
+
+  .gs-blog-eyebrow {
+    font-size: 14px;
+    font-weight: 700;
+    color: #ff7a00;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+  }
+
+  .gs-blog-page-title {
+    font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+    font-size: 44px;
+    font-weight: 700;
+    color: #0a2540;
+    margin: 0 0 14px;
+    line-height: 1.25;
+    letter-spacing: -0.5px;
+  }
+
+  .gs-blog-page-subtitle {
+    font-size: 17px;
+    color: #4b5563;
+    max-width: 720px;
+    margin: 0 auto 20px;
+    line-height: 1.55;
+  }
+
+  .gs-blog-diamond-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 0 auto;
+  }
+
+  .gs-diamond-dash {
+    width: 40px;
+    height: 1px;
+    background-color: #f59e0b;
+    opacity: 0.7;
+  }
+
+  .gs-diamond-symbol {
+    color: #f59e0b;
+    font-size: 15px;
+    line-height: 1;
+    display: inline-block;
+  }
+
+  /* Filter Tags */
+  .gs-blog-tags-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 32px 0 44px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .gs-blog-tag-pill {
+    display: inline-block;
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none !important;
+    transition: all 0.25s ease;
+    border: 1px solid #e2e8f0;
+    background-color: #ffffff;
+    color: #475569;
+  }
+
+  .gs-blog-tag-pill:hover {
+    border-color: #ff7a00;
+    color: #ff7a00;
+    transform: translateY(-2px);
+  }
+
+  .gs-blog-tag-pill.active {
+    background-color: #0a2540;
+    color: #ffffff !important;
+    border-color: #0a2540;
+    box-shadow: 0 4px 14px rgba(10, 37, 64, 0.25);
+  }
+
+  /* Articles Grid */
+  .gs-blog-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    box-sizing: border-box;
+  }
+
+  /* Card */
+  .gs-blog-card {
+    background-color: #ffffff;
+    border-radius: 20px;
+    border: 1px solid #f0f2f5;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    box-sizing: border-box;
+    height: 100%;
+  }
+
+  .gs-blog-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Media / Image */
+  .gs-blog-card-media {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 11;
+    overflow: hidden;
+    background-color: #f3f4f6;
+  }
+
+  .gs-blog-card-media a {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .gs-blog-card-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+
+  .gs-blog-card:hover .gs-blog-card-media img {
+    transform: scale(1.06);
+  }
+
+  .gs-blog-card-badge {
+    position: absolute;
+    bottom: 14px;
+    left: 14px;
+    background-color: #0a2540;
+    color: #ffffff !important;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 5px 13px;
+    border-radius: 7px;
+    line-height: 1.2;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  /* Card Body */
+  .gs-blog-card-body {
+    padding: 26px 28px 30px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    box-sizing: border-box;
+    text-align: left;
+  }
+
+  .gs-blog-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+    line-height: 1;
+  }
+
+  .gs-blog-card-date {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #64748b;
+  }
+
+  .gs-blog-card-date svg {
+    color: #94a3b8;
+    flex-shrink: 0;
+  }
+
+  .gs-blog-card-meta-sep {
+    color: #cbd5e1;
+    font-weight: 300;
+  }
+
+  .gs-blog-card-author {
+    color: #64748b;
+  }
+
+  .gs-blog-card-title {
+    margin: 0 0 14px;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.38;
+    color: #0a2540;
+  }
+
+  .gs-blog-card-title a {
+    color: #0a2540 !important;
+    text-decoration: none !important;
+    transition: color 0.2s ease;
+  }
+
+  .gs-blog-card-title a:hover {
+    color: #ff7a00 !important;
+  }
+
+  .gs-blog-card-excerpt {
+    font-size: 14.5px;
+    color: #64748b;
+    line-height: 1.65;
+    margin: 0 0 22px;
+    flex-grow: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .gs-blog-card-footer {
+    margin-top: auto;
+    padding-top: 8px;
+  }
+
+  .gs-blog-card-readmore {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14.5px;
+    font-weight: 700;
+    color: #0a2540 !important;
+    text-decoration: none !important;
+    transition: color 0.2s ease;
+  }
+
+  .gs-blog-card-readmore:hover {
+    color: #ff7a00 !important;
+  }
+
+  .gs-blog-card-arrow {
+    transition: transform 0.25s ease;
+    display: inline-block;
+  }
+
+  .gs-blog-card-readmore:hover .gs-blog-card-arrow {
+    transform: translateX(4px);
+  }
+
+  /* Pagination Wrapper */
+  .gs-blog-pagination-wrap {
+    margin-top: 50px;
+    text-align: center;
+  }
+
+  /* Responsive Rules */
+  @media screen and (max-width: 1024px) and (min-width: 768px) {
+    .gs-blog-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+    .gs-blog-page-title {
+      font-size: 36px;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    .gs-blog-page-wrap {
+      padding: 10px 16px 50px;
+    }
+    .gs-blog-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    .gs-blog-page-title {
+      font-size: 30px;
+    }
+    .gs-blog-card-body {
+      padding: 20px 20px 24px;
+    }
+    .gs-blog-card-title {
+      font-size: 18px;
+    }
+  }
+{% endstyle %}
+
+<div class="gs-blog-page-wrap">
+  <!-- Header Section -->
+  <header class="gs-blog-page-header">
+    <div class="gs-blog-eyebrow-box">
+      <span class="gs-blog-eyebrow-line"></span>
+      <span class="gs-blog-eyebrow">{{ section.settings.eyebrow | default: 'OUR BLOG' }}</span>
+      <span class="gs-blog-eyebrow-line"></span>
+    </div>
+
+    <h1 class="gs-blog-page-title">
+      {%- if section.settings.title != blank -%}
+        {{ section.settings.title }}
+      {%- elsif blog.title == 'News' or blog.title == 'news' -%}
+        Read about Gulf Products
+      {%- else -%}
+        {{ blog.title }}
+      {%- endif -%}
+    </h1>
+
+    <p class="gs-blog-page-subtitle">
+      {{ section.settings.subheading | default: 'Stories, guides & insights about authentic Gulf products, culture and more.' }}
+    </p>
+
+    <div class="gs-blog-diamond-divider">
+      <span class="gs-diamond-dash"></span>
+      <span class="gs-diamond-symbol">◇</span>
+      <span class="gs-diamond-dash"></span>
+    </div>
+  </header>
+
+  <!-- Tag Filter Navigation -->
+  {% if section.settings.show_tags and blog.all_tags.size > 0 %}
+    <nav class="gs-blog-tags-nav" aria-label="Blog categories">
+      <a href="{{ blog.url }}" class="gs-blog-tag-pill {% if current_tags == blank %}active{% endif %}">
+        All Posts
+      </a>
+      {%- for tag in blog.all_tags -%}
+        {%- if current_tags contains tag -%}
+          <a href="{{ blog.url }}" class="gs-blog-tag-pill active">
+            {{ tag | capitalize }} ✕
+          </a>
         {%- else -%}
-          {{ blog.title }}
+          <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="gs-blog-tag-pill">
+            {{ tag | capitalize }}
+          </a>
         {%- endif -%}
-      </{{ section.settings.title_size }}>
-    </header>
-    {% if section.settings.show_tags and blog.tags.size > 0 %}
-      <p class="link-btn mobile-compact">
-        {%- for tag in blog.all_tags -%}
-          {%- if current_tags contains tag -%}
-            {%- liquid
-             if settings.button_style == 'inv'
-               assign active_button_class = 'plain'
-             else
-               assign active_button_class = 'inv'
-             endif
-             assign replacement = '<a class="' | append: active_button_class | append: '" '
-            -%}
-            {{ tag | link_to_remove_tag: tag | replace: '<a ', replacement }}
-          {%- else -%}
-            {{ tag | link_to_tag: tag }}
-          {%- endif -%}
-        {%- endfor -%}
-      </p>
-    {% endif %}
-	{{ 'async-l4ne.css' | asset_url | stylesheet_tag }}
-    <ul class="l4ne orientation-landscape wide">
-      {%- for article in blog.articles -%}
-        {%- liquid
-          if section.index > 2 or forloop.first == false
-            assign lazyload = true
-          else
-            assign lazyload = false
-          endif
-        -%}
-        {%- render 'article-item',
-          article: article, show_excerpt: section.settings.show_excerpt, show_image: section.settings.show_image, show_date: section.settings.show_date, show_author: section.settings.show_author, button_style: section.settings.button_style_post, lazyload: lazyload, blog_title_size: section.settings.blog_title_size
-        -%}
       {%- endfor -%}
-    </ul>
-  </article>
-  {% render 'pagination',
-    paginate: paginate,
-    show_amount: true
-  %}
+    </nav>
+  {% endif %}
+
+  <!-- Articles Grid -->
+  <ul class="gs-blog-grid">
+    {%- for article in blog.articles -%}
+      {%- liquid
+        assign article_tag = ''
+        if article.tags.size > 0
+          assign article_tag = article.tags.first | upcase
+        else
+          assign title_lower = article.title | downcase
+          if title_lower contains 'date'
+            assign article_tag = 'DATES'
+          elsif title_lower contains 'abaya' or title_lower contains 'fashion'
+            assign article_tag = 'FASHION'
+          elsif title_lower contains 'nut'
+            assign article_tag = 'NUTS'
+          elsif title_lower contains 'oil'
+            assign article_tag = 'GOURMET'
+          elsif title_lower contains 'perfume' or title_lower contains 'attar' or title_lower contains 'oud'
+            assign article_tag = 'FRAGRANCE'
+          else
+            assign article_tag = 'GULF SOUQ'
+          endif
+        endif
+
+        assign article_excerpt = ''
+        if article.excerpt != blank
+          assign article_excerpt = article.excerpt | strip_html | truncatewords: 24
+        else
+          assign article_excerpt = article.content | strip_html | truncatewords: 24
+        endif
+      -%}
+
+      <li class="gs-blog-card-item">
+        <article class="gs-blog-card">
+          <!-- Featured Image -->
+          <div class="gs-blog-card-media">
+            <a href="{{ article.url }}">
+              {%- if article.image -%}
+                <img
+                  src="{{ article.image | image_url: width: 700 }}"
+                  srcset="
+                    {{ article.image | image_url: width: 360 }} 360w,
+                    {{ article.image | image_url: width: 540 }} 540w,
+                    {{ article.image | image_url: width: 720 }} 720w
+                  "
+                  sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                  width="700"
+                  height="480"
+                  alt="{{ article.image.alt | default: article.title | escape }}"
+                  loading="{% if forloop.index > 3 %}lazy{% else %}eager{% endif %}"
+                >
+              {%- else -%}
+                <img
+                  src="//images.unsplash.com/photo-1596797038530-2c107229654b?w=700&auto=format&fit=crop"
+                  alt="{{ article.title | escape }}"
+                  width="700"
+                  height="480"
+                  loading="lazy"
+                >
+              {%- endif -%}
+            </a>
+            {%- if article_tag != blank -%}
+              <span class="gs-blog-card-badge">{{ article_tag }}</span>
+            {%- endif -%}
+          </div>
+
+          <!-- Body -->
+          <div class="gs-blog-card-body">
+            <div class="gs-blog-card-meta">
+              <span class="gs-blog-card-date">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                <span>{{ article.published_at | date: "%B %d, %Y" }}</span>
+              </span>
+              <span class="gs-blog-card-meta-sep">|</span>
+              <span class="gs-blog-card-author">by {{ article.author | default: 'Gulf Souq' }}</span>
+            </div>
+
+            <h2 class="gs-blog-card-title">
+              <a href="{{ article.url }}">{{ article.title }}</a>
+            </h2>
+
+            {%- if section.settings.show_excerpt -%}
+              <p class="gs-blog-card-excerpt">{{ article_excerpt }}</p>
+            {%- endif -%}
+
+            <div class="gs-blog-card-footer">
+              <a href="{{ article.url }}" class="gs-blog-card-readmore">
+                <span>Read More</span>
+                <span class="gs-blog-card-arrow">→</span>
+              </a>
+            </div>
+          </div>
+        </article>
+      </li>
+    {%- endfor -%}
+  </ul>
+
+  <!-- Pagination -->
+  {%- if paginate.pages > 1 -%}
+    <div class="gs-blog-pagination-wrap">
+      {% render 'pagination', paginate: paginate, show_amount: true %}
+    </div>
+  {%- endif -%}
+</div>
+
+<!-- Seamless URL update so user never sees /news in address bar -->
+<script>
+  (function() {
+    if (window.location.pathname === '/blogs/news') {
+      window.history.replaceState(null, '', '/blogs/blog');
+    }
+  })();
+</script>
+
 {%- endpaginate -%}
 
 {% schema %}
@@ -55,177 +511,43 @@
   "name": "t:main.blog.name",
   "settings": [
     {
-      "type": "select",
-      "id": "width",
-      "label": "t:global.layout.width.label",
-      "options": [
-        {
-          "value": "boxed",
-          "label": "t:global.layout.width.options__1.label"
-        },
-        {
-          "value": "wide",
-          "label": "t:global.layout.width.options__2.label"
-        }
-      ],
-      "default": "boxed",
-      "visible_if": "{{ settings.width < 2000 }}"
-    },
-    {
-      "type": "select",
-      "id": "title_size",
-      "label": "t:global.typography.title_size.label",
-      "options": [
-        {
-          "value": "h1",
-          "label": "t:global.typography.title_size.h1.label"
-        },
-        {
-          "value": "h2",
-          "label": "t:global.typography.title_size.h2.label"
-        },
-        {
-          "value": "h3",
-          "label": "t:global.typography.title_size.h3.label"
-        },
-        {
-          "value": "h4",
-          "label": "t:global.typography.title_size.h4.label"
-        },
-        {
-          "value": "h5",
-          "label": "t:global.typography.title_size.h5.label"
-        }
-      ],
-      "default": "h1"
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "OUR BLOG"
     },
     {
       "type": "text",
       "id": "title",
-      "label": "t:main.blog.settings.title.label",
-      "info": "t:main.blog.settings.title.info"
+      "label": "Heading",
+      "default": "Read about Gulf Products"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Stories, guides & insights about authentic Gulf products, culture and more."
     },
     {
       "type": "checkbox",
       "id": "show_tags",
-      "label": "t:main.blog.settings.show_tags.label"
+      "label": "Show category filter tags",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_excerpt",
+      "label": "Show excerpt",
+      "default": true
     },
     {
       "type": "range",
       "id": "pagination_qty",
-      "label": "t:main.blog.settings.pagination_qty.label",
+      "label": "Articles per page",
       "min": 3,
       "max": 15,
       "step": 3,
-      "default": 12
-    },
-    {
-      "type": "header",
-      "content": "t:main.blog.settings.blog_posts.header"
-    },
-    {
-      "type": "select",
-      "id": "blog_title_size",
-      "label": "t:global.typography.blog_title_size.label",
-      "options": [
-        {
-          "value": "h1",
-          "label": "t:global.typography.title_size.h1.label"
-        },
-        {
-          "value": "h2",
-          "label": "t:global.typography.title_size.h2.label"
-        },
-        {
-          "value": "h3",
-          "label": "t:global.typography.title_size.h3.label"
-        },
-        {
-          "value": "h4",
-          "label": "t:global.typography.title_size.h4.label"
-        },
-        {
-          "value": "h5",
-          "label": "t:global.typography.title_size.h5.label"
-        }
-      ],
-      "default": "h4"
-    },
-    {
-      "id": "show_image",
-      "type": "checkbox",
-      "label": "t:main.blog.settings.blog_posts.show_image.label",
-      "default": true
-    },
-    {
-      "id": "show_date",
-      "type": "checkbox",
-      "label": "t:main.blog.settings.blog_posts.show_date.label",
-      "default": true
-    },
-    {
-      "id": "show_author",
-      "type": "checkbox",
-      "label": "t:main.blog.settings.blog_posts.show_author.label",
-      "default": true
-    },
-    {
-      "id": "show_excerpt",
-      "type": "checkbox",
-      "label": "t:main.blog.settings.blog_posts.show_excerpt.label"
-    },
-    {
-      "type": "select",
-      "id": "button_style_post",
-      "label": "t:main.blog.settings.blog_posts.button_style_post.label",
-      "options": [
-        {
-          "value": "primary plain",
-          "label": "t:global.button.button_style.primary.label",
-          "group": "t:global.button.button_style.group.plain"
-        },
-        {
-          "value": "secondary plain",
-          "label": "t:global.button.button_style.secondary.label",
-          "group": "t:global.button.button_style.group.plain"
-        },
-        {
-          "value": "tertiary plain",
-          "label": "t:global.button.button_style.tertiary.label",
-          "group": "t:global.button.button_style.group.plain"
-        },
-        {
-          "value": "primary inv",
-          "label": "t:global.button.button_style.primary.label",
-          "group": "t:global.button.button_style.group.inv"
-        },
-        {
-          "value": "secondary inv",
-          "label": "t:global.button.button_style.secondary.label",
-          "group": "t:global.button.button_style.group.inv"
-        },
-        {
-          "value": "tertiary inv",
-          "label": "t:global.button.button_style.tertiary.label",
-          "group": "t:global.button.button_style.group.inv"
-        },
-        {
-          "value": "primary link",
-          "label": "t:global.button.button_style.primary.label",
-          "group": "t:global.button.button_style.group.link"
-        },
-        {
-          "value": "secondary link",
-          "label": "t:global.button.button_style.secondary.label",
-          "group": "t:global.button.button_style.group.link"
-        },
-        {
-          "value": "tertiary link",
-          "label": "t:global.button.button_style.tertiary.label",
-          "group": "t:global.button.button_style.group.link"
-        }
-      ],
-      "default": "secondary link"
+      "default": 9
     }
   ]
 }

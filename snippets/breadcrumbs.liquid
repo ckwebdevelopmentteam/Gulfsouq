@@ -18,6 +18,59 @@
     padding-right: 20px !important;
     box-sizing: border-box !important;
   }
+  @media (max-width: 768px) {
+    .n6br,
+    .shopify-section-breadcrumbs .n6br,
+    #root .n6br,
+    #content .n6br {
+      padding-left: 16px !important;
+      padding-right: 16px !important;
+    }
+  }
+
+  /* Breadcrumb item links */
+  .n6br ol li a,
+  .n6br ul li a,
+  .n6br p a,
+  .shopify-section-breadcrumbs .n6br ol li a,
+  #root .n6br ol li a,
+  #content .n6br ol li a {
+    color: #64748b !important;
+    opacity: 1 !important;
+    text-decoration: none !important;
+    transition: color 0.2s ease, opacity 0.2s ease !important;
+  }
+
+  /* Breadcrumb hover state: visible orange accent hover */
+  .n6br ol li a:hover,
+  .n6br ul li a:hover,
+  .n6br p a:hover,
+  .shopify-section-breadcrumbs .n6br ol li a:hover,
+  #root .n6br ol li a:hover,
+  #content .n6br ol li a:hover,
+  .n6br a:hover,
+  #root .n6br a:hover,
+  #content .n6br a:hover {
+    color: #ff7a00 !important;
+    opacity: 1 !important;
+    text-decoration: underline !important;
+  }
+
+  /* Last/active breadcrumb item */
+  .n6br ol li:last-child,
+  .n6br ul li:last-child,
+  .shopify-section-breadcrumbs .n6br ol li:last-child,
+  #root .n6br ol li:last-child {
+    color: #0c3e61 !important;
+    font-weight: 600 !important;
+    opacity: 1 !important;
+  }
+
+  /* Breadcrumb separator icon */
+  .n6br li:before {
+    color: #94a3b8 !important;
+    opacity: 0.6 !important;
+  }
 </style>
 
 <nav
@@ -54,19 +107,22 @@
       {% endif %}
 
     {% elsif template.name == 'blog' %}
-      <li>
-        {{ 'blog.breadcrumb' | t | capitalize | link_to: blog.url }}
-      </li>
-      <li>
-        {{ blog.title | capitalize }}
-      </li>
+      {% if current_tags %}
+        <li>
+          <a href="{{ blog.url }}">Blog</a>
+        </li>
+        <li>
+          {{ current_tags | join: " + " }}
+        </li>
+      {% else %}
+        <li>
+          Blog
+        </li>
+      {% endif %}
 
     {% elsif template.name == 'article' %}
       <li>
-        {{ 'blog.breadcrumb' | t | capitalize | link_to: blog.url }}
-      </li>
-      <li>
-        {{ blog.title | link_to: blog.url }}
+        <a href="{{ blog.url }}">Blog</a>
       </li>
       <li>
         {{ article.title }}

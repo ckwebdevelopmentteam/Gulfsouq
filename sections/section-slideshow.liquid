@@ -92,6 +92,42 @@
         <span class="img-overlay" style="opacity:{{ block.settings.overlay_opacity | divided_by: 100.0 }}"></span>
         {%- if block.settings.video -%}
           {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false }}
+        {%- elsif template.name == 'index' or block.settings.image == blank -%}
+          <picture>
+            <source media="(min-width: 1220px)" srcset="{{ 'hero-banner-desktop.png' | asset_url }}" width="1024" height="443">
+            <img src="{{ 'hero-banner-mobile.jpg' | asset_url }}" alt="EXCLUSIVE DEALS Happening Now! - Dates, Fragrances & Chocolates" loading="eager" fetchpriority="high" width="1024" height="546" class="hero-banner-img">
+          </picture>
+        {%- elsif block.settings.image or block.settings.image_mobile -%}
+          {%- assign main_img = block.settings.image | default: block.settings.image_mobile -%}
+          <picture>
+            {%- if block.settings.image_mobile -%}
+              {% capture srcset_mobile %}
+                {% render 'image-srcset', image: block.settings.image_mobile, max_width: 940 %}
+              {% endcapture %}
+              <source media="(max-width: 767px)" srcset="{{ srcset_mobile }}" sizes="100vw">
+            {%- endif -%}
+            {% capture srcset_desktop %}
+              {% render 'image-srcset', image: main_img, max_width: 2900 %}
+            {% endcapture %}
+            {% capture sizes_desktop %}
+              {% render 'image-srcset-sizes', image: main_img, static_width: section.settings.width_banner, static_width_mobile: '100vw' %}
+            {% endcapture %}
+            {%- assign alt_text = main_img.alt | default: block.settings.title | strip_html | escape -%}
+            {%- if section.settings.height == 'adapt' -%}
+              {%- assign img_height = 1400 | divided_by: main_img.aspect_ratio | round -%}
+              {{
+                main_img
+                | image_url: width: 1400
+                | image_tag: srcset: srcset_desktop, sizes: sizes_desktop, preload: true, alt: alt_text
+              }}
+            {%- else -%}
+              {{
+                main_img
+                | image_url: width: 1400, height: img_height, crop: 'center'
+                | image_tag: srcset: srcset_desktop, sizes: sizes_desktop, preload: true, alt: alt_text
+              }}
+            {%- endif -%}
+          </picture>
         {%- else -%}
           <picture>
             <source media="(min-width: 1220px)" srcset="{{ 'hero-banner-desktop.png' | asset_url }}" width="1024" height="443">

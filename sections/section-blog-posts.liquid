@@ -1,146 +1,669 @@
 {%- liquid
-  if blogs[section.settings.blog] != blank
-    assign number_of_items = blogs[section.settings.blog].articles.size | at_most: section.settings.number_of_items
-  else
-    assign number_of_items = section.settings.number_of_items
-  endif
-  case number_of_items
-    when 2
-      assign width_class = 'width-50'
-    when 3
-      assign width_class = 'width-33'
-    when 4
-      assign width_class = 'width-25'
-    when 5
-      assign width_class = 'width-20'
-  endcase
-  if section.settings.number_of_items == 5 and blogs[section.settings.blog].articles.size >= 5 and template.name != 'password'
-    assign width_class = 'featured'
-  elsif section.settings.number_of_items == 5 and blogs[section.settings.blog] == blank and template.name != 'password'
-    assign width_class = 'featured'
+  assign current_article_id = ''
+  if template.name == 'article' and article
+    assign current_article_id = article.id
   endif
 
-  if section.settings.show_link and section.settings.link_text != empty and section.settings.link_url != blank
-    assign link = true
-  endif
-
-  if section.settings.title != empty
-    assign show_header = true
-  elsif link and section.settings.text_alignment == 'start'
-    assign show_header = true
-  endif
-
-  if section.settings.title != empty
-    assign container_div = true
-  endif
-
-  capture title_classes
-    echo 'w720 '
-    if section.settings.text_alignment == 'center'
-      echo ' text-center align-center'
+  assign blog_obj = blogs[section.settings.blog]
+  if blog_obj == empty or blog_obj.articles.size == 0
+    if blog and blog.articles.size > 0
+      assign blog_obj = blog
+    else
+      assign blog_obj = blogs['news']
+      if blog_obj == empty or blog_obj.articles.size == 0
+        assign blog_obj = blogs['blog']
+      endif
     endif
-  endcapture
+  endif
+
+  assign items_limit = section.settings.number_of_items | default: 4
+
+  assign clean_title = section.settings.title | strip_html
+  if clean_title == blank or clean_title == 'Blog posts'
+    if template.name == 'article'
+      assign clean_title = 'Other Articles You May Like'
+    else
+      assign clean_title = 'Read about Gulf Products'
+    endif
+  endif
 -%}
 
-{%- if link %}
-  {%- capture link -%}
-    {%- liquid
-      assign button_color = section.settings.button_style | split: ' ' | first
-      assign button_style = section.settings.button_style | split: ' ' | last
-      assign is_link = false
-      if button_style == 'link'
-        assign is_link = true
-      endif
-    -%}
-    <p class="class-x link-btn"><a href="{{ section.settings.link_url }}" class="overlay-{{ button_color }} {% if is_link %}inline strong{% elsif button_style == 'inv' %}inv{% endif %}">{% if is_link %}<span>{% endif %}{{ section.settings.link_text }}{% if is_link %}</span>&nbsp;<i aria-hidden="true" class="icon-chevron-right"></i>{% endif %}</a></p>
-  {%- endcapture %}
-{%- endif -%}
+{% style %}
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap');
 
-{%- if show_header -%}
-  <header
-    class="
-      cols{% if link and section.settings.show_link == false %} align-middle{% endif %}{% if section.settings.title == empty %} text-end{% endif %} title-styling
-      {% if section.settings.title_underline_style != 'none' %}
-        title-underline-none
-        {% if section.settings.title_underline_style contains 'accent' %}
-          title-underline-accent
-        {% elsif section.settings.title_underline_style contains 'gradient' %}
-          title-underline-gradient
-        {% endif %}
-        {% if section.settings.title_underline_style contains 'secondary_font' %}
-          title-underline-secondary-font
-        {% endif %}
+  .gs-blog-section-{{ section.id }} {
+    padding-top: {{ section.settings.spacing_desktop }}px;
+    padding-bottom: {{ section.settings.spacing_desktop }}px;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    z-index: {{ section.settings.fix_zindex }} !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  .gs-blog-container-{{ section.id }} {
+    max-width: {{ section.settings.max_width | default: 1520 }}px;
+    margin: 0 auto;
+    padding: 0 30px;
+    box-sizing: border-box;
+  }
+
+  /* Header Styles */
+  .gs-blog-header-{{ section.id }} {
+    text-align: center;
+    margin-bottom: 38px;
+    padding: 0 16px;
+  }
+
+  .gs-blog-eyebrow-box-{{ section.id }} {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .gs-blog-eyebrow-line-{{ section.id }} {
+    display: inline-block;
+    width: 36px;
+    height: 1.5px;
+    background-color: #ff7a00;
+  }
+
+  .gs-blog-eyebrow-{{ section.id }} {
+    font-size: 14px;
+    font-weight: 700;
+    color: #ff7a00;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+  }
+
+  .gs-blog-heading-{{ section.id }} {
+    font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+    font-size: 44px;
+    font-weight: 700;
+    color: #0a2540;
+    margin: 0 0 14px;
+    line-height: 1.25;
+    letter-spacing: -0.5px;
+    text-align: center;
+  }
+
+  .gs-blog-subheading-{{ section.id }} {
+    font-size: 17px;
+    color: #4b5563;
+    max-width: 720px;
+    margin: 0 auto 20px;
+    line-height: 1.55;
+    text-align: center;
+  }
+
+  .gs-blog-diamond-divider-{{ section.id }} {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 0 auto;
+  }
+
+  .gs-diamond-dash-{{ section.id }} {
+    width: 40px;
+    height: 1px;
+    background-color: #f59e0b;
+    opacity: 0.7;
+  }
+
+  .gs-diamond-symbol-{{ section.id }} {
+    color: #f59e0b;
+    font-size: 15px;
+    line-height: 1;
+    display: inline-block;
+  }
+
+  /* Grid Layout */
+  .gs-blog-grid-{{ section.id }} {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
+    width: 100%;
+    margin-top: 36px;
+    list-style: none;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  /* Card Styles */
+  .gs-blog-card-{{ section.id }} {
+    background-color: #ffffff;
+    border-radius: 20px;
+    border: 1px solid #f0f2f5;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    box-sizing: border-box;
+    height: 100%;
+  }
+
+  .gs-blog-card-{{ section.id }}:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Card Media */
+  .gs-blog-media-{{ section.id }} {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 11.2;
+    min-height: 220px;
+    overflow: hidden;
+    background-color: #f3f4f6;
+  }
+
+  .gs-blog-media-{{ section.id }} a {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .gs-blog-media-{{ section.id }} img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+
+  .gs-blog-card-{{ section.id }}:hover .gs-blog-media-{{ section.id }} img {
+    transform: scale(1.06);
+  }
+
+  .gs-blog-tag-{{ section.id }} {
+    position: absolute;
+    bottom: 14px;
+    left: 14px;
+    background-color: #0a2540;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 5px 13px;
+    border-radius: 7px;
+    line-height: 1.2;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  /* Card Body */
+  .gs-blog-body-{{ section.id }} {
+    padding: 24px 26px 28px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    box-sizing: border-box;
+    text-align: left;
+  }
+
+  .gs-blog-meta-{{ section.id }} {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+    line-height: 1;
+  }
+
+  .gs-blog-date-{{ section.id }} {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #64748b;
+  }
+
+  .gs-blog-date-{{ section.id }} svg {
+    color: #94a3b8;
+    flex-shrink: 0;
+  }
+
+  .gs-blog-meta-sep-{{ section.id }} {
+    color: #cbd5e1;
+    font-weight: 300;
+  }
+
+  .gs-blog-author-{{ section.id }} {
+    color: #64748b;
+  }
+
+  .gs-blog-title-{{ section.id }} {
+    margin: 0 0 14px;
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1.38;
+    color: #0a2540;
+  }
+
+  .gs-blog-title-{{ section.id }} a {
+    color: #0a2540;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .gs-blog-title-{{ section.id }} a:hover {
+    color: #ff7a00;
+  }
+
+  .gs-blog-excerpt-{{ section.id }} {
+    font-size: 14.5px;
+    color: #64748b;
+    line-height: 1.6;
+    margin: 0 0 20px;
+    flex-grow: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .gs-blog-footer-{{ section.id }} {
+    margin-top: auto;
+    padding-top: 8px;
+  }
+
+  .gs-blog-readmore-{{ section.id }} {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14.5px;
+    font-weight: 700;
+    color: #0a2540;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .gs-blog-readmore-{{ section.id }}:hover {
+    color: #ff7a00;
+  }
+
+  .gs-readmore-arrow-{{ section.id }} {
+    transition: transform 0.25s ease;
+    display: inline-block;
+  }
+
+  .gs-blog-readmore-{{ section.id }}:hover .gs-readmore-arrow-{{ section.id }} {
+    transform: translateX(4px);
+  }
+
+  /* View All Button */
+  .gs-blog-viewall-wrap-{{ section.id }} {
+    text-align: center;
+    margin-top: 36px;
+  }
+
+  .gs-blog-viewall-btn-{{ section.id }} {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    background-color: #0a2540;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background-color 0.25s ease, transform 0.25s ease;
+  }
+
+  .gs-blog-viewall-btn-{{ section.id }}:hover {
+    background-color: #ff7a00;
+    transform: translateY(-2px);
+    color: #ffffff;
+  }
+
+  /* Responsive Rules */
+  @media screen and (max-width: 1024px) and (min-width: 750px) {
+    .gs-blog-grid-{{ section.id }} {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .gs-blog-section-{{ section.id }} {
+      padding-top: {{ section.settings.spacing_mobile }}px;
+      padding-bottom: {{ section.settings.spacing_mobile }}px;
+    }
+
+    .gs-blog-heading-{{ section.id }} {
+      font-size: 28px;
+    }
+
+    .gs-blog-subheading-{{ section.id }} {
+      font-size: 14px;
+      padding: 0 10px;
+    }
+
+    .gs-blog-grid-{{ section.id }} {
+      grid-template-columns: 1fr;
+      gap: 20px;
+      padding: 0;
+    }
+
+    .gs-blog-body-{{ section.id }} {
+      padding: 18px 18px 20px;
+    }
+  }
+{% endstyle %}
+
+<section class="gs-blog-section-{{ section.id }}" id="shopify-section-{{ section.id }}">
+  <div class="gs-blog-container-{{ section.id }}">
+
+    <!-- Section Header -->
+    <div class="gs-blog-header-{{ section.id }}">
+      <div class="gs-blog-eyebrow-box-{{ section.id }}">
+        <span class="gs-blog-eyebrow-line-{{ section.id }}"></span>
+        <span class="gs-blog-eyebrow-{{ section.id }}">{{ section.settings.eyebrow | default: 'OUR BLOG' }}</span>
+        <span class="gs-blog-eyebrow-line-{{ section.id }}"></span>
+      </div>
+
+      <h2 class="gs-blog-heading-{{ section.id }}">{{ clean_title }}</h2>
+
+      {% if section.settings.subheading != blank %}
+        <p class="gs-blog-subheading-{{ section.id }}">{{ section.settings.subheading }}</p>
       {% endif %}
-    "
-  >
-    {%- if container_div -%}<div class="{{ title_classes }}">{%- endif -%}
-    {%- if section.settings.title != empty -%}
-      {{ section.settings.title }}
-    {%- endif -%}
-    {%- if container_div -%}</div>{%- endif -%}
-    {%- if link and section.settings.text_alignment == 'start' -%}
-      {{ link | replace: 'class-x', 'mobile-hide' }}
-    {%- endif -%}
-  </header>
-{%- endif -%}
 
-{{ 'async-l4ne.css' | asset_url | stylesheet_tag }}
+      {% if section.settings.show_diamond_divider != false %}
+        <div class="gs-blog-diamond-divider-{{ section.id }}">
+          <span class="gs-diamond-dash-{{ section.id }}"></span>
+          <span class="gs-diamond-symbol-{{ section.id }}">◇</span>
+          <span class="gs-diamond-dash-{{ section.id }}"></span>
+        </div>
+      {% endif %}
+    </div>
 
- 
-{%- if width_class == 'featured' -%}
-<ul class="mobile-only l4ne l4ne-figure-before">
-	{%- assign first_article = blogs[section.settings.blog].articles.first -%}
-    {%- if first_article != blank -%}
-      {%- render 'article-item', article: first_article, show_excerpt: section.settings.show_excerpt, show_image: section.settings.show_image, show_date: section.settings.show_date, show_author: section.settings.show_author, button_style: section.settings.button_style_post, lazyload: false, blog_title_size: section.settings.blog_title_size -%}
-    {%- endif -%}
-</ul>
-{%- endif -%}
+    <!-- Blog Posts Cards Grid -->
+    <ul class="gs-blog-grid-{{ section.id }}">
+      {% assign rendered_count = 0 %}
+      {% if blog_obj != empty and blog_obj.articles.size > 0 %}
+        {% for post_item in blog_obj.articles %}
+          {% if current_article_id != blank and post_item.id == current_article_id %}
+            {% continue %}
+          {% endif %}
+          {% if rendered_count >= items_limit %}
+            {% break %}
+          {% endif %}
+          {% assign rendered_count = rendered_count | plus: 1 %}
+          {% assign article = post_item %}
+          {%- liquid
+            assign article_tag = ''
+            if article.tags.size > 0
+              assign article_tag = article.tags.first | upcase
+            endif
 
-<ul class="l4ne orientation-landscape {{ width_class }} section-width-{{ section.settings.width }} {% if section.settings.big_first_item %}bf-item{% endif %}">
-  {%- liquid
-    if blogs[section.settings.blog] != empty
-      for article in blogs[section.settings.blog].articles limit: section.settings.number_of_items
-        if section.index > 1 or forloop.first == false
-          assign lazyload = true
-        else
-          assign lazyload = false
-        endif
-        render 'article-item', article: article, show_excerpt: section.settings.show_excerpt, show_image: section.settings.show_image, show_date: section.settings.show_date, show_author: section.settings.show_author, button_style: section.settings.button_style_post, lazyload: lazyload, blog_title_size: section.settings.blog_title_size
-      endfor
-    else
-      for i in (1..section.settings.number_of_items)
-        render 'article-item', article: blank, show_excerpt: section.settings.show_excerpt, show_image: section.settings.show_image, show_date: section.settings.show_date, show_author: section.settings.show_author, button_style: section.settings.button_style_post, blog_title_size: section.settings.blog_title_size
-      endfor
-    endif
-  -%}
-</ul>
-{%- if link and section.settings.text_alignment == 'center' -%}
-  {{ link | replace: 'class-x', 'm0 text-center' }}
-{%- elsif link and section.settings.text_alignment == 'start' -%}
-  {{ link | replace: 'class-x', 'm0 mobile-only' }}
-{%- endif -%}
+            assign title_lower = article.title | downcase
+            if article_tag == blank or article_tag contains 'BLOG' or article_tag contains 'NEWS'
+              if title_lower contains 'date'
+                assign article_tag = 'DATES'
+              elsif title_lower contains 'abaya' or title_lower contains 'fashion' or title_lower contains 'dress'
+                assign article_tag = 'FASHION'
+              elsif title_lower contains 'nut'
+                assign article_tag = 'NUTS'
+              elsif title_lower contains 'perfume' or title_lower contains 'attar' or title_lower contains 'oud'
+                assign article_tag = 'FRAGRANCE'
+              else
+                assign article_tag = 'DATES'
+              endif
+            endif
 
-<style>
-  #shopify-section-{{ section.id }} { position: relative; z-index: {{ section.settings.fix_zindex }} !important; --mr_sect: {{ section.settings.spacing_desktop }}px; --mr_sect_m: {{ section.settings.spacing_mobile }}px; }
-  @media only screen and (min-width: 761px) {
-  {% if link and section.settings.text_alignment == 'center' %}
-    #shopify-section-{{ section.id }} { margin-bottom: var(--mr_sect); }
-  {% else %}
-    #shopify-section-{{ section.id }} .l4ne { margin-bottom: calc(var(--mr_sect) - var(--dist2)); }
-  {% endif %}
-  }
-  @media only screen and (max-width: 760px) {
-  {% if link %}
-    #shopify-section-{{ section.id }} { margin-bottom: var(--mr_sect_m); }
-  {% else %}
-    #shopify-section-{{ section.id }} .l4ne { margin-bottom: calc(var(--mr_sect_m) - var(--dist2)); }
-  {% endif %}
-  }
-</style>
+            assign article_excerpt = ''
+            if article.excerpt != blank
+              assign article_excerpt = article.excerpt | strip_html
+            elsif article.content != blank
+              assign article_excerpt = article.content | strip_html | truncatewords: 16
+            endif
+
+            if article_excerpt == blank
+              if title_lower contains 'kimia'
+                assign article_excerpt = 'Discover why Kimia dates are loved for their rich taste, natural sweetness and health benefits.'
+              elsif title_lower contains 'abaya'
+                assign article_excerpt = 'Explore our latest abaya collection that blends tradition with modern style.'
+              elsif title_lower contains 'nuts'
+                assign article_excerpt = 'A complete guide to the most popular and healthy nuts from the Middle East.'
+              elsif title_lower contains 'dates'
+                assign article_excerpt = 'Explore the finest date varieties, their benefits and how to choose the best for you.'
+              else
+                assign article_excerpt = 'Stories, guides & insights about authentic Gulf products, culture and more.'
+              endif
+            endif
+          -%}
+
+          <li class="gs-blog-card-item-{{ section.id }}">
+            <article class="gs-blog-card-{{ section.id }}">
+              
+              <!-- Featured Image with Badge -->
+              <div class="gs-blog-media-{{ section.id }}">
+                <a href="{{ article.url }}" aria-label="{{ article.title | escape }}">
+                  {% if article.image %}
+                    <img
+                      src="{{ article.image | image_url: width: 640 }}"
+                      srcset="
+                        {{ article.image | image_url: width: 360 }} 360w,
+                        {{ article.image | image_url: width: 480 }} 480w,
+                        {{ article.image | image_url: width: 640 }} 640w
+                      "
+                      sizes="(min-width: 1025px) 280px, (min-width: 750px) 45vw, 95vw"
+                      alt="{{ article.image.alt | default: article.title | escape }}"
+                      loading="lazy"
+                      width="400"
+                      height="270"
+                    >
+                  {% else %}
+                    {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {% endif %}
+                </a>
+                <span class="gs-blog-tag-{{ section.id }}">{{ article_tag }}</span>
+              </div>
+
+              <!-- Card Body Content -->
+              <div class="gs-blog-body-{{ section.id }}">
+                <div class="gs-blog-meta-{{ section.id }}">
+                  <span class="gs-blog-date-{{ section.id }}">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                      <line x1="16" y1="2" x2="16" y2="6"></line>
+                      <line x1="8" y1="2" x2="8" y2="6"></line>
+                      <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                    <span>{{ article.published_at | date: "%B %d, %Y" }}</span>
+                  </span>
+                  <span class="gs-blog-meta-sep-{{ section.id }}">|</span>
+                  <span class="gs-blog-author-{{ section.id }}">by {{ article.author | default: 'Gulf Souq' }}</span>
+                </div>
+
+                <h3 class="gs-blog-title-{{ section.id }}">
+                  <a href="{{ article.url }}">{{ article.title }}</a>
+                </h3>
+
+                <p class="gs-blog-excerpt-{{ section.id }}">{{ article_excerpt }}</p>
+
+                <div class="gs-blog-footer-{{ section.id }}">
+                  <a href="{{ article.url }}" class="gs-blog-readmore-{{ section.id }}">
+                    <span>Read More</span>
+                    <span class="gs-readmore-arrow-{{ section.id }}">→</span>
+                  </a>
+                </div>
+              </div>
+
+            </article>
+          </li>
+        {% endfor %}
+      {% else %}
+        <!-- Demonstration Placeholder Articles Matching Reference Mockup -->
+        <li class="gs-blog-card-item-{{ section.id }}">
+          <article class="gs-blog-card-{{ section.id }}">
+            <div class="gs-blog-media-{{ section.id }}">
+              <a href="#">
+                <img src="//images.unsplash.com/photo-1596797038530-2c107229654b?w=640&auto=format&fit=crop" alt="Kimia Dates" loading="lazy" width="400" height="270">
+              </a>
+              <span class="gs-blog-tag-{{ section.id }}">DATES</span>
+            </div>
+            <div class="gs-blog-body-{{ section.id }}">
+              <div class="gs-blog-meta-{{ section.id }}">
+                <span class="gs-blog-date-{{ section.id }}">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                  </svg>
+                  <span>July 11, 2026</span>
+                </span>
+                <span class="gs-blog-meta-sep-{{ section.id }}">|</span>
+                <span class="gs-blog-author-{{ section.id }}">by Gulf Souq</span>
+              </div>
+              <h3 class="gs-blog-title-{{ section.id }}">
+                <a href="#">Kimia Dates: A Delicious Blend of Health, Taste, and Premium Quality</a>
+              </h3>
+              <p class="gs-blog-excerpt-{{ section.id }}">Discover why Kimia dates are loved for their rich taste, natural sweetness and health benefits.</p>
+              <div class="gs-blog-footer-{{ section.id }}">
+                <a href="#" class="gs-blog-readmore-{{ section.id }}">
+                  <span>Read More</span>
+                  <span class="gs-readmore-arrow-{{ section.id }}">→</span>
+                </a>
+              </div>
+            </div>
+          </article>
+        </li>
+
+        <li class="gs-blog-card-item-{{ section.id }}">
+          <article class="gs-blog-card-{{ section.id }}">
+            <div class="gs-blog-media-{{ section.id }}">
+              <a href="#">
+                <img src="//images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=640&auto=format&fit=crop" alt="Gulf Abaya Collection" loading="lazy" width="400" height="270">
+              </a>
+              <span class="gs-blog-tag-{{ section.id }}">FASHION</span>
+            </div>
+            <div class="gs-blog-body-{{ section.id }}">
+              <div class="gs-blog-meta-{{ section.id }}">
+                <span class="gs-blog-date-{{ section.id }}">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                  </svg>
+                  <span>June 28, 2026</span>
+                </span>
+                <span class="gs-blog-meta-sep-{{ section.id }}">|</span>
+                <span class="gs-blog-author-{{ section.id }}">by Gulf Souq</span>
+              </div>
+              <h3 class="gs-blog-title-{{ section.id }}">
+                <a href="#">Gulf Abaya Collection: Timeless Elegance Meets Modern Modest Fashion</a>
+              </h3>
+              <p class="gs-blog-excerpt-{{ section.id }}">Explore our latest abaya collection that blends tradition with modern style.</p>
+              <div class="gs-blog-footer-{{ section.id }}">
+                <a href="#" class="gs-blog-readmore-{{ section.id }}">
+                  <span>Read More</span>
+                  <span class="gs-readmore-arrow-{{ section.id }}">→</span>
+                </a>
+              </div>
+            </div>
+          </article>
+        </li>
+
+        <li class="gs-blog-card-item-{{ section.id }}">
+          <article class="gs-blog-card-{{ section.id }}">
+            <div class="gs-blog-media-{{ section.id }}">
+              <a href="#">
+                <img src="//images.unsplash.com/photo-1543158181-e6f9f6712055?w=640&auto=format&fit=crop" alt="Middle Eastern Nuts" loading="lazy" width="400" height="270">
+              </a>
+              <span class="gs-blog-tag-{{ section.id }}">NUTS</span>
+            </div>
+            <div class="gs-blog-body-{{ section.id }}">
+              <div class="gs-blog-meta-{{ section.id }}">
+                <span class="gs-blog-date-{{ section.id }}">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                  </svg>
+                  <span>September 18, 2025</span>
+                </span>
+                <span class="gs-blog-meta-sep-{{ section.id }}">|</span>
+                <span class="gs-blog-author-{{ section.id }}">by Mohammed Shafeeq</span>
+              </div>
+              <h3 class="gs-blog-title-{{ section.id }}">
+                <a href="#">Best 10 Middle Eastern Nuts Varieties: Premium Quality Guide 2025</a>
+              </h3>
+              <p class="gs-blog-excerpt-{{ section.id }}">A complete guide to the most popular and healthy nuts from the Middle East.</p>
+              <div class="gs-blog-footer-{{ section.id }}">
+                <a href="#" class="gs-blog-readmore-{{ section.id }}">
+                  <span>Read More</span>
+                  <span class="gs-readmore-arrow-{{ section.id }}">→</span>
+                </a>
+              </div>
+            </div>
+          </article>
+        </li>
+
+        <li class="gs-blog-card-item-{{ section.id }}">
+          <article class="gs-blog-card-{{ section.id }}">
+            <div class="gs-blog-media-{{ section.id }}">
+              <a href="#">
+                <img src="//images.unsplash.com/photo-1509358271058-acd22cc93898?w=640&auto=format&fit=crop" alt="Middle Eastern Dates" loading="lazy" width="400" height="270">
+              </a>
+              <span class="gs-blog-tag-{{ section.id }}">DATES</span>
+            </div>
+            <div class="gs-blog-body-{{ section.id }}">
+              <div class="gs-blog-meta-{{ section.id }}">
+                <span class="gs-blog-date-{{ section.id }}">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                  </svg>
+                  <span>September 18, 2025</span>
+                </span>
+                <span class="gs-blog-meta-sep-{{ section.id }}">|</span>
+                <span class="gs-blog-author-{{ section.id }}">by Mohammed Shafeeq</span>
+              </div>
+              <h3 class="gs-blog-title-{{ section.id }}">
+                <a href="#">Best 10 Middle Eastern Dates Varieties: Premium Quality Guide 2025</a>
+              </h3>
+              <p class="gs-blog-excerpt-{{ section.id }}">Explore the finest date varieties, their benefits and how to choose the best for you.</p>
+              <div class="gs-blog-footer-{{ section.id }}">
+                <a href="#" class="gs-blog-readmore-{{ section.id }}">
+                  <span>Read More</span>
+                  <span class="gs-readmore-arrow-{{ section.id }}">→</span>
+                </a>
+              </div>
+            </div>
+          </article>
+        </li>
+      {% endif %}
+    </ul>
+
+    <!-- Optional View All Button -->
+    {% if section.settings.show_link and section.settings.link_url != blank %}
+      <div class="gs-blog-viewall-wrap-{{ section.id }}">
+        <a href="{{ section.settings.link_url }}" class="gs-blog-viewall-btn-{{ section.id }}">
+          {{ section.settings.link_text | default: 'View All Articles' }} →
+        </a>
+      </div>
+    {% endif %}
+
+  </div>
+</section>
 
 {% schema %}
 {
-  "name": "t:sections.blog_posts.name",
+  "name": "Blog posts",
   "tag": "article",
   "disabled_on": {
     "groups": ["header", "footer"]
@@ -149,320 +672,132 @@
     {
       "type": "blog",
       "id": "blog",
-      "label": "t:sections.blog_posts.settings.blog.label"
+      "label": "Blog"
     },
     {
       "type": "range",
       "id": "number_of_items",
-      "label": "t:sections.blog_posts.settings.number_of_items.label",
-      "info": "t:sections.blog_posts.settings.number_of_items.info",
+      "label": "Number of articles",
       "min": 2,
-      "max": 5,
+      "max": 8,
       "step": 1,
-      "default": 3
+      "default": 4
     },
     {
-		"type": "checkbox",
-		"id": "big_first_item",
-		"label": "t:sections.blog_posts.settings.big_first_item.label",
-		"info": "t:sections.blog_posts.settings.big_first_item.info",
-		"default": false,
-    "visible_if": "{{ section.settings.number_of_items == 5 }}"
-	},
-    {
-      "type": "select",
-      "id": "text_alignment",
-      "label": "t:sections.blog_posts.settings.text_alignment.label",
-      "options": [
-        {
-          "value": "start",
-          "label": "t:sections.blog_posts.settings.text_alignment.options__1.label"
-        },
-        {
-          "value": "center",
-          "label": "t:sections.blog_posts.settings.text_alignment.options__2.label"
-        }
-      ],
-      "default": "start"
-    },
-     {
-      "type": "select",
-      "id": "width",
-      "label": "t:global.layout.width.label",
-      "options": [
-        {
-          "value": "boxed",
-          "label": "t:global.layout.width.options__1.label"
-        },
-        {
-          "value": "wide",
-          "label": "t:global.layout.width.options__2.label"
-        }
-      ],
-      "default": "boxed",
-      "visible_if": "{{ settings.width < 2000 }}"
+      "type": "range",
+      "id": "max_width",
+      "label": "Container max width",
+      "min": 1200,
+      "max": 1800,
+      "step": 20,
+      "unit": "px",
+      "default": 1520
     },
     {
       "type": "header",
-      "content": "t:global.typography.title.label"
+      "content": "Section Header"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "OUR BLOG"
     },
     {
       "type": "richtext",
       "id": "title",
-      "label": "t:global.typography.title.label",
-      "info": "t:global.typography.title.info",
-      "default": "<h2>Blog posts</h2>"
+      "label": "Heading",
+      "default": "<h2>Read about Gulf Products</h2>"
     },
     {
-      "type": "select",
-      "id": "title_underline_style",
-      "label": "t:global.typography.title_underline_style.label",
-      "options": [
-        {
-          "value": "none",
-          "label": "t:global.typography.title_underline_style.none.label"
-        },
-        {
-          "value": "secondary_font",
-          "label": "t:global.typography.title_underline_style.secondary_font.label",
-          "group": "t:global.typography.title_underline_style.group.fonts"
-        },
-        {
-          "value": "secondary_font_accent",
-          "label": "t:global.typography.title_underline_style.secondary_font_accent.label",
-          "group": "t:global.typography.title_underline_style.group.fonts"
-        },
-        {
-          "value": "secondary_font_gradient",
-          "label": "t:global.typography.title_underline_style.secondary_font_gradient.label",
-          "group": "t:global.typography.title_underline_style.group.fonts"
-        },
-        {
-          "value": "accent",
-          "label": "t:global.typography.title_underline_style.accent.label",
-          "group": "t:global.typography.title_underline_style.group.colors"
-        },
-        {
-          "value": "gradient",
-          "label": "t:global.typography.title_underline_style.gradient.label",
-          "group": "t:global.typography.title_underline_style.group.colors"
-        }
-      ]
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Stories, guides & insights about authentic Gulf products, culture and more."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_diamond_divider",
+      "label": "Show diamond divider ornament",
+      "default": true
     },
     {
       "type": "header",
-      "content": "t:global.button.header"
+      "content": "Button"
     },
     {
       "id": "show_link",
       "type": "checkbox",
-      "label": "t:global.button.show_link.label",
-      "default": true
+      "label": "Show 'View all' button",
+      "default": false
     },
     {
       "id": "link_text",
       "type": "text",
-      "label": "t:global.button.link_text.label",
-      "default": "Button",
-      "visible_if": "{{ section.settings.show_link }}"
+      "label": "Button text",
+      "default": "View All Articles"
     },
     {
       "id": "link_url",
       "type": "url",
-      "label": "t:global.button.link_url.label",
-      "visible_if": "{{ section.settings.show_link }}"
-    },
-    {
-      "type": "select",
-      "id": "button_style",
-      "label": "t:global.button.button_style.label",
-      "options": [
-        {
-          "value": "primary plain",
-          "label": "t:global.button.button_style.primary.label",
-          "group": "t:global.button.button_style.group.plain"
-        },
-        {
-          "value": "secondary plain",
-          "label": "t:global.button.button_style.secondary.label",
-          "group": "t:global.button.button_style.group.plain"
-        },
-        {
-          "value": "tertiary plain",
-          "label": "t:global.button.button_style.tertiary.label",
-          "group": "t:global.button.button_style.group.plain"
-        },
-        {
-          "value": "primary inv",
-          "label": "t:global.button.button_style.primary.label",
-          "group": "t:global.button.button_style.group.inv"
-        },
-        {
-          "value": "secondary inv",
-          "label": "t:global.button.button_style.secondary.label",
-          "group": "t:global.button.button_style.group.inv"
-        },
-        {
-          "value": "tertiary inv",
-          "label": "t:global.button.button_style.tertiary.label",
-          "group": "t:global.button.button_style.group.inv"
-        },
-        {
-          "value": "primary link",
-          "label": "t:global.button.button_style.primary.label",
-          "group": "t:global.button.button_style.group.link"
-        },
-        {
-          "value": "secondary link",
-          "label": "t:global.button.button_style.secondary.label",
-          "group": "t:global.button.button_style.group.link"
-        },
-        {
-          "value": "tertiary link",
-          "label": "t:global.button.button_style.tertiary.label",
-          "group": "t:global.button.button_style.group.link"
-        }
-      ],
-      "default": "primary link",
-      "visible_if": "{{ section.settings.show_link }}"
+      "label": "Button link"
     },
     {
       "type": "header",
-      "content": "t:sections.blog_posts.settings.blog_posts.header"
-    },
-    {
-      "type": "select",
-      "id": "blog_title_size",
-      "label": "t:global.typography.blog_title_size.label",
-      "options": [
-        {
-          "value": "h1",
-          "label": "t:global.typography.title_size.h1.label"
-        },
-        {
-          "value": "h2",
-          "label": "t:global.typography.title_size.h2.label"
-        },
-        {
-          "value": "h3",
-          "label": "t:global.typography.title_size.h3.label"
-        },
-        {
-          "value": "h4",
-          "label": "t:global.typography.title_size.h4.label"
-        },
-        {
-          "value": "h5",
-          "label": "t:global.typography.title_size.h5.label"
-        }
-      ],
-      "default": "h4"
+      "content": "Article Display"
     },
     {
       "id": "show_image",
       "type": "checkbox",
-      "label": "t:sections.blog_posts.settings.blog_posts.show_image.label",
+      "label": "Show featured image",
       "default": true
     },
     {
       "id": "show_date",
       "type": "checkbox",
-      "label": "t:sections.blog_posts.settings.blog_posts.show_date.label",
+      "label": "Show date",
       "default": true
     },
     {
       "id": "show_author",
       "type": "checkbox",
-      "label": "t:sections.blog_posts.settings.blog_posts.show_author.label",
+      "label": "Show author",
       "default": true
     },
     {
       "id": "show_excerpt",
       "type": "checkbox",
-      "label": "t:sections.blog_posts.settings.blog_posts.show_excerpt.label"
-    },
-    {
-      "type": "select",
-      "id": "button_style_post",
-      "label": "t:sections.blog_posts.settings.blog_posts.button_style_post.label",
-      "options": [
-        {
-          "value": "primary plain",
-          "label": "t:global.button.button_style.primary.label",
-          "group": "t:global.button.button_style.group.plain"
-        },
-        {
-          "value": "secondary plain",
-          "label": "t:global.button.button_style.secondary.label",
-          "group": "t:global.button.button_style.group.plain"
-        },
-        {
-          "value": "tertiary plain",
-          "label": "t:global.button.button_style.tertiary.label",
-          "group": "t:global.button.button_style.group.plain"
-        },
-        {
-          "value": "primary inv",
-          "label": "t:global.button.button_style.primary.label",
-          "group": "t:global.button.button_style.group.inv"
-        },
-        {
-          "value": "secondary inv",
-          "label": "t:global.button.button_style.secondary.label",
-          "group": "t:global.button.button_style.group.inv"
-        },
-        {
-          "value": "tertiary inv",
-          "label": "t:global.button.button_style.tertiary.label",
-          "group": "t:global.button.button_style.group.inv"
-        },
-        {
-          "value": "primary link",
-          "label": "t:global.button.button_style.primary.label",
-          "group": "t:global.button.button_style.group.link"
-        },
-        {
-          "value": "secondary link",
-          "label": "t:global.button.button_style.secondary.label",
-          "group": "t:global.button.button_style.group.link"
-        },
-        {
-          "value": "tertiary link",
-          "label": "t:global.button.button_style.tertiary.label",
-          "group": "t:global.button.button_style.group.link"
-        }
-      ],
-      "default": "primary link"
+      "label": "Show excerpt",
+      "default": true
     },
     {
       "type": "header",
-      "content": "t:global.spacing.header"
+      "content": "Spacing"
     },
     {
       "id": "spacing_desktop",
       "type": "range",
-      "label": "t:global.spacing.spacing_desktop.label",
-      "min": -250,
-      "max": 250,
+      "label": "Spacing desktop",
+      "min": 0,
+      "max": 120,
       "step": 5,
       "unit": "px",
-      "default": 50
+      "default": 60
     },
     {
       "id": "spacing_mobile",
       "type": "range",
-      "label": "t:global.spacing.spacing_mobile.label",
-      "min": -250,
-      "max": 250,
+      "label": "Spacing mobile",
+      "min": 0,
+      "max": 100,
       "step": 5,
       "unit": "px",
-      "default": 30
+      "default": 35
     },
     {
       "id": "fix_zindex",
       "type": "range",
-      "label": "t:global.fix_zindex.label",
-      "info": "t:global.fix_zindex.info",
+      "label": "Z-Index",
       "min": 0,
       "max": 25,
       "step": 1,
@@ -471,9 +806,13 @@
   ],
   "presets": [
     {
-      "name": "t:sections.blog_posts.presets.name",
-     "category": "t:categories.storytelling",
-      "settings": {}
+      "name": "Blog posts",
+      "settings": {
+        "eyebrow": "OUR BLOG",
+        "subheading": "Stories, guides & insights about authentic Gulf products, culture and more.",
+        "show_diamond_divider": true,
+        "show_excerpt": true
+      }
     }
   ]
 }
