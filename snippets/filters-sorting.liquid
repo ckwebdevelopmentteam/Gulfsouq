@@ -426,12 +426,126 @@
 
 {%- elsif display == 'sorting' -%}
   <style>
+    /* Reset & Override Theme Pseudo-Elements for Mobile Filter Button */
+    a.gs-mobile-filter-btn,
+    button.gs-mobile-filter-btn,
+    .gs-mobile-filter-btn,
+    #root .gs-mobile-filter-btn,
+    .f8sr .gs-mobile-filter-btn,
+    .link-btn .gs-mobile-filter-btn,
+    p.link-btn a.gs-mobile-filter-btn {
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 8px !important;
+      background-color: #FFFFFF !important;
+      background: #FFFFFF !important;
+      color: #000000 !important;
+      border: 1px solid #FFFFFF !important;
+      border-radius: 8px !important;
+      padding: 6px 14px !important;
+      font-size: 14px !important;
+      font-weight: 500 !important;
+      letter-spacing: 0.2px !important;
+      cursor: pointer !important;
+      box-shadow: none !important;
+      -webkit-box-shadow: none !important;
+      filter: none !important;
+      -webkit-filter: none !important;
+      transition: all 0.2s ease !important;
+      line-height: 1.2 !important;
+      text-decoration: none !important;
+      outline: none !important;
+      position: relative !important;
+      overflow: visible !important;
+      height: auto !important;
+      min-height: 34px !important;
+      box-sizing: border-box !important;
+      appearance: none !important;
+      -webkit-appearance: none !important;
+      margin: 0 !important;
+    }
+
+    a.gs-mobile-filter-btn:before,
+    a.gs-mobile-filter-btn:after,
+    button.gs-mobile-filter-btn:before,
+    button.gs-mobile-filter-btn:after,
+    .gs-mobile-filter-btn:before,
+    .gs-mobile-filter-btn:after,
+    .f8sr .gs-mobile-filter-btn:before,
+    .f8sr .gs-mobile-filter-btn:after,
+    .link-btn a.gs-mobile-filter-btn:before,
+    .link-btn a.gs-mobile-filter-btn:after,
+    p.link-btn a.gs-mobile-filter-btn:before,
+    p.link-btn a.gs-mobile-filter-btn:after {
+      display: none !important;
+      content: none !important;
+      border: none !important;
+      background: none !important;
+      box-shadow: none !important;
+      -webkit-box-shadow: none !important;
+      width: 0 !important;
+      height: 0 !important;
+      opacity: 0 !important;
+    }
+
+    a.gs-mobile-filter-btn span,
+    button.gs-mobile-filter-btn span,
+    .gs-mobile-filter-btn span {
+      color: #000000 !important;
+      font-size: 14px !important;
+      font-weight: 500 !important;
+      line-height: 1 !important;
+      display: inline-block !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      position: relative !important;
+      z-index: 2 !important;
+    }
+
+    a.gs-mobile-filter-btn:hover,
+    button.gs-mobile-filter-btn:hover,
+    .gs-mobile-filter-btn:hover,
+    a.gs-mobile-filter-btn:focus,
+    button.gs-mobile-filter-btn:focus,
+    .gs-mobile-filter-btn:focus,
+    a.gs-mobile-filter-btn:active,
+    button.gs-mobile-filter-btn:active,
+    .gs-mobile-filter-btn:active {
+      background-color: #F9FAFB !important;
+      background: #F9FAFB !important;
+      color: #000000 !important;
+      border-color: #FFFFFF !important;
+      box-shadow: none !important;
+      -webkit-box-shadow: none !important;
+      filter: none !important;
+    }
+
+    .gs-mobile-filter-btn svg {
+      width: 16px !important;
+      height: 16px !important;
+      display: inline-block !important;
+      vertical-align: middle !important;
+      flex-shrink: 0 !important;
+      stroke: #000000 !important;
+      color: #000000 !important;
+      position: relative !important;
+      z-index: 2 !important;
+    }
+
     @media (max-width: 768px) {
-      .offers-left-filters {
+      .offers-left-filters,
+      .offers-grid-toggles,
+      .desktop-only-sort,
+      #root .desktop-only-sort {
         display: none !important;
       }
-      .offers-grid-toggles {
-        display: none !important;
+      .mobile-only-filter,
+      a.gs-mobile-filter-btn,
+      button.gs-mobile-filter-btn,
+      .gs-mobile-filter-btn,
+      #root .gs-mobile-filter-btn,
+      .f8sr .gs-mobile-filter-btn {
+        display: inline-flex !important;
       }
       .offers-top-toolbar {
         flex-direction: row !important;
@@ -445,6 +559,21 @@
         display: flex !important;
         justify-content: space-between !important;
         align-items: center !important;
+      }
+    }
+
+    @media (min-width: 769px) {
+      .mobile-only-filter,
+      a.gs-mobile-filter-btn,
+      button.gs-mobile-filter-btn,
+      .gs-mobile-filter-btn,
+      #root .gs-mobile-filter-btn,
+      .f8sr .gs-mobile-filter-btn {
+        display: none !important;
+      }
+      .desktop-only-sort,
+      #root .desktop-only-sort {
+        display: inline-flex !important;
       }
     }
 
@@ -778,8 +907,8 @@
     <div class="offers-right-controls">
       <span class="offers-items-count">{{ amount_of_products }} items</span>
 
-      <!-- Sort Dropdown -->
-      <div class="offers-dropdown-container" id="offers-sort-container">
+      <!-- Sort Dropdown (Desktop Only) -->
+      <div class="offers-dropdown-container desktop-only-sort" id="offers-sort-container">
         <button type="button" class="offers-dropdown-btn" onclick="toggleOffersDropdown('offers-sort-menu', event)">
           <span>Sort</span>
           <svg class="offers-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1L5 5L9 1"/></svg>
@@ -799,6 +928,17 @@
           </ul>
         </div>
       </div>
+
+      <!-- Mobile Filter Button (Mobile Only) -->
+      <button type="button" class="gs-mobile-filter-btn mobile-only-filter" onclick="openGsMobileFilterModal()" aria-label="Filter">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="4" y1="8" x2="20" y2="8" stroke="#000000" stroke-width="1.5"></line>
+          <line x1="4" y1="16" x2="20" y2="16" stroke="#000000" stroke-width="1.5"></line>
+          <circle cx="9" cy="8" r="2.5" fill="#FFFFFF" stroke="#000000" stroke-width="1.5"></circle>
+          <circle cx="15" cy="16" r="2.5" fill="#FFFFFF" stroke="#000000" stroke-width="1.5"></circle>
+        </svg>
+        <span>Filter</span>
+      </button>
 
       <!-- Grid View Toggles -->
       <div class="offers-grid-toggles">
@@ -1106,10 +1246,14 @@
         <a
           href="javascript:void(0)"
           onclick="openGsMobileFilterModal()"
-          {% if settings.button_style == 'inv' %}
-            class="inv"
-          {% endif %}
-          ><i aria-hidden="true" class="icon-filter"></i> {{ 'collection.filters.filter' | t -}}
+          class="gs-mobile-filter-btn"
+          ><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="4" y1="8" x2="20" y2="8" stroke="#000000" stroke-width="1.5"></line>
+            <line x1="4" y1="16" x2="20" y2="16" stroke="#000000" stroke-width="1.5"></line>
+            <circle cx="9" cy="8" r="2.5" fill="#FFFFFF" stroke="#000000" stroke-width="1.5"></circle>
+            <circle cx="15" cy="16" r="2.5" fill="#FFFFFF" stroke="#000000" stroke-width="1.5"></circle>
+          </svg>
+          <span>Filter</span>
         </a>
       </p>
     </fieldset>

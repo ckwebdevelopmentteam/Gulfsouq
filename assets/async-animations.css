@@ -105,27 +105,16 @@
 [data-sal][data-sal-easing=ease-in-back] { transition-timing-function: cubic-bezier(.6,-.28,.735,.045); }
 [data-sal][data-sal-easing=ease-out-back] { transition-timing-function: cubic-bezier(.175,.885,.32,1.275); }
 [data-sal][data-sal-easing=ease-in-out-back] { transition-timing-function: cubic-bezier(.68,-.55,.265,1.55); }
-[data-sal|=fade] { opacity: 0;transition-property: opacity; }
-[data-sal|=fade].sal-animate,body.sal-disabled [data-sal|=fade] { opacity: 1; }
-[data-sal|=slide] { opacity: 0;transition-property: opacity,transform; }
-[data-sal=slide-up] { transform: translateY(20%); }
-[data-sal=slide-down] { transform: translateY(-20%); }
-[data-sal=slide-left] { transform: translateX(20%); }
-[data-sal=slide-right] { transform: translateX(-20%); }
-[data-sal|=slide].sal-animate,body.sal-disabled [data-sal|=slide] { opacity: 1;transform: none; }
-[data-sal|=zoom] { opacity: 0;transition-property: opacity,transform; }
-[data-sal=zoom-in] { transform: scale(.5); }
-[data-sal=zoom-out] { transform: scale(1.1); }
-[data-sal|=zoom].sal-animate,body.sal-disabled [data-sal|=zoom] { opacity: 1;transform: none; }
-[data-sal|=flip] { -webkit-backface-visibility: hidden;backface-visibility: hidden;transition-property: transform; }
-[data-sal=flip-left] { transform: perspective(2000px) rotateY(-91deg); }
-[data-sal=flip-right] { transform: perspective(2000px) rotateY(91deg); }
-[data-sal=flip-up] { transform: perspective(2000px) rotateX(-91deg); }
-[data-sal=flip-down] { transform: perspective(2000px) rotateX(91deg); }
-[data-sal|=flip].sal-animate,body.sal-disabled [data-sal|=flip] { transform: none; }
-
-
-[data-sal="fade"][style*="opacity"]: not(.sal-animate) { opacity: 0 !important; }
+[data-sal],
+[data-sal|=fade],
+[data-sal|=slide],
+[data-sal|=zoom],
+[data-sal|=flip] {
+	opacity: 1 !important;
+	transform: none !important;
+	transition: none !important;
+	animation: none !important;
+}
 /*[style*="nav_delay:"] .swiper-button-nav { transition-delay: var(--nav_delay) !important; }*/
 /*[data-sal-arrow-delay] .swiper-button-nav*/
 @media only screen and (max-width: 760px)  { 

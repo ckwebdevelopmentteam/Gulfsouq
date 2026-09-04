@@ -424,9 +424,25 @@
 
   @media (max-width: 768px) {
     .offers-top-toolbar {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 14px;
+      flex-direction: row !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      padding: 10px 0 !important;
+      margin: 10px 0 16px 0 !important;
+    }
+    .offers-left-filters,
+    .offers-grid-toggles,
+    .desktop-only-sort,
+    #root .desktop-only-sort {
+      display: none !important;
+    }
+    .mobile-only-filter,
+    a.gs-mobile-filter-btn,
+    button.gs-mobile-filter-btn,
+    .gs-mobile-filter-btn,
+    #root .gs-mobile-filter-btn,
+    .f8sr .gs-mobile-filter-btn {
+      display: inline-flex !important;
     }
     .offers-right-controls {
       width: 100% !important;
@@ -434,8 +450,20 @@
       justify-content: space-between !important;
       align-items: center !important;
     }
-    .offers-grid-toggles {
+  }
+
+  @media (min-width: 769px) {
+    .mobile-only-filter,
+    a.gs-mobile-filter-btn,
+    button.gs-mobile-filter-btn,
+    .gs-mobile-filter-btn,
+    #root .gs-mobile-filter-btn,
+    .f8sr .gs-mobile-filter-btn {
       display: none !important;
+    }
+    .desktop-only-sort,
+    #root .desktop-only-sort {
+      display: inline-flex !important;
     }
   }
 

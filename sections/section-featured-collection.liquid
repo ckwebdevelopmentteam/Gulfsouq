@@ -411,13 +411,26 @@
       line-height: 1.25 !important;
       box-sizing: border-box !important;
     }
-    #shopify-section-{{ section.id }} .deals-product-track-container {
+    #shopify-section-{{ section.id }} .deals-product-track-container,
+    #shopify-section-{{ section.id }} .deals-product-grid-container {
       padding: 0 !important;
       margin: 0 !important;
       width: 100% !important;
       max-width: 100% !important;
       overflow: hidden !important;
       box-sizing: border-box !important;
+    }
+    #shopify-section-{{ section.id }} .gs-product-grid,
+    body #shopify-section-{{ section.id }} .gs-product-grid {
+      padding-left: 0 !important;
+      padding-right: 16px !important;
+      padding-top: 6px !important;
+      padding-bottom: 16px !important;
+      margin: 0 !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+      gap: 10px !important;
     }
     #shopify-section-{{ section.id }} .deals-product-track {
       display: flex !important;
