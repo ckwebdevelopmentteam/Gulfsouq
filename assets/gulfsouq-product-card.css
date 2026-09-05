@@ -2965,7 +2965,7 @@ aside#cart.m6pn,
   bottom: 0 !important;
   height: 100vh !important;
   max-height: 100vh !important;
-  z-index: 999999 !important;
+  z-index: 10000000 !important;
   width: 100% !important;
   max-width: 440px !important;
   background: #FFFFFF !important;
@@ -4074,6 +4074,12 @@ aside#cart a.remove:not(.gs-drawer-remove-btn),
   float: none !important;
   clear: both !important;
   box-sizing: border-box !important;
+}
+
+/* Direct-add cards need the same CTA baseline as cards with Options. */
+#root #cart .cart-upsell .gs-ajax-add-btn,
+#cart .cart-upsell .gs-ajax-add-btn {
+  transform: translateY(16px) !important;
 }
 
 #root #cart .cart-upsell .gs-upsell-add-btn,
@@ -6346,5 +6352,4 @@ button.gs-checkout-main-btn:hover {
     border-radius: 6px !important;
   }
 }
-
 
