@@ -543,6 +543,148 @@
 
     </div>
 
+    <!-- You May Also Like Recommendations Section -->
+    {%- assign show_recommendations = section.settings.show_cart_recommendations -%}
+    {%- if show_recommendations == nil -%}
+      {%- assign show_recommendations = true -%}
+    {%- endif -%}
+
+    {%- if show_recommendations and cart.item_count > 0 -%}
+      {%- liquid
+        assign rec_title = section.settings.cart_recommendations_title | default: 'You May Also Like'
+        assign rec_subtitle = section.settings.cart_recommendations_subtitle | default: 'Recommended based on products in your cart'
+        assign rec_limit = section.settings.cart_recommendations_limit | default: 4
+
+        assign rendered_prod_ids = ','
+        for line_item in cart.items
+          assign rendered_prod_ids = rendered_prod_ids | append: line_item.product.id | append: ','
+        endfor
+
+        assign rec_count = 0
+      -%}
+
+      {%- capture rec_products_html -%}
+        {%- comment -%} 1. First pass: Products from the same collections as items in the cart {%- endcomment -%}
+        {%- for line_item in cart.items -%}
+          {%- if rec_count >= rec_limit -%}{%- break -%}{%- endif -%}
+          {%- for item_collection in line_item.product.collections -%}
+            {%- if rec_count >= rec_limit -%}{%- break -%}{%- endif -%}
+            {%- if item_collection.handle != 'all' and item_collection.handle != 'frontpage' and item_collection.products_count > 0 -%}
+              {%- for rel_product in item_collection.products -%}
+                {%- if rec_count >= rec_limit -%}{%- break -%}{%- endif -%}
+                {%- if rel_product.available -%}
+                  {%- assign match_check = ',' | append: rel_product.id | append: ',' -%}
+                  {%- unless rendered_prod_ids contains match_check -%}
+                    {%- assign rendered_prod_ids = rendered_prod_ids | append: rel_product.id | append: ',' -%}
+                    {%- assign rec_count = rec_count | plus: 1 -%}
+                    {%- capture placeholder_int -%}{% cycle 1, 2, 3, 4, 5, 6 %}{%- endcapture -%}
+                    {%- render 'product-item',
+                      product: rel_product,
+                      placeholder_int: placeholder_int,
+                      enable_quick_buy_desktop: true,
+                      enable_quick_buy_mobile: true,
+                      enable_quick_buy_qty_selector: false,
+                      quick_buy_compact: false,
+                      enable_quick_buy_drawer: false,
+                      sizes: '(min-width: 1000px) calc(100vw * 0.25), (min-width: 760px) 320px, 170px'
+                    -%}
+                  {%- endunless -%}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endfor -%}
+
+        {%- comment -%} 2. Second pass: Backfill from curated Gulf Souq priority collections {%- endcomment -%}
+        {%- if rec_count < rec_limit -%}
+          {%- assign priority_collections = 'athar-and-perfume,chocolates,dates,nuts-and-dry-fruits,pravasi-boxes,offers' | split: ',' -%}
+          {%- for coll_handle in priority_collections -%}
+            {%- if rec_count >= rec_limit -%}{%- break -%}{%- endif -%}
+            {%- assign popular_coll = collections[coll_handle] -%}
+            {%- if popular_coll and popular_coll.products_count > 0 -%}
+              {%- for rel_product in popular_coll.products -%}
+                {%- if rec_count >= rec_limit -%}{%- break -%}{%- endif -%}
+                {%- if rel_product.available -%}
+                  {%- assign match_check = ',' | append: rel_product.id | append: ',' -%}
+                  {%- unless rendered_prod_ids contains match_check -%}
+                    {%- assign rendered_prod_ids = rendered_prod_ids | append: rel_product.id | append: ',' -%}
+                    {%- assign rec_count = rec_count | plus: 1 -%}
+                    {%- capture placeholder_int -%}{% cycle 1, 2, 3, 4, 5, 6 %}{%- endcapture -%}
+                    {%- render 'product-item',
+                      product: rel_product,
+                      placeholder_int: placeholder_int,
+                      enable_quick_buy_desktop: true,
+                      enable_quick_buy_mobile: true,
+                      enable_quick_buy_qty_selector: false,
+                      quick_buy_compact: false,
+                      enable_quick_buy_drawer: false,
+                      sizes: '(min-width: 1000px) calc(100vw * 0.25), (min-width: 760px) 320px, 170px'
+                    -%}
+                  {%- endunless -%}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+
+        {%- comment -%} 3. Third pass: Backfill from all collection if still needed {%- endcomment -%}
+        {%- if rec_count < rec_limit and collections.all.products_count > 0 -%}
+          {%- for rel_product in collections.all.products -%}
+            {%- if rec_count >= rec_limit -%}{%- break -%}{%- endif -%}
+            {%- if rel_product.available -%}
+              {%- assign match_check = ',' | append: rel_product.id | append: ',' -%}
+              {%- unless rendered_prod_ids contains match_check -%}
+                {%- assign rendered_prod_ids = rendered_prod_ids | append: rel_product.id | append: ',' -%}
+                {%- assign rec_count = rec_count | plus: 1 -%}
+                {%- capture placeholder_int -%}{% cycle 1, 2, 3, 4, 5, 6 %}{%- endcapture -%}
+                {%- render 'product-item',
+                  product: rel_product,
+                  placeholder_int: placeholder_int,
+                  enable_quick_buy_desktop: true,
+                  enable_quick_buy_mobile: true,
+                  enable_quick_buy_qty_selector: false,
+                  quick_buy_compact: false,
+                  enable_quick_buy_drawer: false,
+                  sizes: '(min-width: 1000px) calc(100vw * 0.25), (min-width: 760px) 320px, 170px'
+                -%}
+              {%- endunless -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      {%- endcapture -%}
+
+      {%- if rec_count > 0 -%}
+        <section class="gs-cart-recommendations-section" aria-labelledby="gs-cart-rec-heading">
+          <div class="gs-cart-rec-header">
+            <div class="gs-cart-rec-titles">
+              <div class="gs-cart-rec-pill">
+                <span class="gs-sparkle-icon">✨</span>
+                <span>Recommended For You</span>
+              </div>
+              <h2 id="gs-cart-rec-heading" class="gs-cart-rec-title">{{ rec_title }}</h2>
+              {%- if rec_subtitle != blank -%}
+                <p class="gs-cart-rec-subtitle">{{ rec_subtitle }}</p>
+              {%- endif -%}
+            </div>
+            <div class="gs-cart-rec-actions">
+              <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="gs-cart-rec-view-all">
+                <span>Explore All</span>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+            </div>
+          </div>
+          <div class="gs-cart-rec-grid-container">
+            <ul class="l4cl gs-product-grid with-quick-buy">
+              {{ rec_products_html }}
+            </ul>
+          </div>
+        </section>
+      {%- endif -%}
+    {%- endif -%}
+
     <!-- Mobile Fixed Bottom Checkout Sticky Bar -->
     <div class="gs-mobile-sticky-checkout-bar">
       <div class="gs-sticky-info">
@@ -668,6 +810,37 @@
       "label": "t:main.cart.settings.checkbox.terms_text.label",
       "info": "t:main.cart.settings.checkbox.terms_text.info",
       "default": "<p>I accept the <a href='/policies/privacy-policy' title='Privacy Policy'>privacy policy</a></p>"
+    },
+    {
+      "type": "header",
+      "content": "You May Also Like Recommendations"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cart_recommendations",
+      "label": "Show 'You May Also Like' recommendations",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cart_recommendations_title",
+      "label": "Recommendations Heading",
+      "default": "You May Also Like"
+    },
+    {
+      "type": "text",
+      "id": "cart_recommendations_subtitle",
+      "label": "Recommendations Subtitle",
+      "default": "Recommended based on products in your cart"
+    },
+    {
+      "type": "range",
+      "id": "cart_recommendations_limit",
+      "label": "Products to show",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 4
     }
   ],
   "blocks": [

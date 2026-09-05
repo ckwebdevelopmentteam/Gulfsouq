@@ -90,8 +90,16 @@
       el.style.display = 'inline-flex';
     });
 
-    // Open side-cart drawer
-    window.openGulfSouqCart();
+    const isCartPage = window.location.pathname.endsWith('/cart') || window.location.pathname.includes('/cart');
+    if (!isCartPage) {
+      // Open side-cart drawer
+      window.openGulfSouqCart();
+    } else {
+      // When on the cart page, reload smoothly after giving visual button feedback
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
+    }
 
     // Dispatch custom events for theme listeners
     document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart } }));
