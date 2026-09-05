@@ -1274,7 +1274,8 @@ window.addEventListener('moduleFeaturedSlider', function (event) {
 		let pagination_type = el.classList.contains('slider-fraction') ? 'fraction' : 'bullets';
 		let autoplay_int = el.dataset.autoplay ? {
 			delay: parseFloat(el.dataset.autoplay),
-			pauseOnMouseEnter: true
+			pauseOnMouseEnter: false,
+			disableOnInteraction: false
 		} : false;
 
 		if (!isHasSelectorSupported()) {
@@ -1289,10 +1290,11 @@ window.addEventListener('moduleFeaturedSlider', function (event) {
 		const featuredSlider = create_slider(el, {
 			direction: 'horizontal',
 			loop: true,
+			speed: 700,
 			autoHeight: true,
 			resizeObserver: true,
 			autoplay: autoplay_int,
-			threshold: 50,
+			threshold: 20,
 			pagination: {
 				el: `.swiper-pagination-${randomId}`,
 				clickable: true,
@@ -1319,6 +1321,7 @@ window.addEventListener('moduleFeaturedSlider', function (event) {
 				}
 			}
 		});
+		el.swiper = featuredSlider;
 
 		function updateSwiper(swiper) {
 			for (const aside of el.querySelectorAll('.swiper-slide > article.aside')) {
@@ -1375,6 +1378,10 @@ window.addEventListener('moduleFeaturedSlider', function (event) {
 	}
 });
 window.dispatchEvent(moduleFeaturedSliderEvt);
+if (document.readyState === 'loading') {
+	document.addEventListener('DOMContentLoaded', () => window.dispatchEvent(moduleFeaturedSliderEvt));
+}
+window.addEventListener('load', () => window.dispatchEvent(moduleFeaturedSliderEvt));
 
 
 // DROPPED: .shopify-section-announcement-bar - initializes the announcement bar slider if multiple items exist, handling autoplay and removing unnecessary close buttons

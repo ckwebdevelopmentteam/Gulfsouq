@@ -42,7 +42,7 @@
   {% if section.settings.autoplay %}
     data-autoplay="{{ section.settings.autoplay_seconds | times: 1000 }}"
   {% endif %}
-  style="--aspect:{{ padding_bottom }}; --aspect_m:{{ padding_bottom_mobile }};"
+  style="--aspect:{{ padding_bottom }}; --aspect_m:{{ padding_bottom_mobile }}; --rpp: 0px !important; --rpn: 0px !important; padding-left: 0 !important; padding-right: 0 !important;"
   data-active-content="palette-{{ section.blocks[0].settings.color_palette }}"
 >
   {%- for block in section.blocks -%}
@@ -92,9 +92,9 @@
         <span class="img-overlay" style="opacity:{{ block.settings.overlay_opacity | divided_by: 100.0 }}"></span>
         {%- if block.settings.video -%}
           {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false }}
-        {%- elsif template.name == 'index' or block.settings.image == blank -%}
+        {%- elsif forloop.index == 1 or forloop.index == 2 -%}
           <picture>
-            <source media="(min-width: 1220px)" srcset="{{ 'hero-banner-desktop.png' | asset_url }}" width="1024" height="443">
+            <source media="(min-width: 768px)" srcset="{{ 'hero-banner-desktop.png' | asset_url }}" width="1024" height="443">
             <img src="{{ 'hero-banner-mobile.jpg' | asset_url }}" alt="EXCLUSIVE DEALS Happening Now! - Dates, Fragrances & Chocolates" loading="eager" fetchpriority="high" width="1024" height="546" class="hero-banner-img">
           </picture>
         {%- elsif block.settings.image or block.settings.image_mobile -%}
@@ -118,19 +118,19 @@
               {{
                 main_img
                 | image_url: width: 1400
-                | image_tag: srcset: srcset_desktop, sizes: sizes_desktop, preload: true, alt: alt_text
+                | image_tag: srcset: srcset_desktop, sizes: sizes_desktop, preload: true, alt: alt_text, class: 'hero-banner-img'
               }}
             {%- else -%}
               {{
                 main_img
                 | image_url: width: 1400, height: img_height, crop: 'center'
-                | image_tag: srcset: srcset_desktop, sizes: sizes_desktop, preload: true, alt: alt_text
+                | image_tag: srcset: srcset_desktop, sizes: sizes_desktop, preload: true, alt: alt_text, class: 'hero-banner-img'
               }}
             {%- endif -%}
           </picture>
         {%- else -%}
           <picture>
-            <source media="(min-width: 1220px)" srcset="{{ 'hero-banner-desktop.png' | asset_url }}" width="1024" height="443">
+            <source media="(min-width: 768px)" srcset="{{ 'hero-banner-desktop.png' | asset_url }}" width="1024" height="443">
             <img src="{{ 'hero-banner-mobile.jpg' | asset_url }}" alt="EXCLUSIVE DEALS Happening Now! - Dates, Fragrances & Chocolates" loading="eager" fetchpriority="high" width="1024" height="546" class="hero-banner-img">
           </picture>
         {%- endif -%}
@@ -268,19 +268,110 @@
     border-radius: 0;
   }
 
-    #shopify-section-{{ section.id }},
+  #shopify-section-{{ section.id }},
+  #shopify-section-{{ section.id }} .m6fr {
+    overflow: hidden !important;
+    position: relative !important;
+  }
+
+  #shopify-section-{{ section.id }},
   #shopify-section-{{ section.id }} .m6fr,
   #shopify-section-{{ section.id }} .m6fr article,
   #shopify-section-{{ section.id }} [class*="palette-"],
+  #shopify-section-{{ section.id }} .swiper-outer,
   #shopify-section-{{ section.id }} .swiper-wrapper,
-  #shopify-section-{{ section.id }} .swiper-slide { 
+  #shopify-section-{{ section.id }} .swiper-slide,
+  #shopify-section-{{ section.id }} .swiper-slide-active,
+  #root #shopify-section-{{ section.id }} .swiper-slide,
+  #root #shopify-section-{{ section.id }} .swiper-slide article,
+  .t1as #shopify-section-{{ section.id }} .m6fr,
+  .t1as #shopify-section-{{ section.id }} .m6fr.wide.s4wi,
+  .t1as #shopify-section-{{ section.id }} .m6fr article,
+  .t1as #shopify-section-{{ section.id }} .swiper-slide,
+  .t1as #shopify-section-{{ section.id }} .swiper-slide article { 
     width: 100% !important;
     max-width: 100% !important;
-    margin: 0 !important; 
+    margin: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
     border-radius: 0 !important;
     border: none !important;
     box-shadow: none !important;
     background-color: transparent !important;
+  }
+
+  /* CRITICAL: Before slider JS initializes with .s4wi, hide all slides after the first slide so they never show or flash below the banner or marquee */
+  #shopify-section-{{ section.id }} .m6fr:not(.s4wi) > article:not(:first-child) {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    width: 0 !important;
+    overflow: hidden !important;
+    position: absolute !important;
+    pointer-events: none !important;
+  }
+
+  #shopify-section-{{ section.id }} .m6fr:not(.s4wi) > article:first-child {
+    display: flex !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  #shopify-section-{{ section.id }} .swiper-outer {
+    overflow: hidden !important;
+    position: relative !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  #shopify-section-{{ section.id }} .swiper-wrapper {
+    display: flex !important;
+    flex-direction: row !important;
+    box-sizing: border-box !important;
+    width: auto !important;
+    max-width: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  #shopify-section-{{ section.id }} .swiper-slide,
+  #shopify-section-{{ section.id }} .swiper-slide-active,
+  #shopify-section-{{ section.id }} .m6fr .swiper-slide,
+  #shopify-section-{{ section.id }} .s4wi .swiper-slide,
+  #shopify-section-{{ section.id }} .wide .swiper-slide,
+  #root #shopify-section-{{ section.id }} .swiper-slide,
+  .t1as #shopify-section-{{ section.id }} .swiper-slide {
+    flex: 0 0 100% !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    margin-bottom: 0 !important;
+    box-sizing: border-box !important;
+    position: relative !important;
+  }
+
+  #shopify-section-{{ section.id }} .swiper-scrollbar,
+  #shopify-section-{{ section.id }} .scrollbar,
+  #shopify-section-{{ section.id }} .nav-scroll,
+  #shopify-section-{{ section.id }} ::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
   }
 
   #shopify-section-{{ section.id }} .m6fr article {
@@ -288,6 +379,9 @@
     align-items: center !important;
     position: relative !important;
     overflow: hidden !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    margin-bottom: 0 !important;
   }
 
   /* Desktop slideshow slide and image sizing - compact hero height (max 480px - 500px) */
@@ -295,11 +389,21 @@
     #shopify-section-{{ section.id }},
     #shopify-section-{{ section.id }} .m6fr,
     #shopify-section-{{ section.id }} .m6fr article,
+    #shopify-section-{{ section.id }} .swiper-outer,
     #shopify-section-{{ section.id }} .swiper-wrapper,
-    #shopify-section-{{ section.id }} .swiper-slide {
+    #shopify-section-{{ section.id }} .swiper-slide,
+    #shopify-section-{{ section.id }} .swiper-slide-active,
+    #root #shopify-section-{{ section.id }} .swiper-slide,
+    .t1as #shopify-section-{{ section.id }} .swiper-slide,
+    .t1as #shopify-section-{{ section.id }} .m6fr.wide.s4wi article,
+    .t1as #shopify-section-{{ section.id }} .m6fr.wide article,
+    .t1as #shopify-section-{{ section.id }} .swiper-slide article {
       height: 480px !important;
       min-height: 440px !important;
       max-height: 500px !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      margin-bottom: 0 !important;
     }
 
     #shopify-section-{{ section.id }} .m6fr article {
@@ -311,6 +415,7 @@
       min-height: 440px !important;
       max-height: 500px !important;
       margin: 0 !important;
+      margin-bottom: 0 !important;
       padding: 0 !important;
       box-sizing: border-box !important;
       position: relative !important;
@@ -349,6 +454,7 @@
       display: block !important;
       background: #F6EADA !important;
     }
+
 
     #shopify-section-{{ section.id }} .m6fr .title-styling {
       position: absolute !important;

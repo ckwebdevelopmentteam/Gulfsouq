@@ -26,10 +26,33 @@
             "overlay_url": "/collections/all",
             "image_mobile": "shopify://shop_images/offer_banner_3_b571b92a-7dc4-46de-b214-78f622c6e2a4.png"
           }
+        },
+        "slide_promo_2": {
+          "type": "slide",
+          "settings": {
+            "layout": "background",
+            "overlay_opacity": 0,
+            "color_palette": "scheme-2",
+            "text_position": "align-center text-center",
+            "title": "",
+            "title_underline_style": "none",
+            "text": "",
+            "show_first_link": false,
+            "first_link_text": "",
+            "first_link_url": "",
+            "first_button_style": "primary plain",
+            "show_second_link": false,
+            "second_link_text": "",
+            "second_link_url": "",
+            "second_button_style": "secondary plain",
+            "show_overlay_link": true,
+            "overlay_url": "/collections/all"
+          }
         }
       },
       "block_order": [
-        "slide_FLUXWz"
+        "slide_FLUXWz",
+        "slide_promo_2"
       ],
       "name": "Hero Banner",
       "settings": {
@@ -38,7 +61,7 @@
         "width": "wide",
         "autoplay": true,
         "autoplay_seconds": 4,
-        "enable_controls": true,
+        "enable_controls": false,
         "height_mobile": "adapt",
         "spacing_desktop": 0,
         "spacing_mobile": 0,
