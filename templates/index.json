@@ -6,7 +6,6 @@
         "slide_FLUXWz": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/ChatGPT_Image_Jul_3_2026_06_11_49_PM_1.png",
             "layout": "background",
             "overlay_opacity": 0,
             "color_palette": "scheme-2",
@@ -23,8 +22,7 @@
             "second_link_url": "",
             "second_button_style": "secondary plain",
             "show_overlay_link": true,
-            "overlay_url": "/collections/all",
-            "image_mobile": "shopify://shop_images/offer_banner_3_b571b92a-7dc4-46de-b214-78f622c6e2a4.png"
+            "overlay_url": "/collections/all"
           }
         },
         "slide_promo_2": {

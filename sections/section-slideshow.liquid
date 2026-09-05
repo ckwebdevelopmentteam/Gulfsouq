@@ -92,12 +92,7 @@
         <span class="img-overlay" style="opacity:{{ block.settings.overlay_opacity | divided_by: 100.0 }}"></span>
         {%- if block.settings.video -%}
           {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false }}
-        {%- elsif forloop.index == 1 or forloop.index == 2 -%}
-          <picture>
-            <source media="(min-width: 768px)" srcset="{{ 'hero-banner-desktop.png' | asset_url }}" width="1024" height="443">
-            <img src="{{ 'hero-banner-mobile.jpg' | asset_url }}" alt="EXCLUSIVE DEALS Happening Now! - Dates, Fragrances & Chocolates" loading="eager" fetchpriority="high" width="1024" height="546" class="hero-banner-img">
-          </picture>
-        {%- elsif block.settings.image or block.settings.image_mobile -%}
+        {%- elsif block.settings.image != blank or block.settings.image_mobile != blank -%}
           {%- assign main_img = block.settings.image | default: block.settings.image_mobile -%}
           <picture>
             {%- if block.settings.image_mobile -%}
