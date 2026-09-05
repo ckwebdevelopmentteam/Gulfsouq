@@ -64,7 +64,25 @@
         {%- endif -%}
       {%- endif -%}
 
-      {%- comment -%} COLUMN 4: Newsletter & Exclusive Offers {%- endcomment -%}
+      {%- comment -%} COLUMN 4: Shop By Category — SEO Internal Links P12 Fix {%- endcomment -%}
+      <div class="gs-footer-col gs-footer-col-categories">
+        <div class="gs-footer-heading-wrap">
+          <h3 class="gs-footer-title">Shop By Category</h3>
+          <span class="gs-title-bar"></span>
+        </div>
+        <ul class="gs-footer-links">
+          <li><a href="/collections/chocolates" class="gs-footer-link">Imported Chocolates</a></li>
+          <li><a href="/collections/dates" class="gs-footer-link">Premium Gulf Dates</a></li>
+          <li><a href="/collections/athar-and-perfume" class="gs-footer-link">Arabic Perfumes & Attar</a></li>
+          <li><a href="/collections/gift-hamper-boxes" class="gs-footer-link">Gulf Gift Hampers</a></li>
+          <li><a href="/collections/pravasi-boxes" class="gs-footer-link">Pravasi Homecoming Boxes</a></li>
+          <li><a href="/collections/nuts-dry-fruits" class="gs-footer-link">Nuts & Dry Fruits</a></li>
+          <li><a href="/collections/gulf-food-essentials" class="gs-footer-link">Gulf Food Essentials</a></li>
+          <li><a href="/collections/gulf-souq-abayas" class="gs-footer-link">Gulf Abayas</a></li>
+        </ul>
+      </div>
+
+      {%- comment -%} COLUMN 5: Newsletter & Exclusive Offers {%- endcomment -%}
       {%- if newsletter_block -%}
         <div class="gs-footer-col gs-footer-col-newsletter" {{ newsletter_block.shopify_attributes }}>
           <div class="gs-footer-heading-wrap">
@@ -169,8 +187,8 @@
 
   .gs-footer-grid {
     display: grid !important;
-    grid-template-columns: 1.15fr 0.95fr 0.95fr 1.6fr !important;
-    gap: 36px !important;
+    grid-template-columns: 1.1fr 0.85fr 0.85fr 0.9fr 1.4fr !important;
+    gap: 28px !important;
     align-items: start !important;
     width: 100% !important;
     box-sizing: border-box !important;
@@ -478,6 +496,16 @@
     height: 24px !important;
     width: auto !important;
     border-radius: 4px !important;
+  }
+
+  @media only screen and (max-width: 1200px) and (min-width: 1025px) {
+    .gs-footer-grid {
+      grid-template-columns: 1fr 1fr 1fr !important;
+      gap: 28px !important;
+    }
+    .gs-footer-col-newsletter {
+      grid-column: 1 / -1 !important;
+    }
   }
 
   @media only screen and (max-width: 1024px) and (min-width: 769px) {

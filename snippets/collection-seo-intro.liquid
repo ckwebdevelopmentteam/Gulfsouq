@@ -1,0 +1,119 @@
+{%- comment -%}
+  P12 SEO Fix: Collection SEO Intro Snippet
+  Renders rich, keyword-dense intro copy ABOVE the product grid for each collection.
+  This ensures Google indexes authoritative above-fold content for topical relevance.
+  Usage: {% render 'collection-seo-intro' %}
+{%- endcomment -%}
+
+{%- liquid
+  assign handle = collection.handle
+  assign seo_intro = ''
+  assign seo_links = ''
+
+  if handle == 'chocolates' or handle == 'chocolate'
+    assign seo_intro = '<p>Welcome to Gulf Souq's premium imported chocolate collection — India's most trusted destination for <strong>authentic Gulf chocolates online</strong>. We bring you a hand-curated selection of over 100+ chocolate varieties sourced directly from the heart of the Gulf region, including beloved brands like <strong>Galaxy, Ferrero Rocher, Toblerone, Kinder, Raffaello, Twix, Loacker, CoccoSticks</strong>, and more.</p><p>Whether you're looking for silky Swiss milk chocolate, rich Turkish cocoa delights, or premium Belgian truffles, our collection covers every taste and occasion. Perfect for <strong>Eid gifts, Diwali hampers, birthday boxes</strong>, or simply treating yourself to the finest imported sweets available in India. All chocolates are sourced from authentic Gulf-region suppliers and delivered pan-India with free shipping above ₹6,999.</p><p>Our Gulf chocolates are especially popular among the <strong>Pravasi (Gulf returnee) community</strong> in Kerala, Tamil Nadu, and Maharashtra, who miss the authentic taste of imported chocolates from UAE, Saudi Arabia, and Qatar. Experience the same flavours — delivered right to your doorstep.</p>'
+    assign seo_links = '<a href="/collections/dates">Premium Gulf Dates</a> · <a href="/collections/gift-hamper-boxes">Chocolate Gift Hampers</a> · <a href="/collections/nuts-dry-fruits">Nuts & Dry Fruits</a>'
+
+  elsif handle == 'dates'
+    assign seo_intro = '<p>Discover Gulf Souq's exclusive collection of <strong>premium Gulf dates online in India</strong> — sourced directly from the fertile date palm groves of Saudi Arabia, UAE, Oman, and Iraq. We offer India's widest variety of authentic dates including the prized <strong>Ajwa dates of Al-Madinah, Medjool dates, Safawi dates, Sukkari dates, Kimia dates, and Kalmi dates</strong>.</p><p>Gulf dates are celebrated across the world for their rich nutritional profile, natural sweetness, and deep cultural significance — especially during <strong>Ramadan, Eid al-Fitr, and Eid al-Adha</strong>. Our dates are carefully harvested, packaged under hygienic conditions, and shipped fresh across 200+ Indian cities. Each variety comes with a detailed origin story, variety characteristics, and recommended serving suggestions.</p><p>Whether you are buying dates as a <strong>healthy snack, festive gift, or religious offering</strong>, Gulf Souq guarantees 100% authentic, directly sourced Gulf dates at the best prices in India. Explore Ajwa dates, widely considered the most nutritious date variety in the world, along with caramel-sweet Medjool and soft, honeyed Safawi varieties.</p>'
+    assign seo_links = '<a href="/collections/chocolates">Imported Chocolates</a> · <a href="/collections/gift-hamper-boxes">Gift Hampers</a> · <a href="/collections/nuts-dry-fruits">Nuts & Dry Fruits</a>'
+
+  elsif handle == 'athar-and-perfume' or handle == 'perfume'
+    assign seo_intro = '<p>Explore Gulf Souq's curated collection of <strong>authentic Arabic perfumes and Attar online in India</strong>. We bring you the finest fragrances from the Gulf — including <strong>pure Oud, Rose Attar, Musk, Amber, Bakhoor, and Arabic Oud blends</strong> — sourced from renowned perfumers in UAE, Saudi Arabia, and the wider Gulf region.</p><p>Arabic perfumery is a millennia-old tradition rooted in luxury and cultural identity. Our collection features both <strong>alcohol-free Attar (concentrated perfume oils)</strong> and premium eau de parfum formats, suitable for daily wear, gifting, and special occasions like Eid and weddings. Brands like <strong>Ajmal, Swiss Arabian, Shahiri, and Lattafa</strong> are stocked regularly.</p><p>Gulf Attar and Arabic perfumes are especially beloved among the South Indian and Pravasi community, where fragrance holds deep cultural and religious significance. Shop our collection of <strong>long-lasting Arabic perfumes for men and women</strong>, delivered anywhere in India with authentic quality guaranteed.</p>'
+    assign seo_links = '<a href="/collections/dates">Premium Gulf Dates</a> · <a href="/collections/gift-hamper-boxes">Gift Hampers</a> · <a href="/collections/chocolates">Imported Chocolates</a>'
+
+  elsif handle == 'gift-hamper-boxes' or handle == 'hamper'
+    assign seo_intro = '<p>Shop Gulf Souq's premium <strong>Gulf gift hampers and luxury gift boxes online in India</strong> — the perfect way to express love, celebrate milestones, and send authentic Gulf warmth to your loved ones. Each hamper is thoughtfully curated with a handpicked selection of <strong>imported chocolates, premium dates, Arabic perfumes, exotic nuts</strong>, and more.</p><p>Our gift boxes are ideal for <strong>Eid gifts, Diwali hampers, wedding gifts, corporate gifting, birthday surprises</strong>, and homecoming occasions. Every Gulf gift hamper is packed with genuine imported products that carry the authentic essence of the Arabian Gulf — something truly unique and memorable to give and receive.</p><p>Customised gifting is available for bulk corporate orders. We deliver across 200+ Indian cities with free shipping on orders above ₹6,999. Browse our <strong>Pravasi Gift Boxes, Premium Chocolate Hampers, Date & Nut Gift Sets</strong>, and occasion-specific curated bundles to find the perfect gift for every moment.</p>'
+    assign seo_links = '<a href="/collections/pravasi-boxes">Pravasi Homecoming Boxes</a> · <a href="/collections/chocolates">Imported Chocolates</a> · <a href="/collections/dates">Premium Dates</a>'
+
+  elsif handle == 'pravasi-boxes' or handle contains 'homecoming'
+    assign seo_intro = '<p>The <strong>Pravasi Petti (Homecoming Box)</strong> at Gulf Souq is more than a gift — it is an emotion. Specially designed for <strong>Gulf returnees, NRI families, and Pravasi communities across Kerala and South India</strong>, our homecoming boxes carry the authentic flavours, fragrances, and memories of Gulf life back home.</p><p>Each Pravasi Box is carefully packed with a curated selection of <strong>authentic Gulf products</strong> that Pravasi families miss the most — from premium imported chocolates and Ajwa dates to aromatic Attar and Gulf food essentials. It's the perfect gift for parents, siblings, spouses, and friends who have been waiting for a taste of the Gulf.</p><p>Whether you're a Gulf worker returning home for the first time in years, or an NRI sending love across borders, the Pravasi Box from Gulf Souq is designed to carry <strong>real Gulf authenticity to every corner of India</strong>. Order online and we'll deliver across 200+ cities with free shipping above ₹6,999.</p>'
+    assign seo_links = '<a href="/collections/gift-hamper-boxes">Gulf Gift Hampers</a> · <a href="/collections/chocolates">Imported Chocolates</a> · <a href="/collections/dates">Premium Dates</a>'
+
+  elsif handle == 'nuts-dry-fruits'
+    assign seo_intro = '<p>Indulge in Gulf Souq's premium collection of <strong>Gulf nuts and dry fruits online in India</strong> — hand-selected from the finest producers across the Middle East. Our collection includes <strong>Iranian Pistachios, Afghan Almonds, Kashmiri Walnuts, Turkish Hazelnuts, Saudi Arabian Mixed Nuts</strong>, and specialty Gulf dry fruits that are a world apart from local alternatives.</p><p>Gulf nuts and dry fruits are prized for their exceptional size, freshness, and flavour — characteristics that come from ideal growing conditions and expert processing. They make for the <strong>healthiest snacking option, a thoughtful gift ingredient</strong>, and an essential addition to festive occasions like Diwali, Eid, and Ramadan.</p><p>All our nuts are sourced directly from Gulf and Middle Eastern suppliers, ensuring freshness and authenticity in every pack. Available in multiple sizes from single-serve packs to bulk economy bags. Shop our Gulf dry fruit collection and experience the difference that genuine sourcing makes.</p>'
+    assign seo_links = '<a href="/collections/dates">Gulf Dates</a> · <a href="/collections/chocolates">Imported Chocolates</a> · <a href="/collections/gift-hamper-boxes">Gift Hampers</a>'
+
+  elsif handle == 'gulf-food-essentials' or handle == 'gulf-food-essential'
+    assign seo_intro = '<p>Explore Gulf Souq's comprehensive collection of <strong>authentic Gulf food essentials online in India</strong>. We source the finest Gulf-imported pantry staples including <strong>Arabic spices, premium cooking oils, Gulf sauces, halal-certified condiments, specialty rice varieties</strong>, and other kitchen essentials that are the backbone of Gulf and Middle Eastern cuisine.</p><p>Whether you are a South Indian family that follows Gulf cooking traditions, a Pravasi who misses the taste of UAE kitchen staples, or simply someone who loves exploring Middle Eastern flavours — our Gulf food essentials collection has everything you need. Products are sourced directly from trusted Gulf and Middle Eastern food brands.</p><p>All food products are <strong>FSSAI-compliant, imported through authorised channels</strong>, and stored under proper conditions to maintain freshness. Explore and discover the authentic taste of Gulf cooking, delivered right to your kitchen anywhere in India with free shipping above ₹6,999.</p>'
+    assign seo_links = '<a href="/collections/dates">Premium Dates</a> · <a href="/collections/nuts-dry-fruits">Nuts & Dry Fruits</a> · <a href="/collections/chocolates">Imported Chocolates</a>'
+
+  elsif handle contains 'abaya' or handle contains 'fashion'
+    assign seo_intro = '<p>Shop Gulf Souq's elegant collection of <strong>authentic Gulf Abayas and Islamic fashion online in India</strong>. Our Abayas are sourced directly from renowned Gulf fashion houses in UAE and Saudi Arabia, offering the finest in <strong>traditional Arabic modest wear, luxury fabrics, and contemporary Gulf fashion design</strong>.</p><p>Each Abaya in our collection reflects the grace, modesty, and cultural heritage of Gulf fashion — crafted from premium crepe, chiffon, nida, and silk fabrics. Available in classic black, contemporary embroidered styles, and occasion-specific designs suitable for <strong>everyday wear, Eid, weddings, and formal occasions</strong>.</p><p>Gulf Abayas from Gulf Souq are especially popular among Muslim women across Kerala, Tamil Nadu, and other South Indian states who appreciate the authentic Gulf style and quality. All pieces are available in standard and plus sizes, delivered pan-India with free shipping above ₹6,999.</p>'
+    assign seo_links = '<a href="/collections/athar-and-perfume">Arabic Perfumes</a> · <a href="/collections/gift-hamper-boxes">Gift Hampers</a> · <a href="/collections/dates">Gulf Dates</a>'
+  endif
+-%}
+
+{%- if seo_intro != '' -%}
+  <div class="gs-coll-seo-intro" aria-label="About this collection">
+    <style>
+      .gs-coll-seo-intro {
+        max-width: 1200px;
+        margin: 0 auto 28px;
+        padding: 28px 32px;
+        background: linear-gradient(135deg, #f8fafb 0%, #eef4fa 100%);
+        border: 1px solid #e2eaf3;
+        border-radius: 16px;
+        box-sizing: border-box;
+      }
+      .gs-coll-seo-intro p {
+        font-size: 15.5px;
+        color: #2d3748;
+        line-height: 1.7;
+        margin: 0 0 14px;
+      }
+      .gs-coll-seo-intro p:last-of-type {
+        margin-bottom: 16px;
+      }
+      .gs-coll-seo-intro p strong {
+        color: #0a2540;
+        font-weight: 700;
+      }
+      .gs-coll-seo-intro a {
+        color: #ff7a00 !important;
+        text-decoration: none !important;
+        font-weight: 600;
+        border-bottom: 1px dotted #ff7a00;
+        transition: border-color 0.2s ease, color 0.2s ease;
+      }
+      .gs-coll-seo-intro a:hover {
+        color: #c45e00 !important;
+        border-bottom-style: solid;
+      }
+      .gs-coll-seo-related {
+        font-size: 13.5px;
+        color: #64748b;
+        padding-top: 14px;
+        border-top: 1px solid #dbe4ef;
+        margin-top: 6px;
+      }
+      .gs-coll-seo-related strong {
+        color: #0a2540;
+        font-weight: 600;
+        margin-right: 6px;
+      }
+      @media (max-width: 640px) {
+        .gs-coll-seo-intro {
+          padding: 20px 18px;
+          border-radius: 12px;
+          margin-bottom: 20px;
+        }
+        .gs-coll-seo-intro p {
+          font-size: 14.5px;
+        }
+      }
+    </style>
+
+    {{ seo_intro }}
+
+    {%- if seo_links != '' -%}
+      <p class="gs-coll-seo-related">
+        <strong>Explore More:</strong> {{ seo_links }}
+      </p>
+    {%- endif -%}
+  </div>
+{%- elsif collection.description != blank -%}
+  <div class="gs-coll-seo-intro" aria-label="About this collection">
+    <div class="rte">{{ collection.description }}</div>
+  </div>
+{%- endif -%}

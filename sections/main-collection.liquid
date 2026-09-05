@@ -647,6 +647,8 @@
               show_filters: show_filters
             -%}
           {%- endif -%}
+          {%- comment -%} P12 SEO: Rich keyword intro rendered above the fold right after the H1 {%- endcomment -%}
+          {%- render 'collection-seo-intro' -%}
         {%- when 'description'-%}
           <article class="cols b30 {% if block.settings.text_alignment == 'center' %}text-center{% endif %}" {{ block.shopify_attributes }}>
             {%- if collection.image and section.settings.show_collection_image -%}

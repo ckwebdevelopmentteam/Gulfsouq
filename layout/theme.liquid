@@ -11,12 +11,16 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>
       {%- if template.name == 'blog' and page_title == 'News' -%}
-        Blog &ndash; {{ shop.name }}
+        Gulf Product Guides & Stories &ndash; {{ shop.name }}
       {%- else -%}
         {{ page_title }}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
       {%- endif -%}
     </title>
-    {%- if page_description -%}<meta name="description" content="{{ page_description | escape }}">{%- endif -%}
+    {%- if template.name == 'blog' and page_title == 'News' -%}
+      <meta name="description" content="Explore our Gulf product guides, buying tips, and stories about authentic Gulf imports — dates, chocolates, perfumes & more. Delivered across India.">
+    {%- elsif page_description -%}
+      <meta name="description" content="{{ page_description | escape }}">
+    {%- endif -%}
     <meta name="theme-color" content="{{ settings.accent_color }}">
     <meta name="MobileOptimized" content="320">
     <meta name="HandheldFriendly" content="true">
@@ -27,6 +31,8 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="msapplication-config" content="{{ 'browserconfig.xml' | asset_url }}">
     <link rel="canonical" href="{{ canonical_url }}">
+    <link rel="alternate" hreflang="en-IN" href="{{ canonical_url }}">
+    <link rel="alternate" hreflang="x-default" href="{{ canonical_url }}">
     {% unless settings.heading_font.system? and settings.body_font.system? -%}
       <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
     {%- endunless -%}
@@ -232,6 +238,9 @@
       {%- render 'accessible-nav' -%}
       {%- sections 'header-group' -%}
       <main id="content">
+        {%- if template.name == 'index' -%}
+          <h1 class="visually-hidden" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;">Buy Authentic Gulf Products Online in India – Dates, Chocolates, Perfumes | Gulf Souq</h1>
+        {%- endif -%}
         {{ content_for_layout }}
         {%- sections 'footer-group' -%}
       </main>

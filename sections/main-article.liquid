@@ -503,6 +503,203 @@
 {%- endfor -%}
 </div>
 
+{%- comment -%} ============================================================
+  P8 SEO FIX: Contextual Internal Links — "Related Gulf Collections"
+  Auto-maps article tags/title keywords to relevant collection pages.
+  Passes link equity from blog → commercial collection pages.
+================================================================ {%- endcomment -%}
+{%- liquid
+  assign show_related = true
+  assign title_lower = article.title | downcase
+  assign tags_str = article.tags | join: ',' | downcase
+
+  assign rel_links = ''
+  assign rel_labels = ''
+
+  comment
+    Build a pipe-separated list of links and labels based on topic signals
+  endcomment
+
+  if tags_str contains 'chocolate' or title_lower contains 'chocolate'
+    assign rel_links = '/collections/chocolates|/collections/dates|/collections/gift-hamper-boxes'
+    assign rel_labels = 'Shop Gulf Chocolates|Shop Premium Dates|Explore Gift Hampers'
+  elsif tags_str contains 'date' or title_lower contains 'date' or title_lower contains 'ajwa' or title_lower contains 'medjool'
+    assign rel_links = '/collections/dates|/collections/chocolates|/collections/nuts-dry-fruits'
+    assign rel_labels = 'Shop Gulf Dates|Imported Chocolates|Nuts & Dry Fruits'
+  elsif tags_str contains 'perfume' or tags_str contains 'attar' or tags_str contains 'fragrance' or title_lower contains 'perfume' or title_lower contains 'attar' or title_lower contains 'oud'
+    assign rel_links = '/collections/athar-and-perfume|/collections/gift-hamper-boxes|/collections/dates'
+    assign rel_labels = 'Shop Arabic Perfumes & Attar|Gift Hampers|Premium Dates'
+  elsif tags_str contains 'nut' or tags_str contains 'dry fruit' or title_lower contains 'nut' or title_lower contains 'pistachio' or title_lower contains 'almond'
+    assign rel_links = '/collections/nuts-dry-fruits|/collections/dates|/collections/chocolates'
+    assign rel_labels = 'Shop Nuts & Dry Fruits|Gulf Dates|Imported Chocolates'
+  elsif tags_str contains 'gift' or tags_str contains 'hamper' or title_lower contains 'gift' or title_lower contains 'hamper' or title_lower contains 'homecoming' or title_lower contains 'pravasi'
+    assign rel_links = '/collections/gift-hamper-boxes|/collections/pravasi-boxes|/collections/chocolates'
+    assign rel_labels = 'Gulf Gift Hampers|Pravasi Homecoming Boxes|Imported Chocolates'
+  elsif tags_str contains 'abaya' or tags_str contains 'fashion' or title_lower contains 'abaya' or title_lower contains 'fashion'
+    assign rel_links = '/collections/gulf-souq-abayas|/collections/athar-and-perfume|/collections/gift-hamper-boxes'
+    assign rel_labels = 'Gulf Abayas|Arabic Perfumes|Gift Hampers'
+  elsif tags_str contains 'spice' or title_lower contains 'spice' or title_lower contains 'herb' or title_lower contains 'food'
+    assign rel_links = '/collections/gulf-food-essentials|/collections/dates|/collections/nuts-dry-fruits'
+    assign rel_labels = 'Gulf Food Essentials|Premium Dates|Nuts & Dry Fruits'
+  else
+    assign rel_links = '/collections/chocolates|/collections/dates|/collections/athar-and-perfume|/collections/gift-hamper-boxes'
+    assign rel_labels = 'Imported Chocolates|Gulf Dates|Arabic Perfumes|Gift Hampers'
+  endif
+
+  assign rel_links_arr = rel_links | split: '|'
+  assign rel_labels_arr = rel_labels | split: '|'
+-%}
+
+{%- if show_related -%}
+<div class="gs-article-related-collections">
+  <style>
+    .gs-article-related-collections {
+      max-width: 860px;
+      margin: 48px auto 16px;
+      padding: 36px 40px;
+      background: linear-gradient(135deg, #fef9f0 0%, #fff8ec 100%);
+      border: 1px solid #ffe4b3;
+      border-radius: 20px;
+      box-shadow: 0 4px 24px rgba(255, 122, 0, 0.08);
+    }
+    .gs-arc-eyebrow {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #ff7a00;
+      margin-bottom: 10px;
+    }
+    .gs-arc-heading {
+      font-size: 22px;
+      font-weight: 700;
+      color: #0a2540;
+      margin: 0 0 20px;
+      line-height: 1.3;
+    }
+    .gs-arc-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      list-style: none;
+      padding: 0;
+      margin: 0 0 24px;
+    }
+    .gs-arc-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 20px;
+      border-radius: 30px;
+      background: #ffffff;
+      border: 1.5px solid #e8c87a;
+      color: #0a2540 !important;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none !important;
+      transition: all 0.25s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .gs-arc-links a:hover {
+      background: #ff7a00;
+      border-color: #ff7a00;
+      color: #ffffff !important;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(255, 122, 0, 0.28);
+    }
+    .gs-arc-links a svg {
+      flex-shrink: 0;
+      transition: transform 0.2s ease;
+    }
+    .gs-arc-links a:hover svg {
+      transform: translateX(3px);
+    }
+    .gs-arc-shop-all {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 28px;
+      border-radius: 8px;
+      background: #0a2540;
+      color: #ffffff !important;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none !important;
+      transition: all 0.25s ease;
+      letter-spacing: 0.3px;
+    }
+    .gs-arc-shop-all:hover {
+      background: #ff7a00;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(255,122,0,0.3);
+    }
+    @media (max-width: 640px) {
+      .gs-article-related-collections {
+        padding: 24px 20px;
+        margin: 36px 16px 16px;
+      }
+      .gs-arc-heading { font-size: 18px; }
+    }
+  </style>
+
+  <p class="gs-arc-eyebrow">🛒 Shop Related</p>
+  <h3 class="gs-arc-heading">Explore Gulf Products Mentioned in This Article</h3>
+
+  <ul class="gs-arc-links">
+    {%- for link_url in rel_links_arr -%}
+      <li>
+        <a href="{{ link_url }}">
+          {{ rel_labels_arr[forloop.index0] }}
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </li>
+    {%- endfor -%}
+  </ul>
+
+  <a href="/collections/all" class="gs-arc-shop-all">
+    🌟 Browse All Gulf Products
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+  </a>
+</div>
+{%- endif -%}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": {{ article.title | json }},
+  "name": {{ article.title | json }},
+  "description": {{ article.excerpt_or_content | strip_html | truncatewords: 40 | json }},
+  "datePublished": "{{ article.published_at | date: '%Y-%m-%dT%H:%M:%SZ' }}",
+  "dateModified": "{{ article.updated_at | default: article.published_at | date: '%Y-%m-%dT%H:%M:%SZ' }}",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ shop.url }}{{ article.url }}"
+  },
+  "url": "{{ shop.url }}{{ article.url }}",
+  {% if article.image %}
+    "image": {
+      "@type": "ImageObject",
+      "url": "https:{{ article.image | image_url: width: 1200 }}",
+      "width": 1200,
+      "height": {{ 1200 | divided_by: article.image.aspect_ratio | round }}
+    },
+  {% endif %}
+  "author": {
+    "@type": "Person",
+    "name": {{ article.author | default: shop.name | json }}
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": {{ shop.name | json }},
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{% if settings.logo %}{{ settings.logo | image_url: width: 600 }}{% else %}{{ 'logo.png' | asset_url }}{% endif %}"
+    }
+  }
+}
+</script>
+
 {% schema %}
 {
   "name": "t:main.article.name",
